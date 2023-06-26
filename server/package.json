@@ -1,0 +1,11 @@
+{
+  "name": "personal-finance-server",
+  "version": "1.0.0",
+  "description": "Server component for Personal Finance project\u001b[1;5D\u001b[1;5D\u001b[1;5C\u001b[1;5C\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dthe Personal Finance\u001b[2~ project",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "Robyn Felicity Heather Veitch",
+  "license": "ISC"
+}
