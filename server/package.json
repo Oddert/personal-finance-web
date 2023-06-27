@@ -5,15 +5,19 @@
   "main": "app.js",
   "scripts": {
     "test": "npm run test",
-    "start": "concurrently \"tsc --watch\" \"nodemon dist/app.js\""
+    "start": "concurrently \"tsc --watch\" \"nodemon dist/index.js\""
   },
   "author": "Robyn Felicity Heather Veitch",
   "license": "ISC",
   "dependencies": {
+    "@types/knex": "^0.16.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "knex": "^2.4.2",
+    "objection": "^3.0.1",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",
