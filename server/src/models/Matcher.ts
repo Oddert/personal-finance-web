@@ -3,20 +3,16 @@ import knex from '../db/knex'
 
 Model.knex(knex)
 
-export default class Transaction extends Model {
+export default class Matcher extends Model {
     id?: 'integer'
-    date?: Date
-    transaction_type?: string
-    description?: string
-    debit?: number
-    credit?: number
-    ballance?: number
+    match?: string
+    match_type?: string
+    case_sensitive?: boolean
     static created_on: Date | string
     static updated_on: Date | string
-    category?: 'integer'
 
     static get tableName() {
-        return 'transaction'
+        return 'matcher'
     }
 
     static beforeInsert() {
@@ -35,15 +31,11 @@ export default class Transaction extends Model {
             type: 'object',
             properties: {
                 id: { type: 'integer', readonly: true },
-                date: { type: 'date' },
-                transaction_type: { type: 'string', minLength: 1, maxLength: 5 },
-                description: { type: ['string', 'null'] },
-                debit: { type: 'number' },
-                credit: { type: 'number' },
-                ballance: { type: 'number' },
+                match: { type: 'string', minLength: 1 },
+                match_type: { type: 'string', minLength: 1 },
+                case_sensitive: { type: 'boolean' },
                 created_on: { type: 'date' },
                 updated_on: { type: 'date' },
-                category: { type: 'integer' },
             }
         }
     }
@@ -51,14 +43,18 @@ export default class Transaction extends Model {
     static get relationMappings() {
 		const Category = __dirname + '/Category' // require('./User')
         return {
-            assignedCategory: {
-                relation: Model.BelongsToOneRelation,
-                modelClass: Category,
+            matcher: {
+                relation: Model.ManyToManyRelation,
+                modelClass: Matcher,
                 join: {
-                    from: 'transaction.category',
+                    from: 'matcher.id',
+                    through: {
+                        from: 'category_matcher.matcher_id',
+                        to: 'category_matcher.category_id',
+                    },
                     to: 'category.id',
                 }
-            }
+            },
         }
     }
 }
