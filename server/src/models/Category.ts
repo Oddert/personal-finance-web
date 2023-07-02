@@ -15,25 +15,32 @@ export default class Category extends Model {
     }
 
     static beforeInsert() {
-        const now = new Date()
+        const now = new Date().toISOString()
+        this.created_on = now
+        this.updated_on = now
+    }
+
+    static $beforeInsert() {
+        const now = new Date().toISOString()
         this.created_on = now
         this.updated_on = now
     }
 
     static afterFind() {
-        this.created_on = new Date(this.created_on).toLocaleString('en-GB')
-        this.updated_on = new Date(this.updated_on).toLocaleString('en-GB')
+        this.created_on = this.created_on ? new Date(this.created_on).toISOString() : ''
+        this.updated_on = this.updated_on ? new Date(this.updated_on).toISOString() : ''
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
+            required: ['colour', 'created_on', 'updated_on'],
             properties: {
-                id: { type: 'integer', readonly: true },
+                id: { type: 'integer' },
                 description: { type: ['string', 'null'] },
                 colour: { type: 'string', minLength: 3 },
-                created_on: { type: 'date' },
-                updated_on: { type: 'date' },                
+                created_on: { type: 'string' },
+                updated_on: { type: 'string' },                
             }
         }
     }

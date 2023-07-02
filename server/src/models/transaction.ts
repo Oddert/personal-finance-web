@@ -34,7 +34,7 @@ export default class Transaction extends Model {
         return {
             type: 'object',
             properties: {
-                id: { type: 'integer', readonly: true },
+                id: { type: 'integer' },
                 date: { type: 'date' },
                 transaction_type: { type: 'string', minLength: 1, maxLength: 5 },
                 description: { type: ['string', 'null'] },
