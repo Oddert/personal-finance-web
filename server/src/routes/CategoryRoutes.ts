@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { checkSchema } from 'express-validator'
 
 import {
     createManyCategories,
@@ -8,19 +9,33 @@ import {
     getSingleCategory,
     updateSingleCategory,
 } from '../controllers/CategoryController'
+import {
+    createCategorySchema,
+    createManyCategoriesSchema,
+    updateCategorySchema,
+} from '../schemas/CategorySchema'
 
 const router = Router()
 
 router.route('/')
     .get(getCategories)
-    .post(createSingleCategory)
+    .post(
+        checkSchema(createCategorySchema),
+        createSingleCategory,
+    )
 
 router.route('/:id')
     .get(getSingleCategory)
-    .put(updateSingleCategory)
+    .put(
+        checkSchema(updateCategorySchema),
+        updateSingleCategory,
+    )
     .delete(deleteSingleCategory)
 
 router.route('/create-many')
-    .post(createManyCategories)
+    .post(
+        checkSchema(createManyCategoriesSchema),
+        createManyCategories,
+    )
 
 export default router
