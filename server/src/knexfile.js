@@ -6,7 +6,7 @@ const config = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: __dirname + '/db/personal-finance.db3'
+      filename: __dirname + '/db/personal-finance.dev.db3'
     },
 		useNullAsDefault: true,
 		migrations: {
@@ -18,19 +18,17 @@ const config = {
   },
 
   staging: {
-    client: 'postgresql',
+    client: 'sqlite3',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      filename: __dirname + '/db/personal-finance.staging.db3'
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+		useNullAsDefault: true,
+		migrations: {
+			directory: __dirname + '/db/migrations'
+		},
+		seeds: {
+			directory: __dirname + '/db/seeds'
+		}
   },
 
   production: {

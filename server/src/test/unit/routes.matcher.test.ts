@@ -2,9 +2,9 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import path from 'path'
 
-import knex from '../db/knex'
+import knex from '../../db/knex'
 
-import server from '../'
+import server from '../../'
 
 process.env.NODE_ENV = 'test'
 
@@ -14,11 +14,11 @@ const should = chai.should()
 const expect = chai.expect
 
 const migrateOpts = {
-    directory: path.join(__dirname, '../db/migrations')
+    directory: path.join(__dirname, '../../db/migrations')
 }
 
 const seedOpts = {
-    directory: path.join(__dirname, '../db/seeds')
+    directory: path.join(__dirname, '../../db/seeds')
 }
 
 describe('routes : matcher', () => {

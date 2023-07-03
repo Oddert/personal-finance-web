@@ -6,6 +6,10 @@ import Category from '../models/Category'
 
 export const getCategories = async (req: Request, res: Response) => {
     try {
+        if (req.query.includeMatchers) {
+            const categories = await Category.query().withGraphFetched('matchers')
+            return respondOk(req, res, { categories })
+        }
         const categories = await Category.query()
         return respondOk(req, res, { categories })
     } catch(err) {
@@ -16,7 +20,10 @@ export const getCategories = async (req: Request, res: Response) => {
 
 export const getSingleCategory = async (req: Request, res: Response) => {
     try {
-        const category = await Category.query().findById(req.params.id)
+        const category = req.query.includeMatchers
+            ? await Category.query().findById(req.params.id).withGraphFetched('matchers')
+            : await Category.query().findById(req.params.id)
+
         if (!category) {
             return respondNotFound(req, res, { id: req.params.id })
         }

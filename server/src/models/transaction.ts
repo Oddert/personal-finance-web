@@ -20,14 +20,14 @@ export default class Transaction extends Model {
     }
 
     static beforeInsert() {
-        const now = new Date()
+        const now = new Date().toISOString()
         this.created_on = now
         this.updated_on = now
     }
 
     static afterFind() {
-        this.created_on = new Date(this.created_on).toLocaleString('en-GB')
-        this.updated_on = new Date(this.updated_on).toLocaleString('en-GB')
+        this.created_on = this.created_on ? new Date(this.created_on).toISOString() : ''
+        this.updated_on = this.updated_on ? new Date(this.updated_on).toISOString() : ''
     }
 
     static get jsonSchema() {
@@ -35,14 +35,14 @@ export default class Transaction extends Model {
             type: 'object',
             properties: {
                 id: { type: 'integer' },
-                date: { type: 'date' },
+                date: { type: 'string' },
                 transaction_type: { type: 'string', minLength: 1, maxLength: 5 },
                 description: { type: ['string', 'null'] },
                 debit: { type: 'number' },
                 credit: { type: 'number' },
                 ballance: { type: 'number' },
-                created_on: { type: 'date' },
-                updated_on: { type: 'date' },
+                created_on: { type: 'string' },
+                updated_on: { type: 'string' },
                 category: { type: 'integer' },
             }
         }

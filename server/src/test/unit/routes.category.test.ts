@@ -2,9 +2,9 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import path from 'path'
 
-import knex from '../db/knex'
+import knex from '../../db/knex'
 
-import server from '../'
+import server from '../../'
 
 process.env.NODE_ENV = 'test'
 
@@ -14,11 +14,11 @@ const should = chai.should()
 const expect = chai.expect
 
 const migrateOpts = {
-    directory: path.join(__dirname, '../db/migrations')
+    directory: path.join(__dirname, '../../db/migrations')
 }
 
 const seedOpts = {
-    directory: path.join(__dirname, '../db/seeds')
+    directory: path.join(__dirname, '../../db/seeds')
 }
 
 describe('routes : category', () => {
@@ -27,7 +27,7 @@ describe('routes : category', () => {
             .then(() => knex.migrate.latest(migrateOpts))
             .then(() => knex.seed.run(seedOpts))
     })
-
+    
     afterEach(() => {
         return knex.migrate.rollback(migrateOpts)
     })
@@ -64,6 +64,43 @@ describe('routes : category', () => {
         })
     })
 
+    describe('GET /category?includeMatchers=true', () => {
+        it('should retrieve all categories with matchers joined', done => {
+            chai.request(server)
+                .get('/category?includeMatchers=true')
+                .send()
+                .end((err, res) => {
+                    should.not.exist(err)
+                    res.redirects.length.should.eql(0)
+                    res.status.should.eql(200)
+                    res.type.should.eql('application/json')
+                    
+                    res.body.status.should.eql(res.status)
+                    expect(res.body.payload.categories).to.have.lengthOf.above(0)
+                    expect(res.body.payload.categories[0]).to.have.all.keys(
+                        'id',
+                        'label',
+                        'description',
+                        'colour',
+                        'created_on',
+                        'updated_on',
+                        'matchers',
+                    );
+                    expect(res.body.payload.categories[0].matchers).to.exist
+                    expect(res.body.payload.categories[0].matchers).to.be.a('array')
+                    expect(res.body.payload.categories[0].matchers[0]).to.be.a('object')
+
+                    expect(res.body.payload.categories[0].matchers[0].id).to.be.a('number')
+                    expect(res.body.payload.categories[0].matchers[0].match).to.be.a('string')
+                    expect(res.body.payload.categories[0].matchers[0].match_type).to.be.a('string')
+                    expect(res.body.payload.categories[0].matchers[0].case_sensitive).to.be.oneOf(['boolean', 0, 1])
+                    expect(res.body.payload.categories[0].matchers[0].created_on).to.be.a('string')
+                    expect(res.body.payload.categories[0].matchers[0].updated_on).to.be.a('string')
+                    done()
+                })
+        })
+    })
+
     describe('GET /category/:id', () => {
         it('should retrieve a single category', done => {
             chai.request(server)
@@ -90,6 +127,42 @@ describe('routes : category', () => {
                     expect(res.body.payload.category.colour).to.be.a('string')
                     expect(res.body.payload.category.created_on).to.be.a('string')
                     expect(res.body.payload.category.updated_on).to.be.a('string')
+                    done()
+                })
+        })
+    })
+
+    describe('GET /category/:id?includeMatchers=true', () => {
+        it('should retrieve a category with matchers joined', done => {
+            chai.request(server)
+                .get('/category/1?includeMatchers=true')
+                .send()
+                .end((err, res) => {
+                    should.not.exist(err)
+                    res.redirects.length.should.eql(0)
+                    res.status.should.eql(200)
+                    res.type.should.eql('application/json')
+                    
+                    res.body.status.should.eql(res.status)
+                    expect(res.body.payload.category).to.have.all.keys(
+                        'id',
+                        'label',
+                        'description',
+                        'colour',
+                        'created_on',
+                        'updated_on',
+                        'matchers',
+                    );
+                    expect(res.body.payload.category.matchers).to.exist
+                    expect(res.body.payload.category.matchers).to.be.a('array')
+                    expect(res.body.payload.category.matchers[0]).to.be.a('object')
+
+                    expect(res.body.payload.category.matchers[0].id).to.be.a('number')
+                    expect(res.body.payload.category.matchers[0].match).to.be.a('string')
+                    expect(res.body.payload.category.matchers[0].match_type).to.be.a('string')
+                    expect(res.body.payload.category.matchers[0].case_sensitive).to.be.oneOf(['boolean', 0, 1])
+                    expect(res.body.payload.category.matchers[0].created_on).to.be.a('string')
+                    expect(res.body.payload.category.matchers[0].updated_on).to.be.a('string')
                     done()
                 })
         })
