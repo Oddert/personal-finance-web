@@ -4,10 +4,12 @@
   "description": "Simple adaptable finance managagment system for personal use",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "cd client && npm run start",
-    "start:server": "cd server && npm run start"
+    "start:server": "cd server && npm run start",
+    "test": "npm run test:client && npm run test:server",
+    "test:client": "cd client && npm run test",
+    "test:server": "cd server && npm run test"
   },
   "author": "Robyn Felicity Heather Veitch",
   "license": "MIT",
