@@ -20,10 +20,10 @@ app.use(
 
 app.use(express.static('./'))
 
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser(process.env.SESSION_SECRET));
-app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser(process.env.SESSION_SECRET))
+app.use(express.json())
+app.use(cors())
 
 app.use('/', root)
 app.use('/matcher', matcher)

@@ -52,7 +52,7 @@ describe('routes : matcher', () => {
                         'case_sensitive',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.matchers[0].id).to.be.a('number')
                     expect(res.body.payload.matchers[0].match).to.be.a('string')
                     expect(res.body.payload.matchers[0].match_type).to.be.a('string')
@@ -83,7 +83,7 @@ describe('routes : matcher', () => {
                         'case_sensitive',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.matcher.id).to.eql(1)
                     expect(res.body.payload.matcher.match).to.be.a('string')
                     expect(res.body.payload.matcher.match_type).to.be.a('string')
@@ -133,7 +133,7 @@ describe('routes : matcher', () => {
                                 'case_sensitive',
                                 'created_on',
                                 'updated_on',
-                            );
+                            )
                             expect(res.body.payload.matcher.id).to.be.a('number')
                             expect(res.body.payload.matcher.match).to.eql(matchName)
                             expect(res.body.payload.matcher.match_type).to.eql('any')
@@ -185,7 +185,7 @@ describe('routes : matcher', () => {
                         'case_sensitive',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.matcher.id).to.eql(2)
                     expect(res.body.payload.matcher.match).to.eql(matchName)
                     expect(res.body.payload.matcher.match_type).to.eql('any')
@@ -216,7 +216,7 @@ describe('routes : matcher', () => {
                         'case_sensitive',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.matcher.id).to.eql(1)
                     expect(res.body.payload.matcher.match).to.be.a('string')
                     expect(res.body.payload.matcher.match_type).to.be.a('string')

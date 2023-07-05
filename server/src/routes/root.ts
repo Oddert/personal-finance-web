@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import Transaction from '../models/Transaction'
-import Category from '../models/Category'
+// import Category from '../models/Category'
 
 const router = Router()
 

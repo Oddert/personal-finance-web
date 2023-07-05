@@ -26,7 +26,7 @@ export const respondOk = (
     res: Response,
     payload: any = null,
     message: string|null = 'Request processed successfully.',
-    statusCode: number = 200,
+    statusCode = 200,
     error: unknown = null,
 ): Response<response> => {
     return res
@@ -60,7 +60,7 @@ export const respondCreated = (
     res: Response,
     payload: any = null,
     message: string|null = 'Create request processed successfully.',
-    statusCode: number = 201,
+    statusCode = 201,
     error: unknown = null,
 ): Response<response> => {
     return res
@@ -96,7 +96,7 @@ export const respondMultipleChoices = (
     res: Response,
     payload: any = null,
     message: string|null = 'The request has more than one possible response.',
-    statusCode: number = 300,
+    statusCode = 300,
     error: unknown = null,
 ): Response<response> => {
     return res
@@ -130,7 +130,7 @@ export const respondBadRequest = (
     res: Response,
     payload: any = null,
     message: string|null = 'There was an issue in the format of your request. Please check and try again.',
-    statusCode: number = 400,
+    statusCode = 400,
     error: unknown = null,
 ): Response<response> => {
     console.log(error)
@@ -169,7 +169,7 @@ export const respondNotFound = (
     res: Response,
     payload: any = null,
     message: string|null = 'The requested resource could not be found.',
-    statusCode: number = 404,
+    statusCode = 404,
     error: unknown = null,
 ): Response<response> => {
     return res
@@ -203,7 +203,7 @@ export const respondServerError = (
     res: Response,
     payload: any = null,
     message: string|null = 'There was an issue processing your request.',
-    statusCode: number = 500,
+    statusCode = 500,
     error: unknown = null,
 ): Response<response> => {
     return res

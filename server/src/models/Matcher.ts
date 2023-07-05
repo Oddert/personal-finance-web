@@ -50,7 +50,7 @@ export default class Matcher extends Model {
     }
 
     static get relationMappings() {
-		const Category = __dirname + '/Category' // require('./User')
+        const Category = __dirname + '/Category' // require('./User')
         return {
             categories: {
                 relation: Model.ManyToManyRelation,

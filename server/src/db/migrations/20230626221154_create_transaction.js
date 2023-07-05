@@ -15,7 +15,7 @@ exports.up = function(knex) {
         table.date('updated_on')
         table.integer('category').references('category.id')
     })
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -23,4 +23,4 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema.dropTable('transaction')
-};
+}

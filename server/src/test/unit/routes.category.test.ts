@@ -52,7 +52,7 @@ describe('routes : category', () => {
                         'colour',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.categories[0].id).to.be.a('number')
                     expect(res.body.payload.categories[0].label).to.be.a('string')
                     expect(res.body.payload.categories[0].description).to.be.a('string')
@@ -85,7 +85,7 @@ describe('routes : category', () => {
                         'created_on',
                         'updated_on',
                         'matchers',
-                    );
+                    )
                     expect(res.body.payload.categories[0].matchers).to.exist
                     expect(res.body.payload.categories[0].matchers).to.be.a('array')
                     expect(res.body.payload.categories[0].matchers[0]).to.be.a('object')
@@ -152,7 +152,7 @@ describe('routes : category', () => {
                         'created_on',
                         'updated_on',
                         'matchers',
-                    );
+                    )
                     expect(res.body.payload.category.matchers).to.exist
                     expect(res.body.payload.category.matchers).to.be.a('array')
                     expect(res.body.payload.category.matchers[0]).to.be.a('object')
@@ -286,7 +286,7 @@ describe('routes : category', () => {
                         'case_sensitive',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.category.matchers[0].id).to.be.a('number')
                     expect(res.body.payload.category.matchers[0].match).to.eql(matchName)
                     expect(res.body.payload.category.matchers[0].match_type).to.eql(matchType)
@@ -331,7 +331,7 @@ describe('routes : category', () => {
                         'colour',
                         'created_on',
                         'updated_on',
-                    );
+                    )
                     expect(res.body.payload.category.id).to.eql(2)
                     expect(res.body.payload.category.label).to.eql(catLabel)
                     expect(res.body.payload.category.description).to.eql(catDesc)
