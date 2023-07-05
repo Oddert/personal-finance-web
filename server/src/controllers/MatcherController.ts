@@ -50,6 +50,7 @@ export const updateSingleMatcher = async (req: Request, res: Response) => {
 
 export const deleteSingleMatcher = async (req: Request, res: Response) => {
     try {
+        await Matcher.relatedQuery('categories').for(req.params.id).unrelate()
         const deleted = await Matcher.query()
             .deleteById(req.params.id)
         return respondOk(req, res, { deleted }, 'Delete operation successful.', 204)

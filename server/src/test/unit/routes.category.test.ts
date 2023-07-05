@@ -230,6 +230,76 @@ describe('routes : category', () => {
                         })
                 })
         })
+
+        it('should create a new category with matchers', done => {
+            const date = new Date()
+            const catLabel = `TEST_CATEGORY_LABEL_${date.toString()}`
+            const catDesc = `TEST_CATEGORY_DESCRIPTION_${date.toString()}`
+            const catColour = '#ecf0f1'
+
+            const matchName = `TEST_MATCHER_${date.toString()}`
+            const matchType = 'any'
+
+            chai.request(server)
+                .post('/category')
+                .send({
+                    label: catLabel,
+                    description: catDesc,
+                    colour: catColour,
+                    matchers: [
+                        {
+                            match: matchName,
+                            match_type: matchType,
+                            case_sensitive: false,
+                        }
+                    ]
+                })
+                .end((err, res) => {
+                    should.not.exist(err)
+                    res.redirects.length.should.eql(0)
+                    res.status.should.eql(201)
+                    res.type.should.eql('application/json')
+
+                    res.body.status.should.eql(res.status)
+                    expect(res.body.payload.category).to.be.a('object')
+                    expect(res.body.payload.category).to.have.all.keys(
+                        'id',
+                        'label',
+                        'description',
+                        'colour',
+                        'created_on',
+                        'updated_on',
+                        'matchers',
+                    )
+                    expect(res.body.payload.category.id).to.be.a('number')
+                    expect(res.body.payload.category.label).to.eql(catLabel)
+                    expect(res.body.payload.category.description).to.eql(catDesc)
+                    expect(res.body.payload.category.colour).to.eql(catColour)
+                    expect(res.body.payload.category.created_on).to.be.a('string')
+                    expect(res.body.payload.category.updated_on).to.be.a('string')
+
+                    expect(res.body.payload.category.matchers[0]).to.be.a('object')
+                    expect(res.body.payload.category.matchers[0]).to.have.all.keys(
+                        'id',
+                        'match',
+                        'match_type',
+                        'case_sensitive',
+                        'created_on',
+                        'updated_on',
+                    );
+                    expect(res.body.payload.category.matchers[0].id).to.be.a('number')
+                    expect(res.body.payload.category.matchers[0].match).to.eql(matchName)
+                    expect(res.body.payload.category.matchers[0].match_type).to.eql(matchType)
+                    expect(res.body.payload.category.matchers[0].case_sensitive).to.be.oneOf([0, false])
+                    // expect(res.body.payload.category.matchers[0].created_on).to.be.a('string')
+                    // expect(res.body.payload.category.matchers[0].updated_on).to.be.a('string')
+                    // expect(res.body.payload.category.matchers[0].updated_on).to.eql(
+                    //     res.body.payload.matcher.created_on
+                    // )
+                    done()
+                })
+            
+        })
     })
 
     describe('PUT /category/2', () => {

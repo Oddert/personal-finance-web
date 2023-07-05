@@ -49,7 +49,7 @@ export default class Transaction extends Model {
     }
 
     static get relationMappings() {
-		const Category = __dirname + '/Category' // require('./User')
+        const Category = __dirname + '/Category' // require('./User')
         return {
             assignedCategory: {
                 relation: Model.BelongsToOneRelation,

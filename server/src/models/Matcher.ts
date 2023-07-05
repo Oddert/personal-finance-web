@@ -4,7 +4,7 @@ import knex from '../db/knex'
 Model.knex(knex)
 
 export default class Matcher extends Model {
-    id?: 'integer'
+    id?: number
     match?: string
     match_type?: string
     case_sensitive?: boolean
@@ -52,9 +52,9 @@ export default class Matcher extends Model {
     static get relationMappings() {
 		const Category = __dirname + '/Category' // require('./User')
         return {
-            matcher: {
+            categories: {
                 relation: Model.ManyToManyRelation,
-                modelClass: Matcher,
+                modelClass: Category,
                 join: {
                     from: 'matcher.id',
                     through: {
