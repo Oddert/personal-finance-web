@@ -13,8 +13,8 @@ export const getCategories = async (req: Request, res: Response) => {
         }
         const categories = await Category.query()
         return respondOk(req, res, { categories })
-    } catch(err) {
-        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err)
+    } catch(err: any) {
+        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
 
@@ -28,8 +28,8 @@ export const getSingleCategory = async (req: Request, res: Response) => {
             return respondNotFound(req, res, { id: req.params.id })
         }
         return respondOk(req, res, { category })
-    } catch(err) {
-        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err)
+    } catch(err: any) {
+        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
 
@@ -43,8 +43,8 @@ export const createSingleCategory = async (req: Request, res: Response) => {
             : await Category.query().insert(body)
 
         return respondCreated(req, res, { category })
-    } catch(err) {
-        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err)
+    } catch(err: any) {
+        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
 
@@ -105,36 +105,47 @@ export const updateSingleCategory = async (req: Request, res: Response) => {
             ? await Category.query().patchAndFetchById(req.params.id, body).withGraphFetched('matchers')
             : await Category.query().patchAndFetchById(req.params.id, body)
 
-        return respondOk(req, res, { category })
-    } catch(err) {
-        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err)
+        return respondOk(req, res, { category }, 'Category updated successfully', 201)
+    } catch(err: any) {
+        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
 
 export const deleteSingleCategory = async (req: Request, res: Response) => {
     try {
-        // TODO: un-relate matchers + transactions
+        const category = await Category.query().findById(req.params.id)
+        category?.$relatedQuery('matchers').unrelate()
+        category?.$relatedQuery('transactions').unrelate()
+
         const deleted = await Category.query()
             .deleteById(req.params.id)
+
         return respondOk(req, res, { deleted }, 'Delete operation successful.', 204)
-    } catch(err) {
-        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err)
+    } catch(err: any) {
+        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
 
 export const createManyCategories = async (req: Request, res: Response) => {
     try {
         const date = new Date().toISOString()
-        const createdMatchers = []
+        const createdMatchers: Category[] = []
 
-        for (const category of req.body.payload.categories) {
+        for (const category of req.body.categories) {
             const body = { ...category, created_on: date, updated_on: date }
-            const createdMatcher = await Category.query().insert(body)
-            createdMatchers.push(createdMatcher)
+            const createdCategory = await Category.query().insert(body)
+            createdMatchers.push(createdCategory)
         }
 
         return respondCreated(req, res, { createdMatchers }, 'Matchers created successfully', 204)
-    } catch(err) {
-        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err)
+    } catch(err: any) {
+        return respondBadRequest(
+            req,
+            res,
+            null,
+            'Something went wrong processing your request',
+            500,
+            err.message,
+        )
     }
 }

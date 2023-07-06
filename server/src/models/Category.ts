@@ -34,7 +34,7 @@ export default class Category extends Model {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['colour', 'created_on', 'updated_on'],
+            required: ['colour', 'label', 'created_on', 'updated_on'],
             properties: {
                 id: { type: 'integer' },
                 description: { type: ['string', 'null'] },

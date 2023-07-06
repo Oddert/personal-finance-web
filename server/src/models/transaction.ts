@@ -11,6 +11,8 @@ export default class Transaction extends Model {
     debit?: number
     credit?: number
     ballance?: number
+    created_on: Date | string
+    updated_on: Date | string
     static created_on: Date | string
     static updated_on: Date | string
     category?: 'integer'

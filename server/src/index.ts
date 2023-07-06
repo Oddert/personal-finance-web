@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import root from './routes/root'
 import category from './routes/CategoryRoutes'
 import matcher from './routes/MatcherRoutes'
+import transaction from './routes/TransactionRoutes'
 
 dotenv.config()
 
@@ -28,6 +29,7 @@ app.use(cors())
 app.use('/', root)
 app.use('/matcher', matcher)
 app.use('/category', category)
+app.use('/transaction', transaction)
 
 const server = app.listen(
     PORT,
