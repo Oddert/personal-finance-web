@@ -36,6 +36,7 @@ describe('routes : transaction', () => {
         it('should retrieve all transactions', done => {
             chai.request(server)
                 .get('/transaction')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -55,7 +56,7 @@ describe('routes : transaction', () => {
                         'ballance',
                         'created_on',
                         'updated_on',
-                        'category',
+                        'category_id',
                     )
                     expect(res.body.payload.transactions[0].id).to.be.a('number')
                     expect(res.body.payload.transactions[0].date).to.be.a('string')
@@ -66,7 +67,7 @@ describe('routes : transaction', () => {
                     expect(res.body.payload.transactions[0].ballance).to.be.a('number')
                     expect(res.body.payload.transactions[0].created_on).to.be.a('string')
                     expect(res.body.payload.transactions[0].updated_on).to.be.a('string')
-                    expect(res.body.payload.transactions[0].category).to.be.a('number')
+                    expect(res.body.payload.transactions[0].category_id).to.be.a('number')
                     done()
                 })
         })
@@ -76,6 +77,7 @@ describe('routes : transaction', () => {
         it('should retrieve all transactions with category information', done => {
             chai.request(server)
                 .get('/transaction?includeCategory=true')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -95,7 +97,7 @@ describe('routes : transaction', () => {
                         'ballance',
                         'created_on',
                         'updated_on',
-                        'category',
+                        'category_id',
                         'assignedCategory',
                     )
                     expect(res.body.payload.transactions[0].assignedCategory).to.be.a('object')
@@ -116,6 +118,7 @@ describe('routes : transaction', () => {
         it('should retrieve a single transaction', done => {
             chai.request(server)
                 .get('/transaction/1')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -134,7 +137,7 @@ describe('routes : transaction', () => {
                         'ballance',
                         'created_on',
                         'updated_on',
-                        'category',
+                        'category_id',
                     )
                     expect(res.body.payload.transaction.id).to.eql(1)
                     expect(res.body.payload.transaction.date).to.be.a('string')
@@ -145,7 +148,7 @@ describe('routes : transaction', () => {
                     expect(res.body.payload.transaction.ballance).to.be.a('number')
                     expect(res.body.payload.transaction.created_on).to.be.a('string')
                     expect(res.body.payload.transaction.updated_on).to.be.a('string')
-                    expect(res.body.payload.transaction.category).to.be.a('number')
+                    expect(res.body.payload.transaction.category_id).to.be.a('number')
                     done()
                 })
         })
@@ -155,6 +158,7 @@ describe('routes : transaction', () => {
         it('should retrieve a single transaction with category information', done => {
             chai.request(server)
                 .get('/transaction/1?includeCategory=true')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -173,7 +177,7 @@ describe('routes : transaction', () => {
                         'ballance',
                         'created_on',
                         'updated_on',
-                        'category',
+                        'category_id',
                         'assignedCategory',
                     )
                     expect(res.body.payload.transaction.assignedCategory).to.be.a('object')
@@ -205,6 +209,7 @@ describe('routes : transaction', () => {
 
             chai.request(server)
                 .get('/transaction')
+                .set('Content-Type', 'application/json')
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
@@ -215,6 +220,7 @@ describe('routes : transaction', () => {
 
                     chai.request(server)
                         .post('/transaction')
+                        .set('Content-Type', 'application/json')
                         .send({
                             date: transDate,
                             transaction_type: transType,
@@ -241,7 +247,7 @@ describe('routes : transaction', () => {
                                 'ballance',
                                 'created_on',
                                 'updated_on',
-                                'category',
+                                'category_id',
                             )
                             expect(res.body.payload.transaction.id).to.be.a('number')
                             expect(res.body.payload.transaction.date).to.eql(transDate)
@@ -256,6 +262,7 @@ describe('routes : transaction', () => {
 
                             chai.request(server)
                                 .get('/transaction')
+                                .set('Content-Type', 'application/json')
                                 .send()
                                 .end((err, res) => {
                                     should.not.exist(err)
@@ -283,6 +290,7 @@ describe('routes : transaction', () => {
 
             chai.request(server)
                 .put('/transaction/1')
+                .set('Content-Type', 'application/json')
                 .send({
                     date: transDate,
                     transaction_type: transType,
@@ -310,7 +318,7 @@ describe('routes : transaction', () => {
                         'ballance',
                         'created_on',
                         'updated_on',
-                        'category',
+                        'category_id',
                     )
                     expect(res.body.payload.transaction.id).to.eql(1)
                     expect(res.body.payload.transaction.date).to.eql(transDate)
@@ -331,6 +339,7 @@ describe('routes : transaction', () => {
         it('should delete a single transaction', done => {
             chai.request(server)
                 .get('/transaction/1')
+                .set('Content-Type', 'application/json')
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
@@ -348,7 +357,7 @@ describe('routes : transaction', () => {
                         'ballance',
                         'created_on',
                         'updated_on',
-                        'category',
+                        'category_id',
                     )
                     expect(res.body.payload.transaction.id).to.eql(1)
                     expect(res.body.payload.transaction.date).to.be.a('string')
@@ -359,10 +368,11 @@ describe('routes : transaction', () => {
                     expect(res.body.payload.transaction.ballance).to.be.a('number')
                     expect(res.body.payload.transaction.created_on).to.be.a('string')
                     expect(res.body.payload.transaction.updated_on).to.be.a('string')
-                    expect(res.body.payload.transaction.category).to.be.a('number')
+                    expect(res.body.payload.transaction.category_id).to.be.a('number')
 
                     chai.request(server)
                         .delete('/transaction/1')
+                        .set('Content-Type', 'application/json')
                         .end((err, res) => {
                             should.not.exist(err)
                             res.redirects.length.should.eql(0)
@@ -370,6 +380,7 @@ describe('routes : transaction', () => {
 
                             chai.request(server)
                                 .get('/transaction/1')
+                                .set('Content-Type', 'application/json')
                                 .end((err, res) => {
                                     should.not.exist(err)
                                     res.redirects.length.should.eql(0)

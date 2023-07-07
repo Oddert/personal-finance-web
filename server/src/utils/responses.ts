@@ -31,6 +31,7 @@ export const respondOk = (
 ): Response<response> => {
     return res
         .status(statusCode)
+        .header('Content-Type', 'application/json')
         .json({
             status: statusCode,
             payload,
@@ -65,6 +66,7 @@ export const respondCreated = (
 ): Response<response> => {
     return res
         .status(statusCode)
+        .header('Content-Type', 'application/json')
         .json({
             status: statusCode,
             payload,
@@ -101,6 +103,7 @@ export const respondMultipleChoices = (
 ): Response<response> => {
     return res
         .status(statusCode)
+        .header('Content-Type', 'application/json')
         .json({
             status: statusCode,
             payload,
@@ -133,9 +136,9 @@ export const respondBadRequest = (
     statusCode = 400,
     error: unknown = null,
 ): Response<response> => {
-    console.log(error)
     return res
         .status(statusCode)
+        .header('Content-Type', 'application/json')
         .json({
             status: statusCode,
             payload,
@@ -174,6 +177,7 @@ export const respondNotFound = (
 ): Response<response> => {
     return res
         .status(statusCode)
+        .header('Content-Type', 'application/json')
         .json({
             status: statusCode,
             payload,
@@ -208,6 +212,7 @@ export const respondServerError = (
 ): Response<response> => {
     return res
         .status(statusCode)
+        .header('Content-Type', 'application/json')
         .json({
             status: statusCode,
             payload,

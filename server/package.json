@@ -4,13 +4,18 @@
   "description": "Server component for Personal Finance project\u001b[1;5D\u001b[1;5D\u001b[1;5C\u001b[1;5C\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[1;5D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dthe Personal Finance\u001b[2~ project",
   "main": "app.js",
   "scripts": {
-    "test": "npm run build && mocha dist/test/**/*.test.js --exit",
+    "test": "rm -rf dist/ && npm run build && mocha dist/test/**/*.test.js --exit",
+    "test:watch": "mocha dist/test/**/*.test.js --watch",
+    "test:specific:watch": "mocha -- --watch",
     "test:coverage": "npm run build && nyc --reporter=text mocha dist/test/**/*.test.js --exit",
     "start": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
     "build": "tsc",
+    "build:watch": "tsc",
     "db:migrate": "cd dist && knex migrate:latest",
     "db:seed": "cd dist && knex seed:run",
-    "db:build": "npm run build && npm run db:migrate && npm run db:seed"
+    "db:build": "npm run build && npm run db:migrate && npm run db:seed",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": "Robyn Felicity Heather Veitch",
   "license": "ISC",

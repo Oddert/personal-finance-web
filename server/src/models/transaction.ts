@@ -15,7 +15,7 @@ export default class Transaction extends Model {
     updated_on: Date | string
     static created_on: Date | string
     static updated_on: Date | string
-    category?: 'integer'
+    category_id?: 'integer'
 
     static get tableName() {
         return 'transaction'
@@ -36,7 +36,7 @@ export default class Transaction extends Model {
         return {
             type: 'object',
             properties: {
-                id: { type: 'integer' },
+                id: { type: 'number' },
                 date: { type: 'string' },
                 transaction_type: { type: 'string', minLength: 1, maxLength: 5 },
                 description: { type: ['string', 'null'] },
@@ -45,7 +45,7 @@ export default class Transaction extends Model {
                 ballance: { type: 'number' },
                 created_on: { type: 'string' },
                 updated_on: { type: 'string' },
-                category: { type: 'integer' },
+                category_id: { type: 'number' },
             }
         }
     }
@@ -57,7 +57,7 @@ export default class Transaction extends Model {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Category,
                 join: {
-                    from: 'transaction.category',
+                    from: 'transaction.category_id',
                     to: 'category.id',
                 }
             }

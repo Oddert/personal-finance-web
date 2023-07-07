@@ -4,6 +4,7 @@ import { respondBadRequest, respondCreated, respondNotFound, respondOk } from '.
 
 import Category from '../models/Category'
 import Matcher from '../models/Matcher'
+import Transaction from '../models/Transaction'
 
 export const getCategories = async (req: Request, res: Response) => {
     try {
@@ -113,12 +114,15 @@ export const updateSingleCategory = async (req: Request, res: Response) => {
 
 export const deleteSingleCategory = async (req: Request, res: Response) => {
     try {
-        const category = await Category.query().findById(req.params.id)
-        category?.$relatedQuery('matchers').unrelate()
-        category?.$relatedQuery('transactions').unrelate()
-
+        const category = await Category.query().findById(Number(req.params.id))
+        await category?.$relatedQuery('matchers').unrelate()
+        // BUG: 'category' must be an integer?? -> relation un-mapping seems to work differently with HasMany vs ManyToMany
+        // await category?.$relatedQuery('transactions').unrelate()
+        await Transaction.query().where('category_id', Number(req.params.id)).unrelate()
+    
+        
         const deleted = await Category.query()
-            .deleteById(req.params.id)
+            .deleteById(Number(req.params.id))
 
         return respondOk(req, res, { deleted }, 'Delete operation successful.', 204)
     } catch(err: any) {

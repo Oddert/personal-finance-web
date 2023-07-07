@@ -39,7 +39,7 @@ export default class Matcher extends Model {
             type: 'object',
             required: ['match', 'match_type', 'case_sensitive'],
             properties: {
-                id: { type: 'integer' },
+                id: { type: 'number' },
                 match: { type: 'string', minLength: 1 },
                 match_type: { type: 'string', minLength: 1 },
                 case_sensitive: { type: 'boolean' },

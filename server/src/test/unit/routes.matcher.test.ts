@@ -36,6 +36,7 @@ describe('routes : matcher', () => {
         it('should retrieve all matchers', done => {
             chai.request(server)
                 .get('/matcher')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -68,6 +69,7 @@ describe('routes : matcher', () => {
         it('should retrieve a single matcher', done => {
             chai.request(server)
                 .get('/matcher/1')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -103,6 +105,7 @@ describe('routes : matcher', () => {
 
             chai.request(server)
                 .get('/matcher')
+                .set('Content-Type', 'application/json')
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
@@ -113,6 +116,7 @@ describe('routes : matcher', () => {
 
                     chai.request(server)
                         .post('/matcher')
+                        .set('Content-Type', 'application/json')
                         .send({
                             match: matchName,
                             match_type: 'any',
@@ -144,6 +148,7 @@ describe('routes : matcher', () => {
 
                             chai.request(server)
                                 .get('/matcher')
+                                .set('Content-Type', 'application/json')
                                 .send()
                                 .end((err, res) => {
                                     should.not.exist(err)
@@ -164,6 +169,7 @@ describe('routes : matcher', () => {
             const matchName = `TEST_MATCHER_UPDATED${date.toString()}`
             chai.request(server)
                 .put('/matcher/2')
+                .set('Content-Type', 'application/json')
                 .send({
                     id: 2,
                     match: matchName,
@@ -201,6 +207,7 @@ describe('routes : matcher', () => {
         it('should delete a single matcher', done => {
             chai.request(server)
                 .get('/matcher/1')
+                .set('Content-Type', 'application/json')
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
@@ -226,6 +233,7 @@ describe('routes : matcher', () => {
 
                     chai.request(server)
                         .delete('/matcher/1')
+                        .set('Content-Type', 'application/json')
                         .end((err, res) => {
                             should.not.exist(err)
                             res.redirects.length.should.eql(0)
@@ -233,6 +241,7 @@ describe('routes : matcher', () => {
 
                             chai.request(server)
                                 .get('/matcher/1')
+                                .set('Content-Type', 'application/json')
                                 .end((err, res) => {
                                     should.not.exist(err)
                                     res.redirects.length.should.eql(0)

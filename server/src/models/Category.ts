@@ -4,7 +4,7 @@ import knex from '../db/knex'
 Model.knex(knex)
 
 export default class Category extends Model {
-    id?: 'integer'
+    id?: number
     description?: string
     colour?: string
     static created_on: Date | string
@@ -36,7 +36,7 @@ export default class Category extends Model {
             type: 'object',
             required: ['colour', 'label', 'created_on', 'updated_on'],
             properties: {
-                id: { type: 'integer' },
+                id: { type: 'number' },
                 description: { type: ['string', 'null'] },
                 colour: { type: 'string', minLength: 3 },
                 created_on: { type: 'string' },
@@ -54,7 +54,7 @@ export default class Category extends Model {
                 modelClass: Transaction,
                 join: {
                     from: 'category.id',
-                    to: 'transaction.category',
+                    to: 'transaction.category_id',
                 }
             },
             matchers: {

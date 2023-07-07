@@ -3,7 +3,7 @@ import { checkSchema } from 'express-validator'
 
 import {
     createSingleTransaction,
-    getTransactions,
+    getTransaction,
     getSingleTransactions,
     updateSingleTransaction,
     deleteSingleTransaction,
@@ -19,7 +19,7 @@ import {
 const router = Router()
 
 router.route('/')
-    .get(getTransactions)
+    .get(getTransaction)
     .post(
         checkSchema(createTransactionSchema),
         createSingleTransaction,

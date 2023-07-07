@@ -13,7 +13,7 @@ exports.up = function(knex) {
         table.integer('ballance')
         table.date('created_on')
         table.date('updated_on')
-        table.integer('category').references('category.id')
+        table.integer('category_id').references('category.id')
     })
 }
 

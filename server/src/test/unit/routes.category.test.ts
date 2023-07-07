@@ -36,6 +36,7 @@ describe('routes : category', () => {
         it('should retrieve all categories', done => {
             chai.request(server)
                 .get('/category')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -68,6 +69,7 @@ describe('routes : category', () => {
         it('should retrieve all categories with matchers joined', done => {
             chai.request(server)
                 .get('/category?includeMatchers=true')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -105,6 +107,7 @@ describe('routes : category', () => {
         it('should retrieve a single category', done => {
             chai.request(server)
                 .get('/category/1')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -136,6 +139,7 @@ describe('routes : category', () => {
         it('should retrieve a category with matchers joined', done => {
             chai.request(server)
                 .get('/category/1?includeMatchers=true')
+                .set('Content-Type', 'application/json')
                 .send()
                 .end((err, res) => {
                     should.not.exist(err)
@@ -178,6 +182,7 @@ describe('routes : category', () => {
 
             chai.request(server)
                 .get('/category')
+                .set('Content-Type', 'application/json')
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
@@ -188,6 +193,7 @@ describe('routes : category', () => {
 
                     chai.request(server)
                         .post('/category')
+                        .set('Content-Type', 'application/json')
                         .send({
                             label: catLabel,
                             description: catDesc,
@@ -218,6 +224,7 @@ describe('routes : category', () => {
 
                             chai.request(server)
                                 .get('/category')
+                                .set('Content-Type', 'application/json')
                                 .send()
                                 .end((err, res) => {
                                     should.not.exist(err)
@@ -242,6 +249,7 @@ describe('routes : category', () => {
 
             chai.request(server)
                 .post('/category')
+                .set('Content-Type', 'application/json')
                 .send({
                     label: catLabel,
                     description: catDesc,
@@ -311,6 +319,7 @@ describe('routes : category', () => {
 
             chai.request(server)
                 .put('/category/2')
+                .set('Content-Type', 'application/json')
                 .send({
                     label: catLabel,
                     description: catDesc,
@@ -344,10 +353,11 @@ describe('routes : category', () => {
         })
     })
 
-    describe('DELETE /category/1', () => {
+    describe('DELETE /category/3', () => {
         it('should delete a single category', done => {
             chai.request(server)
-                .get('/category/1')
+                .get('/category/3')
+                .set('Content-Type', 'application/json')
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
@@ -372,14 +382,16 @@ describe('routes : category', () => {
                     expect(res.body.payload.category.updated_on).to.be.a('string')
 
                     chai.request(server)
-                        .delete('/category/1')
+                        .delete('/category/3')
+                        .set('Content-Type', 'application/json')
                         .end((err, res) => {
                             should.not.exist(err)
                             res.redirects.length.should.eql(0)
                             res.status.should.eql(204)
 
                             chai.request(server)
-                                .get('/category/1')
+                                .get('/category/3')
+                                .set('Content-Type', 'application/json')
                                 .end((err, res) => {
                                     should.not.exist(err)
                                     res.redirects.length.should.eql(0)

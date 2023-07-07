@@ -8,6 +8,7 @@ import root from './routes/root'
 import category from './routes/CategoryRoutes'
 import matcher from './routes/MatcherRoutes'
 import transaction from './routes/TransactionRoutes'
+import debug from './routes/DebutRoutes'
 
 dotenv.config()
 
@@ -30,6 +31,7 @@ app.use('/', root)
 app.use('/matcher', matcher)
 app.use('/category', category)
 app.use('/transaction', transaction)
+app.use('/debug', debug)
 
 const server = app.listen(
     PORT,
