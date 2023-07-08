@@ -37,7 +37,22 @@ export const createSingleTransaction = async (req: Request, res: Response) => {
         const date = new Date().toISOString()
         const body = { ...req.body, created_on: date, updated_on: date }
         
-        const transaction = req.body.matchers
+        // TODO: Research why the beforeInsert hooks are not working and replace: 
+        if (req.body.assignedCategory) {
+            body.assignedCategory.created_on = date
+            body.assignedCategory.updated_on = date
+            if (req.body.assignedCategory.matchers) {
+                body.assignedCategory.matchers = req.body.assignedCategory.matchers.map(
+                    (matcher: any) => ({
+                        ...matcher,
+                        created_on: date,
+                        updated_on: date,
+                    })
+                )
+            }
+        }
+
+        const transaction = req.body.assignedCategory
             ? await Transaction.query().insertGraphAndFetch(body)
             : await Transaction.query().insertAndFetch(body)
         

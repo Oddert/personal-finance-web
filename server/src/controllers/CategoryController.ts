@@ -120,7 +120,6 @@ export const deleteSingleCategory = async (req: Request, res: Response) => {
         // await category?.$relatedQuery('transactions').unrelate()
         await Transaction.query().where('category_id', Number(req.params.id)).unrelate()
     
-        
         const deleted = await Category.query()
             .deleteById(Number(req.params.id))
 

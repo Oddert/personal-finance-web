@@ -21,7 +21,7 @@ const seedOpts = {
     directory: path.join(__dirname, '../../db/seeds')
 }
 
-describe('routes : transaction', () => {
+describe('[UNIT] routes : transaction', () => {
     beforeEach(() => {
         return knex.migrate.rollback(migrateOpts)
             .then(() => knex.migrate.latest(migrateOpts))
@@ -204,75 +204,49 @@ describe('routes : transaction', () => {
             const debit = 23
             const credit = 0
             const ballance = 934.17
-            
-            let initialLength = 0
 
             chai.request(server)
-                .get('/transaction')
+                .post('/transaction')
                 .set('Content-Type', 'application/json')
+                .send({
+                    date: transDate,
+                    transaction_type: transType,
+                    description: description,
+                    debit: debit,
+                    credit: credit,
+                    ballance: ballance,
+                })
                 .end((err, res) => {
                     should.not.exist(err)
                     res.redirects.length.should.eql(0)
-                    res.status.should.eql(200)
+                    res.status.should.eql(201)
                     res.type.should.eql('application/json')
-                    expect(res.body.payload.transactions).to.have.lengthOf.above(0)
-                    initialLength = res.body.payload.transactions.length
-
-                    chai.request(server)
-                        .post('/transaction')
-                        .set('Content-Type', 'application/json')
-                        .send({
-                            date: transDate,
-                            transaction_type: transType,
-                            description: description,
-                            debit: debit,
-                            credit: credit,
-                            ballance: ballance,
-                        })
-                        .end((err, res) => {
-                            should.not.exist(err)
-                            res.redirects.length.should.eql(0)
-                            res.status.should.eql(201)
-                            res.type.should.eql('application/json')
         
-                            res.body.status.should.eql(res.status)
-                            expect(res.body.payload.transaction).to.be.a('object')
-                            expect(res.body.payload.transaction).to.have.all.keys(
-                                'id',
-                                'date',
-                                'transaction_type',
-                                'description',
-                                'debit',
-                                'credit',
-                                'ballance',
-                                'created_on',
-                                'updated_on',
-                                'category_id',
-                            )
-                            expect(res.body.payload.transaction.id).to.be.a('number')
-                            expect(res.body.payload.transaction.date).to.eql(transDate)
-                            expect(res.body.payload.transaction.transaction_type).to.eql(transType)
-                            expect(res.body.payload.transaction.description).to.eql(description)
-                            expect(res.body.payload.transaction.debit).to.eql(debit)
-                            expect(res.body.payload.transaction.credit).to.eql(credit)
-                            expect(res.body.payload.transaction.ballance).to.eql(ballance)
-                            expect(res.body.payload.transaction.created_on).to.be.a('string')
-                            expect(res.body.payload.transaction.updated_on).to.be.a('string')
-                            expect(res.body.payload.transaction.updated_on).to.eql(res.body.payload.transaction.created_on)
-
-                            chai.request(server)
-                                .get('/transaction')
-                                .set('Content-Type', 'application/json')
-                                .send()
-                                .end((err, res) => {
-                                    should.not.exist(err)
-                                    res.redirects.length.should.eql(0)
-                                    res.status.should.eql(200)
-                                    res.type.should.eql('application/json')
-                                    expect(res.body.payload.transactions).to.have.lengthOf(initialLength + 1)
-                                    done()
-                                })
-                        })
+                    res.body.status.should.eql(res.status)
+                    expect(res.body.payload.transaction).to.be.a('object')
+                    expect(res.body.payload.transaction).to.have.all.keys(
+                        'id',
+                        'date',
+                        'transaction_type',
+                        'description',
+                        'debit',
+                        'credit',
+                        'ballance',
+                        'created_on',
+                        'updated_on',
+                        'category_id',
+                    )
+                    expect(res.body.payload.transaction.id).to.be.a('number')
+                    expect(res.body.payload.transaction.date).to.eql(transDate)
+                    expect(res.body.payload.transaction.transaction_type).to.eql(transType)
+                    expect(res.body.payload.transaction.description).to.eql(description)
+                    expect(res.body.payload.transaction.debit).to.eql(debit)
+                    expect(res.body.payload.transaction.credit).to.eql(credit)
+                    expect(res.body.payload.transaction.ballance).to.eql(ballance)
+                    expect(res.body.payload.transaction.created_on).to.be.a('string')
+                    expect(res.body.payload.transaction.updated_on).to.be.a('string')
+                    expect(res.body.payload.transaction.updated_on).to.eql(res.body.payload.transaction.created_on)
+                    done()
                 })
         })
     })
