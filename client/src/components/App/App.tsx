@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { CssBaseline } from '@mui/material';
+
 import logo from './logo.svg';
+
 import './App.css';
 
 function App() {
@@ -13,6 +16,7 @@ function App() {
 
   return (
     <div className="App">
+      <CssBaseline enableColorScheme />  
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
