@@ -1,16 +1,33 @@
 import { Request, Response } from 'express'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import { respondBadRequest, respondCreated, respondNotFound, respondOk } from '../utils/responses'
 
 import Transaction from '../models/Transaction'
 
+dayjs.extend(customParseFormat)
+
 export const getTransaction = async (req: Request, res: Response) => {
     try {
+        const startDate = dayjs(
+            typeof req.query?.to === 'string' ? req.query.to : 0,
+            'DD/MM/YYYY',
+        ).valueOf()
+
+        const endDate = dayjs(
+            typeof req.query?.to === 'string' ? req.query.to : undefined,
+            'DD/MM/YYYY',
+        ).valueOf()
+
         if (req.query.includeCategory) {
-            const transactions = await Transaction.query().withGraphFetched('assignedCategory')
+            const transactions = await Transaction.query()
+                .whereBetween('date', [startDate, endDate])
+                .withGraphFetched('assignedCategory')
             return respondOk(req, res, { transactions })
         }
-        const transactions = await Transaction.query()
+
+        const transactions = await Transaction.query().whereBetween('date', [startDate, endDate])
         return respondOk(req, res, { transactions })
     } catch(err: any) {
         return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)

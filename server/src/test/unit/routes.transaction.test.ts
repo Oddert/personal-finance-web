@@ -59,7 +59,7 @@ describe('[UNIT] routes : transaction', () => {
                         'category_id',
                     )
                     expect(res.body.payload.transactions[0].id).to.be.a('number')
-                    expect(res.body.payload.transactions[0].date).to.be.a('string')
+                    expect(res.body.payload.transactions[0].date).to.be.a('number')
                     expect(res.body.payload.transactions[0].transaction_type).to.be.a('string')
                     expect(res.body.payload.transactions[0].description).to.be.a('string')
                     expect(res.body.payload.transactions[0].debit).to.be.a('number')
@@ -140,7 +140,7 @@ describe('[UNIT] routes : transaction', () => {
                         'category_id',
                     )
                     expect(res.body.payload.transaction.id).to.eql(1)
-                    expect(res.body.payload.transaction.date).to.be.a('string')
+                    expect(res.body.payload.transaction.date).to.be.a('number')
                     expect(res.body.payload.transaction.transaction_type).to.be.a('string')
                     expect(res.body.payload.transaction.description).to.be.a('string')
                     expect(res.body.payload.transaction.debit).to.be.a('number')
@@ -334,7 +334,7 @@ describe('[UNIT] routes : transaction', () => {
                         'category_id',
                     )
                     expect(res.body.payload.transaction.id).to.eql(1)
-                    expect(res.body.payload.transaction.date).to.be.a('string')
+                    expect(res.body.payload.transaction.date).to.be.a('number')
                     expect(res.body.payload.transaction.transaction_type).to.be.a('string')
                     expect(res.body.payload.transaction.description).to.be.a('string')
                     expect(res.body.payload.transaction.debit).to.be.a('number')
