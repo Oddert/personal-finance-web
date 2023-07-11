@@ -1,6 +1,9 @@
-import React from 'react';
+import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider as ReduxProvider } from 'react-redux'
 import { CssBaseline, ThemeProvider } from '@mui/material'
+
+import store from './redux/constants/store';
 
 import theme from './theme/'
 
@@ -16,10 +19,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-            <CssBaseline enableColorScheme />
-            <App />
-        </ThemeProvider>
+        <ReduxProvider store={store}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline enableColorScheme />
+                <App />
+            </ThemeProvider>
+        </ReduxProvider>
     </React.StrictMode>
 )
 

@@ -5,6 +5,7 @@ import ReceiptLong from '@mui/icons-material/ReceiptLong'
 import Layout from '../components/Layout'
 
 import Home from '../pages/Home'
+import Transactions from '../pages/Transactions/Transactions'
 
 export const ROUTES = Object.freeze({
     HOME: '/',
@@ -28,7 +29,7 @@ const router = createBrowserRouter([
         path: ROUTES.TRANSACTIONS,
         element: (
             <Layout>
-                <Home />
+                <Transactions />
             </Layout>
         ),
     },
