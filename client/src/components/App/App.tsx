@@ -1,38 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { CssBaseline } from '@mui/material';
+import { RouterProvider } from 'react-router-dom'
 
-import logo from './logo.svg';
+import router from '../../constants/routerConstants'
+
+import Header from '../Header/';
 
 import './App.css';
 
-function App() {
-  const [msg, setMsg] = useState(null)
+const App = () => {
+    const [msg, setMsg] = useState(null)
 
-  useEffect(() => {
+    useEffect(() => {
     fetch('http://localhost:8080/')
-      .then(res => res.json())
-      .then(res => setMsg(res))
-  }, [])
+        .then(res => res.json())
+        .then(res => setMsg(res))
+    }, [])
 
-  return (
-    <div className="App">
-      <CssBaseline enableColorScheme />  
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React {msg}
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className='App'>
+            <Header />
+            {/* Possibly move css baseline back? */}
+            <RouterProvider router={router} />
+            {msg}
+        </div>
+    );
 }
 
 export default App;
