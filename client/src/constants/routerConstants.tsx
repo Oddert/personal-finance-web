@@ -2,6 +2,8 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import ReceiptLong from '@mui/icons-material/ReceiptLong'
 
+import Layout from '../components/Layout'
+
 import Home from '../pages/Home'
 
 export const ROUTES = Object.freeze({
@@ -16,7 +18,19 @@ export const ROUTES = Object.freeze({
 const router = createBrowserRouter([
     {
         path: ROUTES.HOME,
-        element: <Home />,
+        element: (
+            <Layout>
+                <Home />
+            </Layout>
+        ),
+    },
+    {
+        path: ROUTES.TRANSACTIONS,
+        element: (
+            <Layout>
+                <Home />
+            </Layout>
+        ),
     },
 ])
 

@@ -3,8 +3,6 @@ import { RouterProvider } from 'react-router-dom'
 
 import router from '../../constants/routerConstants'
 
-import Header from '../Header/';
-
 import './App.css';
 
 const App = () => {
@@ -18,7 +16,6 @@ const App = () => {
 
     return (
         <div className='App'>
-            <Header />
             {/* Possibly move css baseline back? */}
             <RouterProvider router={router} />
             {msg}

@@ -1,16 +1,14 @@
 import React from 'react'
-import { Router, Routes, Route } from 'react-router'
 
-const Home = () => (
-    <div>Hello world</div>
-)
+import { Box } from '@mui/material'
 
-const Layout = () => (
-    <Router>
-        <Routes>
-            <Route Component={Home} index path='/' />
-        </Routes>
-    </Router>
+import Header from '../Header/Header'
+
+const Layout = ({ children }) => (
+    <Box>
+        <Header />
+        {children}
+    </Box>
 )
 
 export default Layout

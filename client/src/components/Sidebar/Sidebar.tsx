@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+
 import {
     Drawer,
     IconButton,
@@ -41,29 +43,31 @@ const Sidebar: React.FC<Props> = ({ handleDrawerClose, open }) => {
                 </IconButton>
             </DrawerHeader>
             <List>
-                {navigation.map(({ label, Icon }, index) => (
+                {navigation.map(({ label, Icon, location }, index) => (
                     <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                                justifyContent: open ? 'initial' : 'center',
-                                px: 2.5,
-                            }}
-                            onClick={handleDrawerClose}
-                        >
-                            <ListItemIcon
+                        <Link to={location}  >
+                            <ListItemButton
                                 sx={{
-                                    minWidth: 0,
-                                    mr: open ? 3 : 'auto',
-                                    justifyContent: 'center',
+                                    minHeight: 48,
+                                    justifyContent: open ? 'initial' : 'center',
+                                    px: 2.5,
                                 }}
+                                onClick={handleDrawerClose}
                             >
-                                <Icon />
-                            </ListItemIcon>
-                            {open && (
-                                <ListItemText primary={label} />
-                            )}
-                        </ListItemButton>
+                                <ListItemIcon
+                                    sx={{
+                                        minWidth: 0,
+                                        mr: open ? 3 : 'auto',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <Icon />
+                                </ListItemIcon>
+                                {open && (
+                                    <ListItemText primary={label} />
+                                )}
+                            </ListItemButton>
+                        </Link>
                     </ListItem>
                 ))}
             </List>
