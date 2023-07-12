@@ -10,15 +10,13 @@ dayjs.extend(customParseFormat)
 
 export const getTransaction = async (req: Request, res: Response) => {
     try {
-        const startDate = dayjs(
-            typeof req.query?.to === 'string' ? req.query.to : 0,
-            'DD/MM/YYYY',
-        ).valueOf()
+        const startDate = typeof req.query?.from === 'string'
+            ? dayjs(req.query.from, 'DD/MM/YYYY').valueOf()
+            : dayjs(0).valueOf()
 
-        const endDate = dayjs(
-            typeof req.query?.to === 'string' ? req.query.to : undefined,
-            'DD/MM/YYYY',
-        ).valueOf()
+        const endDate = typeof req.query?.to === 'string'
+            ? dayjs(req.query.to, 'DD/MM/YYYY').valueOf()
+            : dayjs(undefined).valueOf()
 
         if (req.query.includeCategory) {
             const transactions = await Transaction.query()

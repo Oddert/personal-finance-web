@@ -1,7 +1,6 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider as ReduxProvider } from 'react-redux'
-import { CssBaseline, ThemeProvider } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 
 import store from './redux/constants/store';
 
@@ -18,15 +17,15 @@ const root = ReactDOM.createRoot(
 )
 
 root.render(
-    <React.StrictMode>
-        <ReduxProvider store={store}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline enableColorScheme />
-                <App />
-            </ThemeProvider>
-        </ReduxProvider>
-    </React.StrictMode>
+    <ReduxProvider store={store}>
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>
+    </ReduxProvider>
 )
+
+// <React.StrictMode>
+// </React.StrictMode>
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
