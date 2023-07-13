@@ -10,18 +10,21 @@ import { Transaction } from '../../types/Transaction'
 import { writeTransactions } from '../slices/transactionsSlice'
 
 export default function* transactionsWriteSaga () {
-    try {        
-        const transactions: ResponseData<{ transactions: Transaction[]}> =
+    try {
+        // check if categories fetched
+        // if not, fetch and write
+        // map categories to transactions
+        const transactionsResponse: ResponseData<{ transactions: Transaction[]}> =
             yield call(routes.getAllTransactions)
 
-        console.log(transactions)
-        if (!transactions?.payload?.transactions) {
+        if (!transactionsResponse?.payload?.transactions) {
             return
         }
 
-        const orderedTransactions = orderTransactions(transactions?.payload?.transactions)
-        console.log(orderedTransactions)
-        yield put(writeTransactions(orderedTransactions))
+        const orderedTransactions = orderTransactions(transactionsResponse?.payload?.transactions)
+        const transactions = transactionsResponse?.payload?.transactions
+
+        yield put(writeTransactions({ transactions, orderedTransactions }))
     } catch(error) {
         console.error(error)
     }

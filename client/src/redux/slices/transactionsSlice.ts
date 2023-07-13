@@ -46,9 +46,13 @@ export const transactionSlice = createSlice({
         requestTransactions: (state) => {
             state.loaded = false
         },
-        writeTransactions: (state, action: PayloadAction<TransactionState['orderedData']>) => {
+        writeTransactions: (state, action: PayloadAction<{
+            transactions: TransactionState['response'],
+            orderedTransactions: TransactionState['orderedData']
+        }>) => {
             state.refreshed = new Date().toLocaleString(LOCALE)
-            state.orderedData = action.payload
+            state.orderedData = action.payload.orderedTransactions
+            state.response = action.payload.transactions
         },
     }
 })
