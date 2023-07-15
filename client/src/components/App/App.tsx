@@ -11,6 +11,7 @@ import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import { requestTransactions } from '../../redux/slices/transactionsSlice'
 
 import './App.css';
+import { LOCALE } from '../../constants/appConstants';
 
 const App = () => {
     const dispatch = useAppDispatch()
@@ -25,8 +26,11 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-        console.log(new Date())
-        dispatch(requestTransactions())
+        const date = new Date()
+        date.setMonth(0)
+        date.setDate(1)
+        const startDate = date.toLocaleDateString(LOCALE)
+        dispatch(requestTransactions({ startDate }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

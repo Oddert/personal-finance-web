@@ -5,6 +5,9 @@ const routes = {
         const from = startDate ? `?from=${startDate}` : ''
         const to = endDate ? `&to=${endDate}` : ''
         return await request.get(`/transaction${from}${to}`)
+    },
+    getAllCategories: async () => {
+        return await request.get(`/category`)
     }
 }
 
