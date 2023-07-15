@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { CssBaseline } from '@mui/material'
 
 import { Box } from '@mui/material'
@@ -11,26 +13,17 @@ import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import { requestTransactions } from '../../redux/slices/transactionsSlice'
 
 import './App.css';
-import { LOCALE } from '../../constants/appConstants';
+
+dayjs.extend(localizedFormat)
 
 const App = () => {
     const dispatch = useAppDispatch()
 
-    // const [msg, setMsg] = useState(null)
-
     useEffect(() => {
-        fetch('http://localhost:8080/')
-            .then(res => res.json())
-            // .then(res => setMsg(res))
-            .then(res => console.log(res))
-    }, [])
-
-    useEffect(() => {
-        const date = new Date()
-        date.setMonth(0)
-        date.setDate(1)
-        const startDate = date.toLocaleDateString(LOCALE)
-        dispatch(requestTransactions({ startDate }))
+        const date = dayjs().set('month', 0).set('date', 1)
+        const startDate = date.format('YYYY-MM-DD')
+        const endDate = dayjs().format('YYYY-MM-DD')
+        dispatch(requestTransactions({ startDate, endDate }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -38,7 +31,6 @@ const App = () => {
         <Box className='App'>
             <CssBaseline enableColorScheme />
             <RouterProvider router={router} />
-            {/* {msg} */}
         </Box>
     );
 }

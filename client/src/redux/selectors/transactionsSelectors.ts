@@ -8,3 +8,13 @@ export const getTransactionsResponse = createSelector(
     getTransactionsState,
     (transactionsState) => transactionsState.response,
 )
+
+export const getTransactionsStartDate = createSelector(
+    getTransactionsState,
+    (transactionsState) => transactionsState.startDate
+)
+
+export const getTransactionsEndDate = createSelector(
+    getTransactionsState,
+    (transactionsState) => transactionsState.endDate
+)

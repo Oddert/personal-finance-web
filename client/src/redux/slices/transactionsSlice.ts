@@ -6,7 +6,7 @@ import { LOCALE } from '../../constants/appConstants'
 import { Transaction } from '../../types/Transaction'
 
 export interface TransactionState {
-    endDate: string|null
+    endDate: number|null
     endDateReadable: string|null
     loaded: boolean
     orderedData: {
@@ -19,7 +19,7 @@ export interface TransactionState {
             [category: number]: Transaction[]
         }
     }
-    startDate: string|null
+    startDate: number|null
     startDateReadable: string|null
     refreshed: string|null
     response: Transaction[]
@@ -47,13 +47,27 @@ export const transactionSlice = createSlice({
             startDate?: string
             endDate?: string
         }|null>) => {
+            console.log('[transactionSLice>requestTransactions] payload', action?.payload)
             state.loaded = false
             if (action?.payload?.startDate) {
-                state.startDate = action.payload.startDate
+                state.startDate = new Date(action.payload.startDate).getTime()
+                state.startDateReadable = action.payload.startDate
             }
             if (action?.payload?.endDate) {
-                state.endDate = action.payload.endDate
+                console.log('1')
+                state.endDate = new Date(action.payload.endDate).getTime()
+                console.log('2', state.endDate)
+                state.endDateReadable = action.payload.endDate
+                console.log('3', state.endDateReadable)
             }
+        },
+        setStartDate: (state, action: PayloadAction<{ startDate: string }>) => {
+            state.startDate = new Date(action.payload.startDate).getTime()
+            state.startDateReadable = action.payload.startDate
+        },
+        setEndDate: (state, action: PayloadAction<{ endDate: string }>) => {
+            state.endDate = new Date(action.payload.endDate).getTime()
+            state.endDateReadable = action.payload.endDate
         },
         writeTransactions: (state, action: PayloadAction<{
             transactions: TransactionState['response'],
@@ -68,6 +82,8 @@ export const transactionSlice = createSlice({
 
 export const {
     requestTransactions,
+    setEndDate,
+    setStartDate,
     writeTransactions,
 } = transactionSlice.actions
 
