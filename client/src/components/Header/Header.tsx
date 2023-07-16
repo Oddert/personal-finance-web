@@ -23,13 +23,14 @@ const Header = () => {
                 position: 'sticky',
                 top: 0,
                 left: 0,
+                zIndex: (theme) => (theme.zIndex.drawer || 0) + 2
             }}
         >
             <AppBar
                 sx={{
                     position: 'sticky',
                     top: 0,
-                    zIndex: (theme) => theme.zIndex.drawer + 1
+                    zIndex: (theme) => (theme.zIndex.drawer || 0) + 2
                 }}
             >
                 <Toolbar>

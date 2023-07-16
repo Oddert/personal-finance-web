@@ -112,3 +112,51 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         accessorKey: 'category_id',
     }
 ]
+
+export const getRangeKeyEncoding = (year: string, month: string) => {
+    return `${month + 1}-${year}`
+}
+
+const getMonthFromRangeKey = (rangeKey: string) => {
+    const dateComponents: string[] = rangeKey.split('-')
+    const months: { [month: string]: string } = {
+        '01': 'Jan',
+        '02': 'Feb',
+        '03': 'Mar',
+        '04': 'Apr',
+        '05': 'May',
+        '06': 'Jun',
+        '07': 'Jul',
+        '08': 'Aug',
+        '09': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec',
+    }
+    return [months[dateComponents[0]], dateComponents[1]]
+}
+
+export const generateMarks = (keysArray: string[]) => {
+    let markStepSize = 1
+    if (keysArray.length > 47) {
+        markStepSize = 6
+    } else if (keysArray.length > 23) {
+        markStepSize = 3
+    } else if (keysArray.length > 14) {
+        markStepSize = 2
+    }
+    
+    const _marks: { value: number, label: string }[] = []
+
+    for (let i = 0; i < keysArray.length; i+= markStepSize) {
+        const [monthLabel, yearLabel] = getMonthFromRangeKey(keysArray[i])
+        console.log(monthLabel, yearLabel)
+        _marks.push({
+            value: i,
+            label: (i === 0 || monthLabel === 'Jan')
+                ? `${monthLabel} ${yearLabel}`
+                : monthLabel
+        })
+    }
+    return _marks
+}
