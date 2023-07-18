@@ -63,8 +63,6 @@ const RangeControls = () => {
 
         dispatch(setRangeKeys(testKeys, 8, testMarks))
         dispatch(updateValue([0, 8]))
-
-        console.log(testMarks)
     }, [orderedTransactions, dispatch])
 
     const handleChange = (

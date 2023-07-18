@@ -47,18 +47,14 @@ export const transactionSlice = createSlice({
             startDate?: string
             endDate?: string
         }|null>) => {
-            console.log('[transactionSLice>requestTransactions] payload', action?.payload)
             state.loaded = false
             if (action?.payload?.startDate) {
                 state.startDate = new Date(action.payload.startDate).getTime()
                 state.startDateReadable = action.payload.startDate
             }
             if (action?.payload?.endDate) {
-                console.log('1')
                 state.endDate = new Date(action.payload.endDate).getTime()
-                console.log('2', state.endDate)
                 state.endDateReadable = action.payload.endDate
-                console.log('3', state.endDateReadable)
             }
         },
         setStartDate: (state, action: PayloadAction<{ startDate: string }>) => {

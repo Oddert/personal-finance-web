@@ -16,3 +16,44 @@ export const createReadableNumber = (value: unknown, fallbackValue?: number) => 
    }
    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+/**
+ * Converts a CSV file string to an array of JSON compatible objects.
+ * @param file The response from the file reader.
+ * @returns Array of each row from the CSV converted to objects.
+ */
+export const readCsv = (file: unknown) => {
+    const returnValue: {
+        values: { [key: string]: string }[],
+        headers: string[],
+        valueLength: number,
+    } = {
+        values: [],
+        headers: [],
+        valueLength: 0,
+    }
+
+    if (typeof file === 'string') {
+        const components = file.split('\n')
+        components.pop()
+        if (components.length) {
+            const headers = components[0].split(',')
+            const data = components.slice(1)
+            const converted = data.map(row => {
+                const rowSplit = row.split(',')
+                const rowConverted = headers.reduce(
+                    (acc: { [key: string]: string }, header, idx) => {
+                        acc[header] = rowSplit[idx]
+                        return acc
+                    },
+                    {},
+                )
+                return rowConverted
+            })
+            returnValue.headers = headers
+            returnValue.values = converted
+            returnValue.valueLength = converted.length
+            return returnValue
+        }
+    }
+}

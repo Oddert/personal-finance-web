@@ -146,17 +146,16 @@ export const generateMarks = (keysArray: string[]) => {
         markStepSize = 2
     }
     
-    const _marks: { value: number, label: string }[] = []
+    const marks: { value: number, label: string }[] = []
 
     for (let i = 0; i < keysArray.length; i+= markStepSize) {
         const [monthLabel, yearLabel] = getMonthFromRangeKey(keysArray[i])
-        console.log(monthLabel, yearLabel)
-        _marks.push({
+        marks.push({
             value: i,
             label: (i === 0 || monthLabel === 'Jan')
                 ? `${monthLabel} ${yearLabel}`
                 : monthLabel
         })
     }
-    return _marks
+    return marks
 }
