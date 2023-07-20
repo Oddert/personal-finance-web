@@ -8,7 +8,10 @@ const routes = {
     },
     getAllCategories: async () => {
         return await request.get(`/category`)
-    }
+    },
+    getAllCategoriesWithMatchers: async () => {
+        return await request.get(`/category?includeMatchers=true`)
+    },
 }
 
 export default routes

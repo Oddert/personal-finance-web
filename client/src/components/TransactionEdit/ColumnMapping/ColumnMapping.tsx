@@ -21,6 +21,7 @@ import {
     setColumnMap,
     TransactionEditContext,
 } from '../../../contexts/transactionEditContext'
+import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../constants/appConstants'
 
 const ColumnMapping = () => {
     const [open, setOpen] = useState(false)
@@ -50,6 +51,10 @@ const ColumnMapping = () => {
     const handleClickSave = useCallback(() => {
         dispatch(setColumnMap(localColumnMap))
         setOpen(false)
+        localStorage.setItem(
+            PERSONAL_FINANCE_CSV_MAPPING,
+            JSON.stringify(localColumnMap),
+        )
     }, [dispatch, localColumnMap])
 
     return (
@@ -80,7 +85,7 @@ const ColumnMapping = () => {
                     >
                         Choose which columns from the uploaded file map onto which headers used by the application.
                     </Typography>
-                    {defaultColumns.map(column => (
+                    {defaultColumns().map(column => (
                         <Fragment key={column.accessorKey}>
                             <Typography component='label' htmlFor={`col-${column.header}`}>
                                 {column.header}

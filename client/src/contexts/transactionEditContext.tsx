@@ -3,14 +3,18 @@ import { createContext, Dispatch } from 'react';
 // import type { Transaction } from '../types/Transaction'
 import { PayloadAction } from '@reduxjs/toolkit';
 
+import type { Category } from '../types/Category'
+import { MenuItem, Select } from '@mui/material';
+
 interface TransactionEditState {
     columnMap: { [key: string]: string }
-    transactions: { [key: string]: string }[]
+    transactions: { [key: string]: string|number }[]
     headers: string[]
 }
 
 const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
+    updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
     writeTransactions: 'writeTransactions',
 }
@@ -28,7 +32,10 @@ export const transactionEditInitialState: TransactionEditState = {
     transactions: [],
 }
 
-export const defaultColumns = [
+export const defaultColumns = (
+    categories?: Category[],
+    callback?: (idx: number, assignedCategory: number) => void,
+) => [
     {
         header: 'Date',
         accessorKey: 'date',
@@ -48,6 +55,36 @@ export const defaultColumns = [
     {
         header: 'Ballance',
         accessorKey: 'ballance',
+    },
+    {
+        header: 'Category',
+        accessorKey: 'assignedCategory',
+        cell: (cell: any) => {
+            const value = cell.renderValue() || 'unset'
+            const marginTopBottom = 4
+            return (
+                <Select
+                    value={value}
+                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%' }}
+                    inputProps={{
+                        style: { paddingTop: marginTopBottom, paddingBottom: marginTopBottom },
+                    }}
+                >
+                    <MenuItem value={'unset'}>
+                        - no category -
+                    </MenuItem>
+                    {categories?.map((category, idx) => (
+                        <MenuItem
+                            key={category.id}
+                            onClick={callback ? () => callback(cell.row.index, category.id) : () => {}}
+                            value={category.id}
+                        >
+                            {category.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+            )
+        }
     },
 ]
 
@@ -69,6 +106,19 @@ export const transactionEditReducer = (
                 ...state,
                 columnMap: action?.payload?.columnMap,
             }
+        case TransactionEditActionTypes.updateCategory:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction, idx) => {
+                    if (idx === action?.payload?.idx) {
+                        return {
+                            ...transaction,
+                            assignedCategory: action.payload.assignedCategory
+                        }
+                    }
+                    return transaction
+                })
+            }
         case TransactionEditActionTypes.writeHeaders:
             return {
                 ...state,
@@ -89,6 +139,14 @@ export const setColumnMap = (
 ) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap }
+})
+
+export const updateCategory = (
+    idx: number,
+    assignedCategory: number,
+) => ({
+    type: TransactionEditActionTypes.updateCategory,
+    payload: { idx, assignedCategory }
 })
 
 export const writeHeaders = (

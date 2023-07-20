@@ -1,3 +1,5 @@
+import { Matcher } from './Matcher'
+
 export interface Category {
     id: number
     label: string
@@ -5,4 +7,5 @@ export interface Category {
     colour: string
     created_on: string
     updated_on: string
+    matchers: Matcher[]
 }

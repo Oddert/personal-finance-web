@@ -11,7 +11,7 @@ import { writeCategories } from '../slices/categorySlice'
 export default function* categoryWriteSaga() {
     try {
         const categoriesResponse: ResponseData<{ categories: Category[] }> =
-            yield call(routes.getAllCategories)
+            yield call(routes.getAllCategoriesWithMatchers)
 
         const categories = categoriesResponse?.payload?.categories || []
         
