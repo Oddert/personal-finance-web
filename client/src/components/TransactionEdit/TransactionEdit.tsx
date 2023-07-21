@@ -3,6 +3,7 @@ import { Container, Modal, Paper, Typography } from '@mui/material'
 import type { FC } from 'react'
 
 import ColumnMapping from './ColumnMapping/'
+import Submit from './Submit/'
 import Table from './Table/'
 
 interface Props {
@@ -23,6 +24,7 @@ const TransactionEdit: FC<Props> = ({ open, onClose }) => {
                         Bulk edit transactions
                     </Typography>
                     <ColumnMapping />
+                    <Submit />
                     <Table />
                 </Paper>
             </Container>

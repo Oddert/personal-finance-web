@@ -6,6 +6,9 @@ const routes = {
         const to = endDate ? `&to=${endDate}` : ''
         return await request.get(`/transaction${from}${to}`)
     },
+    createManyTransactions: async (transactions: any) => {
+        return await request.post(`/transaction/create-many`, { transactions })
+    },
     getAllCategories: async () => {
         return await request.get(`/category`)
     },

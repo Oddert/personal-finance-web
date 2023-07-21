@@ -1,10 +1,9 @@
 import { createContext, Dispatch } from 'react';
-
-// import type { Transaction } from '../types/Transaction'
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import type { Category } from '../types/Category'
 import { MenuItem, Select } from '@mui/material';
+
+import type { Category } from '../types/Category'
 
 interface TransactionEditState {
     columnMap: { [key: string]: string }

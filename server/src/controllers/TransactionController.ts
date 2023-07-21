@@ -107,12 +107,19 @@ export const deleteSingleTransaction = async (req: Request, res: Response) => {
 export const createManyTransactions = async (req: Request, res: Response) => {
     try {
         const date = new Date().toISOString()
-        const body = { ...req.body, created_on: date, updated_on: date }
+        const createdTransactions = []
 
-        const transaction = await Transaction.query().insertAndFetch(body)
+        console.log(req.body)
+        for (const transaction of req.body.transactions) {
+            const body = { ...transaction, created_on: date, updated_on: date }
+    
+            const createdTransaction = await Transaction.query().insertAndFetch(body)
+            createdTransactions.push(createdTransaction)
+        }
 
-        return respondCreated(req, res, { transaction }, 'Matchers created successfully', 204)
+        return respondCreated(req, res, { createdTransactions }, 'Transactions created successfully', 204)
     } catch(err: any) {
+        console.log(err)
         return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
