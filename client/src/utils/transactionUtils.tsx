@@ -113,11 +113,28 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     }
 ]
 
+/**
+ * Creates a string format for month-year combinations.
+ *
+ * Using this allows a 'single source of truth' should the format ever need to change.
+ * @param year The year code.
+ * @param month The month number.
+ * @returns The encoded string.
+ */
 export const getRangeKeyEncoding = (year: string, month: string) => {
-    return `${month + 1}-${year}`
+    const adjustedMonth = Number(month) + 1
+    const stringMonth = adjustedMonth >= 10 ? adjustedMonth : `0${adjustedMonth}`
+    return `${stringMonth}-${year}`
 }
 
-const getMonthFromRangeKey = (rangeKey: string) => {
+/**
+ * Splits a date encoded with {@link getRangeKeyEncoding} into a readable month and year.
+ *
+ * Returns the month and year pair with the month converted to three character notation (e.g. Jan, Feb, Mar...)
+ * @param rangeKey A rangeKey string to be interpreted.
+ * @returns The month converted and the year.
+ */
+const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
     const dateComponents: string[] = rangeKey.split('-')
     const months: { [month: string]: string } = {
         '01': 'Jan',
@@ -136,6 +153,13 @@ const getMonthFromRangeKey = (rangeKey: string) => {
     return [months[dateComponents[0]], dateComponents[1]]
 }
 
+/**
+ * Converts a list of range-key-encoded date strings to values for the range selector.
+ *
+ * The values are index based starting at 0, the labels are three-character month strings except at year boundaries where the year is also included.
+ * @param keysArray List of date strings encoded with {@link getRangeKeyEncoding}
+ * @returns List of values for the Range component.
+ */
 export const generateMarks = (keysArray: string[]) => {
     let markStepSize = 1
     if (keysArray.length > 47) {

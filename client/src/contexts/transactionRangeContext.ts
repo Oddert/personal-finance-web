@@ -28,6 +28,7 @@ export const transactionRangeReducer = (
 ) => {
     switch(action.type) {
         case TransactionRangeActionTypes.setRangeKeys:
+            console.log('hello its some reducer here', action.payload)
             return {
                 ...state,
                 rangeKeys: action?.payload?.rangeKeys,

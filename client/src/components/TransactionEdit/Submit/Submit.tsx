@@ -1,6 +1,6 @@
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useState } from 'react'
 
-import { Button } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
 
 import { TransactionEditContext } from '../../../contexts/transactionEditContext'
 
@@ -11,6 +11,8 @@ import routes from '../../../services/routes'
 // TODO: potentially invert the column map
 const Submit = () => {
     const { state: { transactions, columnMap } } = useContext(TransactionEditContext)
+
+    const [loading, setLoading] = useState(false)
 
     const handleClick = useCallback(() => {
 
@@ -41,15 +43,17 @@ const Submit = () => {
                 }, {}))
 
         const request = async () => {
-            const response = await routes.createManyTransactions(transactionsWithValidKeys)
-            console.log(response)
+            await routes.createManyTransactions(transactionsWithValidKeys)
+            setLoading(false)
         }
+        setLoading(true)
         request()
     }, [columnMap, transactions])
 
     return (
         <Button
             color='primary'
+            disabled={loading}
             onClick={handleClick}
             variant='contained'
             sx={{
@@ -57,7 +61,7 @@ const Submit = () => {
                 display: 'block',
             }}
         >
-            Submit
+            {loading ? <CircularProgress /> : 'Submit'}
         </Button>
     )
 }

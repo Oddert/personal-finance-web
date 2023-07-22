@@ -31,38 +31,25 @@ const RangeControls = () => {
             })
         })
 
-        const rangeKeys = rangeKeysArr.reduce(
-            (acc: { keys: TransactionRangeState['rangeKeys'], length: number }, key, idx) => {
-                acc.keys[idx] = key
+        const rangeKeys = rangeKeysArr.reduce((
+            acc: { keyList: TransactionRangeState['rangeKeys'], length: number },
+            key,
+            idx
+        ) => {
+                acc.keyList[idx] = key
                 acc.length++
                 return acc
             },
             {
-                keys: {},
-                length: 0,
+                keyList: {},
+                length: -1,
             },
         )
 
-        const customMarks = generateMarks(rangeKeysArr)
+        const customMarks = generateMarks(Object.values(rangeKeys.keyList))
 
-        console.log(rangeKeys, customMarks)
-
-        const testKeys = {
-            0: '11-2022',
-            1: '12-2022',
-            2: '01-2023',
-            3: '02-2023',
-            4: '03-2023',
-            5: '04-2023',
-            6: '05-2023',
-            7: '06-2023',
-            8: '07-2023',
-        }
-
-        const testMarks = generateMarks(Object.values(testKeys))
-
-        dispatch(setRangeKeys(testKeys, 8, testMarks))
-        dispatch(updateValue([0, 8]))
+        dispatch(setRangeKeys(rangeKeys.keyList, rangeKeys.length, customMarks))
+        dispatch(updateValue([0, rangeKeys.length]))
     }, [orderedTransactions, dispatch])
 
     const handleChange = (
@@ -100,7 +87,10 @@ const RangeControls = () => {
                 onChange={handleChange}
                 valueLabelDisplay='auto'
                 getAriaValueText={valuetext}
-                valueLabelFormat={(value) => rangeKeys[value]}
+                valueLabelFormat={(value) => {
+                    console.log(value, rangeKeys[value])
+                    return rangeKeys[value]
+                }}
                 min={0}
                 max={rangeLength}
                 step={1}

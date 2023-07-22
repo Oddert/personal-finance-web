@@ -118,7 +118,6 @@ export const createManyTransactions = async (req: Request, res: Response) => {
             const createdTransaction = await Transaction.query().insertAndFetch(body)
             createdTransactions.push(createdTransaction)
         }
-        console.log(createdTransactions)
 
         return respondCreated(req, res, { createdTransactions }, 'Transactions created successfully')
     } catch(err: any) {
