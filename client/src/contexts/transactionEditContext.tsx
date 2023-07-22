@@ -60,13 +60,13 @@ export const defaultColumns = (
         accessorKey: 'assignedCategory',
         cell: (cell: any) => {
             const value = cell.renderValue() || 'unset'
-            const marginTopBottom = 4
+            const marginTopBottom = '4px'
             return (
                 <Select
                     value={value}
-                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%' }}
+                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%', padding: '4px' }}
                     inputProps={{
-                        style: { paddingTop: marginTopBottom, paddingBottom: marginTopBottom },
+                        sx: { paddingTop: marginTopBottom, paddingBottom: marginTopBottom },
                     }}
                 >
                     <MenuItem value={'unset'}>

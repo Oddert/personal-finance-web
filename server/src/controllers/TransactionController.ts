@@ -109,15 +109,18 @@ export const createManyTransactions = async (req: Request, res: Response) => {
         const date = new Date().toISOString()
         const createdTransactions = []
 
-        console.log(req.body)
         for (const transaction of req.body.transactions) {
             const body = { ...transaction, created_on: date, updated_on: date }
+            if (typeof transaction.date === 'string') {
+                body.date = dayjs(transaction.date, 'DD/MM/YYYY').valueOf()
+            }
     
             const createdTransaction = await Transaction.query().insertAndFetch(body)
             createdTransactions.push(createdTransaction)
         }
+        console.log(createdTransactions)
 
-        return respondCreated(req, res, { createdTransactions }, 'Transactions created successfully', 204)
+        return respondCreated(req, res, { createdTransactions }, 'Transactions created successfully')
     } catch(err: any) {
         console.log(err)
         return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)

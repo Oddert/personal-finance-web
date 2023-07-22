@@ -37,7 +37,7 @@ export default class Transaction extends Model {
             type: 'object',
             properties: {
                 id: { type: 'number' },
-                date: { type: 'string' },
+                date: { type: 'number' },
                 transaction_type: { type: 'string', minLength: 1, maxLength: 5 },
                 description: { type: ['string', 'null'] },
                 debit: { type: 'number' },

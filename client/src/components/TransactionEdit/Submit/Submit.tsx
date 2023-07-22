@@ -26,7 +26,7 @@ const Submit = () => {
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const transactionsWithValidKeys = transactions.map(
             transaction => Object.entries(transaction)
-                .reduce((acc: { [key: string]: string|number }, pair) => {
+                .reduce((acc: { [key: string]: string|number|boolean }, pair) => {
                     const key = invertMapping[pair[0]]
                     if (!key) {
                         return acc
@@ -52,6 +52,10 @@ const Submit = () => {
             color='primary'
             onClick={handleClick}
             variant='contained'
+            sx={{
+                margin: '12px 0 12px auto',
+                display: 'block',
+            }}
         >
             Submit
         </Button>

@@ -1,7 +1,11 @@
 import { useCallback, useContext, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
-import { defaultColumns, TransactionEditContext, updateCategory } from '../../../contexts/transactionEditContext'
+import {
+    defaultColumns,
+    TransactionEditContext,
+    updateCategory,
+} from '../../../contexts/transactionEditContext'
 
 import { getCategoryResponse } from '../../../redux/selectors/categorySelectors'
 
@@ -34,6 +38,7 @@ const Table = () => {
         <TableLowerOrderComponent
             data={transactions}
             columns={columns}
+            compact={true}
         />
     )
 }

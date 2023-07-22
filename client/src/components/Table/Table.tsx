@@ -6,9 +6,10 @@ import { Box, Table as MuiTable, TableBody, TableHead, TableRow, TableCell } fro
 interface ReactTableProps<TData> {
     data: TData[]
     columns: ColumnDef<TData>[]
+    compact?: boolean
 }
 
-const Table = <TData extends object>({ data, columns }: ReactTableProps<TData>) => {
+const Table = <TData extends object>({ data, columns, compact }: ReactTableProps<TData>) => {
     const {
         getHeaderGroups,
         getRowModel,
@@ -25,7 +26,7 @@ const Table = <TData extends object>({ data, columns }: ReactTableProps<TData>) 
                     {getHeaderGroups().map((headerGroup, headerGroupIdx) => (
                         <TableRow key={headerGroupIdx}>
                             {headerGroup.headers.map((header, headerIdx) => (
-                                <TableCell key={headerIdx}>
+                                <TableCell key={headerIdx} sx={{ padding: compact ? '8px' : '16px' }}>
                                     {
                                         header.isPlaceholder
                                             ? null
@@ -43,7 +44,7 @@ const Table = <TData extends object>({ data, columns }: ReactTableProps<TData>) 
                     {getRowModel().rows.map((row, rowIdx) => (
                         <TableRow key={rowIdx}>
                             {row.getVisibleCells().map((cell, cellIdx) => (
-                                <TableCell key={cellIdx}>
+                                <TableCell key={cellIdx} sx={{ padding: compact ? '8px' : '16px' }}>
                                     {
                                         flexRender(
                                             cell.column.columnDef.cell,

@@ -26,6 +26,7 @@ const TransactionEdit: FC<Props> = ({ open, onClose }) => {
                     <ColumnMapping />
                     <Submit />
                     <Table />
+                    <Submit />
                 </Paper>
             </Container>
         </Modal>
