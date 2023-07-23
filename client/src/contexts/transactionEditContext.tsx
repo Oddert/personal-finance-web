@@ -1,7 +1,7 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { MenuItem, Select } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
 import type { Category } from '../types/Category'
 
@@ -32,7 +32,7 @@ export const transactionEditInitialState: TransactionEditState = {
 }
 
 export const defaultColumns = (
-    categories?: Category[],
+    categories?: { [id: string]: Category },
     callback?: (idx: number, assignedCategory: number) => void,
 ) => [
     {
@@ -59,29 +59,33 @@ export const defaultColumns = (
         header: 'Category',
         accessorKey: 'assignedCategory',
         cell: (cell: any) => {
+            if (!categories || !callback) {
+                return
+            }
             const value = cell.renderValue() || 'unset'
             const marginTopBottom = '4px'
             return (
-                <Select
-                    value={value}
-                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%', padding: '4px' }}
-                    inputProps={{
-                        sx: { paddingTop: marginTopBottom, paddingBottom: marginTopBottom },
+                <Autocomplete
+                    autoHighlight
+                    disablePortal
+                    onChange={(event, category) => {
+                        if (!category) {
+                            return
+                        }
+                        callback(cell.row.index, category.id)
                     }}
-                >
-                    <MenuItem value={'unset'}>
-                        - no category -
-                    </MenuItem>
-                    {categories?.map((category, idx) => (
-                        <MenuItem
-                            key={category.id}
-                            onClick={callback ? () => callback(cell.row.index, category.id) : () => {}}
-                            value={category.id}
-                        >
-                            {category.label}
-                        </MenuItem>
-                    ))}
-                </Select>
+                    options={Object.values(categories as { [id: string]: Category })}
+                    placeholder='unset'
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label='Category'
+                            sx={{ paddingTop: marginTopBottom, paddingBottom: marginTopBottom }}
+                        />
+                    )}
+                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%', padding: '4px' }}
+                    value={categories[value] || null}
+                />
             )
         }
     },

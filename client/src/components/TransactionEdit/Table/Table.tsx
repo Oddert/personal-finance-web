@@ -7,14 +7,14 @@ import {
     updateCategory,
 } from '../../../contexts/transactionEditContext'
 
-import { getCategoryResponse } from '../../../redux/selectors/categorySelectors'
+import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors'
 
 import TableLowerOrderComponent from '../../Table/'
 
 const Table = () => {
     const { dispatch, state: { columnMap, transactions } } = useContext(TransactionEditContext)
 
-    const categories = useSelector(getCategoryResponse)
+    const categories = useSelector(getCategoryOrderedDataById)
 
     const updateAssignedCategory = useCallback((
         idx: number,
