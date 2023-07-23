@@ -23,7 +23,14 @@ const Transactions = () => {
                 <Typography sx={{ margin: '24px 0' }} variant='h2'>
                     Transactions
                 </Typography>
-                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', margin: '24px 0' }}>
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        margin: '24px 0',
+                        gridGap: '0 32px',
+                    }}
+                >
                     <Upload />
                     <RequestControls />
                     <RangeControls />

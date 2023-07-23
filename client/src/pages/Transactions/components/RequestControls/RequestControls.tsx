@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { getTransactionsEndDate, getTransactionsStartDate } from '../../../../redux/selectors/transactionsSelectors'
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
@@ -45,6 +45,9 @@ const RequestControls = () => {
 
     return (
         <Box>
+            <Typography sx={{ textAlign: 'left', margin: '12px 0' }}>
+                Loaded transactions for the following dates:
+            </Typography>
             <TextField
                 name='startDate'
                 label='Start Date'
@@ -61,7 +64,7 @@ const RequestControls = () => {
                 value={end}
                 onChange={handleChangeEnd}
             />
-            <Button>Get transactions</Button>
+            <Button>Refresh</Button>
         </Box>
     )
 }

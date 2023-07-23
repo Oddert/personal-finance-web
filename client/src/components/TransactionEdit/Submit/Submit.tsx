@@ -30,11 +30,13 @@ const Submit = () => {
             transaction => Object.entries(transaction)
                 .reduce((acc: { [key: string]: string|number|boolean }, pair) => {
                     const key = invertMapping[pair[0]]
+                    const whitelistKeys = ['debit', 'credit', 'ballance']
+
                     if (!key) {
                         return acc
                     }
 
-                    if (key === 'debit' || key === 'credit' || key === 'ballance') {
+                    if (key in whitelistKeys) {
                         acc[key] = Number(pair[1])
                     } else {
                         acc[key] = pair[1]

@@ -57,10 +57,15 @@ export const orderTransactions = (transactions: Transaction[]) => {
 }
 
 export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
-    const value = createReadableNumber(cell.renderValue(), 0)
+    const rawValue = createReadableNumber(cell.renderValue(), 0)
+    const value = Number(rawValue)
     return (
         <Box sx={{ textAlign: 'right' }}>
-            £{value}
+            {
+                isNaN(value) || value === 0
+                    ? '-'
+                    : `£${value.toFixed(2)}`
+            }
         </Box>
     )
 }
