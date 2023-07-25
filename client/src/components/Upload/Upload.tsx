@@ -2,12 +2,12 @@ import { Fragment, useCallback, useEffect, useReducer, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { MuiFileInput } from 'mui-file-input'
 
-import { Category } from '../../../../types/Category'
-import { Matcher } from '../../../../types/Matcher'
+import { Category } from '../../types/Category'
+import { Matcher } from '../../types/Matcher'
 
-import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../../constants/appConstants'
+import { PERSONAL_FINANCE_CSV_MAPPING } from '../../constants/appConstants'
 
-import { readCsv } from '../../../../utils/commonUtils'
+import { readCsv } from '../../utils/commonUtils'
 
 import {
     transactionEditInitialState,
@@ -16,11 +16,11 @@ import {
     writeHeaders,
     writeTransactions,
     setColumnMap,
-} from '../../../../contexts/transactionEditContext'
+} from '../../contexts/transactionEditContext'
 
-import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors'
+import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
 
-import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit'
+import TransactionEdit from '../TransactionEdit/TransactionEdit'
 
 /**
  * Creates a RegExp instance from the Matcher format.

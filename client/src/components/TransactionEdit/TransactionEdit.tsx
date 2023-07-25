@@ -24,9 +24,9 @@ const TransactionEdit: FC<Props> = ({ open, onClose }) => {
                         Bulk edit transactions
                     </Typography>
                     <ColumnMapping />
-                    <Submit />
+                    <Submit onClose={onClose} />
                     <Table />
-                    <Submit />
+                    <Submit onClose={onClose} />
                 </Paper>
             </Container>
         </Modal>
