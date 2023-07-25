@@ -110,17 +110,18 @@ export const transactionEditReducer = (
                 columnMap: action?.payload?.columnMap,
             }
         case TransactionEditActionTypes.updateCategory:
+            if (!action?.payload?.idx || !action?.payload?.assignedCategory) {
+                return state
+            }
             return {
                 ...state,
-                transactions: state.transactions.map((transaction, idx) => {
-                    if (idx === action?.payload?.idx) {
-                        return {
-                            ...transaction,
-                            assignedCategory: action.payload.assignedCategory
-                        }
-                    }
-                    return transaction
-                })
+                transactions: state.transactions
+                    .concat(state.transactions.slice(0, action.payload.idx))
+                    .concat([{
+                        ...state.transactions[action.payload.idx],
+                        assignedCategory: action.payload.assignedCategory
+                    }])
+                    .concat(state.transactions.slice(action.payload.idx + 1))
             }
         case TransactionEditActionTypes.writeHeaders:
             return {
