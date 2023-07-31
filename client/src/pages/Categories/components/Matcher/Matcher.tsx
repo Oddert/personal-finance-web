@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
-import { ListItem, Typography } from '@mui/material'
+import { Box, Button, ListItem, Typography } from '@mui/material'
 import {
-    FontDownloadOutlined as MatchNegativeIcon,
+    Edit as EditIcon,
     FontDownload as MatchPositiveIcon,
+    FontDownloadOutlined as MatchNegativeIcon,
 } from '@mui/icons-material'
 
 import { Matcher as MatcherT } from '../../../../types/Matcher'
@@ -14,6 +15,8 @@ interface Props {
     matcher: MatcherT
 }
 
+const iconWidth = 50
+
 const Matcher = ({ matcher }: Props) => {
     const [open, setOpen] = useState<boolean>(false)
 
@@ -21,6 +24,19 @@ const Matcher = ({ matcher }: Props) => {
         setOpen(false)
         console.log(matcher)
     }
+    
+    const matchTypeTitle = useMemo(() => {
+        switch(matcher?.match_type) {
+            case 'any':
+                return 'matches this text anywhere in the description'
+            case 'exact':
+                return 'only matches this exact string (may not have anything before or after)'
+            case 'end':
+                return 'matches only if this text is at the end of a description'
+            case 'start':
+                return 'matches only if this text is at the beginning of a description'
+        }
+    }, [matcher?.match_type])
 
     if (open) {
         return (
@@ -34,10 +50,8 @@ const Matcher = ({ matcher }: Props) => {
         )
     }
 
-    const iconWidth = 50;
     return (
         <ListItem
-            onClick={() => setOpen(true)}
             sx={{
                 textAlign: 'left',
                 paddingLeft: 0,
@@ -46,15 +60,53 @@ const Matcher = ({ matcher }: Props) => {
                 gridTemplateColumns: `1fr ${iconWidth}px ${iconWidth}px`,
             }}
         >
-            <Typography variant='body2'>
-                {matcher.match}
-            </Typography>
-            {
-                matcher.case_sensitive
-                    ? <MatchPositiveIcon />
-                    : <MatchNegativeIcon />
-            }
-            <Typography variant='body1'>
+            <Button
+                onClick={() => setOpen(true)}
+                sx={(theme) => ({
+                    justifySelf: 'flex-start',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: theme.palette.common.white,
+                    '& .MuiSvgIcon-root': {
+                        transition: '.2s linear',
+                        opacity: 0,
+                    },
+                    '&:hover': {
+                        '& .MuiSvgIcon-root': {
+                            opacity: 1,
+                        }
+                    }
+                })}
+                variant='text'
+            >
+                <Typography
+                    variant='body2'
+                    sx={{
+                        marginRight: '8px',
+                    }}
+                >
+                    {matcher.match}
+                </Typography>
+                <EditIcon />
+            </Button>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+                title={
+                    matcher.case_sensitive
+                        ? 'only matches exact case'
+                        : 'ignores case'
+                }
+            >
+                {
+                    matcher.case_sensitive
+                        ? <MatchPositiveIcon />
+                        : <MatchNegativeIcon />
+                }
+            </Box>
+            <Typography title={matchTypeTitle} variant='body1'>
                 {matcher.match_type}
             </Typography>
         </ListItem>
