@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import {
     Button,
@@ -7,17 +7,32 @@ import {
 } from '@mui/material'
 import { AddCircle as AddIcon } from '@mui/icons-material'
 
+import type { Category } from '../../../../types/Category'
 import type { Matcher } from '../../../../types/Matcher'
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+
+import { initCreateSingleMatcher } from '../../../../redux/slices/categorySlice'
 
 import EditMatcher from '../EditMatcher/'
 
-const AddMatcher = () => {
+interface Props {
+    categoryId: Category['id']
+}
+
+const AddMatcher = ({ categoryId }: Props) => {
+    const dispatch = useAppDispatch()
+
     const [open, setOpen] = useState(false)
 
-    const handleSubmit = (matcher: Partial<Matcher>) => {
+    const handleSubmit = useCallback((matcher: Partial<Matcher>) => {
         console.log(matcher)
-        setOpen(false)
-    }
+        const addMatcher = async () => {
+            dispatch(initCreateSingleMatcher({ matcher, categoryId }))
+            setOpen(false)
+        }
+        addMatcher()
+    }, [dispatch, categoryId])
 
     if (open) {
         return (
@@ -33,7 +48,7 @@ const AddMatcher = () => {
                     // onBlur={() => setOpen(false)}
                     onCancel={() => setOpen(false)}
                     onSubmit={handleSubmit}
-                    clearOnBlur={true}
+                    clearOnBlur={false}
                     clearOnCancel={true}
                     clearOnSubmit={true}
                 />

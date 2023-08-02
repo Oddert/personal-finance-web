@@ -73,11 +73,12 @@ const Category = ({ category }: Props) => {
                 <List>
                     {category.matchers.map((matcher: MatcherT) => (
                         <Matcher
+                            categoryId={category.id}
                             key={matcher.id}
                             matcher={matcher}
                         />
                     ))}
-                    <AddMatcher />
+                    <AddMatcher categoryId={category.id} />
                 </List>
             </Paper>
         </ListItem>

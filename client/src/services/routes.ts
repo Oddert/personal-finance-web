@@ -1,4 +1,7 @@
-import request from "../common/request";
+import request from '../common/request';
+
+import type { Category } from '../types/Category';
+import type { Matcher } from '../types/Matcher';
 
 const routes = {
     getAllTransactions: async (startDate?: string, endDate?: string) => {
@@ -14,6 +17,12 @@ const routes = {
     },
     getAllCategoriesWithMatchers: async () => {
         return await request.get(`/category?includeMatchers=true`)
+    },
+    addSingleMatcher: async (matcher: Partial<Matcher>, categoryId: Category['id']) => {
+        return await request.post(`/matcher/`, { ...matcher, categoryId })
+    },
+    deleteSingleMatcher: async (id: number|string) => {
+        return await request.delete(`/matcher/${id}`)
     },
 }
 

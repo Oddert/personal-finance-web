@@ -1,29 +1,44 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { Box, Button, ListItem, Typography } from '@mui/material'
 import {
+    Close as DeleteIcon,
     Edit as EditIcon,
     FontDownload as MatchPositiveIcon,
     FontDownloadOutlined as MatchNegativeIcon,
 } from '@mui/icons-material'
 
+import { initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+
+import { Category } from '../../../../types/Category'
 import { Matcher as MatcherT } from '../../../../types/Matcher'
 
 import EditMatcher from '../EditMatcher/'
 
 interface Props {
     matcher: MatcherT
+    categoryId: Category['id']
 }
 
 const iconWidth = 50
 
-const Matcher = ({ matcher }: Props) => {
+const Matcher = ({ matcher, categoryId }: Props) => {
+    const dispatch = useAppDispatch()
+
     const [open, setOpen] = useState<boolean>(false)
 
     const handleSubmit = (matcher: Partial<MatcherT>) => {
         setOpen(false)
         console.log(matcher)
     }
+
+    const handleDelete = useCallback(() => {
+        dispatch(            
+            initDeleteSingleMatcher({ matcherId: matcher.id, categoryId })
+        )
+    }, [dispatch, categoryId, matcher.id])
     
     const matchTypeTitle = useMemo(() => {
         switch(matcher?.match_type) {
@@ -52,13 +67,25 @@ const Matcher = ({ matcher }: Props) => {
 
     return (
         <ListItem
-            sx={{
+            sx={(theme) => ({
                 textAlign: 'left',
-                paddingLeft: 0,
-                paddingRight: 0,
+                padding: '2px 0',
                 display: 'grid',
-                gridTemplateColumns: `1fr ${iconWidth}px ${iconWidth}px`,
-            }}
+                gridTemplateColumns: `1fr repeat(2, ${iconWidth}px) auto`,
+                justifyItems: 'center',
+                '& .Matcher_delete': {
+                    opacity: 0,
+                    color: theme.palette.common.white,
+                    paddingLeft: 0,
+                    paddingRight: 0,
+                    minWidth: '40px',
+                },
+                '&:hover': {
+                    '& .Matcher_delete': {
+                        opacity: 1,
+                    },
+                },
+            })}
         >
             <Button
                 onClick={() => setOpen(true)}
@@ -77,6 +104,7 @@ const Matcher = ({ matcher }: Props) => {
                         }
                     }
                 })}
+                title='edit this matcher'
                 variant='text'
             >
                 <Typography
@@ -109,6 +137,9 @@ const Matcher = ({ matcher }: Props) => {
             <Typography title={matchTypeTitle} variant='body1'>
                 {matcher.match_type}
             </Typography>
+            <Button className='Matcher_delete' onClick={handleDelete} size='small'>
+                <DeleteIcon />
+            </Button>
         </ListItem>
     )
 }

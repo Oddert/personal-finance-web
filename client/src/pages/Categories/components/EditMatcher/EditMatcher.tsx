@@ -154,7 +154,7 @@ const EditMatcher = ({
                         aria-labelledby='EditMatcher_match_type'
                         defaultValue={matchTypesOptions[0].value}
                         name='match_type_options'
-                        onChange={(e, value) => setMatchType(value as MatchType)}
+                        onChange={(e) => setMatchType(e?.target?.value as MatchType)}
                         size='small'
                         value={matchType}
                     >
