@@ -10,13 +10,14 @@ import type { Category as CategoryT } from '../../../../types/Category'
 import type { Matcher as MatcherT } from '../../../../types/Matcher'
 
 import AddMatcher from '../AddMatcher/'
+import Colour from '../Colour/'
+import Description from '../Description/'
 import Matcher from '../Matcher/'
+import Title from '../Title/'
 
 interface Props {
     category: CategoryT
 }
-
-const boxW = 50
 
 const Category = ({ category }: Props) => {
     return (
@@ -41,28 +42,10 @@ const Category = ({ category }: Props) => {
                 <Box
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                    <Box
-                        sx={{
-                            width: boxW,
-                            height: boxW,
-                            backgroundColor: category.colour,
-                            borderRadius: '4px',
-                        }}
-                    />
-                    <Typography
-                        variant='h3'
-                        sx={{ borderBottom: `2px solid ${category.colour}` }}
-                    >
-                        {category.label}
-                    </Typography>
+                    <Colour category={category} />
+                    <Title category={category} />
                 </Box>
-                <Typography
-                    variant='subtitle1'
-                    align='right'
-                    sx={{ margin: '16px 0' }}
-                >
-                    {category.description}
-                </Typography>
+                <Description category={category} />
                 <Typography
                     variant='h4'
                     align='left'

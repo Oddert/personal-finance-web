@@ -39,10 +39,36 @@ export const categorySlice = createSlice({
             state.loading = false
             state.queried = true
         },
+        initUpdateSingleCategory: (state, action: PayloadAction<{
+            category: Partial<Category>
+        }>) => {
+            state.loading = true
+        },
+        updateSingleCategory: (state, action: PayloadAction<{
+            category: Category,
+        }>) => {
+            state.orderedData.byId[action.payload.category.id] = {
+                ...state.orderedData.byId[action.payload.category.id],
+                ...action.payload.category,
+            }
+            state.orderedData.byLabel[action.payload.category.label] = action.payload.category
+            
+            state.response = state.response.map((category) => {
+                if (category.id === action.payload?.category.id) {
+                    return action.payload.category
+                }
+                return category
+            })
+            
+            state.loading = false
+            state.queried = true
+        },
         initCreateSingleMatcher: (state, action: PayloadAction<{
             categoryId: Category['id'],
             matcher: Partial<Matcher>,
-        }>) => {},
+        }>) => {
+            state.loading = true
+        },
         createSingleMatcher: (state, action: PayloadAction<{
             categoryId: Category['id'],
             matcher: Matcher,
@@ -63,6 +89,14 @@ export const categorySlice = createSlice({
             })
             state.orderedData.byId[action.payload.categoryId] = updatedCategory
             state.orderedData.byLabel[updatedCategory.label] = updatedCategory
+
+            state.loading = false
+        },
+        initUpdateSingleMatcher: (state, action: PayloadAction<{
+            categoryId: Category['id'],
+            matcher: Partial<Matcher>,
+        }>) => {
+            state.loading = true
         },
         updateSingleMatcher: (state, action: PayloadAction<{
             categoryId: Category['id'],
@@ -89,11 +123,15 @@ export const categorySlice = createSlice({
             })
             state.orderedData.byId[action.payload.categoryId] = updatedCategory
             state.orderedData.byLabel[updatedCategory.label] = updatedCategory
+            
+            state.loading = false
         },
         initDeleteSingleMatcher: (state, action: PayloadAction<{
             matcherId: Matcher['id'],
             categoryId: Category['id'],
-        }>) => {},
+        }>) => {
+            state.loading = true
+        },
         deleteSingleMatcher: (state, action: PayloadAction<{
             categoryId: Category['id'],
             matcherId: Matcher['id'],
@@ -114,6 +152,8 @@ export const categorySlice = createSlice({
             })
             state.orderedData.byId[action.payload.categoryId] = updatedCategory
             state.orderedData.byLabel[updatedCategory.label] = updatedCategory
+            
+            state.loading = false
         },
     }
 })
@@ -121,8 +161,11 @@ export const categorySlice = createSlice({
 export const {
     requestCategories,
     writeCategories,
+    initUpdateSingleCategory,
+    updateSingleCategory,
     initCreateSingleMatcher,
     createSingleMatcher,
+    initUpdateSingleMatcher,
     updateSingleMatcher,
     initDeleteSingleMatcher,
     deleteSingleMatcher,

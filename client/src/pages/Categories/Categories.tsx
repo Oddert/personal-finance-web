@@ -20,11 +20,14 @@ const Categories = () => {
                 Categories
             </Typography>
             <List
-                sx={{
+                sx={(theme) => ({
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
                     gridGap: '30px',
-                }}
+                    [theme.breakpoints.down('sm')]: {
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    }
+                })}
             >
                 {categories.map((category: CategoryT) => (
                     <Category category={category} key={category.id} />

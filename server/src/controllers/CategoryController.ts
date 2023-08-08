@@ -10,7 +10,7 @@ export const getCategories = async (req: Request, res: Response) => {
     try {
         if (req.query.includeMatchers) {
             const categories = await Category.query()
-                .orderBy('label', 'DESC')
+                .orderBy('label', 'ASC')
                 .withGraphFetched('matchers')
 
             return respondOk(req, res, { categories })

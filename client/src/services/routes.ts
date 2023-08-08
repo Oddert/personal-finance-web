@@ -18,6 +18,9 @@ const routes = {
     getAllCategoriesWithMatchers: async () => {
         return await request.get(`/category?includeMatchers=true`)
     },
+    updateCategory: async (category: Partial<Category>) => {
+        return await request.put(`/category/${category.id}`, category)
+    },
     addSingleMatcher: async (matcher: Partial<Matcher>, categoryId: Category['id']) => {
         return await request.post(`/matcher/`, { ...matcher, categoryId })
     },
