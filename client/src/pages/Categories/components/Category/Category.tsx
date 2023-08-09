@@ -22,22 +22,28 @@ interface Props {
 const Category = ({ category }: Props) => {
     return (
         <ListItem
-            sx={{
+            sx={(theme) => ({
+                [theme.breakpoints.up('xs')]: {
+                    padding: '8px',
+                },
                 ' .Category_AddMatcher': {
                     opacity: '0',
                 },
                 '&:hover .Category_AddMatcher': {
                     opacity: '1',
                 },
-            }}
+            })}
         >
             <Paper
                 elevation={6}
-                sx={{
+                sx={(theme) => ({
                     padding: '20px 50px',
+                    [theme.breakpoints.up('xs')]: {
+                        padding: '20px',
+                    },
                     width: '100%',
                     height: '100%',
-                }}
+                })}
             >
                 <Box
                     sx={{ display: 'flex', justifyContent: 'space-between' }}

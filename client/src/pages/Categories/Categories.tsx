@@ -12,9 +12,12 @@ const Categories = () => {
     const categories = useSelector(getCategoryResponse)
     return (
         <Container
-            sx={{
+            sx={(theme) => ({
                 transition: '.2s linear',
-            }}
+                [theme.breakpoints.down('sm')]: {
+                    padding: '4px',
+                }
+            })}
         >
             <Typography variant='h2' sx={{ margin: '32px 0' }}>
                 Categories
@@ -26,6 +29,7 @@ const Categories = () => {
                     gridGap: '30px',
                     [theme.breakpoints.down('sm')]: {
                         gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gridGap: '10px',
                     }
                 })}
             >

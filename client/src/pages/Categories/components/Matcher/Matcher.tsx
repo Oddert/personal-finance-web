@@ -71,8 +71,11 @@ const Matcher = ({ matcher, categoryId }: Props) => {
                 textAlign: 'left',
                 padding: '2px 0',
                 display: 'grid',
-                gridTemplateColumns: `1fr repeat(2, ${iconWidth}px) auto`,
                 justifyItems: 'center',
+                gridTemplateColumns: `1fr repeat(2, ${iconWidth}px) auto`,
+                [theme.breakpoints.down('sm')]: {
+                    gridTemplateColumns: `1fr repeat(3, auto)`,
+                },
                 '& .Matcher_delete': {
                     opacity: 0,
                     color: theme.palette.common.white,
@@ -93,6 +96,8 @@ const Matcher = ({ matcher, categoryId }: Props) => {
                     justifySelf: 'flex-start',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    textAlign: 'left',
                     color: theme.palette.common.white,
                     '& .MuiSvgIcon-root': {
                         transition: '.2s linear',
