@@ -1,6 +1,6 @@
 import { Category } from './Category'
 
-export interface Transaction {
+export declare interface Transaction {
     ballance: number
     category_id: number|null
     created_on: string

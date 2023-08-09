@@ -19,7 +19,7 @@ interface Props {
 const Colour = ({ category }: Props) => {
     const dispatch = useAppDispatch()
 
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement|null>(null)
     const [hasChanged, setHasChanged] = useState<boolean>(false)
     const [originalColour, setOriginalColour] = useState<string>('#bec3c7')
     const [colour, setColour] = useState<string>('#bec3c7')
@@ -39,7 +39,7 @@ const Colour = ({ category }: Props) => {
     }, [hasChanged])
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(event.currentTarget)
     }
 
     const handleClose = useCallback(() => {
@@ -121,7 +121,6 @@ const Colour = ({ category }: Props) => {
                     <SketchPicker
                         color={colour}
                         onChange={handleChange}
-                        onChangeComplete={handleSubmit}
                         presetColors={[
                             '#ee204d',
                             '#e84a5f',

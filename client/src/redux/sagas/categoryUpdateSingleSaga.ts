@@ -23,7 +23,6 @@ export default function* categoryUpdateSingleSaga (
         
         yield put(updateSingleCategory({ category: response.payload.category }))
     } catch (error) {
-        console.log(':(')
         console.error(error)
     }
 }

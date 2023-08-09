@@ -1,6 +1,6 @@
 import { Matcher } from './Matcher'
 
-export interface Category {
+export declare interface Category {
     id: number
     label: string
     description: string
