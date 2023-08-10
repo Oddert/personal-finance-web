@@ -66,7 +66,6 @@ const RangeControls = () => {
             },
         )
 
-        console.log(rangeValuesArr)
         const rangeValues = rangeValuesArr.reduce(
             (acc: { [key: number]: { top: number, bottom: number }}, value, idx) => {
                 acc[idx] = value
@@ -74,7 +73,6 @@ const RangeControls = () => {
             },
             {}
         )
-        console.log(rangeValues)
 
         const customMarks = generateMarks(Object.values(rangeKeys.keyList))
 

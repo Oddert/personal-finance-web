@@ -26,7 +26,6 @@ const AddMatcher = ({ categoryId }: Props) => {
     const [open, setOpen] = useState(false)
 
     const handleSubmit = useCallback((matcher: Partial<Matcher>) => {
-        console.log(matcher)
         const addMatcher = async () => {
             dispatch(initCreateSingleMatcher({ matcher, categoryId }))
             setOpen(false)

@@ -31,6 +31,7 @@ export const transactionEditInitialState: TransactionEditState = {
     transactions: [],
 }
 
+// TODO: remove react-table logic once new logic is confirmed stable and better.
 export const defaultColumns = (
     categories?: { [id: string]: Category },
     callback?: (idx: number, assignedCategory: number) => void,
@@ -65,6 +66,24 @@ export const defaultColumns = (
             const value = cell.renderValue() || 'unset'
             const marginTopBottom = '4px'
             return (
+                // <select
+                //     onChange={(e) => {
+                //         if (!e.currentTarget.value) {
+                //             return
+                //         }
+                //         callback(cell.row.index, Number(e.currentTarget.value))
+                //     }}
+                //     // value={categories[value].id || undefined}
+                // >
+                //     <option value={'unset'}>
+                //         - none -
+                //     </option>
+                //     {Object.entries(categories).map(([key, category]) => (
+                //         <option value={category.id}>
+                //             {category.label}
+                //         </option>
+                //     ))}
+                // </select>
                 <Autocomplete
                     autoHighlight
                     disablePortal
@@ -113,15 +132,18 @@ export const transactionEditReducer = (
             if (!action?.payload?.idx || !action?.payload?.assignedCategory) {
                 return state
             }
+            const transactions: { [key: string]: string|number }[] = [
+                ...state.transactions.slice(0, action.payload.idx),
+                {
+                    ...state.transactions[action.payload.idx],
+                    assignedCategory: action.payload.assignedCategory
+                },
+                ...state.transactions.slice(action.payload.idx + 1),
+            ]
+
             return {
                 ...state,
-                transactions: state.transactions
-                    .concat(state.transactions.slice(0, action.payload.idx))
-                    .concat([{
-                        ...state.transactions[action.payload.idx],
-                        assignedCategory: action.payload.assignedCategory
-                    }])
-                    .concat(state.transactions.slice(action.payload.idx + 1))
+                transactions,
             }
         case TransactionEditActionTypes.writeHeaders:
             return {

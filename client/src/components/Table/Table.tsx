@@ -15,6 +15,7 @@ const Table = <TData extends object>({ data, columns, compact }: ReactTableProps
         getRowModel,
     } = useReactTable<TData>({
         columns,
+        enableGrouping: false,
         data,
         getCoreRowModel: getCoreRowModel(),
     })

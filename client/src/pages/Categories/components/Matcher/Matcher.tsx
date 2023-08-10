@@ -31,7 +31,6 @@ const Matcher = ({ matcher, categoryId }: Props) => {
 
     const handleSubmit = (matcher: Partial<MatcherT>) => {
         setOpen(false)
-        console.log(matcher)
     }
 
     const handleDelete = useCallback(() => {
