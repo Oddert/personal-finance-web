@@ -14,7 +14,7 @@ import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
 import { initCreateSingleMatcher } from '../../../../redux/slices/categorySlice'
 
-import EditMatcher from '../EditMatcher/'
+import EditMatcher from '../EditMatcher'
 
 interface Props {
     categoryId: Category['id']

@@ -6,7 +6,7 @@ import { Category as CategoryT } from '../../types/Category'
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
 
-import Category from './components/Category/Category'
+import Category from '../../components/Category/Category'
 
 const Categories = () => {
     const categories = useSelector(getCategoryResponse)

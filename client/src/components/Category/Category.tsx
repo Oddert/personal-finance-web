@@ -6,14 +6,14 @@ import {
     Typography,
 } from '@mui/material'
 
-import type { Category as CategoryT } from '../../../../types/Category'
-import type { Matcher as MatcherT } from '../../../../types/Matcher'
+import type { Category as CategoryT } from '../../types/Category'
+import type { Matcher as MatcherT } from '../../types/Matcher'
 
-import AddMatcher from '../AddMatcher/'
-import Colour from '../Colour/'
-import Description from '../Description/'
-import Matcher from '../Matcher/'
-import Title from '../Title/'
+import AddMatcher from './components/AddMatcher'
+import Colour from './components/Colour'
+import Description from './components/Description'
+import Matcher from './components/Matcher'
+import Title from './components/Title'
 
 interface Props {
     category: CategoryT

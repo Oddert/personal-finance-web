@@ -15,7 +15,7 @@ import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 import { Category } from '../../../../types/Category'
 import { Matcher as MatcherT } from '../../../../types/Matcher'
 
-import EditMatcher from '../EditMatcher/'
+import EditMatcher from '../EditMatcher'
 
 interface Props {
     matcher: MatcherT

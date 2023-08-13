@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
 import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
 
-import EditableText from '../EditableText/'
+import EditableText from '../../../EditableText'
 
 interface Props {
     category: Category
