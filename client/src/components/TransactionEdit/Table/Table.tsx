@@ -86,7 +86,9 @@ const Table = () => {
                 <TableHead>
                     <TableRow>
                         {columns.map((column, idx) => (
-                            <TableHead key={idx}>{column.header}</TableHead>
+                            <TableCell key={idx}>
+                                {column.header}
+                            </TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -102,7 +104,11 @@ const Table = () => {
                                         }
                                         : null
                                     return (
-                                        <TableCell>
+                                        <TableCell
+                                            sx={{
+                                                padding: '4px',
+                                            }}
+                                        >
                                             <Autocomplete
                                                 autoHighlight
                                                 disablePortal
@@ -133,7 +139,7 @@ const Table = () => {
                                                             : 1,
                                                     width: '100%',
                                                     '& .MuiInputBase-root': {
-                                                        padding: '4px',
+                                                        padding: '2px',
                                                     }
                                                 }}
                                                 value={value}
