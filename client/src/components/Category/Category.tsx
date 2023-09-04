@@ -17,9 +17,17 @@ import Title from './components/Title'
 
 interface Props {
     category: CategoryT
+    defaultOpenAddNew?: boolean
+    defaultOpenMatcher?: Partial<MatcherT>
+    onAddNewSubmit?: () => void
 }
 
-const Category = ({ category }: Props) => {
+const Category = ({
+    category,
+    defaultOpenAddNew = false,
+    defaultOpenMatcher,
+    onAddNewSubmit,
+}: Props) => {
     return (
         <ListItem
             sx={(theme) => ({
@@ -67,7 +75,12 @@ const Category = ({ category }: Props) => {
                             matcher={matcher}
                         />
                     ))}
-                    <AddMatcher categoryId={category.id} />
+                    <AddMatcher
+                        categoryId={category.id}
+                        defaultOpen={defaultOpenAddNew}
+                        matcher={defaultOpenMatcher || undefined}
+                        onSubmit={onAddNewSubmit}
+                    />
                 </List>
             </Paper>
         </ListItem>

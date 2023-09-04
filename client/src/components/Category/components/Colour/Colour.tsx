@@ -2,15 +2,15 @@ import { MouseEventHandler, useCallback, useEffect, useState } from 'react'
 import { ColorChangeHandler, SketchPicker } from 'react-color'
 
 import { Box, Button, Popover } from '@mui/material'
-import { Edit as EditIcon } from '@mui/icons-material'
+
+import { defaultCategoryColours } from '../../../../constants/categoryConstants'
 
 import type { Category } from '../../../../types/Category'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
 import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
-
-const boxW = 50
+import ColourBase from '../ColourBase/ColourBase'
 
 interface Props {
     category: Category
@@ -65,38 +65,12 @@ const Colour = ({ category }: Props) => {
                 position: 'relative',
             }}
         >
-            <Button
-                aria-describedby={id}
-                onClick={handleClick}
-                sx={(theme) => ({
-                    width: boxW,
-                    height: boxW,
-                    minWidth: boxW,
-                    minHeight: boxW,
-                    color: theme.palette.common.white,
-                    cursor: 'pointer',
-                    padding: 0,
-                    backgroundColor: category.colour,
-                    borderRadius: '4px',
-                    transition: '.1s linear',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    '& .Category_Colour__icon': {
-                        transition: '.1s linear',
-                        opacity: 0,
-                    },
-                    '&:hover': {
-                        filter: 'brightness(85%)',
-                        background: category.colour,
-                        '& .Category_Colour__icon': {
-                            opacity: 1,
-                        },
-                    },
-                })}
-            >
-                <EditIcon className='Category_Colour__icon' />
-            </Button>
+            <ColourBase
+                asButton
+                colour={category.colour}
+                handleClick={handleClick}
+                id={id}
+            />
             <Popover
                 id={id}
                 open={open}
@@ -121,25 +95,7 @@ const Colour = ({ category }: Props) => {
                     <SketchPicker
                         color={colour}
                         onChange={handleChange}
-                        presetColors={[
-                            '#ee204d',
-                            '#e84a5f',
-                            '#d8737f',
-                            '#fb8d1a',
-                            '#f1c40f',
-                            '#d3dd18',
-                            '#4c9a2a',
-                            '#16a085',
-                            '#008080',
-                            '#509af3',
-                            '#34495e',
-                            '#5650de',
-                            '#8857e6',
-                            '#881798',
-                            '#2f1629',
-                            '#ecf0f1',
-                            '#0d1017',
-                        ]}
+                        presetColors={defaultCategoryColours}
                     />
                     <Box
                         sx={{

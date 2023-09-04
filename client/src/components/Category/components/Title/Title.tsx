@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
 import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
 
-import EditableText from '../../../EditableText'
+import TitleBase from '../TitleBase/TitleBase'
 
 interface Props {
     category: Category
@@ -22,15 +22,10 @@ const Title = ({ category }: Props) => {
     }, [category, dispatch])
 
     return (
-        <EditableText
-            headingProps={{
-                sx: {
-                    borderBottom: `2px solid ${category.colour}`,
-                    alignSelf: 'stretch',
-                },
-                variant: 'h3',
-            }}
-            onChange={handleChange}
+        <TitleBase
+            colour={category.colour}
+            editable
+            handleChange={handleChange}
             text={category.label}
         />
     )

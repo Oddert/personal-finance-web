@@ -7,12 +7,15 @@ import type { Category } from '../types/Category'
 
 interface TransactionEditState {
     columnMap: { [key: string]: string }
-    transactions: { [key: string]: string|number }[]
     headers: string[]
+    match?: string
+    sideBarOpen: boolean
+    transactions: { [key: string]: string|number }[]
 }
 
 const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
+    toggleSideBarOpen: 'toggleSideBarOpen',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
     writeTransactions: 'writeTransactions',
@@ -28,6 +31,7 @@ export const transactionEditInitialState: TransactionEditState = {
         'ballance': 'Balance',
     },
     headers: [],
+    sideBarOpen: false,
     transactions: [],
 }
 
@@ -123,6 +127,14 @@ export const transactionEditReducer = (
     action: PayloadAction<any>,
 ) => {
     switch(action.type) {
+        case TransactionEditActionTypes.toggleSideBarOpen:
+            return {
+                ...state,
+                sideBarOpen: action?.payload?.open === 'undefined'
+                    ? !state.sideBarOpen
+                    : action?.payload?.open,
+                match: action?.payload?.match,
+            }
         case TransactionEditActionTypes.setColumnMap:
             return {
                 ...state,
@@ -165,6 +177,14 @@ export const setColumnMap = (
 ) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap }
+})
+
+export const toggleSideBar = (
+    open?: TransactionEditState['sideBarOpen'],
+    match?: string,
+) => ({
+    type: TransactionEditActionTypes.toggleSideBarOpen,
+    payload: { open, match }
 })
 
 export const updateCategory = (

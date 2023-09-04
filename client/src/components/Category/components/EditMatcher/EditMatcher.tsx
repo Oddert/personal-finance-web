@@ -98,6 +98,7 @@ const EditMatcher = ({
             }}
         >
             <TextField
+                autoFocus
                 label='Match'
                 onChange={(e) => setMatch(e?.target?.value)}
                 size='small'

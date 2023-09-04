@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
     Button,
@@ -18,12 +18,24 @@ import EditMatcher from '../EditMatcher'
 
 interface Props {
     categoryId: Category['id']
+    defaultOpen?: boolean
+    matcher?: Partial<Matcher>
+    onSubmit?: (matcher: Partial<Matcher>) => void
 }
 
-const AddMatcher = ({ categoryId }: Props) => {
+const AddMatcher = ({
+    categoryId,
+    defaultOpen = false,
+    matcher,
+    onSubmit,
+}: Props) => {
     const dispatch = useAppDispatch()
 
     const [open, setOpen] = useState(false)
+
+    useEffect(() => {
+        setOpen(defaultOpen)
+    }, [defaultOpen])
 
     const handleSubmit = useCallback((matcher: Partial<Matcher>) => {
         const addMatcher = async () => {
@@ -31,7 +43,10 @@ const AddMatcher = ({ categoryId }: Props) => {
             setOpen(false)
         }
         addMatcher()
-    }, [dispatch, categoryId])
+        if (onSubmit) {
+            onSubmit(matcher)
+        }
+    }, [dispatch, categoryId, onSubmit])
 
     if (open) {
         return (
@@ -41,15 +56,14 @@ const AddMatcher = ({ categoryId }: Props) => {
                     paddingLeft: 0,
                     paddingRight: 0,
                 }}
-                // onBlur={() => setOpen(false)}
             >
                 <EditMatcher
-                    // onBlur={() => setOpen(false)}
-                    onCancel={() => setOpen(false)}
-                    onSubmit={handleSubmit}
                     clearOnBlur={false}
                     clearOnCancel={true}
                     clearOnSubmit={true}
+                    onCancel={() => setOpen(false)}
+                    onSubmit={handleSubmit}
+                    matcher={matcher}
                 />
             </ListItem>
         )

@@ -11,10 +11,12 @@ import {
     TableHead,
     TableRow,
     Typography,
+    Button,
 } from '@mui/material'
 
 import {
     defaultColumns,
+    toggleSideBar,
     TransactionEditContext,
     updateCategory,
 } from '../../../contexts/transactionEditContext'
@@ -49,6 +51,13 @@ const Table = () => {
             })
         })
     }, [columnMap, categories, updateAssignedCategory])
+
+    const handleClickTitle = useCallback(
+        (match: string) => {
+            dispatch(toggleSideBar(true, match))
+        },
+        [dispatch]
+    )
 
     const data = useMemo(() => 
         filterUncategorised
@@ -96,6 +105,20 @@ const Table = () => {
                     {data.map((transaction, idx) => (
                         <TableRow key={idx}>
                             {columns.map((column, columnIdx) => {
+                                if (column.accessorKey === columnMap.description) {
+                                    return (
+                                        <TableCell key={idx + '_' + columnIdx}>
+                                            <Button
+                                                onClick={() => handleClickTitle(
+                                                    transaction[column.accessorKey] as string,
+                                                )}
+                                                variant='text'
+                                            >
+                                                {transaction[column.accessorKey]}
+                                            </Button>
+                                        </TableCell>
+                                    )
+                                }
                                 if (column.accessorKey === 'assignedCategory') {
                                     const value = categories[transaction.assignedCategory] 
                                         ? {
@@ -105,6 +128,7 @@ const Table = () => {
                                         : null
                                     return (
                                         <TableCell
+                                            key={idx + '_' + columnIdx}
                                             sx={{
                                                 padding: '4px',
                                             }}
@@ -113,7 +137,7 @@ const Table = () => {
                                                 autoHighlight
                                                 disablePortal
                                                 isOptionEqualToValue={(option) => option.id === value?.id}
-                                                key={columnIdx}
+                                                key={idx + '_' + columnIdx}
                                                 onChange={(event, category) => {
                                                     if (!category) {
                                                         return
@@ -148,7 +172,7 @@ const Table = () => {
                                     )
                                 }
                                 return (
-                                    <TableCell key={columnIdx}>
+                                    <TableCell key={idx + '_' + columnIdx}>
                                         {transaction[column.accessorKey]}
                                     </TableCell>
                                 )
