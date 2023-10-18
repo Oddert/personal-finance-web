@@ -88,7 +88,6 @@ const Table = () => {
                 }
                 label='Filter un-categorised'
             />
-            {/* <Typography>{transactions.length - data.length} rows hidden ({transactions.length} total)</Typography> */}
             <Typography>
                 {
                     transactions.length === data.length
