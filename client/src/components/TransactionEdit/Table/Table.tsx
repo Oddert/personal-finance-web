@@ -14,6 +14,8 @@ import {
     Button,
 } from '@mui/material'
 
+import { Circle as DotIcon } from '@mui/icons-material'
+
 import {
     defaultColumns,
     toggleSideBar,
@@ -86,7 +88,14 @@ const Table = () => {
                 }
                 label='Filter un-categorised'
             />
-            <Typography>{transactions.length - data.length} rows hidden</Typography>
+            {/* <Typography>{transactions.length - data.length} rows hidden ({transactions.length} total)</Typography> */}
+            <Typography>
+                {
+                    transactions.length === data.length
+                        ? `${transactions.length} rows`
+                        : `showing ${data.length} of ${transactions.length} rows`
+                }
+                </Typography>
             <MuiTable
                 sx={{
                     width: '100%',
@@ -131,6 +140,8 @@ const Table = () => {
                                             key={idx + '_' + columnIdx}
                                             sx={{
                                                 padding: '4px',
+                                                display: 'flex',
+                                                alignItems: 'center',
                                             }}
                                         >
                                             <Autocomplete
@@ -168,6 +179,17 @@ const Table = () => {
                                                 }}
                                                 value={value}
                                             />
+                                            {value ? null : (
+                                                <DotIcon
+                                                    fontSize='small'
+                                                    sx={(theme) => ({
+                                                        color: theme.palette.warning.light,
+                                                        width: '16px',
+                                                        height: '16px',
+                                                        marginLeft: '6px',
+                                                    })}
+                                                />
+                                            )}
                                         </TableCell>
                                     )
                                 }

@@ -4,15 +4,16 @@ import { Box, Drawer } from '@mui/material'
 
 import { getCategoryResponse } from '../../../redux/selectors/categorySelectors'
 
-import Option  from './components/Option/'
 import { TransactionEditContext, toggleSideBar } from '../../../contexts/transactionEditContext'
+
+import Option  from './components/Option/'
 
 const CategoryQuickEdit = () => {
     const { dispatch, state: { sideBarOpen } } = useContext(TransactionEditContext)
 
     const categories = useSelector(getCategoryResponse)
 
-    const toggleDrawer = (toOpen?: boolean, str?: string) => {
+    const toggleDrawer = (toOpen?: boolean) => {
         const callback = (event: React.KeyboardEvent | React.MouseEvent) => {
             if (
                 event.type === 'keydown' &&
@@ -32,18 +33,18 @@ const CategoryQuickEdit = () => {
     return (
         <Drawer
             open={sideBarOpen}
-            onClose={toggleDrawer(false, 'Drawer.onClose')}
+            onClose={toggleDrawer(false)}
             elevation={10}
             sx={(theme) => ({
                 minWidth: '10vw',
                 maxWidth: '50vw',
                 zIndex: theme.zIndex.appBar * 2,
             })}
-            ModalProps={{ onBackdropClick: toggleDrawer(false, 'Drawer.ModalProps.onBackdropClick') }}
+            ModalProps={{ onBackdropClick: toggleDrawer(false) }}
         >
             <Box
                 role='presentation'
-                onKeyDown={toggleDrawer(false, 'Box.onKeyDown')}
+                onKeyDown={toggleDrawer(false)}
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',

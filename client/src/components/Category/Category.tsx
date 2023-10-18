@@ -19,7 +19,7 @@ interface Props {
     category: CategoryT
     defaultOpenAddNew?: boolean
     defaultOpenMatcher?: Partial<MatcherT>
-    onAddNewSubmit?: () => void
+    onAddNewSubmit?: (matcher: Partial<MatcherT>) => any
 }
 
 const Category = ({
