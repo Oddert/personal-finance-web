@@ -85,6 +85,7 @@ const EditMatcher = ({
         }
     }
 
+    console.log(matchTypesOptions)
     return (
         <Box
             onBlur={handleBlur}
@@ -158,6 +159,11 @@ const EditMatcher = ({
                         onChange={(e) => setMatchType(e?.target?.value as MatchType)}
                         size='small'
                         value={matchType}
+                        MenuProps={{
+                            sx: (theme) => ({
+                                zIndex: theme.zIndex.appBar * 3,
+                            })
+                        }}
                     >
                         {matchTypesOptions.map(({ label, value }) => (
                             <MenuItem key={value} value={value}>{label}</MenuItem>
