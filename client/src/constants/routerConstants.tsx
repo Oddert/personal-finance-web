@@ -5,6 +5,7 @@ import TransactionsIcon from '@mui/icons-material/ReceiptLong'
 
 import Layout from '../components/Layout'
 
+import AllData from '../pages/AllData'
 import Categories from '../pages/Categories/'
 import Home from '../pages/Home'
 import Transactions from '../pages/Transactions/'
@@ -13,6 +14,7 @@ export const ROUTES = Object.freeze({
     HOME: '/',
     TRANSACTIONS: '/transactions',
     CATEGORIES: '/categories',
+    ALL_DATA: '/all-data',
 })
 
 // export const GO = Object.freeze({
@@ -44,6 +46,14 @@ const router = createBrowserRouter([
             </Layout>
         ),
     },
+    {
+        path: ROUTES.ALL_DATA,
+        element: (
+            <Layout>
+                <AllData />
+            </Layout>
+        ),
+    },
 ])
 
 export const navigation = [
@@ -56,6 +66,11 @@ export const navigation = [
         label: 'Categories',
         Icon: CategoryIcon,
         location: ROUTES.CATEGORIES,
+    },
+    {
+        label: 'All Data',
+        Icon: CategoryIcon,
+        location: ROUTES.ALL_DATA,
     },
 ]
 
