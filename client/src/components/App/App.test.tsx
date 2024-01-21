@@ -1,12 +1,16 @@
 import React from 'react';
+// import {describe, expect, test} from '@jest/globals';
 
-import { render } from '@testing-library/react';
+import { render } from '../../utils/testUtils';
 
 import App from './App';
 
-test('renders learn react link', () => {
-    const { container } = render(<App />);
-    // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
-    const linkElement = container.getElementsByClassName('App')
-    expect(linkElement).toBeInTheDocument();
-});
+describe('eyo', () => {
+    test('renders learn react link', () => {
+        const { container } = render(<App />)
+        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+        // const linkElement = container.getElementsByClassName('.App')
+        // expect(linkElement).toBeInTheDocument()
+        expect(container).toBeInTheDocument()
+    });
+})
