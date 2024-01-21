@@ -22,22 +22,29 @@ class Schedule {
 export class ScheduleByScalarTime extends Schedule {
     step: number
 
+    /**
+     * @param _step Number of days between each date.
+     */
     constructor(_step: number) {
         super()
         this.step = _step
     }
 
-    increment(startDate: Date) {
-        return startDate.getTime() + this.step
+    increment(startDate: number|Date) {
+        const date = new Date(startDate)
+        date.setDate(date.getDate() + this.step)
+        return date.getTime()
     }
 
     getRange(startDate: number|Date, endDate: number|Date) {
         const startDateObj = new Date(startDate)
         const endDateObj = new Date(endDate)
         const times = []
-        while (startDateObj.getTime() <= endDateObj.getTime()) {
-            startDateObj.setTime(startDateObj.getTime() + this.step)
-            times.push(startDateObj.getTime())
+        while (startDateObj.getTime() < endDateObj.getTime()) {
+            startDateObj.setDate(startDateObj.getDate() + this.step)
+            if (startDateObj.getTime() <= endDateObj.getTime()) {
+                times.push(startDateObj.getTime())
+            }
         }
         return times
     }
@@ -59,12 +66,12 @@ export class ScheduleBySpecificDay extends Schedule {
     }
 
     increment(startDate: Date) {
-        const start = new Date(startDate)
-        if (this.day <= start.getDate()) {
-            start.setMonth(start.getMonth() + 1)
+        const date = new Date(startDate)
+        if (this.day <= date.getDate()) {
+            date.setMonth(date.getMonth() + 1)
         }
-        start.setDate(this.day)
-        return startDate.getTime()
+        date.setDate(this.day)
+        return date.getTime()
     }
     
     getRange(startDate: number|Date, endDate: number|Date) {
@@ -73,14 +80,16 @@ export class ScheduleBySpecificDay extends Schedule {
         const times = []
         while (startDateObj.getTime() <= endDateObj.getTime()) {
             startDateObj.setTime(this.increment(startDateObj))
-            times.push(startDateObj.getTime())
+            if (startDateObj.getTime() <= endDateObj.getTime()) {
+                times.push(startDateObj.getTime())
+            }
         }
         return times
     }
 
     getMonthRemainder(startDate: number|Date) {
         const start = new Date(startDate)
-        if (start.getDate() >= this.day) {
+        if (start.getDate() <= this.day) {
             start.setDate(this.day)
             return [start.getTime()]
         }
@@ -135,8 +144,10 @@ export class ScheduleByDayOfWeek extends Schedule {
         const endDateObj = new Date(this.increment(new Date(endDate)))
         const times = []
         while (startDateObj <= endDateObj) {
-            times.push(startDateObj.getTime())
-            startDateObj.setDate(startDateObj.getDate() + 7)
+            times.push(startDateObj.getTime())            
+            if (startDateObj.getTime() <= endDateObj.getTime()) {
+                startDateObj.setDate(startDateObj.getDate() + 7)
+            }
         }
         return times
     }
@@ -149,8 +160,12 @@ export class ScheduleByDayOfWeek extends Schedule {
     }
 }
 
-// Every Scalar Time Period (above)
-// Every specific day (above)
+// TODO
+// Every Scalar Time Period ✔️
+// Every specific day ✔️
 // On day of week
-//  - Every Day, Week, Month, Year
-//  - Applies set of exclusion rules
+//  - Every Day✔️, Week, Month, Year
+// Date range with flag to ignore year, month, day
+
+// Apply set of exclusion rules?
+// Rules can compound? Apply logic gate rules AND, OR, XOR, NOT
