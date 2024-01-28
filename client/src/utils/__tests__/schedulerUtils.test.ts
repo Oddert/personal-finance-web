@@ -2,14 +2,14 @@ import { ScheduleByScalarTime, ScheduleBySpecificDay } from '../schedulerUtils'
 
 describe('[ScheduleByScalarTime : 1 day interval]', () => {
     it('increment() via one step', () => {
-        const scheduler = new ScheduleByScalarTime(1)
+        const scheduler = new ScheduleByScalarTime(1, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('2 jan 2024')
         const incremented = scheduler.increment(start)
         expect(incremented).toEqual(end.getTime())
     })
     it('increment() via two steps', () => {
-        const scheduler = new ScheduleByScalarTime(1)
+        const scheduler = new ScheduleByScalarTime(1, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('3 jan 2024')
         const incremented1 = scheduler.increment(start)
@@ -17,7 +17,7 @@ describe('[ScheduleByScalarTime : 1 day interval]', () => {
         expect(incremented2).toEqual(end.getTime())
     })
     it('increment() across the month boundary', () => {
-        const scheduler = new ScheduleByScalarTime(1)
+        const scheduler = new ScheduleByScalarTime(1, '1 jan 2024')
         let start: number|Date = new Date('20 jan 2024')
         const end = new Date('4 Feb 2024')
         for (let i=0; i < 15; i++) {
@@ -26,7 +26,7 @@ describe('[ScheduleByScalarTime : 1 day interval]', () => {
         expect(start).toEqual(end.getTime())
     })
     it('getMonthTotal()', () => {
-        const scheduler = new ScheduleByScalarTime(1)
+        const scheduler = new ScheduleByScalarTime(1, '1 jan 2024')
         const start = new Date('15 jan 2024')
         const end = new Date('15 feb 2024')
         const final = scheduler.getMonthTotal(start)
@@ -35,7 +35,7 @@ describe('[ScheduleByScalarTime : 1 day interval]', () => {
         expect(final[final.length - 1]).toEqual(end.getTime())
     })
     it('getMonthRemainder()', () => {
-        const scheduler = new ScheduleByScalarTime(1)
+        const scheduler = new ScheduleByScalarTime(1, '1 jan 2024')
         const start = new Date('15 jan 2024')
         const end = new Date('31 jan 2024')
         const final = scheduler.getMonthRemainder(start)
@@ -46,14 +46,14 @@ describe('[ScheduleByScalarTime : 1 day interval]', () => {
 
 describe('[ScheduleByScalarTime : 3 day interval]', () => {
     it('increment() via one step', () => {
-        const scheduler = new ScheduleByScalarTime(3)
+        const scheduler = new ScheduleByScalarTime(3, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('4 jan 2024')
         const incremented = scheduler.increment(start)
         expect(incremented).toEqual(end.getTime())
     })
     it('increment() via two steps', () => {
-        const scheduler = new ScheduleByScalarTime(3)
+        const scheduler = new ScheduleByScalarTime(3, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('7 jan 2024')
         const incremented1 = scheduler.increment(start)
@@ -61,7 +61,7 @@ describe('[ScheduleByScalarTime : 3 day interval]', () => {
         expect(incremented2).toEqual(end.getTime())
     })
     it('increment() across the month boundary', () => {
-        const scheduler = new ScheduleByScalarTime(3)
+        const scheduler = new ScheduleByScalarTime(3, '1 jan 2024')
         let start: number|Date = new Date('11 jan 2024')
         const end = new Date('4 Feb 2024')
         for (let i=0; i < 8; i++) {
@@ -70,17 +70,17 @@ describe('[ScheduleByScalarTime : 3 day interval]', () => {
         expect(start).toEqual(end.getTime())
     })
     it('getMonthTotal()', () => {
-        const scheduler = new ScheduleByScalarTime(3)
-        const start = new Date('15 jan 2024')
-        const end = new Date('14 feb 2024')
+        const scheduler = new ScheduleByScalarTime(3, '1 jan 2024')
+        const start = new Date('16 jan 2024')
+        const end = new Date('15 feb 2024')
         const final = scheduler.getMonthTotal(start)
         expect(final).toHaveLength(10)
         expect(final[final.length - 1]).toEqual(end.getTime())
     })
     it('getMonthRemainder()', () => {
-        const scheduler = new ScheduleByScalarTime(3)
-        const start = new Date('15 jan 2024')
-        const end = new Date('30 jan 2024')
+        const scheduler = new ScheduleByScalarTime(3, '1 jan 2024')
+        const start = new Date('16 jan 2024')
+        const end = new Date('31 jan 2024')
         const final = scheduler.getMonthRemainder(start)
         expect(final).toHaveLength(5)
         expect(final[final.length - 1]).toEqual(end.getTime())
@@ -89,14 +89,14 @@ describe('[ScheduleByScalarTime : 3 day interval]', () => {
 
 describe('[ScheduleByScalarTime : 10 day interval]', () => {
     it('increment() via one step', () => {
-        const scheduler = new ScheduleByScalarTime(10)
+        const scheduler = new ScheduleByScalarTime(10, '1 jan 2024')
         const start = new Date('13 jan 2024')
         const end = new Date('23 jan 2024')
         const incremented = scheduler.increment(start)
         expect(incremented).toEqual(end.getTime())
     })
     it('increment() via two steps', () => {
-        const scheduler = new ScheduleByScalarTime(10)
+        const scheduler = new ScheduleByScalarTime(10, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('21 jan 2024')
         const incremented1 = scheduler.increment(start)
@@ -104,7 +104,7 @@ describe('[ScheduleByScalarTime : 10 day interval]', () => {
         expect(incremented2).toEqual(end.getTime())
     })
     it('increment() across the month boundary', () => {
-        const scheduler = new ScheduleByScalarTime(10)
+        const scheduler = new ScheduleByScalarTime(10, '1 jan 2024')
         let start: number|Date = new Date('5 jan 2024')
         const end = new Date('4 Feb 2024')
         for (let i=0; i < 3; i++) {
@@ -113,7 +113,7 @@ describe('[ScheduleByScalarTime : 10 day interval]', () => {
         expect(start).toEqual(end.getTime())
     })
     it('getMonthTotal()', () => {
-        const scheduler = new ScheduleByScalarTime(10)
+        const scheduler = new ScheduleByScalarTime(10, '15 jan 2024')
         const start = new Date('15 jan 2024')
         const end = new Date('14 feb 2024')
         const final = scheduler.getMonthTotal(start)
@@ -121,7 +121,7 @@ describe('[ScheduleByScalarTime : 10 day interval]', () => {
         expect(final[final.length - 1]).toEqual(end.getTime())
     })
     it('getMonthRemainder()', () => {
-        const scheduler = new ScheduleByScalarTime(10)
+        const scheduler = new ScheduleByScalarTime(10, '15 jan 2024')
         const start = new Date('15 jan 2024')
         const end = new Date('25 jan 2024')
         const final = scheduler.getMonthRemainder(start)
@@ -132,14 +132,14 @@ describe('[ScheduleByScalarTime : 10 day interval]', () => {
 
 describe('[ScheduleByScalarTime : 31 day interval]', () => {
     it('increment() via one step', () => {
-        const scheduler = new ScheduleByScalarTime(31)
+        const scheduler = new ScheduleByScalarTime(31, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('1 feb 2024')
         const incremented = scheduler.increment(start)
         expect(incremented).toEqual(end.getTime())
     })
     it('increment() via two steps', () => {
-        const scheduler = new ScheduleByScalarTime(31)
+        const scheduler = new ScheduleByScalarTime(31, '1 jan 2024')
         const start = new Date('1 jan 2024')
         const end = new Date('3 march 2024')
         const incremented1 = scheduler.increment(start)
@@ -147,7 +147,7 @@ describe('[ScheduleByScalarTime : 31 day interval]', () => {
         expect(incremented2).toEqual(end.getTime())
     })
     it('getMonthTotal()', () => {
-        const scheduler = new ScheduleByScalarTime(31)
+        const scheduler = new ScheduleByScalarTime(31, '15 jan 2024')
         const start = new Date('15 jan 2024')
         const end = new Date('15 feb 2024')
         const final = scheduler.getMonthTotal(start)
@@ -155,7 +155,7 @@ describe('[ScheduleByScalarTime : 31 day interval]', () => {
         expect(final[final.length - 1]).toEqual(end.getTime())
     })
     it('getMonthRemainder()', () => {
-        const scheduler = new ScheduleByScalarTime(31)
+        const scheduler = new ScheduleByScalarTime(31, '1 jan 2024')
         const start = new Date('15 jan 2024')
         const final = scheduler.getMonthRemainder(start)
         expect(final).toHaveLength(0)
