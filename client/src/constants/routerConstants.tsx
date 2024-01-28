@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import CategoryIcon from '@mui/icons-material/Category'
+import AllDataIcon from '@mui/icons-material/WaterfallChart'
 import TransactionsIcon from '@mui/icons-material/ReceiptLong'
 
 import Layout from '../components/Layout'
@@ -69,7 +70,7 @@ export const navigation = [
     },
     {
         label: 'All Data',
-        Icon: CategoryIcon,
+        Icon: AllDataIcon,
         location: ROUTES.ALL_DATA,
     },
 ]
