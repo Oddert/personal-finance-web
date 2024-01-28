@@ -21,13 +21,24 @@ class Schedule {
 
 export class ScheduleByScalarTime extends Schedule {
     step: number
+    startDate: Date
 
     /**
      * @param _step Number of days between each date.
+     * @param _startDate The date the increment begins from.
      */
-    constructor(_step: number) {
+    constructor(_step: number, _startDate: string|number|Date) {
         super()
         this.step = _step
+        this.startDate = new Date(_startDate)
+    }
+
+    getLastIncrement(startDate: number|Date) {
+        const diff = Math.abs((new Date(startDate).getTime() - this.startDate.getTime()) / 86400000)
+        const remainder = diff % this.step
+        const date = new Date(startDate)
+        date.setDate(date.getDate() - remainder)
+        return date
     }
 
     increment(startDate: number|Date) {
@@ -38,12 +49,14 @@ export class ScheduleByScalarTime extends Schedule {
 
     getRange(startDate: number|Date, endDate: number|Date) {
         const startDateObj = new Date(startDate)
+        const date = new Date(this.getLastIncrement(startDate))
         const endDateObj = new Date(endDate)
         const times = []
-        while (startDateObj.getTime() < endDateObj.getTime()) {
-            startDateObj.setDate(startDateObj.getDate() + this.step)
-            if (startDateObj.getTime() <= endDateObj.getTime()) {
-                times.push(startDateObj.getTime())
+        while (date.getTime() < endDateObj.getTime()) {
+            date.setDate(date.getDate() + this.step)
+            const currentTime = date.getTime()
+            if (currentTime >= startDateObj.getTime() && currentTime <= endDateObj.getTime()) {
+                times.push(date.getTime())
             }
         }
         return times
