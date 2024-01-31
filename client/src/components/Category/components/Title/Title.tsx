@@ -27,6 +27,7 @@ const Title = ({ category }: Props) => {
             editable
             handleChange={handleChange}
             text={category.label}
+            size='xl'
         />
     )
 }

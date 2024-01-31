@@ -21,14 +21,17 @@ const sizeMap = {
 }
 
 const TitleBase = ({ colour, editable, handleChange, text, size }: Props) => {
-    const headingProps = useMemo(() => ({
-        sx: {
-            borderBottom: `2px solid ${colour}`,
-            alignSelf: 'stretch',
-            fontSize: sizeMap[size]
-        },
-        variant: 'h3' as Variant | 'inherit' | undefined,
-    }), [colour, size])
+    const headingProps = useMemo(() => {
+        console.log(sizeMap, size, sizeMap[size])
+        return {
+            sx: {
+                borderBottom: `2px solid ${colour}`,
+                alignSelf: 'stretch',
+                fontSize: sizeMap[size]
+            },
+            variant: 'h3' as Variant | 'inherit' | undefined,
+        }
+    }, [colour, size])
 
     if (editable) {
         return (
