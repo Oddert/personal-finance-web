@@ -39,6 +39,20 @@ export const categorySlice = createSlice({
             state.loading = false
             state.queried = true
         },
+        initCreateCategory: (state, action: PayloadAction<{
+            category: Partial<Category>
+        }>) => {
+            state.loading = true
+        },
+        createCategory: (state, action: PayloadAction<{
+            category: Category,
+        }>) => {
+            const category = action.payload.category
+            state.response.push(category)
+            state.orderedData.byId[category.id] = category
+            state.orderedData.byLabel[category.label] = category
+            state.loading = false
+        },
         initUpdateSingleCategory: (state, action: PayloadAction<{
             category: Partial<Category>
         }>) => {
@@ -62,6 +76,22 @@ export const categorySlice = createSlice({
             
             state.loading = false
             state.queried = true
+        },
+        initDeleteSingleCategory: (state, action: PayloadAction<{
+            categoryId: Category['id'],
+        }>) => {
+            state.loading = true
+        },
+        deleteSingleCategory: (state, action: PayloadAction<{
+            categoryId: Category['id'],
+        }>) => {
+            const categoryId = action.payload.categoryId
+            state.response = state.response.filter(
+                category => category.id !== categoryId,
+            )
+            delete state.orderedData.byLabel[state.orderedData.byId[categoryId].label]
+            delete state.orderedData.byId[categoryId]
+            state.loading = false
         },
         initCreateSingleMatcher: (state, action: PayloadAction<{
             categoryId: Category['id'],
@@ -161,8 +191,12 @@ export const categorySlice = createSlice({
 export const {
     requestCategories,
     writeCategories,
+    initCreateCategory,
+    createCategory,
     initUpdateSingleCategory,
     updateSingleCategory,
+    initDeleteSingleCategory,
+    deleteSingleCategory,
     initCreateSingleMatcher,
     createSingleMatcher,
     initUpdateSingleMatcher,

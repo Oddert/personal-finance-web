@@ -28,6 +28,7 @@ const Title = ({ category }: Props) => {
             handleChange={handleChange}
             text={category.label}
             size='xl'
+            showBorder={false}
         />
     )
 }

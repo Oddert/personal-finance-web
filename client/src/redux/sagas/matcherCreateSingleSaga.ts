@@ -9,7 +9,7 @@ import type { ResponseData } from '../../types/Request'
 
 import { createSingleMatcher } from '../slices/categorySlice'
 
-export default function* matcherDeleteSingleSaga(
+export default function* matcherCreateSingleSaga(
     { payload }: PayloadAction<{
         matcher: Partial<Matcher>,
         categoryId: Category['id'],

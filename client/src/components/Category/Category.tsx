@@ -14,6 +14,7 @@ import Colour from './components/Colour'
 import Description from './components/Description'
 import Matcher from './components/Matcher'
 import Title from './components/Title'
+import HamburgerMenu from './components/HamburgerMenu'
 
 interface Props {
     category: CategoryT
@@ -57,7 +58,10 @@ const Category = ({
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
                 >
                     <Colour category={category} />
-                    <Title category={category} />
+                    <Box sx={{ display: 'flex', borderBottom: `3px solid ${category.colour}`, padding: '16px 0' }}>
+                        <Title category={category} />
+                        <HamburgerMenu category={category} />
+                    </Box>
                 </Box>
                 <Description category={category} />
                 <Typography
