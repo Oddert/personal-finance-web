@@ -1,7 +1,8 @@
 import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react'
 import { ColorChangeHandler, SketchPicker } from 'react-color'
 
-import { Box, Button, Popover } from '@mui/material'
+import { Theme } from '@emotion/react'
+import { Box, Button, Popover, SxProps } from '@mui/material'
 
 import { defaultCategoryColours } from '../../constants/categoryConstants'
 
@@ -11,9 +12,10 @@ interface Props {
     colour?: string
     onSubmit: (colour: string) => void
     popoverId?: string
+    sx?: SxProps<Theme> | undefined
 }
 
-const ColourEdit: FC<Props> = ({ colour, onSubmit, popoverId }) => {
+const ColourEdit: FC<Props> = ({ colour, onSubmit, popoverId, sx }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement|null>(null)
     const [editedColour, setEditedColour] = useState<string>('#bec3c7')
     const [hasChanged, setHasChanged] = useState<boolean>(false)
@@ -58,6 +60,7 @@ const ColourEdit: FC<Props> = ({ colour, onSubmit, popoverId }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
+                ...sx,
             }}
         >
             <ColourBase
