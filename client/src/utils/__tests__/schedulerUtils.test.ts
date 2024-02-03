@@ -1,4 +1,4 @@
-import { ScheduleByScalarTime, ScheduleBySpecificDay } from '../schedulerUtils'
+import { ScheduleByEvent, ScheduleByScalarTime, ScheduleBySpecificDay } from '../schedulerUtils'
 
 describe('[ScheduleByScalarTime : 1 day interval]', () => {
     it('increment() via one step', () => {
@@ -258,7 +258,6 @@ describe('[ScheduleBySpecificDay : 31st of month]', () => {
         const start = new Date('31 jan 2024')
         const end = new Date('31 march 2024')
         const incremented = scheduler.increment(start)
-        console.log(new Date(incremented))
         expect(incremented).toEqual(end.getTime())
     })
     it('increment() from before start', () => {
@@ -267,5 +266,20 @@ describe('[ScheduleBySpecificDay : 31st of month]', () => {
         const end = new Date('31 jan 2024')
         const incremented = scheduler.increment(start)
         expect(incremented).toEqual(end.getTime())
+    })
+})
+
+describe('[ScheduleByEvent : 15 february 2024]', () => {
+    it('increment() from after start', () => {
+        const scheduler = new ScheduleByEvent('15 february 2024')
+        const start = new Date('25 february 2024')
+        const incremented = scheduler.increment(start)
+        expect(incremented).toEqual(null)
+    })
+    it('increment() from before start', () => {
+        const scheduler = new ScheduleByEvent('15 february 2024')
+        const start = new Date('25 january 2024')
+        const incremented = scheduler.increment(start)
+        expect(incremented).toEqual(new Date('15 february 2024'))
     })
 })

@@ -132,14 +132,17 @@ const intToDay: { [key: number]: shortDay } = {
     6: 'sat',
 }
 
+// TODO: add nth day
 export class ScheduleByDayOfWeek extends Schedule {
     day: number
     dayReadable: shortDay
+    everyNthDay?: number
 
-    constructor(_day: number|shortDay) {
+    constructor(_day: number|shortDay, _everyNthDay?: number) {
         super()
         this.day = typeof _day === 'string' ? dayToInt[_day] : _day
         this.dayReadable = typeof _day === 'number' ? intToDay[_day] : _day
+        this.everyNthDay = _everyNthDay
     }
 
     increment(startDate: Date) {
@@ -157,7 +160,7 @@ export class ScheduleByDayOfWeek extends Schedule {
         const endDateObj = new Date(this.increment(new Date(endDate)))
         const times = []
         while (startDateObj <= endDateObj) {
-            times.push(startDateObj.getTime())            
+            times.push(startDateObj.getTime())
             if (startDateObj.getTime() <= endDateObj.getTime()) {
                 startDateObj.setDate(startDateObj.getDate() + 7)
             }
@@ -170,6 +173,43 @@ export class ScheduleByDayOfWeek extends Schedule {
         endDate.setMonth(endDate.getMonth() + 1)
         endDate.setDate(0)
         return this.getRange(startDate, endDate)
+    }
+}
+
+export class ScheduleByEvent extends Schedule {
+    date: Date
+
+    constructor(_date: string|number|Date) {
+        super()
+        this.date = new Date(_date)
+    }
+
+    increment(startDate: Date) {
+        if (this.date <= startDate) {
+            return null
+        }
+        return this.date.getTime()
+    }
+
+    getRange(startDate: number | Date, endDate: number | Date) {
+        const startDateObj = new Date(startDate)
+        const endDateObj = new Date(endDate)
+        if (this.date >= startDateObj && this.date <= endDateObj) {
+            return [this.date.getTime()]
+        }
+        return []
+    }
+    
+    getMonthRemainder(startDate: number|Date) {
+        const startDateObj = new Date(startDate)
+        const endDateObj = new Date(startDateObj)
+        startDateObj.setDate(15)
+        startDateObj.setMonth(startDateObj.getMonth() + 1)
+        startDateObj.setDate(0)
+        if (this.date >= startDateObj && this.date <= endDateObj) {
+            return [this.date.getTime()]
+        }
+        return []
     }
 }
 
