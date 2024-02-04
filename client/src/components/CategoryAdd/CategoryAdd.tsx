@@ -14,6 +14,7 @@ import {
 import ColourEdit from '../ColourEdit'
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
 import { initCreateCategory } from '../../redux/slices/categorySlice'
+// import AddMatcher from '../Category/components/AddMatcher'
 
 interface Props {
     handleClose: (payload?: any) => void
@@ -190,6 +191,12 @@ const CategoryAdd: FC<Props> = ({ handleClose, open }) => {
                                 gridRow: '1 / -1',
                             }}
                         />
+                        {/* <AddMatcher
+                            categoryId={category.id}
+                            defaultOpen={defaultOpenAddNew}
+                            matcher={defaultOpenMatcher || undefined}
+                            onSubmit={onAddNewSubmit}
+                        /> */}
                     </FormControl>
                 </DialogContent>
                 <DialogActions>

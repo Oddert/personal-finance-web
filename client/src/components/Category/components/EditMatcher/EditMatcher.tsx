@@ -85,7 +85,6 @@ const EditMatcher = ({
         }
     }
 
-    console.log(matchTypesOptions)
     return (
         <Box
             onBlur={handleBlur}
