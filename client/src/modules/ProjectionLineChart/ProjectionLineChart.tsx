@@ -1,117 +1,70 @@
-import { useEffect, useState } from 'react'
+import { SyntheticEvent, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Chart from 'react-apexcharts'
-import { ApexOptions } from 'apexcharts'
 
-import { Input, Paper } from '@mui/material'
+import { Autocomplete, Checkbox, FormControlLabel, Input, Paper, TextField } from '@mui/material'
 
-import {
-    // CURRENCY_SYMBOL,
-    LOCALE
-} from '../../constants/appConstants'
 // temp file used for privacy, swap for ../../constants/projectionConstants.ts
-import { defaultScenario, scenarioTrimFat } from '../../constants/projectionConstants.temp'
+import { defaultScenario, newBike, scenarioTrimFat } from '../../constants/projectionConstants.temp'
 
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors'
 
 import { Transaction } from '../../types/Transaction'
 
-const largeValueFormatter = (number: number) => {
-    if (number === null || isNaN(number)) {
-        return String(number)
-    }
-    const str = number.toString().split('.')
-    if (str[0].length >= 4) {
-        str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
-    }
-    if (str[1] && str[1].length >= 4) {
-        str[1] = str[1].replace(/(\d{3})/g, '$1,')
-    }
-    return str.join('.')
-}
-
-const chart1BaseOptions: ApexOptions = {
-    chart: {
-        id: 'existing-data-line-chart',
-        type: 'line',
-    },
-    grid: {
-        show: true,
-        row: {
-            colors: ['rgba(243, 243, 243, 0.3)', 'transparent'],
-        },
-    },
-    legend: {
-        show: true,
-    },
-    markers: {
-        size: 2,
-    },
-    stroke: {
-        curve: 'smooth',
-        width: 2,
-    },
-    // tooltip: {
-    //     custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-    //         const datum = w.globals.initialSeries[seriesIndex].data[dataPointIndex]
-    //         return `
-    //             <div>
-    //                 <div>
-    //                     <p>${new Date(datum.x).toLocaleDateString(LOCALE)}</p>
-    //                     </div>
-    //                 <div>
-    //                     <p>${CURRENCY_SYMBOL}${largeValueFormatter(datum.y)}</p>
-    //                     ${
-    //                         datum.label.length
-    //                             ? `<p>${datum.label}</p>`
-    //                             : ''
-    //                     }
-    //                 </div>
-    //             </div>
-    //         `
-    //     }
-    // },
-    xaxis: {
-        labels: {
-            style: {
-                colors: '#fff',
-            },
-            formatter: val => new Date(val).toLocaleDateString(LOCALE)
-        },
-        tickAmount: 10,
-    },
-    yaxis: {
-        tickAmount: 12,
-        labels: {
-            style: {
-                colors: '#fff',
-            },
-            formatter: largeValueFormatter,
-        },
-    },
-}
+import { chart1BaseOptions } from './ProjectionLineChartUtils'
 
 const defaultStart = new Date()
 const defaultEnd = new Date()
 defaultEnd.setMonth(defaultEnd.getMonth() + 4)
 defaultEnd.setDate(0)
 
-// const defaultEnd = '2023-05-31'
+const scenarios = [defaultScenario, scenarioTrimFat, newBike]
+const scenarioOptions = scenarios.map(
+    (scenario, idx) => ({ label: scenario.title, id: idx }),
+)
 
-const scenarios = [defaultScenario, scenarioTrimFat]
-
+/**
+ * Shows future expected transactions based on Scenarios.
+ * @component
+ */
 const ProjectionLineChart = () => {
+    const [activeScenariosOpt, setActiveScenariosOpt] =
+        useState<{ label: string; id: number; }[]>(scenarioOptions)
+
+    const [activeScenarios, setActiveScenarios] = useState(scenarios)
+
     const [startDate, setStartDate] =
         useState<string|number>(defaultStart.toISOString().substring(0, 10))
+
     const [endDate, setEndDate] =
         useState<string|number>(defaultEnd.toISOString().substring(0, 10))
+
     const [startingBallance, setStartingBallance] = useState(0)
-    // const [endDate, setEndDate] = useState<string|number>(defaultEnd)
 
     const [pastBallance, setPastBallance] = useState<{ x: number|string, y: number|string }[]>([])
     const [futureBallance, setFutureBallance] = useState<{ x: number|string, y: number|string }[][]>([])
+
+    const [showHistorical, setShowHistorical] = useState(false)
     
     const transactions = useSelector(getTransactionsOrderedByDate)
+
+    const handleScenarioSelection = (
+        event: SyntheticEvent<Element, Event>,
+        value: {
+            label: string;
+            id: number;
+        }[]
+    ) => {
+        const ids = value.map(({ id }) => id)
+        setActiveScenarios(
+            scenarios.filter((scenario) => ids.includes(scenario.id))
+        )
+        setActiveScenariosOpt(value)
+    }
+
+    useEffect(() => {
+        setActiveScenariosOpt(scenarioOptions)
+    }, [])
 
     useEffect(() => {
         const monthSets = Object.values(transactions).reduce(
@@ -137,18 +90,12 @@ const ProjectionLineChart = () => {
         )
         const calculatedPastData = Object.values(sampledDataObj)
         setPastBallance(calculatedPastData)
+        setStartingBallance(calculatedPastData[calculatedPastData.length - 1].y)
     }, [transactions])
 
     useEffect(() => {
-        // NOTE: handle dates in the past, remove startDate?
-        if (!pastBallance?.length) {
-            return
-        }
-        // const lastEntry = pastBallance[0]
-
         const startObj = new Date(startDate)
         const endObj = new Date(endDate)
-        console.log(startObj, endObj)
 
         interface ProjectionTransactionT {
             action: (ballance: number) => number
@@ -158,7 +105,7 @@ const ProjectionLineChart = () => {
 
         const ranges = []
 
-        for (const scenario of scenarios) {
+        for (const scenario of activeScenarios) {
             const actions: { [key: number]: ProjectionTransactionT[] } = {}
 
             for (const transactor of scenario.transactors) {
@@ -177,8 +124,8 @@ const ProjectionLineChart = () => {
                 }
             }
             const length = Math.abs((startObj.getTime() - endObj.getTime()) / 86400000)
-            let runningBallance = Number(startingBallance) // Number(lastEntry.y)
-        
+            let runningBallance = Number(startingBallance)
+
             const range = Array.from({ length }, (_, idx) => {
                 const localDate = new Date(startObj)
                 localDate.setDate(localDate.getDate() + idx)
@@ -194,59 +141,116 @@ const ProjectionLineChart = () => {
             })
             ranges.push(range)
         }
-        
-        setFutureBallance(ranges)
-    }, [pastBallance, startingBallance, startDate, endDate])
 
-    console.log(pastBallance, futureBallance)
+        setFutureBallance(ranges)
+    }, [activeScenarios, startingBallance, startDate, endDate])
+
     return (
         <Paper
             elevation={4}
             sx={(theme) => ({
+                color: theme.palette.common.black,
                 margin: '20px 0 0',
                 padding: '20px',
                 '& #apexchartsexisting-data-line-chart, & #apexchartscredit-debit-chart': {
                     margin: '0 auto',
                 },
-                color: theme.palette.common.black,
-                '& *': {
-                    color: theme.palette.common.black,
-                },
             })}
         >
-            <Input
-                name='start-ballance'
-                onChange={(evt) => setStartingBallance(Number(evt.target.value))}
-                placeholder='Start Ballance'
-                type='number'
-                value={startingBallance}
+            <FormControlLabel
+                control={
+                    <Input
+                        name='start-ballance'
+                        onChange={(evt) => setStartingBallance(Number(evt.target.value))}
+                        placeholder='Start Ballance'
+                        type='number'
+                        value={startingBallance}
+                    />
+                }
+                label='Starting Ballance'
+                labelPlacement='top'
+                sx={(theme) => ({
+                    alignItems: 'flex-start',
+                    color: theme.palette.common.white,   
+                })}
             />
-            <Input
-                name='start-date'
-                onChange={(evt) => setStartDate(evt.target.value)}
-                placeholder='Start Date'
-                type='date'
-                value={startDate}
+            <FormControlLabel
+                control={
+                    <Input
+                        name='start-date'
+                        onChange={(evt) => setStartDate(evt.target.value)}
+                        placeholder='Start Date'
+                        type='date'
+                        value={startDate}
+                    />
+                }
+                label='Start Date'
+                labelPlacement='top'
+                sx={(theme) => ({
+                    alignItems: 'flex-start',
+                    color: theme.palette.common.white,   
+                })}
             />
-            <Input
-                name='end-date'
-                onChange={(evt) => setEndDate(evt.target.value)}
-                placeholder='End Date'
-                type='date'
-                value={endDate}
+            <FormControlLabel
+                control={
+                    <Input
+                        name='end-date'
+                        onChange={(evt) => setEndDate(evt.target.value)}
+                        placeholder='End Date'
+                        type='date'
+                        value={endDate}
+                    />
+                }
+                label='End Date'
+                labelPlacement='top'
+                sx={(theme) => ({
+                    alignItems: 'flex-start',
+                    color: theme.palette.common.white,   
+                })}
+            />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        name='show-historical'
+                        onChange={(evt) => setShowHistorical(evt.target.checked)}
+                        value={showHistorical}
+                    />
+                }
+                label='Show Past Data'
+                labelPlacement='top'
+                sx={(theme) => ({
+                    alignItems: 'flex-start',
+                    color: theme.palette.common.white,   
+                })}
+            />
+            <Autocomplete
+                multiple
+                onChange={handleScenarioSelection}
+                options={scenarioOptions}
+                renderInput={(params) => <TextField {...params} label='Active Scenarios' />}
+                value={activeScenariosOpt}
             />
             <Chart
                 options={chart1BaseOptions}
-                series={[
-                    // {
-                    //     name: 'Ballance',
-                    //     data: pastBallance,
-                    // },
-                    ...futureBallance.map((projection, idx) => ({
-                        name: scenarios[idx].title,
-                        data: projection,
-                    }))
-                ]}
+                series={
+                    showHistorical
+                        ? [
+                            {
+                                name: 'Ballance',
+                                data: pastBallance,
+                            },
+                            ...futureBallance.map((projection, idx) => ({
+                                name: scenarios[idx].title,
+                                data: projection,
+                            }))
+                        ]
+                        : futureBallance.map(
+                            (projection, idx) => ({
+                                name: scenarios[idx].title,
+                                data: projection,
+                            })
+                        )
+                }
                 type='line'
                 width='80%'
                 height='400px'
