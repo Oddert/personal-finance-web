@@ -203,9 +203,9 @@ export class ScheduleByEvent extends Schedule {
     getMonthRemainder(startDate: number|Date) {
         const startDateObj = new Date(startDate)
         const endDateObj = new Date(startDateObj)
-        startDateObj.setDate(15)
-        startDateObj.setMonth(startDateObj.getMonth() + 1)
-        startDateObj.setDate(0)
+        endDateObj.setDate(15)
+        endDateObj.setMonth(endDateObj.getMonth() + 1)
+        endDateObj.setDate(0)
         if (this.date >= startDateObj && this.date <= endDateObj) {
             return [this.date.getTime()]
         }
