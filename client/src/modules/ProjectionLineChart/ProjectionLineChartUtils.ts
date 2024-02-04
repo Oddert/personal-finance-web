@@ -2,11 +2,29 @@ import { ApexOptions } from 'apexcharts';
 
 import { LOCALE } from '../../constants/appConstants';
 
+// temp file used for privacy, swap for ../../constants/projectionConstants.ts
+import { defaultScenario, newBike, scenarioTrimFat } from '../../constants/projectionConstants.temp';
+
 import theme from '../../theme';
 
 import { largeValueFormatter } from '../../utils/chartUtils';
 
-export const chart1BaseOptions: ApexOptions = {
+export const MODULE_PROJECTION_PAST_BALLANCE = 'MODULE_PROJECTION_PAST_BALLANCE'
+
+export const title = 'Future Scenario Projection'
+
+export const defaultStart = new Date()
+const defaultEndConstructor = new Date()
+defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 4)
+defaultEndConstructor.setDate(0)
+export const defaultEnd = new Date(defaultEndConstructor)
+
+export const scenarios = [defaultScenario, scenarioTrimFat, newBike]
+export const scenarioOptions = scenarios.map(
+    (scenario, idx) => ({ label: scenario.title, id: idx }),
+)
+
+export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
     chart: {
         id: 'existing-data-line-chart',
         type: 'line',
@@ -24,7 +42,7 @@ export const chart1BaseOptions: ApexOptions = {
         },
     },
     markers: {
-        size: 2,
+        size: compact ? 0 : 2,
     },
     stroke: {
         curve: 'smooth',
@@ -55,7 +73,7 @@ export const chart1BaseOptions: ApexOptions = {
             style: {
                 colors: theme.palette.common.white,
             },
-            formatter: val => new Date(val).toLocaleDateString(LOCALE)
+            formatter: (val: string) => new Date(val).toLocaleDateString(LOCALE)
         },
         tickAmount: 10,
     },
@@ -68,4 +86,4 @@ export const chart1BaseOptions: ApexOptions = {
             formatter: largeValueFormatter,
         },
     },
-}
+})

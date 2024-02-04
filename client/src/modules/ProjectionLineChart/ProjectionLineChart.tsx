@@ -1,33 +1,47 @@
-import { SyntheticEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FC, SyntheticEvent, useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Chart from 'react-apexcharts'
 
-import { Autocomplete, Checkbox, FormControlLabel, Input, Paper, TextField } from '@mui/material'
+import {
+    Accordion,
+    AccordionActions,
+    AccordionSummary,
+    Autocomplete,
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Input,
+    Paper,
+    TextField,
+    Typography,
+} from '@mui/material'
+import { ExpandMore as ExpandIcon } from '@mui/icons-material'
 
-// temp file used for privacy, swap for ../../constants/projectionConstants.ts
-import { defaultScenario, newBike, scenarioTrimFat } from '../../constants/projectionConstants.temp'
+import { getFromLocalStore, setToLocalStore } from '../../common/localstore'
 
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors'
 
 import { Transaction } from '../../types/Transaction'
 
-import { chart1BaseOptions } from './ProjectionLineChartUtils'
+import {
+    chart1BaseOptions,
+    defaultEnd,
+    defaultStart,
+    MODULE_PROJECTION_PAST_BALLANCE,
+    scenarioOptions,
+    scenarios,
+    title,
+} from './ProjectionLineChartUtils'
 
-const defaultStart = new Date()
-const defaultEnd = new Date()
-defaultEnd.setMonth(defaultEnd.getMonth() + 4)
-defaultEnd.setDate(0)
-
-const scenarios = [defaultScenario, scenarioTrimFat, newBike]
-const scenarioOptions = scenarios.map(
-    (scenario, idx) => ({ label: scenario.title, id: idx }),
-)
+interface Props {
+    compact?: boolean
+}
 
 /**
  * Shows future expected transactions based on Scenarios.
  * @component
  */
-const ProjectionLineChart = () => {
+const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
     const [activeScenariosOpt, setActiveScenariosOpt] =
         useState<{ label: string; id: number; }[]>(scenarioOptions)
 
@@ -62,8 +76,23 @@ const ProjectionLineChart = () => {
         setActiveScenariosOpt(value)
     }
 
+    const handleChangeStartBallance = useCallback(
+        (evt: ChangeEvent<HTMLInputElement>) => {
+            const val = Number(evt.target.value)
+            setStartingBallance(val)
+            setToLocalStore(MODULE_PROJECTION_PAST_BALLANCE, val)
+        },
+        [],
+    )
+
     useEffect(() => {
         setActiveScenariosOpt(scenarioOptions)
+        const previousStartBallance = getFromLocalStore(
+            MODULE_PROJECTION_PAST_BALLANCE,
+        )
+        if (previousStartBallance) {
+            setStartingBallance(Number(previousStartBallance))
+        }
     }, [])
 
     useEffect(() => {
@@ -90,7 +119,6 @@ const ProjectionLineChart = () => {
         )
         const calculatedPastData = Object.values(sampledDataObj)
         setPastBallance(calculatedPastData)
-        setStartingBallance(calculatedPastData[calculatedPastData.length - 1].y)
     }, [transactions])
 
     useEffect(() => {
@@ -145,23 +173,52 @@ const ProjectionLineChart = () => {
         setFutureBallance(ranges)
     }, [activeScenarios, startingBallance, startDate, endDate])
 
-    return (
-        <Paper
-            elevation={4}
-            sx={(theme) => ({
-                color: theme.palette.common.black,
-                margin: '20px 0 0',
-                padding: '20px',
-                '& #apexchartsexisting-data-line-chart, & #apexchartscredit-debit-chart': {
-                    margin: '0 auto',
-                },
-            })}
+    const Controls = (
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+            }}
         >
+            <Box
+                sx={{
+                    display: 'flex',
+                    gridColumn: '1 / -1',
+                }}
+            >
+                <Autocomplete
+                    multiple
+                    onChange={handleScenarioSelection}
+                    options={scenarioOptions}
+                    renderInput={(params) => (
+                        <TextField {...params} label='Active Scenarios' />
+                    )}
+                    sx={{
+                        flex: 1,
+                    }}
+                    value={activeScenariosOpt}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name='show-historical'
+                            onChange={(evt) => setShowHistorical(evt.target.checked)}
+                            value={showHistorical}
+                        />
+                    }
+                    label='Show Past Data'
+                    labelPlacement='top'
+                    sx={(theme) => ({
+                        alignItems: 'flex-start',
+                        color: theme.palette.common.white,   
+                    })}
+                />
+            </Box>
             <FormControlLabel
                 control={
                     <Input
                         name='start-ballance'
-                        onChange={(evt) => setStartingBallance(Number(evt.target.value))}
+                        onChange={handleChangeStartBallance}
                         placeholder='Start Ballance'
                         type='number'
                         value={startingBallance}
@@ -208,30 +265,49 @@ const ProjectionLineChart = () => {
                     color: theme.palette.common.white,   
                 })}
             />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        name='show-historical'
-                        onChange={(evt) => setShowHistorical(evt.target.checked)}
-                        value={showHistorical}
-                    />
-                }
-                label='Show Past Data'
-                labelPlacement='top'
-                sx={(theme) => ({
-                    alignItems: 'flex-start',
-                    color: theme.palette.common.white,   
-                })}
-            />
-            <Autocomplete
-                multiple
-                onChange={handleScenarioSelection}
-                options={scenarioOptions}
-                renderInput={(params) => <TextField {...params} label='Active Scenarios' />}
-                value={activeScenariosOpt}
-            />
+        </Box>
+    )
+
+    return (
+        <Paper
+            elevation={4}
+            sx={(theme) => ({
+                color: theme.palette.common.black,
+                margin: '20px 0 0',
+                padding: '20px',
+                '& #apexchartsexisting-data-line-chart, & #apexchartscredit-debit-chart': {
+                    margin: '0 auto',
+                },
+            })}
+        >
+            {
+                compact ? (
+                    <Accordion>
+                        <AccordionSummary
+                            aria-controls='projection-line-controls'
+                            expandIcon={<ExpandIcon />}
+                            id='projection-controls-header'
+                        >
+                            {title}
+                        </AccordionSummary>
+                        <AccordionActions>
+                            {Controls}
+                        </AccordionActions>
+                    </Accordion>
+                ) : (
+                    <Box sx={{ width: '80%', margin: '0 auto' }}>
+                        <Typography
+                            sx={(theme) => ({ color: theme.palette.common.white })}
+                            variant='h3'
+                        >
+                            {title}
+                        </Typography>
+                        {Controls}
+                    </Box>
+                )
+            }
             <Chart
-                options={chart1BaseOptions}
+                options={chart1BaseOptions(compact)}
                 series={
                     showHistorical
                         ? [
@@ -252,7 +328,7 @@ const ProjectionLineChart = () => {
                         )
                 }
                 type='line'
-                width='80%'
+                width={compact ? '100%' : '80%'}
                 height='400px'
             />
         </Paper>
