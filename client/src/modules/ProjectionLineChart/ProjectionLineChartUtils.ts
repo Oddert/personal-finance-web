@@ -15,7 +15,7 @@ export const title = 'Future Scenario Projection'
 
 export const defaultStart = new Date()
 const defaultEndConstructor = new Date()
-defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 4)
+defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3)
 defaultEndConstructor.setDate(0)
 export const defaultEnd = new Date(defaultEndConstructor)
 
