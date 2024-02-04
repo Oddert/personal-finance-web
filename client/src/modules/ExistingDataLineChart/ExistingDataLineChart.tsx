@@ -123,8 +123,6 @@ const ExistingDataLineChart = () => {
     const [chart2Options, setChart2Options] = useState<ApexOptions>(chart2BaseOptions)
 
     const transactions = useSelector(getTransactionsResponse)
-
-    console.log(transactions)
     
     useEffect(() => {
         const sorted = transactions.reduce((acc: {
@@ -186,8 +184,6 @@ const ExistingDataLineChart = () => {
             },
         })
     }, [debitTransactions, debitMax])
-
-    console.log(ballanceData, creditData, debitData)
 
     return (
         <Paper
