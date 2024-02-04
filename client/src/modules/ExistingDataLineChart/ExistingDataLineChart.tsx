@@ -115,6 +115,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 sx={(theme) => ({
                     color: theme.palette.common.white,
                     width,
+                    margin: '16px auto 32px',
                 })}
                 variant='h3'
             >

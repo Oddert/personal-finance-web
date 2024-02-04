@@ -297,7 +297,10 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                 ) : (
                     <Box sx={{ width: '80%', margin: '0 auto' }}>
                         <Typography
-                            sx={(theme) => ({ color: theme.palette.common.white })}
+                            sx={(theme) => ({
+                                color: theme.palette.common.white,
+                                margin: '16px 0 32px',
+                            })}
                             variant='h3'
                         >
                             {title}
