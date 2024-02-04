@@ -1,112 +1,21 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Chart from 'react-apexcharts'
 import { ApexOptions } from 'apexcharts'
 
-import { Box, Paper } from '@mui/material'
+import { Box, Paper, Typography } from '@mui/material'
 
-import { LOCALE } from '../../constants/appConstants'
+import type { Transaction } from '../../types/Transaction'
 
 import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors'
-import { Transaction } from '../../types/Transaction'
 
-const chart1BaseOptions: ApexOptions = {
-    chart: {
-        id: 'existing-data-line-chart',
-        // group: 'all-transactions',
-        type: 'line',
-    },
-    grid: {
-        show: true,
-        row: {
-            colors: ['rgba(243, 243, 243, 0.3)', 'transparent'],
-        },
-    },
-    markers: {
-        size: 2,
-    },
-    stroke: {
-        curve: 'smooth',
-        width: 2,
-    },
-    xaxis: {
-        // categories: ['cat 1', 'cat 2', 'cat 3', 'cat 4', 'cat 5', 'cat 6'],
-        labels: {
-            style: {
-                colors: '#fff',
-            },
-            formatter: val => new Date(val).toLocaleDateString(LOCALE)
-        },
-        tickAmount: 10,
-    },
-    yaxis: {
-        tickAmount: 12,
-        labels: {
-            style: {
-                colors: '#fff',
-            },
-            formatter: (number) => {
-                if (number === null || isNaN(number)) {
-                    return String(number)
-                }
-                const str = number.toString().split('.')
-                if (str[0].length >= 4) {
-                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
-                }
-                if (str[1] && str[1].length >= 4) {
-                    str[1] = str[1].replace(/(\d{3})/g, '$1,')
-                }
-                return str.join('.')
-            }
-        },
-    },
+import { chart1BaseOptions, chart2BaseOptions, title } from './ExistingDataLineChartUtils'
+
+interface Props {
+    compact?: boolean
 }
 
-const chart2BaseOptions: ApexOptions = {
-    chart: {
-        id: 'credit-debit-chart',
-        // group: 'all-transactions',
-        type: 'bar',
-    },
-    dataLabels: {
-        enabled: false,
-    },
-    grid: {
-        row: {
-            colors: ['rgba(243, 243, 243, 0.3)', 'transparent'],
-        },
-    },
-    legend: {
-        labels: {
-            colors: '#fff',
-        },
-    },
-    // tooltip: {
-    //     y: {
-    //         formatter: (val, opts) =>
-    //             `${debitTransactions[opts.dataPointIndex].description} : ${val}`,
-    //     },
-    // },
-    xaxis: {
-        labels: {
-            style: {
-                colors: '#fff',
-            },
-            formatter: val => new Date(val).toLocaleDateString(LOCALE)
-        },
-        tickAmount: 10,
-    },
-    yaxis: {
-        labels: {
-            style: {
-                colors: '#fff',
-            },
-        },
-        // max: debitMax,
-    },
-}
-
-const ExistingDataLineChart = () => {
+const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [ballanceData, setBallanceData] =
         useState<{ x: number|string, y: number }[]>([])
     const [debitData, setDebitData] = 
@@ -185,6 +94,8 @@ const ExistingDataLineChart = () => {
         })
     }, [debitTransactions, debitMax])
 
+    const width = useMemo(() => compact ? '100%' : '80%', [compact])
+
     return (
         <Paper
             elevation={4}
@@ -200,6 +111,15 @@ const ExistingDataLineChart = () => {
                 },
             })}
         >
+            <Typography
+                sx={(theme) => ({
+                    color: theme.palette.common.white,
+                    width,
+                })}
+                variant='h3'
+            >
+                {title}
+            </Typography>
             <Chart
                 options={chart1Options}
                 series={[
@@ -230,7 +150,7 @@ const ExistingDataLineChart = () => {
                     // }
                 ]}
                 type='line'
-                width='80%'
+                width={width}
                 height='400px'
             />
             <Box sx={{ position: 'relative' }}>
@@ -247,7 +167,7 @@ const ExistingDataLineChart = () => {
                         },
                     ]}
                     type='bar'
-                    width='80%'
+                    width={width}
                     height='200px'
                 />
             </Box>

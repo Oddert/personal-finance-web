@@ -12,10 +12,12 @@ const Home = () => {
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 alignContent: 'start',
+                alignItems: 'start',
+                gridGap: '20px',
                 // gridAutoRows: '400px',
             }}
         >
-            <ExistingDataLineChart />
+            <ExistingDataLineChart compact />
             <ProjectionLineChart compact />
         </Container>
     )
