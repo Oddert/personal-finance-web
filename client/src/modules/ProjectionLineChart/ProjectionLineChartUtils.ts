@@ -3,7 +3,7 @@ import { ApexOptions } from 'apexcharts';
 import { LOCALE } from '../../constants/appConstants';
 
 // temp file used for privacy, swap for ../../constants/projectionConstants.ts
-import { defaultScenario, newBike, scenarioTrimFat } from '../../constants/projectionConstants.temp';
+import { defaultScenario, newBike, scenarioTrimFat, bonus } from '../../constants/projectionConstants.temp';
 
 import theme from '../../theme';
 
@@ -19,7 +19,7 @@ defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3)
 defaultEndConstructor.setDate(0)
 export const defaultEnd = new Date(defaultEndConstructor)
 
-export const scenarios = [defaultScenario, scenarioTrimFat, newBike]
+export const scenarios = [defaultScenario, scenarioTrimFat, newBike, bonus]
 export const scenarioOptions = scenarios.map(
     (scenario, idx) => ({ label: scenario.title, id: idx }),
 )
