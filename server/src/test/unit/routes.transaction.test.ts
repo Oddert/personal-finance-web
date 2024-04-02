@@ -198,7 +198,7 @@ describe('[UNIT] routes : transaction', () => {
         it('should create a new transaction', done => {
             const date = new Date()
             
-            const transDate = '23/06/2023'
+            const transDate = new Date('23 june 2023').getTime()
             const transType = 'DEB'
             const description = `TEST_TRANSACTION_${date.toString()}`
             const debit = 23
@@ -255,7 +255,7 @@ describe('[UNIT] routes : transaction', () => {
         it('should update a single transaction', done => {
             const date = new Date()
 
-            const transDate = '30/07/2022'
+            const transDate = new Date('30 july 2022').getTime()
             const transType = 'DEB'
             const description = `TEST_TRANSACTION_${date.toString()}`
             const debit = 52
