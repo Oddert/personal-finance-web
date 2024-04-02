@@ -9,9 +9,9 @@ exports.up = function(knex) {
         table.date('created_on')
         table.date('updated_on')
         table.integer('step').defaultTo(null)
-        table.date('startDate').defaultTo(null)
-        table.integer('day')
-        table.integer('nth_day')
+        table.date('start_date').defaultTo(null)
+        table.integer('day').defaultTo(null)
+        table.integer('nth_day').defaultTo(null)
         table.integer('transactor_id').references('transactor.id')
     })
 };
