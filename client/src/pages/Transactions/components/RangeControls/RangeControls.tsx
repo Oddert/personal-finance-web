@@ -1,11 +1,18 @@
-import { useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
+
+import type { SyntheticEvent } from 'react'
 
 import { Box, Slider, Typography } from '@mui/material'
 
 import { generateMarks, getRangeKeyEncoding } from '../../../../utils/transactionUtils'
 
-import { TransactionRange, setRangeKeys, updateValue } from '../../../../contexts/transactionRangeContext'
+import {
+    TransactionRange,
+    setRangeKeys,
+    setRangeValues,
+    updateValue
+} from '../../../../contexts/transactionRangeContext'
 import type { TransactionRangeState } from '../../../../contexts/transactionRangeContext'
 
 import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
@@ -22,17 +29,30 @@ const RangeControls = () => {
 
     const orderedTransactions = useSelector(getTransactionsOrderedByDate)
 
+    const [localValue, setLocalValue] = useState<[number, number]>([0, 0])
+
     useEffect(() => {
         const rangeKeysArr: string[] = []
+        const rangeValuesArr: { top: number, bottom: number }[] = []
 
         Object.keys(orderedTransactions).forEach((year) => {
             Object.keys(orderedTransactions[year]).forEach((month) => {
                 rangeKeysArr.push(getRangeKeyEncoding(year, month))
+                const bottomDate = new Date(`${year}-${Number(month) + 1}-01`)
+                const topDate = new Date(`${year}-${Number(month) + 2}-01`)
+                topDate.setDate(0)
+                rangeValuesArr.push({
+                    bottom: bottomDate.getTime(),
+                    top: topDate.getTime(),
+                })
             })
         })
 
         const rangeKeys = rangeKeysArr.reduce((
-            acc: { keyList: TransactionRangeState['rangeKeys'], length: number },
+            acc: {
+                keyList: TransactionRangeState['rangeKeys'],
+                length: number,
+            },
             key,
             idx
         ) => {
@@ -46,14 +66,23 @@ const RangeControls = () => {
             },
         )
 
+        const rangeValues = rangeValuesArr.reduce(
+            (acc: { [key: number]: { top: number, bottom: number }}, value, idx) => {
+                acc[idx] = value
+                return acc
+            },
+            {}
+        )
+
         const customMarks = generateMarks(Object.values(rangeKeys.keyList))
 
+        dispatch(setRangeValues(rangeValues))
         dispatch(setRangeKeys(rangeKeys.keyList, rangeKeys.length, customMarks))
         dispatch(updateValue([0, rangeKeys.length]))
     }, [orderedTransactions, dispatch])
 
     const handleChange = (
-        event: Event,
+        event: Event | SyntheticEvent<Element, Event>,
         newValue: number | number[],
         // activeThumb: number,
     ) => {
@@ -73,8 +102,18 @@ const RangeControls = () => {
         //     ]
         //     dispatch(updateValue(clampedValue))
         // }
-        dispatch(updateValue(newValue as [number, number]))
+        
+        setLocalValue(newValue as [number, number])
+        // dispatch(updateValue(newValue as [number, number]))
     }
+
+    const onChangeCommitted = useCallback(() => {
+        dispatch(updateValue(localValue))
+    }, [dispatch, localValue])
+
+    useEffect(() => {
+        setLocalValue(value)
+    }, [value])
 
     return (
         <Box>
@@ -83,14 +122,12 @@ const RangeControls = () => {
             </Typography>
             <Slider
                 getAriaLabel={() => 'Transaction range'}
-                value={value}
+                value={localValue}
                 onChange={handleChange}
+                onChangeCommitted={onChangeCommitted}
                 valueLabelDisplay='auto'
                 getAriaValueText={valuetext}
-                valueLabelFormat={(value) => {
-                    console.log(value, rangeKeys[value])
-                    return rangeKeys[value]
-                }}
+                valueLabelFormat={(value) => rangeKeys[value]}
                 min={0}
                 max={rangeLength}
                 step={1}

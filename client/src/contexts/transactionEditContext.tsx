@@ -1,18 +1,21 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { MenuItem, Select } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 
 import type { Category } from '../types/Category'
 
 interface TransactionEditState {
     columnMap: { [key: string]: string }
-    transactions: { [key: string]: string|number }[]
     headers: string[]
+    match?: string
+    sideBarOpen: boolean
+    transactions: { [key: string]: string|number }[]
 }
 
 const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
+    toggleSideBarOpen: 'toggleSideBarOpen',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
     writeTransactions: 'writeTransactions',
@@ -28,11 +31,13 @@ export const transactionEditInitialState: TransactionEditState = {
         'ballance': 'Balance',
     },
     headers: [],
+    sideBarOpen: false,
     transactions: [],
 }
 
+// TODO: remove react-table logic once new logic is confirmed stable and better.
 export const defaultColumns = (
-    categories?: Category[],
+    categories?: { [id: string]: Category },
     callback?: (idx: number, assignedCategory: number) => void,
 ) => [
     {
@@ -59,29 +64,51 @@ export const defaultColumns = (
         header: 'Category',
         accessorKey: 'assignedCategory',
         cell: (cell: any) => {
+            if (!categories || !callback) {
+                return
+            }
             const value = cell.renderValue() || 'unset'
             const marginTopBottom = '4px'
             return (
-                <Select
-                    value={value}
-                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%', padding: '4px' }}
-                    inputProps={{
-                        sx: { paddingTop: marginTopBottom, paddingBottom: marginTopBottom },
+                // <select
+                //     onChange={(e) => {
+                //         if (!e.currentTarget.value) {
+                //             return
+                //         }
+                //         callback(cell.row.index, Number(e.currentTarget.value))
+                //     }}
+                //     // value={categories[value].id || undefined}
+                // >
+                //     <option value={'unset'}>
+                //         - none -
+                //     </option>
+                //     {Object.entries(categories).map(([key, category]) => (
+                //         <option value={category.id}>
+                //             {category.label}
+                //         </option>
+                //     ))}
+                // </select>
+                <Autocomplete
+                    autoHighlight
+                    disablePortal
+                    onChange={(event, category) => {
+                        if (!category) {
+                            return
+                        }
+                        callback(cell.row.index, category.id)
                     }}
-                >
-                    <MenuItem value={'unset'}>
-                        - no category -
-                    </MenuItem>
-                    {categories?.map((category, idx) => (
-                        <MenuItem
-                            key={category.id}
-                            onClick={callback ? () => callback(cell.row.index, category.id) : () => {}}
-                            value={category.id}
-                        >
-                            {category.label}
-                        </MenuItem>
-                    ))}
-                </Select>
+                    options={Object.values(categories as { [id: string]: Category })}
+                    placeholder='unset'
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label='Category'
+                            sx={{ paddingTop: marginTopBottom, paddingBottom: marginTopBottom }}
+                        />
+                    )}
+                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%', padding: '4px' }}
+                    value={categories[value] || null}
+                />
             )
         }
     },
@@ -100,23 +127,35 @@ export const transactionEditReducer = (
     action: PayloadAction<any>,
 ) => {
     switch(action.type) {
+        case TransactionEditActionTypes.toggleSideBarOpen:
+            return {
+                ...state,
+                sideBarOpen: action?.payload?.open === 'undefined'
+                    ? !state.sideBarOpen
+                    : action?.payload?.open,
+                match: action?.payload?.match,
+            }
         case TransactionEditActionTypes.setColumnMap:
             return {
                 ...state,
                 columnMap: action?.payload?.columnMap,
             }
         case TransactionEditActionTypes.updateCategory:
+            if (!action?.payload?.idx || !action?.payload?.assignedCategory) {
+                return state
+            }
+            const transactions: { [key: string]: string|number }[] = [
+                ...state.transactions.slice(0, action.payload.idx),
+                {
+                    ...state.transactions[action.payload.idx],
+                    assignedCategory: action.payload.assignedCategory
+                },
+                ...state.transactions.slice(action.payload.idx + 1),
+            ]
+
             return {
                 ...state,
-                transactions: state.transactions.map((transaction, idx) => {
-                    if (idx === action?.payload?.idx) {
-                        return {
-                            ...transaction,
-                            assignedCategory: action.payload.assignedCategory
-                        }
-                    }
-                    return transaction
-                })
+                transactions,
             }
         case TransactionEditActionTypes.writeHeaders:
             return {
@@ -138,6 +177,14 @@ export const setColumnMap = (
 ) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap }
+})
+
+export const toggleSideBar = (
+    open?: TransactionEditState['sideBarOpen'],
+    match?: string,
+) => ({
+    type: TransactionEditActionTypes.toggleSideBarOpen,
+    payload: { open, match }
 })
 
 export const updateCategory = (

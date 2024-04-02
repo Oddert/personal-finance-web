@@ -6,10 +6,11 @@ import { TransactionEditContext } from '../../../contexts/transactionEditContext
 
 import routes from '../../../services/routes'
 
-// TODO: rework to base transactionsWithValidKeys on actual keys not entries
-// TODO: investigate category_id not working
-// TODO: potentially invert the column map
-const Submit = () => {
+interface Props {
+    onClose: () => void
+}
+
+const Submit = ({ onClose }: Props) => {
     const { state: { transactions, columnMap } } = useContext(TransactionEditContext)
 
     const [loading, setLoading] = useState(false)
@@ -30,11 +31,13 @@ const Submit = () => {
             transaction => Object.entries(transaction)
                 .reduce((acc: { [key: string]: string|number|boolean }, pair) => {
                     const key = invertMapping[pair[0]]
+                    const whitelistKeys = ['debit', 'credit', 'ballance']
+
                     if (!key) {
                         return acc
                     }
 
-                    if (key === 'debit' || key === 'credit' || key === 'ballance') {
+                    if (key in whitelistKeys) {
                         acc[key] = Number(pair[1])
                     } else {
                         acc[key] = pair[1]
@@ -43,12 +46,15 @@ const Submit = () => {
                 }, {}))
 
         const request = async () => {
-            await routes.createManyTransactions(transactionsWithValidKeys)
+            const response = await routes.createManyTransactions(transactionsWithValidKeys)
             setLoading(false)
+            if (response.status === 201) {
+                onClose()
+            }
         }
         setLoading(true)
         request()
-    }, [columnMap, transactions])
+    }, [columnMap,  onClose, transactions])
 
     return (
         <Button

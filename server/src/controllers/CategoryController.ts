@@ -9,7 +9,10 @@ import Transaction from '../models/Transaction'
 export const getCategories = async (req: Request, res: Response) => {
     try {
         if (req.query.includeMatchers) {
-            const categories = await Category.query().withGraphFetched('matchers')
+            const categories = await Category.query()
+                .orderBy('label', 'ASC')
+                .withGraphFetched('matchers')
+
             return respondOk(req, res, { categories })
         }
         const categories = await Category.query()

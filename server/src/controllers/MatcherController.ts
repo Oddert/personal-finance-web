@@ -3,6 +3,7 @@ import {Request, Response} from 'express'
 import { respondBadRequest, respondCreated, respondNotFound, respondOk } from '../utils/responses'
 
 import Matcher from '../models/Matcher'
+import Category from '../models/Category'
 
 export const getMatchers = async (req: Request, res: Response) => {
     try {
@@ -29,7 +30,11 @@ export const createSingleMatcher = async (req: Request, res: Response) => {
     try {
         const date = new Date().toISOString()
         const body = { ...req.body, created_on: date, updated_on: date }
+        delete body?.categoryId
         const matcher = await Matcher.query().insert(body)
+        if (req.body?.categoryId) {
+            await Category.relatedQuery('matchers').for(req.body.categoryId).relate(matcher)
+        }
         return respondCreated(req, res, { matcher })
     } catch(err: any) {
         return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)

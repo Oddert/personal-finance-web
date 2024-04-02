@@ -1,7 +1,14 @@
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import type { ColumnDef } from '@tanstack/react-table'
 
-import { Box, Table as MuiTable, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
+import {
+    Box,
+    Table as MuiTable,
+    TableBody,
+    TableHead,
+    TableRow,
+    TableCell,
+} from '@mui/material'
 
 interface ReactTableProps<TData> {
     data: TData[]
@@ -15,6 +22,7 @@ const Table = <TData extends object>({ data, columns, compact }: ReactTableProps
         getRowModel,
     } = useReactTable<TData>({
         columns,
+        enableGrouping: false,
         data,
         getCoreRowModel: getCoreRowModel(),
     })

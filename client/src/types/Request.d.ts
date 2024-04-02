@@ -1,4 +1,4 @@
-export interface ResponseData<Payload> {
+export declare interface ResponseData<Payload> {
     status: number
     message?: string
     error?: string

@@ -2,6 +2,7 @@ import { Container, Modal, Paper, Typography } from '@mui/material'
 
 import type { FC } from 'react'
 
+import CategoryQuickEdit from './CategoryQuickEdit/'
 import ColumnMapping from './ColumnMapping/'
 import Submit from './Submit/'
 import Table from './Table/'
@@ -24,10 +25,11 @@ const TransactionEdit: FC<Props> = ({ open, onClose }) => {
                         Bulk edit transactions
                     </Typography>
                     <ColumnMapping />
-                    <Submit />
+                    <Submit onClose={onClose} />
                     <Table />
-                    <Submit />
+                    <Submit onClose={onClose} />
                 </Paper>
+                <CategoryQuickEdit />
             </Container>
         </Modal>
     )

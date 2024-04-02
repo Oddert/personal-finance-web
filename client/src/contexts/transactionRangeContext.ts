@@ -5,6 +5,12 @@ export interface TransactionRangeState {
     rangeKeys: {
         [index: number]: string
     }
+    rangeValues: {
+        [index: number]: {
+            top: number
+            bottom: number
+        }
+    }
     rangeLength: number
     value: [number, number]
     marks: { label: string, value: number }[]
@@ -12,11 +18,13 @@ export interface TransactionRangeState {
 
 const TransactionRangeActionTypes = {
     setRangeKeys: 'setRangeKeys',
-    updateValue: 'updateValue'
+    setRangeValues: 'setRangeValues',
+    updateValue: 'updateValue',
 }
 
 export const initialState: TransactionRangeState = {
     rangeKeys: {},
+    rangeValues: {},
     rangeLength: 0,
     value: [0, 0],
     marks: [],
@@ -28,12 +36,16 @@ export const transactionRangeReducer = (
 ) => {
     switch(action.type) {
         case TransactionRangeActionTypes.setRangeKeys:
-            console.log('hello its some reducer here', action.payload)
             return {
                 ...state,
                 rangeKeys: action?.payload?.rangeKeys,
                 rangeLength: action?.payload?.length,
                 marks: action?.payload?.marks,
+            }
+        case TransactionRangeActionTypes.setRangeValues:
+            return {
+                ...state,
+                rangeValues: action?.payload?.rangeValues,
             }
         case TransactionRangeActionTypes.updateValue:
             return {
@@ -52,6 +64,13 @@ export const setRangeKeys = (
 ) => ({
     type: TransactionRangeActionTypes.setRangeKeys,
     payload: { rangeKeys, length, marks }
+})
+
+export const setRangeValues = (
+    rangeValues: TransactionRangeState['rangeValues'],
+) => ({
+    type: TransactionRangeActionTypes.setRangeValues,
+    payload: { rangeValues }
 })
 
 export const updateValue = (

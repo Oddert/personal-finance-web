@@ -56,7 +56,26 @@ const Header = () => {
                     >
                         <HomeIcon />
                     </IconButton>
-                    <Typography variant='h1'>
+                    <Typography
+                        sx={(theme) => ({
+                            [theme.breakpoints.up('xs')]: {
+                                fontSize: '16px',
+                            },
+                            [theme.breakpoints.up('sm')]: {
+                                fontSize: '20px',
+                            },
+                            [theme.breakpoints.up('md')]: {
+                                fontSize: '26px',
+                            },
+                            [theme.breakpoints.up('lg')]: {
+                                fontSize: '32px',
+                            },
+                            [theme.breakpoints.up('xl')]: {
+                                fontSize: '36px',
+                            },
+                        })}
+                        variant='h1'
+                    >
                         Personal Finance Tracker
                     </Typography>
                 </Toolbar>
