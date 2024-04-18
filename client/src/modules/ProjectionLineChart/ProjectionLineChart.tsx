@@ -32,6 +32,7 @@ import {
     scenarios,
     title,
 } from './ProjectionLineChartUtils'
+import { normaliseDateStamp, ScheduleByEvent } from '../../utils/schedulerUtils'
 
 interface Props {
     compact?: boolean
@@ -139,7 +140,11 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
             for (const transactor of scenario.transactors) {
                 for (const scheduler of transactor.schedulers) {
                     const range = scheduler.getRange(startObj, endObj)
+                    if (scheduler instanceof ScheduleByEvent) {
+                        console.log(range)
+                    }
                     for (const date of range) {
+                        // const date = new Date(d).toString()
                         if (!(date in actions)) {
                             actions[date] = []
                         }
@@ -148,16 +153,20 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                             label: transactor.description,
                             annotation: transactor.annotation,
                         })
+                        if (scheduler instanceof ScheduleByEvent) {
+                            console.log(actions[date])
+                        }
                     }
                 }
             }
+            console.log({ actions })
             const length = Math.abs((startObj.getTime() - endObj.getTime()) / 86400000)
             let runningBallance = Number(startingBallance)
 
             const range = Array.from({ length }, (_, idx) => {
                 const localDate = new Date(startObj)
                 localDate.setDate(localDate.getDate() + idx)
-                const localTime = localDate.getTime()
+                const localTime = normaliseDateStamp(localDate)
                 const label = []
                 if (localTime in actions) {
                     for (const transaction of actions[localTime]) {

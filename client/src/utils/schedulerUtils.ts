@@ -1,3 +1,22 @@
+/**
+ * Returns the millisecond timestamp for a date while normalising the time 
+ * to avoid discrepancies introduced by time zones.
+ *
+ * For example, during British SUmmer Time (BST) schedulers that increment
+ * via scalar values will produce dates at 0100 hrs, while exact date 
+ * matchers will still show midnight.
+ * @param date The date object or date compatible string / number.
+ * @returns The date timestamp at midnight.
+ */
+export const normaliseDateStamp = (date: Date|number|string) => {
+    const parsedDate = new Date(date)
+    parsedDate.setHours(0)
+    parsedDate.setMinutes(0)
+    parsedDate.setSeconds(0)
+    parsedDate.setMilliseconds(0)
+    return parsedDate.getTime()
+}
+
 class Schedule {
     getRange(startDate: number|Date, endDate: number|Date): number[] {
         return []
@@ -44,7 +63,7 @@ export class ScheduleByScalarTime extends Schedule {
     increment(startDate: number|Date) {
         const date = new Date(startDate)
         date.setDate(date.getDate() + this.step)
-        return date.getTime()
+        return normaliseDateStamp(date)
     }
 
     getRange(startDate: number|Date, endDate: number|Date) {
@@ -56,7 +75,7 @@ export class ScheduleByScalarTime extends Schedule {
             date.setDate(date.getDate() + this.step)
             const currentTime = date.getTime()
             if (currentTime >= startDateObj.getTime() && currentTime <= endDateObj.getTime()) {
-                times.push(date.getTime())
+                times.push(normaliseDateStamp(date))
             }
         }
         return times
@@ -84,7 +103,7 @@ export class ScheduleBySpecificDay extends Schedule {
             date.setMonth(date.getMonth() + 1)
         }
         date.setDate(this.day)
-        return date.getTime()
+        return normaliseDateStamp(date)
     }
     
     getRange(startDate: number|Date, endDate: number|Date) {
@@ -94,7 +113,7 @@ export class ScheduleBySpecificDay extends Schedule {
         while (startDateObj.getTime() <= endDateObj.getTime()) {
             startDateObj.setTime(this.increment(startDateObj))
             if (startDateObj.getTime() <= endDateObj.getTime()) {
-                times.push(startDateObj.getTime())
+                times.push(normaliseDateStamp(startDateObj))
             }
         }
         return times
@@ -104,7 +123,7 @@ export class ScheduleBySpecificDay extends Schedule {
         const start = new Date(startDate)
         if (start.getDate() <= this.day) {
             start.setDate(this.day)
-            return [start.getTime()]
+            return [normaliseDateStamp(start)]
         }
         return []
     }
@@ -151,7 +170,7 @@ export class ScheduleByDayOfWeek extends Schedule {
         } else {
             startDate.setDate(startDate.getDate() + (startDate.getDay() - this.day))
         }
-        return startDate.getTime()
+        return normaliseDateStamp(startDate)
     }
     
     getRange(startDate: number|Date, endDate: number|Date) {
@@ -160,7 +179,7 @@ export class ScheduleByDayOfWeek extends Schedule {
         const endDateObj = new Date(this.increment(new Date(endDate)))
         const times = []
         while (startDateObj <= endDateObj) {
-            times.push(startDateObj.getTime())
+            times.push(normaliseDateStamp(startDateObj))
             if (startDateObj.getTime() <= endDateObj.getTime()) {
                 startDateObj.setDate(startDateObj.getDate() + 7)
             }
@@ -188,14 +207,20 @@ export class ScheduleByEvent extends Schedule {
         if (this.date <= startDate) {
             return null
         }
-        return this.date.getTime()
+        return normaliseDateStamp(this.date)
     }
 
     getRange(startDate: number | Date, endDate: number | Date) {
         const startDateObj = new Date(startDate)
         const endDateObj = new Date(endDate)
+        console.log({ startDateObj, endDateObj, date: this.date })
+        console.log(
+            this.date >= startDateObj,
+            this.date <= endDateObj,
+            this.date >= startDateObj && this.date <= endDateObj
+        )
         if (this.date >= startDateObj && this.date <= endDateObj) {
-            return [this.date.getTime()]
+            return [normaliseDateStamp(this.date)]
         }
         return []
     }
@@ -207,7 +232,7 @@ export class ScheduleByEvent extends Schedule {
         endDateObj.setMonth(endDateObj.getMonth() + 1)
         endDateObj.setDate(0)
         if (this.date >= startDateObj && this.date <= endDateObj) {
-            return [this.date.getTime()]
+            return [normaliseDateStamp(this.date)]
         }
         return []
     }
