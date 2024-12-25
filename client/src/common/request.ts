@@ -12,7 +12,9 @@ const request = axios.create({
 })
 
 request.interceptors.request.use((config) => {
-    console.log('[request]', config.url);
+    if (process.env.NODE_ENV === 'development') {
+        console.log('[request]', config.url);
+    }
     return config;
 })
 

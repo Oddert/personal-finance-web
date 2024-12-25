@@ -9,12 +9,17 @@ interface Props {
     iconPosition: 'start'|'end'
     onChange: (value: string) => void
     text: string
+    verticalCenter?: boolean
 }
 
-const EditableText = (
-    { containerSx, headingProps, iconPosition, onChange, text }:
-    Props
-) => {
+const EditableText = ({
+    containerSx,
+    headingProps,
+    iconPosition,
+    onChange,
+    text,
+    verticalCenter,
+}: Props) => {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState('')
 
@@ -32,7 +37,8 @@ const EditableText = (
             sx={(theme) => ({
                 display: 'flex',
                 flexDirection: iconPosition === 'end' ? 'row-reverse' : 'row',
-                alignItems: 'flex-start',
+                alignItems: verticalCenter ? 'center' : 'flex-start',
+                position: 'relative',
                 '& .EditableText_open': {
                     transition: '.1s linear',
                     opacity: 0,
@@ -40,6 +46,10 @@ const EditableText = (
                     paddingLeft: 0,
                     paddingRight: 0,
                     minWidth: '40px',
+                },
+                '& .EditableText__title': {
+                    display: 'flex',
+                    alignItems: verticalCenter ? 'center' : 'flex-start'
                 },
                 '&:hover': {
                     '& .EditableText_open': {
@@ -49,7 +59,14 @@ const EditableText = (
                 ...containerSx,
             })}
         >
-            <Button className='EditableText_open' onClick={() => setOpen(true)}>
+            <Button
+                className='EditableText_open'
+                onClick={() => setOpen(true)}
+                sx={{
+                    position: 'absolute',
+                    left: '-100%',
+                }}
+            >
                 <EditIcon />
             </Button>
             {open ? (
@@ -60,7 +77,7 @@ const EditableText = (
                     value={value}
                 />
             ) : (
-                <Typography {...headingProps}>
+                <Typography className='EditableText__title' {...headingProps}>
                     {text}
                 </Typography>
             )}

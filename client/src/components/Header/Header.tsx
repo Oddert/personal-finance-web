@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
+import { useNavigate } from 'react-router'
+
 import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/AutoGraph'
 
 import Sidebar from '../Sidebar/Sidebar'
 
 const Header = () => {
+    const navigate = useNavigate()
+
     const [open, setOpen] = useState(false)
 
     const handleDrawerClose = () => {
@@ -16,6 +20,8 @@ const Header = () => {
     const handleToggleDrawer = () => {
         setOpen(!open)
     }
+
+    const handleClickHome = () => navigate('/')
 
     return (
         <Box
@@ -48,7 +54,7 @@ const Header = () => {
                     <IconButton
                         color='inherit'
                         aria-label='home page'
-                        onClick={handleToggleDrawer}
+                        onClick={handleClickHome}
                         edge='start'
                         sx={{
                             marginRight: 5,

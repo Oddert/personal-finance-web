@@ -2,7 +2,7 @@ import { MouseEvent } from 'react'
 import { Box, Button, Theme } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 
-import { categoryBoxSizes } from '../../../../constants/categoryConstants'
+import { categoryBoxSizes } from '../../constants/categoryConstants'
 
 interface Props {
     asButton: boolean

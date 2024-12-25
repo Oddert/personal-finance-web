@@ -131,3 +131,4 @@ dist
 
 # Excluding seed data due to sensitivity of data
 seeds/
+*.db3

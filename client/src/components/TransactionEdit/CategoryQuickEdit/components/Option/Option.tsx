@@ -6,10 +6,11 @@ import type { Matcher as MatcherT, MatchType } from '../../../../../types/Matche
 
 import { TransactionEditContext, toggleSideBar, writeTransactions } from '../../../../../contexts/transactionEditContext'
 
-import Category from '../../../../Category/Category'
-import ColourBase from '../../../../Category/components/ColourBase'
-import TitleBase from '../../../../Category/components/TitleBase'
 import { autoMatchCategories } from '../../../../../utils/uploadUtils'
+
+import Category from '../../../../Category/Category'
+import ColourBase from '../../../../ColourBase'
+import TitleBase from '../../../../Category/components/TitleBase'
 
 interface Props {
     category: CategoryT
@@ -22,7 +23,6 @@ const Option = ({ category }: Props) => {
 
     const handleClose = useCallback(
         (partialMatcher: Partial<MatcherT>) => {
-            console.log(partialMatcher)
             const matcher: MatcherT = {
                 id: 0,
                 match: partialMatcher.match as string,

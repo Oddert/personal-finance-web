@@ -9,6 +9,7 @@ interface Props {
     editable: boolean
     handleChange?: (value: string) => void
     text: string
+    showBorder?: boolean
     size: 'xs'|'sm'|'md'|'lg'|'xl'
 }
 
@@ -20,15 +21,24 @@ const sizeMap = {
     xl: '24px',
 }
 
-const TitleBase = ({ colour, editable, handleChange, text, size }: Props) => {
-    const headingProps = useMemo(() => ({
-        sx: {
-            borderBottom: `2px solid ${colour}`,
-            alignSelf: 'stretch',
-            fontSize: sizeMap[size]
-        },
-        variant: 'h3' as Variant | 'inherit' | undefined,
-    }), [colour, size])
+const TitleBase = ({
+    colour,
+    editable,
+    handleChange,
+    text,
+    showBorder,
+    size,
+}: Props) => {
+    const headingProps = useMemo(() => {
+        return {
+            sx: {
+                alignSelf: 'stretch',
+                borderBottom: showBorder ? `2px solid ${colour}` : 'none',
+                fontSize: sizeMap[size]
+            },
+            variant: 'h3' as Variant | 'inherit' | undefined,
+        }
+    }, [colour, size, showBorder])
 
     if (editable) {
         return (
@@ -36,6 +46,7 @@ const TitleBase = ({ colour, editable, handleChange, text, size }: Props) => {
                 headingProps={headingProps}
                 onChange={handleChange}
                 text={text}
+                verticalCenter
             />
         )
     }
