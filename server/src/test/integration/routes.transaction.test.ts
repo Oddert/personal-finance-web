@@ -35,7 +35,7 @@ describe('[INTEGRATION] routes : transaction', () => {
         it('should create a new transaction and change the length of the total array', done => {
             const date = new Date()
             
-            const transDate = '21/09/2023'
+            const transDate = new Date('21 sept 2023').getTime()
             const transType = 'DEB'
             const description = `TEST_TRANSACTION_${date.toString()}`
             const debit = 98.1
@@ -117,7 +117,7 @@ describe('[INTEGRATION] routes : transaction', () => {
     describe('POST /transaction', () => {
         it('should add a transaction, a category and some matchers', done => {
             const schema = {
-                date: '17/06/2022',
+                date: new Date('17 june 2022').getTime(),
                 transaction_type: 'DEB',
                 description: 'Integration test new description',
                 debit: 52,

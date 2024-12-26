@@ -1,4 +1,5 @@
 import { Model } from 'objection'
+
 import knex from '../db/knex'
 
 Model.knex(knex)

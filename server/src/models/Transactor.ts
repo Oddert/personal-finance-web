@@ -1,25 +1,18 @@
 import { Model } from 'objection'
 
-import knex from '../db/knex'
-
-Model.knex(knex)
-
-export default class Transaction extends Model {
-    id?: 'integer'
-    date?: Date
-    transaction_type?: string
-    description?: string
-    debit?: number
-    credit?: number
-    ballance?: number
+export default class Transactor extends Model {
+    id?: number
     created_on: Date | string
     updated_on: Date | string
     static created_on: Date | string
     static updated_on: Date | string
-    category_id?: 'integer'
+    description: string
+    is_addition: boolean
+    value: number
+    scenario_id: number
 
     static get tableName() {
-        return 'transaction'
+        return 'transactor'
     }
 
     static beforeInsert() {
@@ -38,30 +31,35 @@ export default class Transaction extends Model {
             type: 'object',
             properties: {
                 id: { type: 'number' },
-                date: { type: 'number' },
-                transaction_type: { type: 'string', minLength: 1, maxLength: 5 },
-                description: { type: ['string', 'null'] },
-                debit: { type: 'number' },
-                credit: { type: 'number' },
-                ballance: { type: 'number' },
                 created_on: { type: 'string' },
                 updated_on: { type: 'string' },
-                category_id: { type: 'number' },
+                description: { type: 'string' },
+                value: { type: 'number' },
+                scenario_id: { type: 'number' },
             }
         }
     }
 
     static get relationMappings() {
-        const Category = __dirname + '/Category' // require('./User')
+        const Scenario = __dirname + '/Scenario'
+        const Scheduler = __dirname + '/Scheduler'
         return {
-            assignedCategory: {
+            assignedScenario: {
                 relation: Model.BelongsToOneRelation,
-                modelClass: Category,
+                modelClass: Scenario,
                 join: {
-                    from: 'transaction.category_id',
-                    to: 'category.id',
+                    from: 'transactor.scenario_id',
+                    to: 'scenario.id',
                 }
-            }
+            },
+            schedulers: {
+                relation: Model.HasManyRelation,
+                modelClass: Scheduler,
+                join: {
+                    from: 'transactor.id',
+                    to: 'scheduler.transactor_id',
+                },
+            },
         }
     }
 }

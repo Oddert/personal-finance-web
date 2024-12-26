@@ -129,7 +129,7 @@ describe('[UNIT] routes : matcher', () => {
                     expect(res.body.payload.matcher.id).to.be.a('number')
                     expect(res.body.payload.matcher.match).to.eql(matchName)
                     expect(res.body.payload.matcher.match_type).to.eql('any')
-                    expect(res.body.payload.matcher.case_sensitive).to.be.false
+                    expect(res.body.payload.matcher.case_sensitive).to.be.oneOf([false, 0])
                     expect(res.body.payload.matcher.created_on).to.be.a('string')
                     expect(res.body.payload.matcher.updated_on).to.be.a('string')
                     expect(res.body.payload.matcher.updated_on).to.eql(res.body.payload.matcher.created_on)

@@ -31,7 +31,7 @@ export const createSingleMatcher = async (req: Request, res: Response) => {
         const date = new Date().toISOString()
         const body = { ...req.body, created_on: date, updated_on: date }
         delete body?.categoryId
-        const matcher = await Matcher.query().insert(body)
+        const matcher = await Matcher.query().insertAndFetch(body)
         if (req.body?.categoryId) {
             await Category.relatedQuery('matchers').for(req.body.categoryId).relate(matcher)
         }
@@ -71,7 +71,7 @@ export const createManyMatchers = async (req: Request, res: Response) => {
 
         for (const matcher of req.body.matchers) {
             const body = { ...matcher, created_on: date, updated_on: date }
-            const createdMatcher = await Matcher.query().insert(body)
+            const createdMatcher = await Matcher.query().insertAndFetch(body)
             createdMatchers.push(createdMatcher)
         }
 

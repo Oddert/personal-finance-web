@@ -44,7 +44,7 @@ export const createSingleCategory = async (req: Request, res: Response) => {
 
         const category = req.body.matchers
             ? await Category.query().insertGraphAndFetch(body)
-            : await Category.query().insert(body)
+            : await Category.query().insertAndFetch(body)
 
         return respondCreated(req, res, { category })
     } catch(err: any) {
@@ -139,7 +139,7 @@ export const createManyCategories = async (req: Request, res: Response) => {
 
         for (const category of req.body.categories) {
             const body = { ...category, created_on: date, updated_on: date }
-            const createdCategory = await Category.query().insert(body)
+            const createdCategory = await Category.query().insertAndFetch(body)
             createdMatchers.push(createdCategory)
         }
 
