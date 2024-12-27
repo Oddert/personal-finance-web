@@ -78,6 +78,9 @@ const ColourEdit: FC<Props> = ({ colour, onSubmit, popoverId, sx }) => {
                     vertical: 'bottom',
                     horizontal: 'right',
                 }}
+                sx={{
+                    zIndex: 1400
+                }}
             >
                 <Box
                     sx={(theme) => ({
