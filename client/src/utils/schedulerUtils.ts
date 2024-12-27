@@ -213,12 +213,6 @@ export class ScheduleByEvent extends Schedule {
     getRange(startDate: number | Date, endDate: number | Date) {
         const startDateObj = new Date(startDate)
         const endDateObj = new Date(endDate)
-        console.log({ startDateObj, endDateObj, date: this.date })
-        console.log(
-            this.date >= startDateObj,
-            this.date <= endDateObj,
-            this.date >= startDateObj && this.date <= endDateObj
-        )
         if (this.date >= startDateObj && this.date <= endDateObj) {
             return [normaliseDateStamp(this.date)]
         }
