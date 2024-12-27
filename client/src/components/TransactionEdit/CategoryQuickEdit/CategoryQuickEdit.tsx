@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { Box, Drawer } from '@mui/material'
+import { Box, Drawer, Typography } from '@mui/material'
 
 import { getCategoryResponse } from '../../../redux/selectors/categorySelectors'
 
@@ -47,14 +47,19 @@ const CategoryQuickEdit = () => {
                 onKeyDown={toggleDrawer(false)}
                 sx={{
                     display: 'flex',
+                    minWidth: '200px',
                     flexDirection: 'column',
                     alignItems: 'flex-start',
                     justifyContent: 'flex-start',
                 }}
             >
-                {categories.map(category => (
+                {categories?.length ? categories.map(category => (
                     <Option category={category} key={category.id} />
-                ))}
+                )) : (
+                    <Typography sx={{ width: '100%', textAlign: 'center', p: 2 }}>
+                        You have no Categories
+                    </Typography>
+                )}
             </Box>
         </Drawer>
     )
