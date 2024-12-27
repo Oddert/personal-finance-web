@@ -109,11 +109,11 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
             if (value && typeof value === 'object' && 'label' in value) {
                 return value.label
             }
-            return null
+            return '- uncategorised -'
         }
     },
     {
-        header: 'CatId',
+        header: 'Cat Id',
         accessorKey: 'category_id',
     }
 ]
