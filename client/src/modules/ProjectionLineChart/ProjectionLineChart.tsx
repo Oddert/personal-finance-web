@@ -38,8 +38,6 @@ interface Props {
     compact?: boolean
 }
 
-console.log({ scenarios });
-
 /**
  * Shows future expected transactions based on Scenarios.
  * @component
@@ -50,8 +48,10 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
      */
     const [activeScenariosOpt, setActiveScenariosOpt] =
         useState<{ label: string; id: number; }[]>(scenarioOptions)
-    console.log({ activeScenariosOpt });
 
+    /**
+     * Holds a filtered list of scenarios used to project the chart.
+     */
     const [activeScenarios, setActiveScenarios] = useState(scenarios)
 
     const [startDate, setStartDate] =
