@@ -28,16 +28,16 @@ const Submit = ({ onClose }: Props) => {
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const transactionsWithValidKeys = transactions.map(
-            transaction => Object.entries(transaction)
+            (transaction) => Object.entries(transaction)
                 .reduce((acc: { [key: string]: string|number|boolean }, pair) => {
                     const key = invertMapping[pair[0]]
                     const whitelistKeys = ['debit', 'credit', 'ballance']
-
+                    
                     if (!key) {
                         return acc
                     }
 
-                    if (key in whitelistKeys) {
+                    if (whitelistKeys.includes(key)) {
                         acc[key] = Number(pair[1])
                     } else {
                         acc[key] = pair[1]
