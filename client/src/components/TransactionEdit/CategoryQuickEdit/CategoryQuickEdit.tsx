@@ -6,6 +6,7 @@ import { getCategoryResponse } from '../../../redux/selectors/categorySelectors'
 
 import { TransactionEditContext, toggleSideBar } from '../../../contexts/transactionEditContext'
 
+import AddCategory from './components/AddCategory'
 import Option  from './components/Option/'
 
 const CategoryQuickEdit = () => {
@@ -42,6 +43,7 @@ const CategoryQuickEdit = () => {
             })}
             ModalProps={{ onBackdropClick: toggleDrawer(false) }}
         >
+            <AddCategory />
             <Box
                 role='presentation'
                 onKeyDown={toggleDrawer(false)}
@@ -57,7 +59,7 @@ const CategoryQuickEdit = () => {
                     <Option category={category} key={category.id} />
                 )) : (
                     <Typography sx={{ width: '100%', textAlign: 'center', p: 2 }}>
-                        You have no Categories
+                        You have no Categories yet.
                     </Typography>
                 )}
             </Box>
