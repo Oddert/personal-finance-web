@@ -29,6 +29,7 @@ const AddCategory: FC = () => {
         [],
     );
 
+    // NOTE: temporarily disabled due to z-index bug on colour utility
     // const handleColourChange = useCallback(
     //     (editedColour: string) => {
     //         setColour(editedColour);
