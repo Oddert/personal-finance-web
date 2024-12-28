@@ -1,4 +1,7 @@
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Box,
     List,
     ListItem,
@@ -64,28 +67,34 @@ const Category = ({
                     </Box>
                 </Box>
                 <Description category={category} />
-                <Typography
-                    variant='h4'
-                    align='left'
-                    sx={{ fontSize: '16px', fontWeight: 'bold' }}
-                >
-                    Matches
-                </Typography>
-                <List>
-                    {category.matchers.map((matcher: MatcherT) => (
-                        <Matcher
-                            categoryId={category.id}
-                            key={matcher.id}
-                            matcher={matcher}
-                        />
-                    ))}
-                    <AddMatcher
-                        categoryId={category.id}
-                        defaultOpen={defaultOpenAddNew}
-                        matcher={defaultOpenMatcher || undefined}
-                        onSubmit={onAddNewSubmit}
-                    />
-                </List>
+                <Accordion>
+                    <AccordionSummary>
+                        <Typography
+                            variant='h4'
+                            align='left'
+                            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                            Matches
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <List>
+                            {category.matchers.map((matcher: MatcherT) => (
+                                <Matcher
+                                    categoryId={category.id}
+                                    key={matcher.id}
+                                    matcher={matcher}
+                                />
+                            ))}
+                            <AddMatcher
+                                categoryId={category.id}
+                                defaultOpen={defaultOpenAddNew}
+                                matcher={defaultOpenMatcher || undefined}
+                                onSubmit={onAddNewSubmit}
+                            />
+                        </List>
+                    </AccordionDetails>
+                </Accordion>
             </Paper>
         </ListItem>
     )
