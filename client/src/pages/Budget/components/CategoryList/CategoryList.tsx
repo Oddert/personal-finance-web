@@ -17,7 +17,7 @@ const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
                     ? null
                     : (
                         <ListItem>
-                            {category.label}: {category.value.toFixed(2)}
+                            {category.label}: £{category.value.toFixed(2)}
                         </ListItem>
                     )   
             )}

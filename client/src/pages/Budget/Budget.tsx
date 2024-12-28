@@ -148,7 +148,7 @@ const Budget: FC = () => {
             </Typography>
             <Box>
                 <TextField
-                    InputLabelProps={{ shrink: true, required: true }}
+                    InputLabelProps={{ shrink: true }}
                     label='Start Date'
                     name='startDate'
                     onChange={handleChangeStartDate}
@@ -156,7 +156,7 @@ const Budget: FC = () => {
                     value={startDate}
                 />
                 <TextField
-                    InputLabelProps={{ shrink: true, required: true }}
+                    InputLabelProps={{ shrink: true }}
                     label='End Date'
                     name='endDate'
                     onChange={handleChangeEndDate}
