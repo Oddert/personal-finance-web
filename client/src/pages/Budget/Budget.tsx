@@ -77,6 +77,7 @@ const Budget: FC = () => {
         uncategorised: {
             label: 'Uncategorised',
             value: 0,
+            colour: '#bec3c7',
         }
     });
 
@@ -127,6 +128,7 @@ const Budget: FC = () => {
                         acc[transaction.category_id] = {
                             value: 0,
                             label: categories[transaction.category_id].label,
+                            colour: categories[transaction.category_id].colour,
                         };
                     }
                     acc[transaction.category_id].value += transaction.debit;
@@ -135,7 +137,7 @@ const Budget: FC = () => {
                 }
                 return acc;
             },
-            { uncategorised: { value: 0, label: 'Uncategorised' } },
+            { uncategorised: { value: 0, label: 'Uncategorised', colour: '#bec3c7' } },
         );
         setCategoryBreakdown(_categoryBreakdown);
     }, [categories, endDate, startDate, transactions]);

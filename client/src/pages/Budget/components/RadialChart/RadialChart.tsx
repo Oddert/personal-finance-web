@@ -4,11 +4,18 @@ import Chart from 'react-apexcharts';
 import { IProps } from './RadialChart.types';
 
 const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
-    const { labels, series } = useMemo(() => {
+    const { labels, series, colours } = useMemo(() => {
             const asArray = Object.values(categoryBreakdown);
-            const labels = asArray.map((category) => category.label)
-            const series = asArray.map((category) => Number(category.value.toFixed(2)))
-            return { labels, series };
+            const combined = asArray.reduce(
+                (acc: {labels: string[], series: number[], colours: string[]}, category) => {
+                    acc.labels.push(category.label)
+                    acc.series.push(Number(category.value.toFixed(2)))
+                    acc.colours.push(category.colour)
+                    return acc
+                },
+                { labels: [], series: [], colours: [] },
+            )
+            return combined;
         },
         [categoryBreakdown],
     );
@@ -31,6 +38,8 @@ const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
                     }
                 }],
                 labels,
+                // fight me americans
+                colors: colours,
             }}
             series={series}
             type='donut'

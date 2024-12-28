@@ -6,7 +6,9 @@ import { IProps } from './CategoryList.types';
 
 import Table from '../../../../components/Table';
 
-const addCurrencySymbol = (cell: CellContext<{ label: string, value: number }, unknown>) => {
+import { ICategoryBDValue } from '../../Budget.types';
+
+const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
     const value = cell.renderValue() as number;
     return (
         <Box sx={{ textAlign: 'right' }}>
@@ -22,10 +24,7 @@ const addCurrencySymbol = (cell: CellContext<{ label: string, value: number }, u
 const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
     const data = useMemo(() => Object.values(categoryBreakdown), [categoryBreakdown]);
 
-    const columns = useMemo<ColumnDef<{
-        value: number;
-        label: string;
-    }>[]>(() => [
+    const columns = useMemo<ColumnDef<ICategoryBDValue>[]>(() => [
         {
             header: 'Category',
             accessorKey: 'label'
