@@ -1,8 +1,10 @@
-import { FC, JSX } from 'react';
+import { FC } from 'react';
 
 import { Container } from '@mui/material';
 
-const ResponsiveContainer: FC<{ children: JSX.Element }> = ({ children }) => {
+import { IProps } from './ResponsiveContainer.types';
+
+const ResponsiveContainer: FC<IProps> = ({ children }) => {
     return (
         <Container
             sx={(theme) => ({
