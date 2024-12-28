@@ -122,7 +122,6 @@ const Budget: FC = () => {
 
         const _categoryBreakdown = filteredTransactions.reduce(
             (acc: ICategoryBreakdown, transaction) => {
-                console.log(transaction);
                 if (transaction.category_id && transaction.category_id in categories) {
                     if (!(transaction.category_id in acc)) {
                         acc[transaction.category_id] = {
