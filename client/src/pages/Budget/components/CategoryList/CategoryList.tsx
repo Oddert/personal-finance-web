@@ -1,28 +1,43 @@
 import { FC, useMemo } from 'react';
-
-import { List, ListItem } from '@mui/material';
+import { CellContext, ColumnDef } from '@tanstack/react-table';
+import { Box } from '@mui/material';
 
 import { IProps } from './CategoryList.types';
 
-const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
-    const entries = useMemo(() => Object.entries(categoryBreakdown), [categoryBreakdown]);
+import Table from '../../../../components/Table';
 
+const addCurrencySymbol = (cell: CellContext<{ label: string, value: number }, unknown>) => {
+    const value = cell.renderValue() as number;
     return (
-        <List>
-            <ListItem>
-                {categoryBreakdown.uncategorised.label}: {categoryBreakdown.uncategorised.value.toFixed(2)}
-            </ListItem>
-            {entries.map(
-                ([key, category]) => key === 'uncategorised'
-                    ? null
-                    : (
-                        <ListItem>
-                            {category.label}: £{category.value.toFixed(2)}
-                        </ListItem>
-                    )   
-            )}
-        </List>
+        <Box sx={{ textAlign: 'right' }}>
+            {
+                isNaN(value)
+                    ? '-'
+                    : `£${value.toFixed(2)}`
+            }
+        </Box>
     )
+}
+
+const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
+    const data = useMemo(() => Object.values(categoryBreakdown), [categoryBreakdown]);
+
+    const columns = useMemo<ColumnDef<{
+        value: number;
+        label: string;
+    }>[]>(() => [
+        {
+            header: 'Category',
+            accessorKey: 'label'
+        },
+        {
+            header: 'Amount',
+            accessorKey: 'value',
+            cell: addCurrencySymbol,
+        },
+    ], [])
+
+    return <Table columns={columns} data={data} />
 };
 
 export default CategoryList;
