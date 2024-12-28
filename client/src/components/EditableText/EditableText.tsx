@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { Edit as EditIcon } from '@mui/icons-material'
 
-interface Props {
+interface IProps {
     containerSx: any
     headingProps: any
     iconPosition: 'start'|'end'
@@ -15,11 +15,11 @@ interface Props {
 const EditableText = ({
     containerSx,
     headingProps,
-    iconPosition,
+    iconPosition = 'end',
     onChange,
     text,
     verticalCenter,
-}: Props) => {
+}: IProps) => {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState('')
 
@@ -64,7 +64,7 @@ const EditableText = ({
                 onClick={() => setOpen(true)}
                 sx={{
                     position: 'absolute',
-                    left: '-100%',
+                    left: iconPosition === 'end' ? '-100%' : '100%',
                 }}
             >
                 <EditIcon />

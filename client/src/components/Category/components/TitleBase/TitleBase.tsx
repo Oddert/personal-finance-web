@@ -44,6 +44,7 @@ const TitleBase = ({
         return (
             <EditableText
                 headingProps={headingProps}
+                iconPosition='start'
                 onChange={handleChange}
                 text={text}
                 verticalCenter

@@ -66,7 +66,9 @@ const Category = ({
                         <HamburgerMenu category={category} />
                     </Box>
                 </Box>
-                <Description category={category} />
+                <Box sx={{ display: 'flex' }}>
+                    <Description category={category} />
+                </Box>
                 <Accordion>
                     <AccordionSummary>
                         <Typography
