@@ -8,7 +8,9 @@ import {
     FontDownloadOutlined as MatchNegativeIcon,
 } from '@mui/icons-material'
 
-import { initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
+import { categorySlice, initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
+
+import routes from '../../../../services/routes'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
@@ -29,8 +31,20 @@ const Matcher = ({ matcher, categoryId }: Props) => {
 
     const [open, setOpen] = useState<boolean>(false)
 
-    const handleSubmit = (matcher: Partial<MatcherT>) => {
-        setOpen(false)
+    const handleSubmit = (_matcher: Partial<MatcherT>) => {
+        const request = async () => {
+            try {
+                const response: any = await routes.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                dispatch(categorySlice.actions.updateSingleMatcher({
+                    categoryId,
+                    matcher: response.payload.matcher,
+                }));
+                setOpen(false);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        request();
     }
 
     const handleDelete = useCallback(() => {
@@ -55,11 +69,11 @@ const Matcher = ({ matcher, categoryId }: Props) => {
     if (open) {
         return (
             <EditMatcher
+                matcher={matcher}
                 onCancel={() => setOpen(false)}
                 onSubmit={handleSubmit}
-                clearOnBlur={true}
-                clearOnCancel={true}
-                clearOnSubmit={true}
+                clearOnCancel
+                clearOnSubmit
             />
         )
     }

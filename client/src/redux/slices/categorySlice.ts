@@ -133,7 +133,8 @@ export const categorySlice = createSlice({
             matcher: Matcher,
         }>) => {
             const updatedMatchers = state.orderedData.byId[action.payload.categoryId].matchers.map(
-                matcher => {
+                (matcher) => {
+                    console.log(matcher.id, action.payload.matcher.id, matcher.id === action.payload.matcher.id)
                     if (matcher.id === action.payload.matcher.id) {
                         return action.payload.matcher
                     }
@@ -145,7 +146,7 @@ export const categorySlice = createSlice({
                 matchers: updatedMatchers,
             }
 
-            state.response = state.response.map(category => {
+            state.response = state.response.map((category) => {
                 if (category.id === action.payload.categoryId) {
                     return updatedCategory
                 }

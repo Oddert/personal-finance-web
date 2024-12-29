@@ -30,6 +30,9 @@ const routes = {
     addSingleMatcher: async (matcher: Partial<Matcher>, categoryId: Category['id']) => {
         return await request.post(`/matcher/`, { ...matcher, categoryId })
     },
+    updateSingleMatcher: async (matcher: Partial<Matcher>, matcherId: Matcher['id']) => {
+        return await request.put(`/matcher/${matcherId}`, matcher)
+    },
     deleteSingleMatcher: async (id: number|string) => {
         return await request.delete(`/matcher/${id}`)
     },
