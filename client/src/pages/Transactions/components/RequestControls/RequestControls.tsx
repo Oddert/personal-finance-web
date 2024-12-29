@@ -8,6 +8,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { getTransactionsEndDate, getTransactionsStartDate } from '../../../../redux/selectors/transactionsSelectors'
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+
 import { setEndDate, setStartDate } from '../../../../redux/slices/transactionsSlice'
 
 dayjs.extend(localizedFormat)
@@ -28,6 +29,10 @@ const RequestControls = () => {
     const handleChangeEnd = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setEndDate({ endDate: e.target.value }))
     }, [dispatch])
+
+    // const handleSubmit = useCallback(() => {
+    //     dispatch(updateValue())
+    // }, [dispatch])
 
     useEffect(() => {
         const date = dayjs(startDate).format('YYYY-MM-DD')
@@ -72,7 +77,11 @@ const RequestControls = () => {
                     value={end}
                     onChange={handleChangeEnd}
                 />
-                <Button>Refresh</Button>
+                <Button
+                    // onClick={handleSubmit}
+                >
+                    Refresh
+                </Button>
             </Box>
         </Box>
     )
