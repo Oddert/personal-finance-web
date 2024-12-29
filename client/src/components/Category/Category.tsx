@@ -28,6 +28,41 @@ const Category: FC<IProps> = ({
     onAddNewSubmit,
     layout = 'standard',
 }) => {
+
+    const CategoryList = (
+        <List>
+            {category.matchers.map((matcher: MatcherT) => (
+                <Matcher
+                    categoryId={category.id}
+                    key={matcher.id}
+                    matcher={matcher}
+                />
+            ))}
+            <AddMatcher
+                categoryId={category.id}
+                defaultOpen={defaultOpenAddNew}
+                matcher={defaultOpenMatcher || undefined}
+                onSubmit={onAddNewSubmit}
+            />
+        </List>
+    )
+
+    const MatchersTitle = (
+        <Typography
+            variant='h4'
+            align='left'
+            sx={{ fontSize: '16px', fontWeight: 'bold' }}
+        >
+            Matchers{category.matchers?.length ? ` (${category.matchers.length})` : ''}
+        </Typography>
+    )
+
+    const DescBox = (
+        <Box sx={{ display: 'flex' }}>
+            <Description category={category} />
+        </Box>
+    )
+
     switch(layout) {
         case 'list':
         case 'compact':
@@ -74,31 +109,9 @@ const Category: FC<IProps> = ({
                                 </Box>
                             </AccordionSummary>
                             <AccordionDetails>
-                                <Box sx={{ display: 'flex' }}>
-                                    <Description category={category} />
-                                </Box>
-                                <Typography
-                                    variant='h4'
-                                    align='left'
-                                    sx={{ fontSize: '16px', fontWeight: 'bold' }}
-                                >
-                                    Matchers{category.matchers?.length ? ` (${category.matchers.length})` : ''}
-                                </Typography>
-                                <List>
-                                    {category.matchers.map((matcher: MatcherT) => (
-                                        <Matcher
-                                            categoryId={category.id}
-                                            key={matcher.id}
-                                            matcher={matcher}
-                                        />
-                                    ))}
-                                    <AddMatcher
-                                        categoryId={category.id}
-                                        defaultOpen={defaultOpenAddNew}
-                                        matcher={defaultOpenMatcher || undefined}
-                                        onSubmit={onAddNewSubmit}
-                                    />
-                                </List>
+                                {DescBox}
+                                {MatchersTitle}
+                                {CategoryList}
                             </AccordionDetails>
                         </Accordion>
                     </Paper>
@@ -135,40 +148,24 @@ const Category: FC<IProps> = ({
                             sx={{ display: 'flex', justifyContent: 'space-between' }}
                         >
                             <Colour category={category} />
-                            <Box sx={{ display: 'flex', borderBottom: `3px solid ${category.colour}`, padding: '16px 0' }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    borderBottom: `3px solid ${category.colour}`,
+                                    padding: '16px 0',
+                                }}
+                            >
                                 <Title category={category} />
                                 <HamburgerMenu category={category} />
                             </Box>
                         </Box>
-                        <Box sx={{ display: 'flex' }}>
-                            <Description category={category} />
-                        </Box>
+                        {DescBox}
                         <Accordion>
                             <AccordionSummary>
-                                <Typography
-                                    variant='h4'
-                                    align='left'
-                                    sx={{ fontSize: '16px', fontWeight: 'bold' }}
-                                >
-                                    Matchers{category.matchers?.length ? ` (${category.matchers.length})` : ''}
-                                </Typography>
+                                {MatchersTitle}
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <List>
-                                    {category.matchers.map((matcher: MatcherT) => (
-                                        <Matcher
-                                            categoryId={category.id}
-                                            key={matcher.id}
-                                            matcher={matcher}
-                                        />
-                                    ))}
-                                    <AddMatcher
-                                        categoryId={category.id}
-                                        defaultOpen={defaultOpenAddNew}
-                                        matcher={defaultOpenMatcher || undefined}
-                                        onSubmit={onAddNewSubmit}
-                                    />
-                                </List>
+                            <AccordionDetails>                            
+                                {CategoryList}
                             </AccordionDetails>
                         </Accordion>
                     </Paper>

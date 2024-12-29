@@ -35,6 +35,7 @@ const Title = ({ category }: Props) => {
                 },
             }}
             onChange={handleChange}
+            placeholder='Click to add a description.'
             text={category.description}
         />
     )
