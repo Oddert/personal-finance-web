@@ -28,7 +28,7 @@ const Transactions = () => {
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
                         margin: '24px 0',
-                        gridGap: '0 32px',
+                        gridGap: '16px 32px',
                     }}
                 >
                     <Upload />

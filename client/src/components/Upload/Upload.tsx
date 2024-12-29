@@ -73,7 +73,7 @@ const Upload = () => {
 
     return (
         <Fragment>
-            <MuiFileInput multiple onChange={handleChange} />
+            <MuiFileInput label='Upload' multiple onChange={handleChange} sx={{ gridColumn: '1 / -1' }} />
             <TransactionEditContext.Provider
                 value={{ state, dispatch }}
             >

@@ -46,25 +46,34 @@ const RequestControls = () => {
     return (
         <Box>
             <Typography sx={{ textAlign: 'left', margin: '12px 0' }}>
-                Loaded transactions for the following dates:
+                Load data for the following dates:
             </Typography>
-            <TextField
-                name='startDate'
-                label='Start Date'
-                InputLabelProps={{ shrink: true, required: true }}
-                type='date'
-                value={start}
-                onChange={handleChangeStart}
-            />
-            <TextField
-                name='endDate'
-                label='End Date'
-                InputLabelProps={{ shrink: true, required: true }}
-                type='date'
-                value={end}
-                onChange={handleChangeEnd}
-            />
-            <Button>Refresh</Button>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    gridGap: '16px',
+                }}
+            >
+                <TextField
+                    name='startDate'
+                    label='Start Date'
+                    InputLabelProps={{ shrink: true, required: true }}
+                    type='date'
+                    value={start}
+                    onChange={handleChangeStart}
+                />
+                <TextField
+                    name='endDate'
+                    label='End Date'
+                    InputLabelProps={{ shrink: true, required: true }}
+                    type='date'
+                    value={end}
+                    onChange={handleChangeEnd}
+                />
+                <Button>Refresh</Button>
+            </Box>
         </Box>
     )
 }
