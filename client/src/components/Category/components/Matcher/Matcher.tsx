@@ -56,13 +56,13 @@ const Matcher = ({ matcher, categoryId }: Props) => {
     const matchTypeTitle = useMemo(() => {
         switch(matcher?.match_type) {
             case 'any':
-                return 'matches this text anywhere in the description'
+                return 'Matches this text anywhere in the description'
             case 'exact':
-                return 'only matches this exact string (may not have anything before or after)'
+                return 'Only matches this exact string (may not have anything before or after)'
             case 'end':
-                return 'matches only if this text is at the end of a description'
+                return 'Matches only if this text is at the end of a description'
             case 'start':
-                return 'matches only if this text is at the beginning of a description'
+                return 'Matches only if this text is at the beginning of a description'
         }
     }, [matcher?.match_type])
 
