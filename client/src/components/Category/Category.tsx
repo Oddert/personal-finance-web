@@ -76,7 +76,7 @@ const Category = ({
                             align='left'
                             sx={{ fontSize: '16px', fontWeight: 'bold' }}
                         >
-                            Matches
+                            Matchers{category.matchers?.length ? ` (${category.matchers.length})` : ''}
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
