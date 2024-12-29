@@ -8,6 +8,7 @@ interface IProps {
     headingProps: any
     iconPosition: 'start'|'end'
     onChange: (value: string) => void
+    placeholder?: string
     text: string
     verticalCenter?: boolean
 }
@@ -17,6 +18,7 @@ const EditableText = ({
     headingProps,
     iconPosition = 'end',
     onChange,
+    placeholder,
     text,
     verticalCenter,
 }: IProps) => {
@@ -41,7 +43,7 @@ const EditableText = ({
                 position: 'relative',
                 '& .EditableText_open': {
                     transition: '.1s linear',
-                    opacity: 0,
+                    opacity: text.length ? 0 : 1,
                     color: theme.palette.common.white,
                     paddingLeft: 0,
                     paddingRight: 0,
@@ -77,9 +79,21 @@ const EditableText = ({
                     value={value}
                 />
             ) : (
-                <Typography className='EditableText__title' {...headingProps}>
-                    {text}
-                </Typography>
+                !text.length && placeholder ? (
+                    <Typography
+                        className='EditableText__title'
+                        sx={(theme) => ({
+                            color: theme.palette.text.disabled,
+                        })}
+                        {...headingProps}
+                    >
+                        {placeholder}
+                    </Typography>
+                ) : (
+                    <Typography className='EditableText__title' {...headingProps}>
+                        {text}
+                    </Typography>
+                )
             )}
         </Box>
     )
