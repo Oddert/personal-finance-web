@@ -9,3 +9,5 @@ export declare interface Category {
     updated_on: string
     matchers: Matcher[]
 }
+
+export declare type ICategoryLayoutModes = 'standard'|'compact'|'list';
