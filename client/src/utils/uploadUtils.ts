@@ -1,3 +1,5 @@
+import { TransactionEditState } from '../contexts/transactionEditContext'
+
 import { Category } from '../types/Category'
 import { Matcher } from '../types/Matcher'
 
@@ -24,7 +26,7 @@ export const createRegexFromMatcher = (matcher: Matcher) => {
  * @returns The list of transactions with categories matched (if matches are found).
  */
 export const autoMatchCategories = (
-    transactions: { [key: string]: string|number }[],
+    transactions: TransactionEditState['transactions'],
     categories: Category[],
 ) => {
     // Reduces the list of categories down to key-value pairs and a raw list of all `match` attributes.
@@ -47,7 +49,10 @@ export const autoMatchCategories = (
     const superMatcher = new RegExp(regexList.all.join('|'), 'gi')
 
     return transactions.map((transaction) => {
-        const description: string = transaction['Transaction Description'] as string
+        const description: string = 'Transaction Description' in transaction
+            ? transaction['Transaction Description'] as string
+            : transaction.description as string
+
         superMatcher.lastIndex = 0
         // Test the label against the loose combined regex.
         if (superMatcher.test(description)) {

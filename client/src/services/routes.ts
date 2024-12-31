@@ -12,6 +12,9 @@ const routes = {
     createManyTransactions: async (transactions: any) => {
         return await request.post(`/transaction/create-many`, { transactions })
     },
+    updateManyTransactions: async (transactions: any) => {
+        return await request.put(`/transaction/update-many`, { transactions })
+    },
     getAllCategories: async () => {
         return await request.get(`/category`)
     },

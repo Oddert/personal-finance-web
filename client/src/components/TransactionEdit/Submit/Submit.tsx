@@ -1,17 +1,26 @@
 import { useCallback, useContext, useState } from 'react'
 
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+
 import { Button, CircularProgress } from '@mui/material'
 
 import { TransactionEditContext } from '../../../contexts/transactionEditContext'
 
 import routes from '../../../services/routes'
 
+import { useAppDispatch } from '../../../hooks/ReduxHookWrappers'
+import { requestTransactions } from '../../../redux/slices/transactionsSlice'
+
+dayjs.extend(localizedFormat)
+
 interface Props {
     onClose: () => void
 }
 
 const Submit = ({ onClose }: Props) => {
-    const { state: { transactions, columnMap } } = useContext(TransactionEditContext)
+    const appDispatch = useAppDispatch(); 
+    const { state: { columnMap, mode, transactions } } = useContext(TransactionEditContext)
 
     const [loading, setLoading] = useState(false)
 
@@ -38,23 +47,34 @@ const Submit = ({ onClose }: Props) => {
                     }
 
                     if (whitelistKeys.includes(key)) {
-                        acc[key] = Number(pair[1])
+                        if (pair[1] === '-') {
+                            acc[key] = 0
+                        } else {
+                            acc[key] = Number(pair[1])
+                        }
                     } else {
                         acc[key] = pair[1]
                     }
                     return acc
-                }, {}))
+                }, {})
+            )
 
         const request = async () => {
-            const response = await routes.createManyTransactions(transactionsWithValidKeys)
+            const response = mode === 'upload'
+                ? await routes.createManyTransactions(transactionsWithValidKeys)
+                : await routes.updateManyTransactions(transactionsWithValidKeys);
             setLoading(false)
             if (response.status === 201) {
                 onClose()
+                const date = dayjs().set('month', 0).set('date', 1)
+                const startDate = date.format('YYYY-MM-DD')
+                const endDate = dayjs().format('YYYY-MM-DD')
+                appDispatch(requestTransactions({ startDate, endDate }))
             }
         }
         setLoading(true)
         request()
-    }, [columnMap,  onClose, transactions])
+    }, [appDispatch, columnMap, mode,  onClose, transactions])
 
     return (
         <Button
@@ -67,7 +87,7 @@ const Submit = ({ onClose }: Props) => {
                 display: 'block',
             }}
         >
-            {loading ? <CircularProgress /> : 'Submit'}
+            {loading ? <CircularProgress /> : mode === 'upload' ? 'Submit' : 'Save'}
         </Button>
     )
 }

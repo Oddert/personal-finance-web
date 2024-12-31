@@ -40,6 +40,7 @@ const Table = () => {
         idx: number,
         assignedCategory: number
     ) => {
+        console.log(idx, assignedCategory)
         dispatch(updateCategory(idx, assignedCategory))
     }, [dispatch])
 

@@ -5,16 +5,18 @@ import { Autocomplete, TextField } from '@mui/material';
 
 import type { Category } from '../types/Category'
 
-interface TransactionEditState {
+export interface TransactionEditState {
     columnMap: { [key: string]: string }
     headers: string[]
     match?: string
     sideBarOpen: boolean
     transactions: { [key: string]: string|number }[]
+    mode: 'upload' | 'edit'
 }
 
 const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
+    setMode: 'setMode',
     toggleSideBarOpen: 'toggleSideBarOpen',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
@@ -33,6 +35,7 @@ export const transactionEditInitialState: TransactionEditState = {
     headers: [],
     sideBarOpen: false,
     transactions: [],
+    mode: 'upload',
 }
 
 // TODO: remove react-table logic once new logic is confirmed stable and better.
@@ -140,11 +143,16 @@ export const transactionEditReducer = (
                 ...state,
                 columnMap: action?.payload?.columnMap,
             }
+        case TransactionEditActionTypes.setMode:
+            return {
+                ...state,
+                mode: action?.payload?.mode,
+            }
         case TransactionEditActionTypes.updateCategory:
-            if (!action?.payload?.idx || !action?.payload?.assignedCategory) {
+            if (action.payload.idx === null || !action?.payload?.assignedCategory) {
                 return state
             }
-            const transactions: { [key: string]: string|number }[] = [
+            const transactions: TransactionEditState['transactions'] = [
                 ...state.transactions.slice(0, action.payload.idx),
                 {
                     ...state.transactions[action.payload.idx],
@@ -177,6 +185,13 @@ export const setColumnMap = (
 ) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap }
+})
+
+export const setMode = (
+    mode: TransactionEditState['mode'],
+) => ({
+    type: TransactionEditActionTypes.setMode,
+    payload: { mode }
 })
 
 export const toggleSideBar = (
