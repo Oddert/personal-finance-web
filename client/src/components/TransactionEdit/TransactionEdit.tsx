@@ -10,9 +10,10 @@ import Table from './Table/'
 interface Props {
     open: boolean,
     onClose: () => void
+    showMapping?: boolean
 }
 
-const TransactionEdit: FC<Props> = ({ open, onClose }) => {
+const TransactionEdit: FC<Props> = ({ open, onClose, showMapping = false }) => {
     return (
         <Modal
             open={open}
@@ -24,7 +25,9 @@ const TransactionEdit: FC<Props> = ({ open, onClose }) => {
                     <Typography variant='h2'>
                         Bulk edit transactions
                     </Typography>
-                    <ColumnMapping />
+                    {showMapping ? (
+                        <ColumnMapping />
+                    ) : null}
                     <Submit onClose={onClose} />
                     <Table />
                     <Submit onClose={onClose} />

@@ -77,7 +77,11 @@ const Upload = () => {
             <TransactionEditContext.Provider
                 value={{ state, dispatch }}
             >
-                <TransactionEdit open={modalOpen} onClose={() => setModalOpen(false)} />
+                <TransactionEdit
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    showMapping
+                />
             </TransactionEditContext.Provider>
         </Fragment>
     )
