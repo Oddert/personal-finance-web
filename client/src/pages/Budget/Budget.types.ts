@@ -7,3 +7,11 @@ export interface ICategoryBDValue {
 export interface ICategoryBreakdown {
     [key: number|string]: ICategoryBDValue
 }
+
+export interface IBudgetDatum {
+    categoryName: string
+    budget: number
+    spend: number
+    diffInt: number
+    diffPc: number
+}

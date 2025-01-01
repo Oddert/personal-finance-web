@@ -40,6 +40,12 @@ const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
                 labels,
                 // fight me americans
                 colors: colours,
+                legend: {
+                    labels: {
+                        colors: '#fff',
+                    },
+                    horizontalAlign: 'left',
+                },
             }}
             series={series}
             type='donut'

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, Fragment, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FC, Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
@@ -12,11 +12,11 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 
+import BudgetTable from './components/BudgetTable';
+import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
-import CategoryList from './components/CategoryList';
 
-import { ICategoryBreakdown } from './Budget.types';
-
+import { IBudgetDatum, ICategoryBreakdown } from './Budget.types';
 
 dayjs.extend(localizedFormat)
 
@@ -67,6 +67,79 @@ const formatNumMonths = (numMonths: number) => {
     return `(${numMonths} ${numMonths > 1 ? 'months' : 'month'})`
 }
 
+const normalise = (value: number) => Number(value.toFixed(2));
+
+const monthBudget: { [key: number]: { label: string, value: number } } = {
+    1: {
+        label: 'food',
+        value: 200,
+    },
+    2: {
+        label: 'support',
+        value: 35,
+    },
+    3: {
+        label: 'travel',
+        value: 80,
+    },
+    4: {
+        label: 'health',
+        value: 200,
+    },
+    5: {
+        label: 'subscriptions',
+        value: 10,
+    },
+    6: {
+        label: 'bike',
+        value: 70,
+    },
+    7: {
+        label: 'income',
+        value: 0,
+    },
+    8: {
+        label: 'work',
+        value: 20,
+    },
+    9: {
+        label: 'phone',
+        value: 30,
+    },
+    10: {
+        label: 'dentist',
+        value: 20,
+    },
+    11: {
+        label: 'therapy',
+        value: 240,
+    },
+    12: {
+        label: 'home',
+        value: 200,
+    },
+    13: {
+        label: 'investment',
+        value: 0,
+    },
+    14: {
+        label: 'rent',
+        value: 1150,
+    },
+    15: {
+        label: 'gifts',
+        value: 30,
+    },
+    16: {
+        label: 'garden',
+        value: 30,
+    },
+    17: {
+        label: 'clothes',
+        value: 30,
+    },
+}
+
 const Budget: FC = () => {
     const [startDate, setStartDate] = useState(toBeginningMonth(new Date('2024-11-01')));
     const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
@@ -85,6 +158,37 @@ const Budget: FC = () => {
 
     const transactions = useAppSelector(getTransactionsResponse);
     const categories = useAppSelector(getCategoryOrderedDataById);
+
+    const data = useMemo(() => {
+        const res = Object.entries(categoryBreakdown).reduce((acc: IBudgetDatum[], [uid, each]) => {
+            const budgetDatum = monthBudget[Number(uid)];
+            const normalisedValue = normalise(each.value);
+
+            if (budgetDatum?.value) {
+                const budgetValue = numMonths * budgetDatum.value;
+                const diffInt = normalise(normalisedValue - budgetValue);
+                const diffPc = normalise((diffInt / budgetValue) * 100);
+                acc.push({
+                    categoryName: each.label,
+                    budget: budgetDatum.value,
+                    spend: Number(each.value.toFixed(2)),
+                    diffInt,
+                    diffPc,
+                });
+            } else {
+                acc.push({
+                    categoryName: each.label,
+                    budget: 0,
+                    spend: normalisedValue,
+                    diffInt: 0,
+                    diffPc: 0,
+                });
+            }
+
+            return acc
+        }, [])
+        return res
+    }, [categoryBreakdown, numMonths]);
 
     const handleChangeStartDate = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +249,7 @@ const Budget: FC = () => {
     return (
         <ResponsiveContainer>
             <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                {formatReadableDate(startDate, endDate)} {formatNumMonths(numMonths)}
+                Budget from {formatReadableDate(startDate, endDate)} {formatNumMonths(numMonths)}
             </Typography>
             <Box>
                 <TextField
@@ -173,9 +277,29 @@ const Budget: FC = () => {
                     justifyContent: 'space-around',
                 }}
             >
-                <CategoryList categoryBreakdown={categoryBreakdown} />
+                {/* <CategoryList categoryBreakdown={categoryBreakdown} /> */}
+                <PercentageChart data={data} />
                 <RadialChart categoryBreakdown={categoryBreakdown} />
             </Box>
+            <Typography>
+                Total expected spend: {
+                    Object.values(monthBudget).reduce(
+                        (a, e) => a + e.value,
+                        0,
+                    )
+                }
+            </Typography>
+            <Typography>
+                Total actual spend: {
+                    normalise(
+                        Object.values(data).reduce(
+                            (acc, each) => acc + each.spend,
+                            0,
+                        )
+                    )
+                }
+            </Typography>
+            <BudgetTable data={data} />
         </ResponsiveContainer>
     )
 }
