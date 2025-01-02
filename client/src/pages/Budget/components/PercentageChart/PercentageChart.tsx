@@ -2,6 +2,7 @@ import { FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
 import { IProps } from './PercentageChart.types';
+import { Box } from '@mui/material';
 
 const PercentageChart: FC<IProps> = ({ data }) => {
     const { categories, seriesData } = useMemo(() => {
@@ -18,44 +19,76 @@ const PercentageChart: FC<IProps> = ({ data }) => {
     }, [data]);
 
     return (
-        <Chart
-            type='bar'
-            height={350}
-            options={{
-                chart: {
-                  type: 'bar',
-                  height: 350,
-                },
-                plotOptions: {
-                  bar: {
-                    borderRadius: 4,
-                    borderRadiusApplication: 'end',
-                    horizontal: true,
-                  }
-                },
-                dataLabels: {
-                  enabled: false,
-                },
-                xaxis: {
-                  categories,
-                  labels: {
-                      style: {
-                          colors: '#fff',
-                      },
-                  },
-                },
-                yaxis: {
-                    labels: {
-                        style: {
-                            colors: '#fff',
+        <Box sx={(theme) => ({
+            '& *': {
+                color: theme.palette.primary.contrastText,
+            }
+        })}>
+            <Chart
+                type='bar'
+                height={350}
+                options={{
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        toolbar: {
+                            show: false,
                         },
                     },
-                },
-              }}
-              series={[{
-                data: seriesData,
-              }]}
-        />
+                    plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        borderRadiusApplication: 'end',
+                        horizontal: true,
+                    }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    grid: {
+                        // show: true,
+                        xaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                        yaxis: {
+                            lines: {
+                                show: true,
+                            },
+                        },
+                    },
+                    tooltip: {
+                        y: {
+                            title: {
+                                formatter: () => '',
+                            },
+                            formatter(value) {
+                                return Number(value) >= 0 ? `+${value}%` : `${value}%`
+                            },
+                        },
+                    },
+                    xaxis: {
+                        categories,
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            },
+                        },
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            },
+                        },
+                    },
+                }}
+                series={[{
+                    data: seriesData,
+                }]}
+            />
+        </Box>
     )
 }
 
