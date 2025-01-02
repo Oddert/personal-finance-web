@@ -26,6 +26,8 @@ import {
     toBeginningMonth,
     toEndMonth,
 } from './BudgetUtils';
+import TimeChart from './components/TimeChart';
+import { Transaction } from '../../types/Transaction';
 
 dayjs.extend(localizedFormat)
 
@@ -103,6 +105,7 @@ export const monthBudget: { [key: number]: { label: string, value: number } } = 
 const Budget: FC = () => {
     const [startDate, setStartDate] = useState(toBeginningMonth(new Date('2024-11-01')));
     const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
+    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
 
     const [numMonths, setNumMonths] = useState(1);
     const [categoryBreakdown, setCategoryBreakdown] = useState<ICategoryBreakdown>({
@@ -150,7 +153,7 @@ const Budget: FC = () => {
     useEffect(() => {
         setNumMonths(dayjs(endDate).diff(dayjs(startDate), 'month') + 1);
 
-        const filteredTransactions = transactions.filter((transaction) => {
+        const _filteredTransactions = transactions.filter((transaction) => {
             const tDate = dayjs(transaction.date)
             const sDate = dayjs(startDate)
             const eDate = dayjs(endDate)
@@ -160,7 +163,7 @@ const Budget: FC = () => {
             return false
         });
 
-        const _categoryBreakdown = filteredTransactions.reduce(
+        const _categoryBreakdown = _filteredTransactions.reduce(
             (acc: ICategoryBreakdown, transaction) => {
                 if (transaction.category_id && transaction.category_id in categories) {
                     if (!(transaction.category_id in acc)) {
@@ -179,6 +182,7 @@ const Budget: FC = () => {
             { uncategorised: { value: 0, label: 'Uncategorised', colour: '#bec3c7' } },
         );
         setCategoryBreakdown(_categoryBreakdown);
+        setFilteredTransactions(_filteredTransactions);
     }, [categories, endDate, startDate, transactions]);
 
 
@@ -218,6 +222,15 @@ const Budget: FC = () => {
                     elevation={0}
                 >
                     <BudgetTable data={data} />
+                </Paper>
+                <Paper
+                    elevation={0}
+                >
+                    <TimeChart
+                        endDate={endDate}
+                        filteredTransactions={filteredTransactions}
+                        startDate={startDate}
+                    />
                 </Paper>
             </Box>
         </ResponsiveContainer>
