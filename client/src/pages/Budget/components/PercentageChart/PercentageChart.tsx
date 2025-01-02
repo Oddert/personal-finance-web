@@ -46,7 +46,6 @@ const PercentageChart: FC<IProps> = ({ data }) => {
                         enabled: false,
                     },
                     grid: {
-                        // show: true,
                         xaxis: {
                             lines: {
                                 show: true,

@@ -1,8 +1,8 @@
-import { ChangeEvent, FC, Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 
@@ -13,38 +13,14 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 
 import BudgetTable from './components/BudgetTable';
+import DateRange from './components/DateRange';
 import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
 
 import { IBudgetDatum, ICategoryBreakdown } from './Budget.types';
+import { toBeginningMonth, toEndMonth } from './BudgetUtils';
 
 dayjs.extend(localizedFormat)
-
-const DATE_FORMAT = 'YYYY-MM-DD';
-
-/**
- * Given a date in any string format parsable by dayjs.
- *
- * Returns the first day of that month in format YYYY-MM-DD.
- * @param rawDate The date to be flattened.
- * @returns The new date string in standard format.
- */
-const toBeginningMonth = (rawDate: string|Date) => {
-    const date = dayjs(rawDate).date(1);
-    return date.format(DATE_FORMAT);
-}
-
-/**
- * Given a date in any string format parsable by dayjs.
- *
- * Returns the last day of that month in format YYYY-MM-DD.
- * @param rawDate The date to be ceilinged.
- * @returns The new date string in standard format.
- */
-const toEndMonth = (rawDate: string|Date) => {
-    const date = dayjs(rawDate).endOf('month')
-    return date.format(DATE_FORMAT);
-}
 
 const formatReadableDate = (startDate: string, endDate: string) => {
     const d1 = dayjs(startDate)
@@ -143,7 +119,6 @@ const monthBudget: { [key: number]: { label: string, value: number } } = {
 const Budget: FC = () => {
     const [startDate, setStartDate] = useState(toBeginningMonth(new Date('2024-11-01')));
     const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
-    const [dateError, setDateError] = useState<null|string>(null);
 
     const [numMonths, setNumMonths] = useState(1);
     const [categoryBreakdown, setCategoryBreakdown] = useState<ICategoryBreakdown>({
@@ -153,8 +128,6 @@ const Budget: FC = () => {
             colour: '#bec3c7',
         }
     });
-
-    // const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
 
     const transactions = useAppSelector(getTransactionsResponse);
     const categories = useAppSelector(getCategoryOrderedDataById);
@@ -189,28 +162,6 @@ const Budget: FC = () => {
         }, [])
         return res
     }, [categoryBreakdown, numMonths]);
-
-    const handleChangeStartDate = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setStartDate(toBeginningMonth(e.target.value));
-            setEndDate(toEndMonth(e.target.value));
-            setDateError(null)
-        },
-        [],
-    );
-
-    const handleChangeEndDate = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const convertedEndDate = toEndMonth(e.target.value);
-            if (dayjs(convertedEndDate).diff(dayjs(startDate)) < 0) {
-                setDateError('End date may not be before start date');
-            } else {
-                setDateError(null)
-                setEndDate(toEndMonth(e.target.value))
-            }
-        },
-        [startDate],
-    );
 
     useEffect(() => {
         setNumMonths(dayjs(endDate).diff(dayjs(startDate), 'month') + 1);
@@ -251,25 +202,12 @@ const Budget: FC = () => {
             <Typography variant='h2' sx={{ margin: '32px 0' }}>
                 Budget from {formatReadableDate(startDate, endDate)} {formatNumMonths(numMonths)}
             </Typography>
-            <Box>
-                <TextField
-                    InputLabelProps={{ shrink: true }}
-                    label='Start Date'
-                    name='startDate'
-                    onChange={handleChangeStartDate}
-                    type='date'
-                    value={startDate}
-                />
-                <TextField
-                    InputLabelProps={{ shrink: true }}
-                    label='End Date'
-                    name='endDate'
-                    onChange={handleChangeEndDate}
-                    type='date'
-                    value={endDate}
-                />
-            </Box>
-            <Typography color='error'>{dateError || ''}</Typography>
+            <DateRange
+                endDate={endDate}
+                setEndDate={setEndDate}
+                setStartDate={setStartDate}
+                startDate={startDate}
+            />
             <Box
                 sx={{
                     display: 'flex',
@@ -277,7 +215,6 @@ const Budget: FC = () => {
                     justifyContent: 'space-around',
                 }}
             >
-                {/* <CategoryList categoryBreakdown={categoryBreakdown} /> */}
                 <PercentageChart data={data} />
                 <RadialChart categoryBreakdown={categoryBreakdown} />
             </Box>
