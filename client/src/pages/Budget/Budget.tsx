@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
@@ -18,32 +18,15 @@ import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
 
 import { IBudgetDatum, ICategoryBreakdown } from './Budget.types';
-import { toBeginningMonth, toEndMonth } from './BudgetUtils';
+import {
+    formatNumMonths,
+    formatReadableDate,
+    normaliseNum,
+    toBeginningMonth,
+    toEndMonth,
+} from './BudgetUtils';
 
 dayjs.extend(localizedFormat)
-
-const formatReadableDate = (startDate: string, endDate: string) => {
-    const d1 = dayjs(startDate)
-    const d2 = dayjs(endDate)
-    const format = d1.year() !== d2.year() ? 'dddd D MMMM YYYY' : 'dddd D MMMM';
-    return (
-        <Fragment>
-            <Typography component='span' sx={{ fontWeight: 'bold', fontSize: 'inherit' }}>
-                {d1.format(format)}
-            </Typography>
-            {' '}to{' '}
-            <Typography component='span' sx={{ fontWeight: 'bold', fontSize: 'inherit' }}>
-                {d2.format(format)}
-            </Typography>
-        </Fragment>
-    )
-}
-
-const formatNumMonths = (numMonths: number) => {
-    return `(${numMonths} ${numMonths > 1 ? 'months' : 'month'})`
-}
-
-const normalise = (value: number) => Number(value.toFixed(2));
 
 const monthBudget: { [key: number]: { label: string, value: number } } = {
     1: {
@@ -135,12 +118,12 @@ const Budget: FC = () => {
     const data = useMemo(() => {
         const res = Object.entries(categoryBreakdown).reduce((acc: IBudgetDatum[], [uid, each]) => {
             const budgetDatum = monthBudget[Number(uid)];
-            const normalisedValue = normalise(each.value);
+            const normalisedValue = normaliseNum(each.value);
 
             if (budgetDatum?.value) {
                 const budgetValue = numMonths * budgetDatum.value;
-                const diffInt = normalise(normalisedValue - budgetValue);
-                const diffPc = normalise((diffInt / budgetValue) * 100);
+                const diffInt = normaliseNum(normalisedValue - budgetValue);
+                const diffPc = normaliseNum((diffInt / budgetValue) * 100);
                 acc.push({
                     categoryName: each.label,
                     budget: budgetDatum.value,
@@ -228,7 +211,7 @@ const Budget: FC = () => {
             </Typography>
             <Typography>
                 Total actual spend: {
-                    normalise(
+                    normaliseNum(
                         Object.values(data).reduce(
                             (acc, each) => acc + each.spend,
                             0,
