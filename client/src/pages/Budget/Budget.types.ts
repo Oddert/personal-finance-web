@@ -12,6 +12,6 @@ export interface IBudgetDatum {
     categoryName: string
     budget: number
     spend: number
-    diffInt: number
+    diffFloat: number
     diffPc: number
 }

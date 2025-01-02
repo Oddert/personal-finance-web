@@ -28,7 +28,7 @@ const GlanceCards: FC<IProps> = ({ data }) => {
                 if (datum.diffPc > accumulator._overSpendPc.diffPc) {
                     accumulator._overSpendPc = datum;
                 }
-                if (datum.diffInt > accumulator._overSpendPc.diffInt) {
+                if (datum.diffFloat > accumulator._overSpendVal.diffFloat) {
                     accumulator._overSpendVal = datum;
                 }
                 if (datum.diffPc < 0) {
@@ -72,7 +72,7 @@ const GlanceCards: FC<IProps> = ({ data }) => {
             sx={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gridGap: '32px',
+                gridGap: '16px 32px',
             }}
         >
             <Paper
@@ -121,7 +121,7 @@ const GlanceCards: FC<IProps> = ({ data }) => {
                 <Typography>
                     By value: <Typography component='span' sx={{ fontWeight: 'bold' }}>{
                         largestOverspendVal.categoryName
-                    } (+ £{largestOverspendVal.diffInt})</Typography>
+                    } (+ £{largestOverspendVal.diffFloat})</Typography>
                 </Typography>
             </Paper>
             <Paper

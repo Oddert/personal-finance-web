@@ -24,7 +24,7 @@ const BudgetTable: FC<IProps> = ({ data }) => {
         },
         {
             header: 'Difference (£)',
-            accessorKey: 'diffInt',
+            accessorKey: 'diffFloat',
             cell: (cell: any) => {
                 const value = cell.renderValue();
                 return value === 0 ? '-' : value > 0 ? `+ £${value}` : `- £${Math.abs(value)}`;

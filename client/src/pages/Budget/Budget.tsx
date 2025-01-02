@@ -123,13 +123,13 @@ const Budget: FC = () => {
 
             if (budgetDatum?.value) {
                 const budgetValue = numMonths * budgetDatum.value;
-                const diffInt = normaliseNum(normalisedValue - budgetValue);
-                const diffPc = normaliseNum((diffInt / budgetValue) * 100);
+                const diffFloat = normaliseNum(normalisedValue - budgetValue);
+                const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
                 acc.push({
                     categoryName: each.label,
                     budget: budgetDatum.value,
                     spend: Number(each.value.toFixed(2)),
-                    diffInt,
+                    diffFloat,
                     diffPc,
                 });
             } else {
@@ -137,7 +137,7 @@ const Budget: FC = () => {
                     categoryName: each.label,
                     budget: 0,
                     spend: normalisedValue,
-                    diffInt: 0,
+                    diffFloat: 0,
                     diffPc: 0,
                 });
             }
