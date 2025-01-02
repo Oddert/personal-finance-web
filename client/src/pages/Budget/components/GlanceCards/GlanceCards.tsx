@@ -4,9 +4,10 @@ import { Box, Paper, Typography } from '@mui/material';
 
 import { monthBudget } from '../../Budget';
 
-import { IProps } from './GlanceCards.types';
 import { normaliseNum } from '../../BudgetUtils';
 import { IBudgetDatum } from '../../Budget.types';
+
+import { IProps } from './GlanceCards.types';
 
 const GlanceCards: FC<IProps> = ({ data }) => {
     const [actualSpend, setActualSpend] = useState(0);
