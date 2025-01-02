@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import { Box, Typography } from '@mui/material';
+import {Box, Paper, Typography } from '@mui/material';
 
 import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 
@@ -14,6 +14,7 @@ import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelect
 
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
+import GlanceCards from './components/GlanceCards';
 import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
 
@@ -28,7 +29,7 @@ import {
 
 dayjs.extend(localizedFormat)
 
-const monthBudget: { [key: number]: { label: string, value: number } } = {
+export const monthBudget: { [key: number]: { label: string, value: number } } = {
     1: {
         label: 'food',
         value: 200,
@@ -180,46 +181,45 @@ const Budget: FC = () => {
         setCategoryBreakdown(_categoryBreakdown);
     }, [categories, endDate, startDate, transactions]);
 
+
     return (
         <ResponsiveContainer>
-            <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                Budget from {formatReadableDate(startDate, endDate)} {formatNumMonths(numMonths)}
-            </Typography>
-            <DateRange
-                endDate={endDate}
-                setEndDate={setEndDate}
-                setStartDate={setStartDate}
-                startDate={startDate}
-            />
             <Box
                 sx={{
                     display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-around',
+                    flexDirection: 'column',
+                    gridGap: '16px',
                 }}
             >
-                <PercentageChart data={data} />
-                <RadialChart categoryBreakdown={categoryBreakdown} />
+                <Typography variant='h2' sx={{ margin: '32px 0' }}>
+                    Budget from {formatReadableDate(startDate, endDate)} {formatNumMonths(numMonths)}
+                </Typography>
+                <DateRange
+                    endDate={endDate}
+                    setEndDate={setEndDate}
+                    setStartDate={setStartDate}
+                    startDate={startDate}
+                />
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'space-around',
+                    }}
+                >
+                    <PercentageChart data={data} />
+                    <RadialChart categoryBreakdown={categoryBreakdown} />
+                </Paper>
+                <GlanceCards
+                    data={data}
+                />
+                <Paper
+                    elevation={0}
+                >
+                    <BudgetTable data={data} />
+                </Paper>
             </Box>
-            <Typography>
-                Total expected spend: {
-                    Object.values(monthBudget).reduce(
-                        (a, e) => a + e.value,
-                        0,
-                    )
-                }
-            </Typography>
-            <Typography>
-                Total actual spend: {
-                    normaliseNum(
-                        Object.values(data).reduce(
-                            (acc, each) => acc + each.spend,
-                            0,
-                        )
-                    )
-                }
-            </Typography>
-            <BudgetTable data={data} />
         </ResponsiveContainer>
     )
 }
