@@ -14,4 +14,5 @@ export interface IBudgetDatum {
     spend: number
     diffFloat: number
     diffPc: number
+    variance: [number, number]
 }

@@ -4,21 +4,22 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import {Box, Paper, Typography } from '@mui/material';
 
-import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
+import { Transaction } from '../../types/Transaction';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
+import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
 import GlanceCards from './components/GlanceCards';
 import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
+import TimeChart from './components/TimeChart';
 
-import { IBudgetDatum, ICategoryBreakdown } from './Budget.types';
 import {
     formatNumMonths,
     formatReadableDate,
@@ -26,79 +27,123 @@ import {
     toBeginningMonth,
     toEndMonth,
 } from './BudgetUtils';
-import TimeChart from './components/TimeChart';
-import { Transaction } from '../../types/Transaction';
+import { IBudgetDatum, ICategoryBreakdown } from './Budget.types';
 
 dayjs.extend(localizedFormat)
 
-export const monthBudget: { [key: number]: { label: string, value: number } } = {
+interface IBudgetRow {
+    label: string
+    value: number
+    varLowPc: number
+    varHighPc: number
+}
+
+interface IBudget {
+    [key: number]: IBudgetRow
+}
+
+export const monthBudget: IBudget = {
     1: {
         label: 'food',
         value: 200,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     2: {
         label: 'support',
         value: 35,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     3: {
         label: 'travel',
         value: 80,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     4: {
         label: 'health',
         value: 200,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     5: {
         label: 'subscriptions',
         value: 10,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     6: {
         label: 'bike',
         value: 70,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     7: {
         label: 'income',
         value: 0,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     8: {
         label: 'work',
         value: 20,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     9: {
         label: 'phone',
         value: 30,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     10: {
         label: 'dentist',
-        value: 20,
+        value: 21,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     11: {
         label: 'therapy',
         value: 240,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     12: {
         label: 'home',
         value: 200,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     13: {
         label: 'investment',
         value: 0,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     14: {
         label: 'rent',
         value: 1150,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     15: {
         label: 'gifts',
         value: 30,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     16: {
         label: 'garden',
         value: 30,
+        varLowPc: 10,
+        varHighPc: 10,
     },
     17: {
         label: 'clothes',
         value: 30,
+        varLowPc: 10,
+        varHighPc: 10,
     },
 }
 
@@ -129,19 +174,21 @@ const Budget: FC = () => {
                 const diffFloat = normaliseNum(normalisedValue - budgetValue);
                 const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
                 acc.push({
-                    categoryName: each.label,
                     budget: budgetDatum.value,
-                    spend: Number(each.value.toFixed(2)),
+                    categoryName: each.label,
                     diffFloat,
                     diffPc,
+                    spend: Number(each.value.toFixed(2)),
+                    variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
                 });
             } else {
                 acc.push({
-                    categoryName: each.label,
                     budget: 0,
-                    spend: normalisedValue,
+                    categoryName: each.label,
                     diffFloat: 0,
                     diffPc: 0,
+                    spend: normalisedValue,
+                    variance: [0, 0],
                 });
             }
 
@@ -184,7 +231,6 @@ const Budget: FC = () => {
         setCategoryBreakdown(_categoryBreakdown);
         setFilteredTransactions(_filteredTransactions);
     }, [categories, endDate, startDate, transactions]);
-
 
     return (
         <ResponsiveContainer>

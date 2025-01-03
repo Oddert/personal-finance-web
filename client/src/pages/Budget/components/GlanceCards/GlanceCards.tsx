@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Tooltip, Typography } from '@mui/material';
 
 import { monthBudget } from '../../Budget';
 
@@ -13,10 +13,18 @@ const GlanceCards: FC<IProps> = ({ data }) => {
     const [actualSpend, setActualSpend] = useState(0);
     const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(data[0]);
     const [largestOverspendVal, setLargestOverspendVal] = useState<IBudgetDatum>(data[0]);
-    const [numUnderSpend, setNumUnderspend] = useState(0)
-    const [numOverSpend, setNumOverSpend] = useState(0)
+    const [numUnderSpend, setNumUnderspend] = useState<IBudgetDatum[]>([])
+    const [numOverSpend, setNumOverSpend] = useState<IBudgetDatum[]>([])
 
     useEffect(() => {
+        interface IAccumulator {
+            _actualSpend: number,
+            _overSpendPc: IBudgetDatum,
+            _overSpendVal: IBudgetDatum,
+            _numUnderSpend: IBudgetDatum[],
+            _numOverSpend: IBudgetDatum[],
+        }
+
         const {
             _actualSpend,
             _overSpendPc,
@@ -24,7 +32,7 @@ const GlanceCards: FC<IProps> = ({ data }) => {
             _numUnderSpend,
             _numOverSpend,
         } = data.reduce(
-            (accumulator, datum) => {
+            (accumulator: IAccumulator, datum) => {
                 accumulator._actualSpend += datum.spend;
                 if (datum.diffPc > accumulator._overSpendPc.diffPc) {
                     accumulator._overSpendPc = datum;
@@ -32,11 +40,11 @@ const GlanceCards: FC<IProps> = ({ data }) => {
                 if (datum.diffFloat > accumulator._overSpendVal.diffFloat) {
                     accumulator._overSpendVal = datum;
                 }
-                if (datum.diffPc < 0) {
-                    accumulator._numUnderSpend += 1;
+                if (datum.diffPc < 0 && datum.diffPc <= datum.variance[0]) {
+                    accumulator._numUnderSpend.push(datum);
                 }
-                if (datum.diffPc > 0) {
-                    accumulator._numOverSpend += 1;
+                if (datum.diffPc > 0 && datum.diffPc >= datum.variance[1]) {
+                    accumulator._numOverSpend.push(datum);
                 }
                 return accumulator
             },
@@ -44,8 +52,8 @@ const GlanceCards: FC<IProps> = ({ data }) => {
                 _actualSpend: 0,
                 _overSpendPc: data[0],
                 _overSpendVal: data[0],
-                _numUnderSpend: 0,
-                _numOverSpend: 0,
+                _numUnderSpend: [],
+                _numOverSpend: [],
             },
         )
         setActualSpend(normaliseNum(_actualSpend))
@@ -133,12 +141,16 @@ const GlanceCards: FC<IProps> = ({ data }) => {
                     alignItems: 'center',
                 }}
             >
-                <Typography>
-                    Number of categories over budget: {numOverSpend}
-                </Typography>
-                <Typography>
-                    Number of categories under budget: {numUnderSpend}
-                </Typography>
+                <Tooltip title={numOverSpend.map((datum) => datum.categoryName).join(', ')}>
+                    <Typography>
+                        Number of categories over budget: {numOverSpend.length}
+                    </Typography>
+                </Tooltip>
+                <Tooltip title={numUnderSpend.map((datum) => datum.categoryName).join(', ')}>
+                    <Typography>
+                        Number of categories under budget: {numUnderSpend.length}
+                    </Typography>
+                </Tooltip>
             </Paper>
         </Box>
     )
