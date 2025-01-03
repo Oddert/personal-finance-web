@@ -2,14 +2,12 @@ import { FC, useEffect, useMemo, useState } from 'react';
 
 import { Box, Paper, Tooltip, Typography } from '@mui/material';
 
-import { monthBudget } from '../../Budget';
-
 import { normaliseNum } from '../../BudgetUtils';
 import { IBudgetDatum } from '../../Budget.types';
 
 import { IProps } from './GlanceCards.types';
 
-const GlanceCards: FC<IProps> = ({ data }) => {
+const GlanceCards: FC<IProps> = ({ data, monthBudget }) => {
     const [actualSpend, setActualSpend] = useState(0);
     const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(data[0]);
     const [largestOverspendVal, setLargestOverspendVal] = useState<IBudgetDatum>(data[0]);
@@ -64,11 +62,11 @@ const GlanceCards: FC<IProps> = ({ data }) => {
     }, [data])
     
     const expectedSpend = useMemo(() => 
-        Object.values(monthBudget).reduce(
-            (a, e) => a + e.value,
+        Object.values(monthBudget.budget).reduce(
+            (a: number, e) => a + e.value,
             0,
         ),
-        [],
+        [monthBudget],
     );
 
     const spendDiff = useMemo(() => 
