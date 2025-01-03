@@ -17,56 +17,8 @@ dayjs.extend(localizedFormat);
 
 const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => {
     const categories = useAppSelector(getCategoryOrderedDataById);
-    console.log(filteredTransactions)
 
-    // const series = useMemo(() => {
-    //     const sortedByCategory = filteredTransactions.reduce(
-    //         (acc: { [key: number]: { label: string, id: number, transactions: Transaction[] } }, each) => {
-    //             if (each.category_id) {
-    //                 if (!(each.category_id in acc)) {
-    //                     const foundCategory = categories[each.category_id];
-    //                     acc[each.category_id] = {
-    //                         label: foundCategory?.label || `Category ID ${each.category_id}`,
-    //                         id: each.category_id,
-    //                         transactions: [],
-    //                     }
-    //                 }
-    //                 acc[each.category_id].transactions.push(each);
-    //             }
-    //             return acc
-    //         },
-    //         {},
-    //     )
-
-    //     const _series = Object.values(sortedByCategory).map((seriesItem) => {
-    //         const { data } = seriesItem.transactions
-    //             .sort((a, b) => a.date < b.date ? -1 : 1)
-    //             .reduce(
-    //                 (acc: { runningTotal: number, data: { x: string, y: number }[] }, transaction) => {
-    //                     if (transaction.debit > 0) {
-    //                         acc.runningTotal += transaction.debit
-    //                         acc.data.push({
-    //                             x: new Date(transaction.date).toISOString(),
-    //                             y: acc.runningTotal,
-    //                         })
-    //                     }
-    //                     return acc
-    //                 },
-    //                 {
-    //                     data: [],
-    //                     runningTotal: 0,
-    //                 },
-    //             )
-    //         return {
-    //             name: seriesItem.label,
-    //             data,
-    //         }
-    //     })
-
-    //     return _series;
-    // }, [categories, filteredTransactions]);
-
-    const replacementSeries = useMemo(() => {
+    const series = useMemo(() => {
         const dates: number[] = []
         const endDateJs = dayjs(endDate);
         let date = dayjs(startDate);
@@ -77,7 +29,7 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
             ctrl ++;
         }
 
-        interface ITemp2 {
+        interface ISortedByCategoryRow {
             label: string
             id: number
             transactions: {
@@ -85,12 +37,12 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
             }
         }
 
-        interface ITemp {
-            [key: number]: ITemp2
+        interface ISortedByCategory {
+            [key: number]: ISortedByCategoryRow
         }
 
         const sortedByCategory = filteredTransactions.reduce(
-            (acc: ITemp, each) => {
+            (acc: ISortedByCategory, each) => {
                 if (each.category_id) {
                     if (!(each.category_id in acc)) {
                         const foundCategory = categories[each.category_id];
@@ -111,7 +63,7 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
             {},
         )
 
-        const _series = Object.values(sortedByCategory).map((seriesItem: ITemp2) => {
+        const _series = Object.values(sortedByCategory).map((seriesItem: ISortedByCategoryRow) => {
             const { data } = dates.reduce((accumulator: { data: { x: string, y: number }[], total: number }, date) => {
                 if (date in seriesItem.transactions) {
                     accumulator.total += seriesItem.transactions[date].reduce((a, e) => a + e.debit, 0)
@@ -144,7 +96,6 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
                         height: 350,
                         type: 'area',
                         stacked: true,
-                        // stackType: '100%',
                     },
                     dataLabels: {
                         enabled: false
@@ -171,7 +122,7 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
                     },
                     tooltip: {
                         x: {
-                            format: 'dd/MM/yy HH:mm'
+                            format: 'dd/MM/yy'
                         },
                         y: {
                             formatter(val) {
@@ -186,8 +137,7 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
                         },
                     },
                 }}
-                series={replacementSeries}
-                // series={series}
+                series={series}
             />
         </Box>
     )
