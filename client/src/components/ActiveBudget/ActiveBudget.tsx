@@ -36,7 +36,7 @@ const ActiveBudget: FC<IProps> = ({ monthBudget, setMonthBudget }) => {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label='Category'
+                        label=''
                     />
                 )}
                 sx={{
