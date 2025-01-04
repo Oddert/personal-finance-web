@@ -6,6 +6,8 @@ import {Box, Paper, Typography } from '@mui/material';
 
 import { Transaction } from '../../types/Transaction';
 
+import { toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
+
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
@@ -24,8 +26,6 @@ import {
     formatNumMonths,
     formatReadableDate,
     normaliseNum,
-    toBeginningMonth,
-    toEndMonth,
 } from './BudgetUtils';
 import { IBudget, IBudgetDatum, ICategoryBreakdown } from './Budget.types';
 import ActiveBudget from './components/ActiveBudget';

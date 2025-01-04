@@ -11,11 +11,13 @@ import Budget from '../pages/Budget'
 import Categories from '../pages/Categories/'
 import Home from '../pages/Home'
 import Transactions from '../pages/Transactions/'
+import BudgetOverview from '../pages/BudgetOverview'
 
 export const ROUTES = Object.freeze({
     HOME: '/',
     CATEGORIES: '/categories',
     BUDGET: '/budget',
+    BUDGET_OVERVIEW: '/budget-overview',
     ALL_DATA: '/all-data',
     TRANSACTIONS: '/transactions',
 })
@@ -65,6 +67,14 @@ const router = createBrowserRouter([
             </Layout>
         ),
     },
+    {
+        path: ROUTES.BUDGET_OVERVIEW,
+        element: (
+            <Layout>
+                <BudgetOverview />
+            </Layout>
+        ),
+    },
 ])
 
 export const navigation = [
@@ -87,6 +97,11 @@ export const navigation = [
         label: 'Budget',
         Icon: AllDataIcon,
         location: ROUTES.BUDGET,
+    },
+    {
+        label: 'Budget Overview',
+        Icon: AllDataIcon,
+        location: ROUTES.BUDGET_OVERVIEW,
     },
 ]
 

@@ -8,7 +8,7 @@ import {
     ArrowRight as ForwardButtonIcon,
 } from '@mui/icons-material';
 
-import { toBeginningMonth, toEndMonth } from '../../BudgetUtils';
+import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
 
 import { IProps } from './DateRange.types';
 
