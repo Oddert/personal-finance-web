@@ -6,7 +6,7 @@ import {Box, Paper, Typography } from '@mui/material';
 
 import { Transaction } from '../../types/Transaction';
 
-import { toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
+import { createBudgetChartData, createCategoryBreakdown, toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
@@ -24,12 +24,8 @@ import GlanceCards from './components/GlanceCards';
 import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
-import {
-    formatNumMonths,
-    formatReadableDate,
-    normaliseNum,
-} from './BudgetUtils';
-import { IBudget, IBudgetDatum, ICategoryBreakdown } from './Budget.types';
+import { formatNumMonths, formatReadableDate } from './BudgetUtils';
+import { IBudget, ICategoryBreakdown } from './Budget.types';
 
 dayjs.extend(localizedFormat)
 
@@ -161,36 +157,8 @@ const Budget: FC = () => {
     const categories = useAppSelector(getCategoryOrderedDataById);
 
     const data = useMemo(() => {
-        const res = Object.entries(categoryBreakdown).reduce((acc: IBudgetDatum[], [uid, each]) => {
-            const budgetDatum = monthBudget.budget[Number(uid)];
-            const normalisedValue = normaliseNum(each.value);
-
-            if (budgetDatum?.value) {
-                const budgetValue = numMonths * budgetDatum.value;
-                const diffFloat = normaliseNum(normalisedValue - budgetValue);
-                const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
-                acc.push({
-                    budget: budgetDatum.value,
-                    categoryName: each.label,
-                    diffFloat,
-                    diffPc,
-                    spend: Number(each.value.toFixed(2)),
-                    variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
-                });
-            } else {
-                acc.push({
-                    budget: 0,
-                    categoryName: each.label,
-                    diffFloat: 0,
-                    diffPc: 0,
-                    spend: normalisedValue,
-                    variance: [0, 0],
-                });
-            }
-
-            return acc
-        }, [])
-        return res
+        const _data = createBudgetChartData(categoryBreakdown, monthBudget, numMonths)
+        return _data
     }, [categoryBreakdown, monthBudget, numMonths]);
 
     useEffect(() => {
@@ -206,24 +174,7 @@ const Budget: FC = () => {
             return false
         });
 
-        const _categoryBreakdown = _filteredTransactions.reduce(
-            (acc: ICategoryBreakdown, transaction) => {
-                if (transaction.category_id && transaction.category_id in categories) {
-                    if (!(transaction.category_id in acc)) {
-                        acc[transaction.category_id] = {
-                            value: 0,
-                            label: categories[transaction.category_id].label,
-                            colour: categories[transaction.category_id].colour,
-                        };
-                    }
-                    acc[transaction.category_id].value += transaction.debit;
-                } else {
-                    acc['uncategorised'].value += transaction.debit;
-                }
-                return acc;
-            },
-            { uncategorised: { value: 0, label: 'Uncategorised', colour: '#bec3c7' } },
-        );
+        const _categoryBreakdown = createCategoryBreakdown(_filteredTransactions, categories);
         setCategoryBreakdown(_categoryBreakdown);
         setFilteredTransactions(_filteredTransactions);
     }, [categories, endDate, startDate, transactions]);
