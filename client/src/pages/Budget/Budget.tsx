@@ -16,11 +16,11 @@ import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelect
 import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import PercentageChart from '../../components/BudgetPercentageChart';
 
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
 import GlanceCards from './components/GlanceCards';
-import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 

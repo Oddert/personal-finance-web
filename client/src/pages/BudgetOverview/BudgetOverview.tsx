@@ -14,9 +14,9 @@ import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import PercentageChart from '../../components/BudgetPercentageChart';
 
 import { budget } from '../Budget/Budget';
-import PercentageChart from '../Budget/components/PercentageChart';
 import { IBudget, IBudgetDatum, ICategoryBreakdown } from '../Budget/Budget.types';
 
 import DateRange from './components/DateRange';

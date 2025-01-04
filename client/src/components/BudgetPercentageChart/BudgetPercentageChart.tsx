@@ -1,10 +1,11 @@
 import { FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
-import { IProps } from './PercentageChart.types';
 import { Box } from '@mui/material';
 
-const PercentageChart: FC<IProps> = ({ data }) => {
+import { IProps } from './BudgetPercentageChart.types';
+
+const BudgetPercentageChart: FC<IProps> = ({ data }) => {
     const { categories, seriesData } = useMemo(() => {
         const values = Object.values(data);
         return values.reduce((a: { categories: string[], seriesData: number[] }, e) => {
@@ -91,4 +92,4 @@ const PercentageChart: FC<IProps> = ({ data }) => {
     )
 }
 
-export default PercentageChart;
+export default BudgetPercentageChart;
