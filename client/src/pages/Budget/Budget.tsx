@@ -15,6 +15,8 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 
+import ActiveBudget from '../../components/ActiveBudget';
+
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
 import GlanceCards from './components/GlanceCards';
@@ -28,7 +30,6 @@ import {
     normaliseNum,
 } from './BudgetUtils';
 import { IBudget, IBudgetDatum, ICategoryBreakdown } from './Budget.types';
-import ActiveBudget from './components/ActiveBudget';
 
 dayjs.extend(localizedFormat)
 

@@ -1,4 +1,4 @@
-import { IBudget } from '../../Budget.types';
+import { IBudget } from '../../pages/Budget/Budget.types';
 
 export interface IProps {
     monthBudget: IBudget
