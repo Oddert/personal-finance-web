@@ -1,10 +1,15 @@
 
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { Transaction } from '../types/Transaction';
-import { IBudget, IBudgetDatum, ICategoryBreakdown } from '../pages/Budget/Budget.types';
-import { CategoryState } from '../redux/slices/categorySlice';
+
+import { IBudget } from '../types/Budget.types';
+
+import { IBudgetDatum, ICategoryBreakdown } from '../pages/Budget/Budget.types';
 import { normaliseNum } from '../pages/Budget/BudgetUtils';
+
+import { CategoryState } from '../redux/slices/categorySlice';
+
+import { Transaction } from '../types/Transaction';
 
 dayjs.extend(localizedFormat)
 

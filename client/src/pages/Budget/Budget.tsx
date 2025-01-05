@@ -8,6 +8,8 @@ import { Transaction } from '../../types/Transaction';
 
 import { createBudgetChartData, createCategoryBreakdown, toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
 
+import { IBudget } from '../../types/Budget.types';
+
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
@@ -25,7 +27,7 @@ import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
 import { formatNumMonths, formatReadableDate } from './BudgetUtils';
-import { IBudget, ICategoryBreakdown } from './Budget.types';
+import { ICategoryBreakdown } from './Budget.types';
 
 dayjs.extend(localizedFormat)
 

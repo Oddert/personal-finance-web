@@ -14,6 +14,8 @@ import {
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
+import { IBudget } from '../../types/Budget.types';
+
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
@@ -22,7 +24,6 @@ import ActiveBudget from '../../components/ActiveBudget';
 import PercentageChart from '../../components/BudgetPercentageChart';
 
 import { budget } from '../Budget/Budget';
-import { IBudget } from '../Budget/Budget.types';
 
 import DateRange from './components/DateRange';
 
