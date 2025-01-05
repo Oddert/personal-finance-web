@@ -26,6 +26,7 @@ import PercentageChart from '../../components/BudgetPercentageChart';
 import { budget } from '../Budget/Budget';
 
 import DateRange from './components/DateRange';
+import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 
@@ -107,6 +108,21 @@ const BudgetOverview: FC<IProps> = () => {
                             <Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
                         </Box>
                     ))}
+                </Paper>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <TimeChart
+                        chartList={chartList}
+                        endDate={endDate}
+                        startDate={startDate}
+                    />
                 </Paper>
             </Box>
         </ResponsiveContainer>
