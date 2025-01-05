@@ -5,13 +5,11 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import { Box } from '@mui/material';
 
-import { Transaction } from '../../../../types/Transaction';
-
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
-import { IProps } from './TimeChart.types';
+import { IProps, ISortedByCategory, ISortedByCategoryRow } from './TimeChart.types';
 
 dayjs.extend(localizedFormat);
 
@@ -27,18 +25,6 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
             dates.push(date.valueOf());
             date = date.add(1, 'day');
             ctrl ++;
-        }
-
-        interface ISortedByCategoryRow {
-            label: string
-            id: number
-            transactions: {
-                [key: number]: Transaction[]
-            }
-        }
-
-        interface ISortedByCategory {
-            [key: number]: ISortedByCategoryRow
         }
 
         const sortedByCategory = filteredTransactions.reduce(
@@ -64,16 +50,20 @@ const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => 
         )
 
         const _series = Object.values(sortedByCategory).map((seriesItem: ISortedByCategoryRow) => {
-            const { data } = dates.reduce((accumulator: { data: { x: string, y: number }[], total: number }, date) => {
-                if (date in seriesItem.transactions) {
-                    accumulator.total += seriesItem.transactions[date].reduce((a, e) => a + e.debit, 0)
-                }
-                accumulator.data.push({
-                    x: String(dayjs(date)),
-                    y: accumulator.total
-                })
-                return accumulator
-            }, { data: [], total: 0 })
+            const { data } = dates.reduce(
+                (accumulator: { data: { x: string, y: number }[], total: number }, date) => {
+                    if (date in seriesItem.transactions) {
+                        accumulator.total += seriesItem.transactions[date].reduce((a, e) => a + e.debit, 0)
+                    }
+                    accumulator.data.push({
+                        x: String(dayjs(date)),
+                        y: accumulator.total
+                    })
+                    return accumulator
+                },
+                { data: [], total: 0 },
+            );
+
             return {
                 name: seriesItem.label,
                 data,
