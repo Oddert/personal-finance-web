@@ -4,7 +4,12 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import { Box, Paper, Typography } from '@mui/material';
 
-import { createBudgetChartData, createCategoryBreakdown, toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
+import {
+    createBudgetChartData,
+    createCategoryBreakdown,
+    toBeginningMonth,
+    toEndMonth,
+} from '../../utils/budgetUtils';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
@@ -17,11 +22,11 @@ import ActiveBudget from '../../components/ActiveBudget';
 import PercentageChart from '../../components/BudgetPercentageChart';
 
 import { budget } from '../Budget/Budget';
-import { IBudget, IBudgetDatum } from '../Budget/Budget.types';
+import { IBudget } from '../Budget/Budget.types';
 
 import DateRange from './components/DateRange';
 
-import { IProps } from './BudgetOverview.types';
+import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 
 dayjs.extend(localizedFormat);
 
@@ -33,17 +38,28 @@ const BudgetOverview: FC<IProps> = () => {
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
     
-    const data = useMemo(() => {
+    const chartList = useMemo(() => {
         const sDate = dayjs(startDate);
         const eDate = dayjs(endDate);
 
-        const charts: IBudgetDatum[][] = [];
+        const charts: IBudgetOverviewChart[] = [];
 
         for (let year = sDate.year(); year < eDate.year(); year++) {
             for (let month = 0; month < 12; month++) {
                 if (year in transactions && month in transactions[year]) {
-                    const categoryBreakdown = createCategoryBreakdown(transactions[year][month], categories);
-                    const chart = createBudgetChartData(categoryBreakdown, monthBudget, 1);
+                    const categoryBreakdown = createCategoryBreakdown(
+                        transactions[year][month],
+                        categories,
+                    );
+                    const data = createBudgetChartData(
+                        categoryBreakdown,
+                        monthBudget,
+                        1,
+                    );
+                    const chart = {
+                        timestamp: dayjs(`${year}-${month}-02`),
+                        data,
+                    }
                     charts.push(chart);
                 }
             }
@@ -81,10 +97,14 @@ const BudgetOverview: FC<IProps> = () => {
                         display: 'flex',
                         alignItems: 'flex-start',
                         justifyContent: 'space-around',
+                        padding: '16px',
                     }}
                 >
-                    {data.map((monthData) => (
-                        <PercentageChart data={monthData} />
+                    {chartList.map((monthData) => (
+                        <Box>
+                            <PercentageChart data={monthData.data} />
+                            <Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
+                        </Box>
                     ))}
                 </Paper>
             </Box>
