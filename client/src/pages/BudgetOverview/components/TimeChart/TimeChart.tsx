@@ -29,9 +29,6 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                 if (!(categoryName in acc.times)) {
                     acc.times[categoryName] = {}
                 }
-                if (categoryName === 'home') {
-                    console.log(timestamp, budgetDatum.diffPc, budgetDatum)
-                }
                 acc.times[categoryName][timestamp] = budgetDatum.diffPc
             })
             return acc
