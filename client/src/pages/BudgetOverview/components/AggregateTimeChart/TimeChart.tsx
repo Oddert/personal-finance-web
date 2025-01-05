@@ -18,6 +18,9 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                     [timestamp: number]: number
                 }
             }
+            categories: {
+                [categoryName: string]: number
+            }
         }
 
         const { times, totalTimeList } = chartList.reduce((acc: IAccumulator, chart) => {
@@ -26,18 +29,22 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
             chart.data.forEach((budgetDatum) => {
                 const { categoryName } = budgetDatum
     
-                if (!(categoryName in acc.times)) {
+                if (!(categoryName in acc.categories)) {
+                    acc.categories[categoryName] = 0
                     acc.times[categoryName] = {}
                 }
                 if (categoryName === 'home') {
                     console.log(timestamp, budgetDatum.diffPc, budgetDatum)
                 }
-                acc.times[categoryName][timestamp] = budgetDatum.diffPc
+                acc.categories[categoryName] += budgetDatum.diffPc;
+                acc.times[categoryName][timestamp] =
+                    acc.categories[categoryName]
             })
             return acc
         }, {
             totalTimeList: [],
             times: {},
+            categories: {},
         })
 
         const series = Object.entries(times).map(([categoryName, timeSeries]) => {

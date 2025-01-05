@@ -25,6 +25,7 @@ import PercentageChart from '../../components/BudgetPercentageChart';
 
 import { budget } from '../Budget/Budget';
 
+import AggregateTimeChart from './components/AggregateTimeChart';
 import DateRange from './components/DateRange';
 import TimeChart from './components/TimeChart';
 
@@ -108,6 +109,21 @@ const BudgetOverview: FC<IProps> = () => {
                             <Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
                         </Box>
                     ))}
+                </Paper>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <AggregateTimeChart
+                        chartList={chartList}
+                        endDate={endDate}
+                        startDate={startDate}
+                    />
                 </Paper>
                 <Paper
                     elevation={0}
