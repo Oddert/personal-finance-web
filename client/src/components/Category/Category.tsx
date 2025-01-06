@@ -28,7 +28,6 @@ const Category: FC<IProps> = ({
     onAddNewSubmit,
     layout = 'standard',
 }) => {
-
     const CategoryList = (
         <List>
             {category.matchers.map((matcher: MatcherT) => (
@@ -82,7 +81,7 @@ const Category: FC<IProps> = ({
                 >
                     <Paper
                         elevation={6}
-                        sx={(theme) => ({
+                        sx={() => ({
                             width: '100%',
                         })}
                     >

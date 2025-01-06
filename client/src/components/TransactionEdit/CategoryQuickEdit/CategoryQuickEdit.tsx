@@ -46,7 +46,7 @@ const CategoryQuickEdit = () => {
             <AddCategory />
             <Box
                 role='presentation'
-                onKeyDown={toggleDrawer(false)}
+                // onKeyDown={toggleDrawer(false)}
                 sx={{
                     display: 'flex',
                     minWidth: '200px',

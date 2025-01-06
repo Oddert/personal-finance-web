@@ -48,7 +48,8 @@ const EditMatcher: FC<IProps> = ({
     useEffect(() => {
         setMatch(matcher?.match || '')
         setCaseSensitive(Boolean(matcher?.case_sensitive || false))
-    }, [matcher])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const reset = () => {
         setCaseSensitive(false)
@@ -79,7 +80,7 @@ const EditMatcher: FC<IProps> = ({
             reset()
         }
     }
-
+	
     const handleSave = () => {
         if (onSubmit) {
             onSubmit(createResponse())
@@ -104,7 +105,12 @@ const EditMatcher: FC<IProps> = ({
             <TextField
                 autoFocus
                 label='Match'
-                onChange={(e) => setMatch(e?.target?.value)}
+                onChange={(e) => {
+					console.log(e);
+					console.log(e?.target);
+					console.log(e?.target?.value);
+					setMatch(e?.target?.value)
+				}}
                 size='small'
                 sx={{
                     alignSelf: 'flex-end',
