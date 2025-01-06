@@ -6,7 +6,7 @@ import morgan from 'morgan'
 
 import root from './routes/root'
 import category from './routes/CategoryRoutes'
-import debug from './routes/DebutRoutes'
+import debug from './routes/DebugRoutes'
 import matcher from './routes/MatcherRoutes'
 import scenario from './routes/ScenarioRoutes'
 import transaction from './routes/TransactionRoutes'
