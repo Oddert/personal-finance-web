@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 
 import { Box, Button, ListItem, Typography } from '@mui/material'
 import {
@@ -19,14 +19,14 @@ import { Matcher as MatcherT } from '../../../../types/Matcher'
 
 import EditMatcher from '../EditMatcher'
 
-interface Props {
+interface IProps {
     matcher: MatcherT
     categoryId: Category['id']
 }
 
 const iconWidth = 50
 
-const Matcher = ({ matcher, categoryId }: Props) => {
+const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     const dispatch = useAppDispatch()
 
     const [open, setOpen] = useState<boolean>(false)

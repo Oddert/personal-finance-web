@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { Edit as EditIcon } from '@mui/icons-material'
 
 interface IProps {
-    containerSx: any
+    containerSx?: any
     headingProps: any
-    iconPosition: 'start'|'end'
+    iconPosition?: 'start'|'end'
     onChange: (value: string) => void
     placeholder?: string
     text: string
     verticalCenter?: boolean
 }
 
-const EditableText = ({
+const EditableText: FC<IProps> = ({
     containerSx,
     headingProps,
     iconPosition = 'end',
@@ -21,7 +21,7 @@ const EditableText = ({
     placeholder,
     text,
     verticalCenter,
-}: IProps) => {
+}) => {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState('')
 
@@ -97,14 +97,6 @@ const EditableText = ({
             )}
         </Box>
     )
-}
-
-EditableText.defaultProps = {
-    containerSx: {},
-    headingProps: {},
-    iconPosition: 'start',
-    onChange: () => {},
-    text: '',
 }
 
 export default EditableText

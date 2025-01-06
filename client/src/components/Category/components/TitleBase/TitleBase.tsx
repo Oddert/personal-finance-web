@@ -10,7 +10,7 @@ interface Props {
     handleChange?: (value: string) => void
     text: string
     showBorder?: boolean
-    size: 'xs'|'sm'|'md'|'lg'|'xl'
+    size?: 'xs'|'sm'|'md'|'lg'|'xl'
 }
 
 const sizeMap = {
@@ -22,12 +22,12 @@ const sizeMap = {
 }
 
 const TitleBase = ({
-    colour,
-    editable,
-    handleChange,
-    text,
-    showBorder,
-    size,
+    colour = '',
+    editable = true,
+    handleChange = () => {},
+    text = '',
+    showBorder = false,
+    size = 'md',
 }: Props) => {
     const headingProps = useMemo(() => {
         return {
@@ -56,14 +56,6 @@ const TitleBase = ({
             {text}
         </Typography>
     )
-}
-
-TitleBase.defaultProps = {
-    colour: '',
-    editable: true,
-    handleChange: () => {},
-    text: '',
-    size: 'md',
 }
 
 export default TitleBase

@@ -1,4 +1,4 @@
-import React from 'react'
+import { FC } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
@@ -29,7 +29,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
 }))
 
-const Sidebar: React.FC<Props> = ({ handleDrawerClose, open }) => {
+const Sidebar: FC<Props> = ({ handleDrawerClose = () => {}, open = false }) => {
     const theme = useTheme()
     return (
         <Drawer
@@ -73,16 +73,6 @@ const Sidebar: React.FC<Props> = ({ handleDrawerClose, open }) => {
             </List>
         </Drawer>
     )
-}
-
-Sidebar.propTypes = {
-    handleDrawerClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-}
-
-Sidebar.defaultProps = {
-    handleDrawerClose: () => {},
-    open: false,
 }
 
 export default Sidebar
