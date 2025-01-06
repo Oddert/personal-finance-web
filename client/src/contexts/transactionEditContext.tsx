@@ -101,11 +101,11 @@ export const defaultColumns = (
                         callback(cell.row.index, category.id)
                     }}
                     options={Object.values(categories as { [id: string]: Category })}
-                    placeholder='unset'
                     renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label='Category'
+						<TextField
+							{...params}
+							label='Category'
+							placeholder='unset'
                             sx={{ paddingTop: marginTopBottom, paddingBottom: marginTopBottom }}
                         />
                     )}

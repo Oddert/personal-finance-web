@@ -32,11 +32,11 @@ const ActiveBudget: FC<IProps> = ({ monthBudget, setMonthBudget }) => {
                     setMonthBudget(nextBudget)
                 }}
                 options={budget}
-                placeholder='unset'
                 renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label=''
+					<TextField
+						{...params}
+						label=''
+						placeholder='unset'
                     />
                 )}
                 sx={{

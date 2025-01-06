@@ -156,11 +156,11 @@ const Table = () => {
                                                     updateAssignedCategory(idx, Number(category.id))
                                                 }}
                                                 options={options}
-                                                placeholder='unset'
                                                 renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        label='Category'
+													<TextField
+														{...params}
+														label='Category'
+														placeholder='unset'
                                                         sx={{
                                                             paddingTop: marginTopBottom,
                                                             paddingBottom: marginTopBottom,
