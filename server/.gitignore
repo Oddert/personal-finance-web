@@ -130,5 +130,5 @@ dist
 .pnp.*
 
 # Excluding seed data due to sensitivity of data
-seeds/
+seeds*
 *.db3
