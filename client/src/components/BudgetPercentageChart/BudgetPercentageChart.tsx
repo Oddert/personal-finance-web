@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 
 import { IProps } from './BudgetPercentageChart.types';
 
-const BudgetPercentageChart: FC<IProps> = ({ data }) => {
+const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, width = 350 }) => {
     const { categories, seriesData } = useMemo(() => {
         const values = Object.values(data);
         return values.reduce((a: { categories: string[], seriesData: number[] }, e) => {
@@ -27,11 +27,12 @@ const BudgetPercentageChart: FC<IProps> = ({ data }) => {
         })}>
             <Chart
                 type='bar'
-                height={350}
+                height={height}
+                width={width}
                 options={{
                     chart: {
                         type: 'bar',
-                        height: 350,
+                        height: height,
                         toolbar: {
                             show: false,
                         },

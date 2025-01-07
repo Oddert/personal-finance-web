@@ -99,13 +99,18 @@ const BudgetOverview: FC<IProps> = () => {
                     sx={{
                         display: 'flex',
                         alignItems: 'flex-start',
+                        flexWrap: 'wrap',
                         justifyContent: 'space-around',
                         padding: '16px',
                     }}
                 >
                     {chartList.map((monthData, idx) => (
                         <Box key={idx}>
-                            <PercentageChart data={monthData.data} />
+                            <PercentageChart
+                                data={monthData.data}
+                                height={250}
+                                width={250}
+                            />
                             <Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
                         </Box>
                     ))}
