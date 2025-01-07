@@ -47,8 +47,8 @@ const BudgetOverview: FC<IProps> = () => {
 
         const charts: IBudgetOverviewChart[] = [];
 
-        for (let year = sDate.year(); year < eDate.year(); year++) {
-            for (let month = 0; month < 12; month++) {
+        for (let year = sDate.year(); year <= eDate.year(); year++) {
+            for (let month = sDate.month(); month <= eDate.month(); month++) {
                 if (year in transactions && month in transactions[year]) {
                     const categoryBreakdown = createCategoryBreakdown(
                         transactions[year][month],
@@ -60,7 +60,7 @@ const BudgetOverview: FC<IProps> = () => {
                         1,
                     );
                     const chart = {
-                        timestamp: dayjs(`${year}-${month}-02`),
+                        timestamp: dayjs(`${year}-${month + 1}-02`),
                         data,
                     }
                     charts.push(chart);
@@ -103,8 +103,8 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    {chartList.map((monthData) => (
-                        <Box>
+                    {chartList.map((monthData, idx) => (
+                        <Box key={idx}>
                             <PercentageChart data={monthData.data} />
                             <Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
                         </Box>
