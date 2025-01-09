@@ -7,7 +7,7 @@ import { IBudgetDatum } from '../../Budget.types';
 
 import { IProps } from './GlanceCards.types';
 
-const GlanceCards: FC<IProps> = ({ data, monthBudget }) => {
+const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
     const [actualSpend, setActualSpend] = useState(0);
     const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(data[0]);
     const [largestOverspendVal, setLargestOverspendVal] = useState<IBudgetDatum>(data[0]);
@@ -63,10 +63,10 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget }) => {
     
     const expectedSpend = useMemo(() => 
         Object.values(monthBudget.budget).reduce(
-            (a: number, e) => a + e.value,
+			(a: number, e) => a + e.value,
             0,
-        ),
-        [monthBudget],
+        ) * numMonths,
+        [monthBudget, numMonths],
     );
 
     const spendDiff = useMemo(() => 

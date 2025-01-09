@@ -98,12 +98,12 @@ export const createBudgetChartData = (categoryBreakdown: ICategoryBreakdown, bud
             const diffFloat = normaliseNum(normalisedValue - budgetValue);
             const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
             acc.push({
-				budget: budgetDatum.value,
+				budget: normaliseNum(budgetDatum.value * numMonths),
                 categoryName: each.label,
 				colour: each.colour,
                 diffFloat,
                 diffPc,
-                spend: Number(each.value.toFixed(2)),
+                spend: normaliseNum(each.value),
                 variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
             });
         } else {

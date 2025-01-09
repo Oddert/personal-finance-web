@@ -217,6 +217,7 @@ const Budget: FC = () => {
                 <GlanceCards
                     data={data}
                     monthBudget={monthBudget}
+					numMonths={numMonths}
                 />
                 <Paper
                     elevation={0}
