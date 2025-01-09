@@ -119,11 +119,13 @@ const BudgetOverview: FC<IProps> = () => {
                     elevation={0}
                     sx={{
                         display: 'flex',
-                        alignItems: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection: 'column',
                         justifyContent: 'space-around',
                         padding: '16px',
                     }}
                 >
+                    <Typography>Aggregate % Spend Discrepancy</Typography>
                     <AggregateTimeChart
                         chartList={chartList}
                         endDate={endDate}
@@ -134,11 +136,13 @@ const BudgetOverview: FC<IProps> = () => {
                     elevation={0}
                     sx={{
                         display: 'flex',
-                        alignItems: 'flex-start',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                         justifyContent: 'space-around',
                         padding: '16px',
                     }}
                 >
+                    <Typography>Spend Discrepancy & Trend Per Month</Typography>
                     <TimeChart
                         chartList={chartList}
                         endDate={endDate}
