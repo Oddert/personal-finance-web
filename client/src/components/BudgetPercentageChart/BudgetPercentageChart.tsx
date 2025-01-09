@@ -3,20 +3,25 @@ import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
-import { IProps } from './BudgetPercentageChart.types';
+import { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
 
 const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, width = 350 }) => {
-    const { categories, seriesData } = useMemo(() => {
+    const { seriesData } = useMemo(() => {
         const values = Object.values(data);
-        return values.reduce((a: { categories: string[], seriesData: number[] }, e) => {
-            a.categories.push(e.categoryName)
-            a.seriesData.push(e.diffPc)
-            return a
-        },
-        {
-            categories: [],
-            seriesData: [],
-        })
+
+        return values.reduce(
+			(acc: { seriesData: ISeriesDatum[] }, budgetDatum) => {
+				acc.seriesData.push({
+					x: budgetDatum.categoryName,
+					y: budgetDatum.diffPc,
+					fillColor: budgetDatum.colour,
+				})
+				return acc
+			},
+			{
+				seriesData: [],
+			}
+		)
     }, [data]);
 
     return (
@@ -30,13 +35,16 @@ const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, width = 350 }) 
                 height={height}
                 width={width}
                 options={{
-                    chart: {
-                        type: 'bar',
+					chart: {
+						type: 'bar',
                         height: height,
                         toolbar: {
-                            show: false,
+							show: false,
                         },
                     },
+					legend: {
+						show: false,
+					},
                     plotOptions: {
                     bar: {
                         borderRadius: 4,
@@ -64,13 +72,11 @@ const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, width = 350 }) 
                             title: {
                                 formatter: () => '',
                             },
-                            formatter(value) {
-                                return Number(value) >= 0 ? `+${value}%` : `${value}%`
-                            },
+                            formatter: (value) => 
+                                (Number(value) >= 0) ? `+${value}%` : `${value}%`,
                         },
                     },
                     xaxis: {
-                        categories,
                         labels: {
                             style: {
                                 colors: '#fff',

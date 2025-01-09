@@ -5,3 +5,9 @@ export interface IProps {
     height?: number
     width?: number
 }
+
+export interface ISeriesDatum {
+	x: string,
+	y: number,
+	fillColor: string
+}

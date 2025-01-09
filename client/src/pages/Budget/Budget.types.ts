@@ -9,6 +9,7 @@ export interface ICategoryBreakdown {
 }
 
 export interface IBudgetDatum {
+	colour: string
     categoryName: string
     budget: number
     spend: number
