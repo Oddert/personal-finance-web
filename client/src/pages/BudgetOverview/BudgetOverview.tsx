@@ -21,12 +21,12 @@ import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import ActiveBudget from '../../components/ActiveBudget';
-import PercentageChart from '../../components/BudgetPercentageChart';
 
 import { budget } from '../Budget/Budget';
 
 import AggregateTimeChart from './components/AggregateTimeChart';
 import DateRange from './components/DateRange';
+import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
@@ -94,27 +94,9 @@ const BudgetOverview: FC<IProps> = () => {
                     monthBudget={monthBudget}
                     setMonthBudget={setMonthBudget}
                 />
-                <Paper
-                    elevation={0}
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-around',
-                        padding: '16px',
-                    }}
-                >
-                    {chartList.map((monthData, idx) => (
-                        <Box key={idx}>
-                            <PercentageChart
-                                data={monthData.data}
-                                height={250}
-                                width={250}
-                            />
-                            <Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
-                        </Box>
-                    ))}
-                </Paper>
+                <PercentageCharts
+					chartList={chartList}
+				/>
                 <Paper
                     elevation={0}
                     sx={{
