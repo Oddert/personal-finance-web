@@ -96,21 +96,24 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
                     gridGap: '32px',
                 }}
             >
-                <Button
-                    onClick={handleClickTimeJump(dayjs().set('month', 0), dayjs())}
-                    variant='contained'
-                >
-                    Current Year
-                </Button>
-                <Button
-                    onClick={handleClickTimeJump(
-                        dayjs().set('month', 0).subtract(1, 'year'),
-                        dayjs().set('month', 11).subtract(1, 'year'),
-                    )}
-                    variant='contained'
-                >
-                    Previous Year
-                </Button>
+				<Button
+					onClick={handleClickTimeJump(
+						dayjs().subtract(7, 'months'),
+						dayjs(),
+					)}
+					variant='contained'
+				>
+					Past 6 Months
+				</Button>
+				<Button
+					onClick={handleClickTimeJump(
+						dayjs().subtract(4, 'months'),
+						dayjs(),
+					)}
+					variant='contained'
+				>
+					Past 3 Months
+				</Button>
                 <Button
                     onClick={handleClickTimeJump(
                         dayjs().subtract(12, 'months'),
@@ -122,21 +125,18 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
                 </Button>
                 <Button
                     onClick={handleClickTimeJump(
-                        dayjs().subtract(7, 'months'),
-                        dayjs(),
+                        dayjs().set('month', 0).subtract(1, 'year'),
+                        dayjs().set('month', 11).subtract(1, 'year'),
                     )}
                     variant='contained'
                 >
-                    Past 6 Months
+                    Previous Year
                 </Button>
                 <Button
-                    onClick={handleClickTimeJump(
-                        dayjs().subtract(4, 'months'),
-                        dayjs(),
-                    )}
+                    onClick={handleClickTimeJump(dayjs().set('month', 0), dayjs())}
                     variant='contained'
                 >
-                    Past 3 Months
+                    Current Year
                 </Button>
             </Box>
             <Typography color='error'>{dateError || ''}</Typography>
