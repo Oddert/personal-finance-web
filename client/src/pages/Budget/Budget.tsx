@@ -55,7 +55,7 @@ export const budget: IBudget[] = [{
         },
         4: {
             label: 'health',
-            value: 200,
+            value: 50,
             varLowPc: 10,
             varHighPc: 10,
         },
@@ -97,13 +97,13 @@ export const budget: IBudget[] = [{
         },
         11: {
             label: 'therapy',
-            value: 240,
+            value: 280,
             varLowPc: 10,
             varHighPc: 10,
         },
         12: {
             label: 'home',
-            value: 200,
+            value: 100,
             varLowPc: 10,
             varHighPc: 10,
         },
@@ -115,7 +115,7 @@ export const budget: IBudget[] = [{
         },
         14: {
             label: 'rent',
-            value: 1150,
+            value: 1350,
             varLowPc: 10,
             varHighPc: 10,
         },
@@ -139,7 +139,7 @@ export const budget: IBudget[] = [{
         },
         20: {
             label: 'utilities',
-            value: 270,
+            value: 350,
             varLowPc: 0,
             varHighPc: 0,
         },

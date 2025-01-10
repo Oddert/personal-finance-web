@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 
-import { Box, IconButton, Paper, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, IconButton, Paper, Typography } from '@mui/material';
 import {
 	ZoomIn as ZoomPlusIcon,
 	ZoomOut as ZoomMinusIcon,
@@ -29,6 +29,7 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 	const [zoomDim, setZoomDim] = useState<{ height: number, width: number }>(
 		zoomDimensionsLookup[defaultZoomLevel],
 	);
+	const [useFloat, setUseFloat] = useState(false);
 
 	const incrementZoom = () => {
 		const nextZoomLevel = zoomLevel + 1
@@ -69,6 +70,16 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 						<ZoomPlusIcon />
 					</IconButton>
 				</Box>
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={useFloat}
+							onClick={() => setUseFloat(!useFloat)}
+						/>
+					}
+					label='Raw curreny value'
+					title='By default, the percentage brakdown charts show percentage discrepancies. Check to switch to raw currency value.'
+				/>
 			</Box>
 			<Box
 				sx={{
@@ -84,6 +95,7 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 						<BudgetPercentageChart
 							data={monthData.data}
 							height={zoomDim.height}
+							useFloat={useFloat}
 							width={zoomDim.width}
 						/>
 						<Typography>{monthData.timestamp.format('MMM YYYY')}</Typography>
