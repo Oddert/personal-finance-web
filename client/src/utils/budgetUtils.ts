@@ -50,7 +50,29 @@ export const toEndMonth = (rawDate: string|Date) => {
 export const createCategoryBreakdown = (
     transactions: Transaction[],
     categoriesOrderedById: CategoryState['orderedData']['byId'],
+	includeEmptyCategories = false,
 ) => {
+	const createEmptyCategories = () => {
+		const categories = Object.values(categoriesOrderedById).reduce(
+			(acc: ICategoryBreakdown, datum) => {
+				acc[datum.id] = {
+					value: 0,
+					label: datum.label,
+					colour: datum.colour,
+				}
+				return acc
+			},
+			{
+				uncategorised: {
+					value: 0,
+					label: 'Uncategorised',
+					colour: '#bec3c7',
+				},
+			}
+		);
+		return categories;
+	}
+
     const categoryBreakdown = transactions.reduce(
         (acc: ICategoryBreakdown, transaction) => {
             if (transaction.category_id && transaction.category_id in categoriesOrderedById) {
@@ -67,13 +89,15 @@ export const createCategoryBreakdown = (
             }
             return acc;
         },
-        {
-            uncategorised: {
-                value: 0,
-                label: 'Uncategorised',
-                colour: '#bec3c7',
-            },
-        },
+        includeEmptyCategories
+			? createEmptyCategories()
+			: {
+				uncategorised: {
+					value: 0,
+					label: 'Uncategorised',
+					colour: '#bec3c7',
+				},
+			},
     );
 
     return categoryBreakdown;

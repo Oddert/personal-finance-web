@@ -137,6 +137,12 @@ export const budget: IBudget[] = [{
             varLowPc: 10,
             varHighPc: 10,
         },
+        20: {
+            label: 'utilities',
+            value: 270,
+            varLowPc: 0,
+            varHighPc: 0,
+        },
     }
 }]
 

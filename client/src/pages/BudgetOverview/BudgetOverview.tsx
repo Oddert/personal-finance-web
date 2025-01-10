@@ -53,6 +53,7 @@ const BudgetOverview: FC<IProps> = () => {
                     const categoryBreakdown = createCategoryBreakdown(
                         transactions[year][month],
                         categories,
+						true,
                     );
                     const data = createBudgetChartData(
                         categoryBreakdown,
