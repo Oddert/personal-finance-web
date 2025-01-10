@@ -46,19 +46,30 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 
 	return (
 		<Paper elevation={0}>
-			<Typography>Zoom level: {zoomLabel}</Typography>
-			<IconButton
-				disabled={zoomLevel <= 0}
-				onClick={decrementZoom}
+			<Box
+				sx={{
+					display: 'flex',
+					alignItems: 'center',
+				}}
 			>
-				<ZoomMinusIcon />
-			</IconButton>
-			<IconButton
-				disabled={zoomLevel >= 4}
-				onClick={incrementZoom}
-			>
-				<ZoomPlusIcon />
-			</IconButton>
+				<Typography component='label' htmlFor='zoom-control'>Zoom level: {zoomLabel}</Typography>
+				<Box id='zoom-control'>
+					<IconButton
+						disabled={zoomLevel <= 0}
+						title='decrease chart size'
+						onClick={decrementZoom}
+						>
+						<ZoomMinusIcon />
+					</IconButton>
+					<IconButton
+						disabled={zoomLevel >= 4}
+						title='increase chart size'
+						onClick={incrementZoom}
+					>
+						<ZoomPlusIcon />
+					</IconButton>
+				</Box>
+			</Box>
 			<Box
 				sx={{
 					display: 'flex',

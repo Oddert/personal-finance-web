@@ -2,7 +2,7 @@ import { FC, useMemo, useState } from 'react';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Paper, Typography } from '@mui/material';
 
 import {
     createBudgetChartData,
@@ -33,44 +33,56 @@ import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 
 dayjs.extend(localizedFormat);
 
+const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')))
+const defaultEnd = toEndMonth(String(dayjs()))
+
 const BudgetOverview: FC<IProps> = () => {
-    const [startDate, setStartDate] = useState(toBeginningMonth(new Date('2024-11-01')));
-    const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
+    const [startDate, setStartDate] = useState(defaultStart);
+    const [endDate, setEndDate] = useState(defaultEnd);
     const [monthBudget, setMonthBudget] = useState<IBudget>(budget[0]);
+	const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
     
     const chartList = useMemo(() => {
-        const sDate = dayjs(startDate);
+        let sDate = dayjs(startDate);
         const eDate = dayjs(endDate);
 
         const charts: IBudgetOverviewChart[] = [];
 
-        for (let year = sDate.year(); year <= eDate.year(); year++) {
-            for (let month = sDate.month(); month <= eDate.month(); month++) {
-                if (year in transactions && month in transactions[year]) {
-                    const categoryBreakdown = createCategoryBreakdown(
-                        transactions[year][month],
-                        categories,
-						true,
-                    );
-                    const data = createBudgetChartData(
-                        categoryBreakdown,
-                        monthBudget,
-                        1,
-                    );
-                    const chart = {
-                        timestamp: dayjs(`${year}-${month + 1}-02`),
-                        data,
-                    }
-                    charts.push(chart);
-                }
-            }
-        }
+		while (sDate < eDate) {
+			const year = sDate.year()
+			const month = sDate.month()
+			if (year in transactions && month in transactions[year]) {
+				const categoryBreakdown = createCategoryBreakdown(
+					transactions[year][month],
+					categories,
+					displayEmptyCats,
+				);
+				const data = createBudgetChartData(
+					categoryBreakdown,
+					monthBudget,
+					1,
+				);
+				const chart = {
+					timestamp: dayjs(`${year}-${month + 1}-02`),
+					data,
+				}
+				charts.push(chart);
+			}
+			sDate = sDate.add(1, 'month').set('date', 10)
+		}
 
         return charts
-    }, [categories, endDate, monthBudget, startDate, transactions]);
+    }, [
+		categories,
+		displayEmptyCats,
+		endDate,
+		monthBudget,
+		startDate,
+		transactions,
+	]);
 
     return (
         <ResponsiveContainer>
@@ -95,6 +107,15 @@ const BudgetOverview: FC<IProps> = () => {
                     monthBudget={monthBudget}
                     setMonthBudget={setMonthBudget}
                 />
+				<FormControlLabel
+					control={
+						<Checkbox
+							checked={displayEmptyCats}
+							onClick={() => setDisplayEmptyCats(!displayEmptyCats)}
+						/>
+					}
+					label='Include empty categories'
+				/>
                 <PercentageCharts
 					chartList={chartList}
 				/>
