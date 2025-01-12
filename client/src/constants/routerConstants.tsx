@@ -7,7 +7,7 @@ import TransactionsIcon from '@mui/icons-material/ReceiptLong'
 import Layout from '../components/Layout'
 
 import AllData from '../pages/AllData'
-import Budget from '../pages/Budget'
+import BudgetBreakdown from '../pages/BudgetBreakdown'
 import Categories from '../pages/Categories/'
 import Home from '../pages/Home'
 import Transactions from '../pages/Transactions/'
@@ -16,7 +16,7 @@ import BudgetOverview from '../pages/BudgetOverview'
 export const ROUTES = Object.freeze({
     HOME: '/',
     CATEGORIES: '/categories',
-    BUDGET: '/budget',
+    BUDGET_BREAKDOWN: '/budget-breakdown',
     BUDGET_OVERVIEW: '/budget-overview',
     ALL_DATA: '/all-data',
     TRANSACTIONS: '/transactions',
@@ -60,10 +60,10 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: ROUTES.BUDGET,
+        path: ROUTES.BUDGET_BREAKDOWN,
         element: (
             <Layout>
-                <Budget />
+                <BudgetBreakdown />
             </Layout>
         ),
     },
@@ -94,9 +94,9 @@ export const navigation = [
         location: ROUTES.ALL_DATA,
     },
     {
-        label: 'Budget',
+        label: 'Budget Breakdown',
         Icon: AllDataIcon,
-        location: ROUTES.BUDGET,
+        location: ROUTES.BUDGET_BREAKDOWN,
     },
     {
         label: 'Budget Overview',

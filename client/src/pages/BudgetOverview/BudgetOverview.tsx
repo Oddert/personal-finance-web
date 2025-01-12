@@ -1,4 +1,5 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
@@ -22,7 +23,7 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import ActiveBudget from '../../components/ActiveBudget';
 
-import { budget } from '../Budget/Budget';
+import { budget } from '../BudgetBreakdown/BudgetBreakdown';
 
 import AggregateTimeChart from './components/AggregateTimeChart';
 import DateRange from './components/DateRange';
@@ -30,6 +31,7 @@ import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 dayjs.extend(localizedFormat);
 
@@ -37,6 +39,8 @@ const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')))
 const defaultEnd = toEndMonth(String(dayjs()))
 
 const BudgetOverview: FC<IProps> = () => {
+    const navigation = useSearchParams();
+
     const [startDate, setStartDate] = useState(defaultStart);
     const [endDate, setEndDate] = useState(defaultEnd);
     const [monthBudget, setMonthBudget] = useState<IBudget>(budget[0]);
@@ -83,6 +87,19 @@ const BudgetOverview: FC<IProps> = () => {
 		startDate,
 		transactions,
 	]);
+
+    useEffect(() => {
+        const start = navigation[0].get('startDate');
+        const end = navigation[0].get('endDate');
+        if (start) {
+            setStartDate(start);
+            if (end) {
+                setEndDate(end);
+            } else {
+                setEndDate(toEndMonth(start));
+            }
+        }
+    }, [navigation]);
 
     return (
         <ResponsiveContainer>
@@ -153,6 +170,11 @@ const BudgetOverview: FC<IProps> = () => {
                         startDate={startDate}
                     />
                 </Paper>
+                <BudgetPageToggle
+                    endDate={endDate}
+                    mode='overview'
+                    startDate={startDate}
+                />
             </Box>
         </ResponsiveContainer>
     )

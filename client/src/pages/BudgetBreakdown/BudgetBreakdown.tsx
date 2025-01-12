@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
@@ -18,6 +19,7 @@ import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelect
 import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import BudgetPageToggle from '../../components/BudgetPageToggle';
 import PercentageChart from '../../components/BudgetPercentageChart';
 
 import BudgetTable from './components/BudgetTable';
@@ -26,8 +28,8 @@ import GlanceCards from './components/GlanceCards';
 import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
-import { formatNumMonths, formatReadableDate } from './BudgetUtils';
-import { ICategoryBreakdown } from './Budget.types';
+import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
+import { ICategoryBreakdown } from './BudgetBreakdown.types';
 
 dayjs.extend(localizedFormat)
 
@@ -146,7 +148,9 @@ export const budget: IBudget[] = [{
     }
 }]
 
-const Budget: FC = () => {
+const BudgetBreakdown: FC = () => {
+    const navigation = useSearchParams()
+
     const [startDate, setStartDate] = useState(toBeginningMonth(new Date('2024-11-01')));
     const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
     const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
@@ -186,6 +190,19 @@ const Budget: FC = () => {
         setCategoryBreakdown(_categoryBreakdown);
         setFilteredTransactions(_filteredTransactions);
     }, [categories, endDate, startDate, transactions]);
+
+    useEffect(() => {
+        const start = navigation[0].get('startDate');
+        const end = navigation[0].get('endDate');
+        if (start) {
+            setStartDate(start);
+            if (end) {
+                setEndDate(end);
+            } else {
+                setEndDate(toEndMonth(start));
+            }
+        }
+    }, [navigation]);
 
     return (
         <ResponsiveContainer>
@@ -239,9 +256,14 @@ const Budget: FC = () => {
                         startDate={startDate}
                     />
                 </Paper>
+                <BudgetPageToggle
+                    endDate={endDate}
+                    mode='breakdown'
+                    startDate={startDate}
+                />
             </Box>
         </ResponsiveContainer>
     )
 }
 
-export default Budget;
+export default BudgetBreakdown;

@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 import { Box } from '@mui/material';
 
 import { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
-import { IBudgetDatum } from '../../pages/Budget/Budget.types';
+import { IBudgetDatum } from '../../pages/BudgetBreakdown/BudgetBreakdown.types';
 
 const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, useFloat = false, width = 350 }) => {
     const { seriesData, seriesRef } = useMemo(() => {

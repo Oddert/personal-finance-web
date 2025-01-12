@@ -4,8 +4,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import { IBudget } from '../types/Budget.types';
 
-import { IBudgetDatum, ICategoryBreakdown } from '../pages/Budget/Budget.types';
-import { normaliseNum } from '../pages/Budget/BudgetUtils';
+import { IBudgetDatum, ICategoryBreakdown } from '../pages/BudgetBreakdown/BudgetBreakdown.types';
+import { normaliseNum } from '../pages/BudgetBreakdown/BudgetBreakdownUtils';
 
 import { CategoryState } from '../redux/slices/categorySlice';
 

@@ -1,4 +1,4 @@
-import { IBudgetDatum } from '../../pages/Budget/Budget.types';
+import { IBudgetDatum } from '../../pages/BudgetBreakdown/BudgetBreakdown.types';
 
 export interface IProps {
     data: IBudgetDatum[]

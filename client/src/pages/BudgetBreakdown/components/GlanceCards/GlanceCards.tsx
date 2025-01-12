@@ -2,8 +2,8 @@ import { FC, useEffect, useMemo, useState } from 'react';
 
 import { Box, Paper, Tooltip, Typography } from '@mui/material';
 
-import { normaliseNum } from '../../BudgetUtils';
-import { IBudgetDatum } from '../../Budget.types';
+import { normaliseNum } from '../../BudgetBreakdownUtils';
+import { IBudgetDatum } from '../../BudgetBreakdown.types';
 
 import { IProps } from './GlanceCards.types';
 

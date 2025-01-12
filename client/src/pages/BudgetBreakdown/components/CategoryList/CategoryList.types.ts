@@ -1,4 +1,4 @@
-import { ICategoryBreakdown } from "../../Budget.types";
+import { ICategoryBreakdown } from '../../BudgetBreakdown.types';
 
 export interface IProps {
     categoryBreakdown: ICategoryBreakdown

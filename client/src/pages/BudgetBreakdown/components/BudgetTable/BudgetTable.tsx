@@ -5,7 +5,7 @@ import { IProps } from './BudgetTable.types';
 
 import Table from '../../../../components/Table';
 
-import { IBudgetDatum } from '../../Budget.types';
+import { IBudgetDatum } from '../../BudgetBreakdown.types';
 import { Typography } from '@mui/material';
 
 type IBudgetDatumTable = IBudgetDatum & {

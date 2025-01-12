@@ -6,7 +6,7 @@ import {
     TextField,
 } from '@mui/material';
 
-import { budget } from '../../pages/Budget/Budget';
+import { budget } from '../../pages/BudgetBreakdown/BudgetBreakdown';
 
 import { IProps } from './ActiveBudget.types';
 

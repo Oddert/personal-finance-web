@@ -6,7 +6,7 @@ import { IProps } from './CategoryList.types';
 
 import Table from '../../../../components/Table';
 
-import { ICategoryBDValue } from '../../Budget.types';
+import { ICategoryBDValue } from '../../BudgetBreakdown.types';
 
 const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
     const value = cell.renderValue() as number;
