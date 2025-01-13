@@ -3,8 +3,7 @@ import { FC, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 
 import BudgetPercentageChart from '../../../../components/BudgetPercentageChart';
-
-import TransactionPreview from '../../../BudgetOverview/components/TransactionPreview';
+import TransactionPreview from '../../../../components/TransactionPreview';
 
 import { IProps } from './PercentageChart.types';
 

@@ -1,4 +1,4 @@
-import { Transaction } from '../../../../../../types/Transaction';
+import { Transaction } from '../../../../types/Transaction'
 
 export interface IProps {
 	categoryId: number

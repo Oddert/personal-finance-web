@@ -5,17 +5,17 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import { Transaction } from '../../../../../../types/Transaction';
+import { Transaction } from '../../../../types/Transaction';
 
-import { LOCALE } from '../../../../../../constants/appConstants';
+import { LOCALE } from '../../../../constants/appConstants';
 
-import { meanValue, standardDeviation } from '../../../../../../utils/mathsUtils';
+import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
 
-import { getTransactionsOrderedByDate } from '../../../../../../redux/selectors/transactionsSelectors';
+import { meanValue, standardDeviation } from '../../../../utils/mathsUtils';
 
-import { useAppSelector } from '../../../../../../hooks/ReduxHookWrappers';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
-import Table from '../../../../../../components/Table';
+import Table from '../../../Table';
 
 import { addCurrencySymbol, debitCell } from './TPTableUtils';
 import { IProps, TransactionExtended } from './TPTable.types';

@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material'
 
 import { CellContext } from '@tanstack/react-table'
 
-import { createReadableNumber } from '../../../../../../utils/commonUtils'
+import { createReadableNumber } from '../../../../utils/commonUtils'
 
 import { TransactionExtended } from './TPTable.types'
 

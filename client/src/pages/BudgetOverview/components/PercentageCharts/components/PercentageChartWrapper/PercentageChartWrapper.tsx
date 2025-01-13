@@ -7,8 +7,7 @@ import { Box, Typography } from '@mui/material';
 import { toBeginningMonth, toEndMonth } from '../../../../../../utils/budgetUtils';
 
 import BudgetPercentageChart from '../../../../../../components/BudgetPercentageChart';
-
-import TransactionPreview from '../../../TransactionPreview';
+import TransactionPreview from '../../../../../../components/TransactionPreview';
 
 import { IProps } from './PercentageChartWrapper.types'
 
