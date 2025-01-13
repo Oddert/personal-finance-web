@@ -28,7 +28,7 @@ const PercentageChartWrapper: FC<IProps> = ({
 	const [open, setOpen] = useState(false);
 
 	const ref = useRef<Element | null>(null);
-	
+
 	const dataPointCallback = (categoryId: number) => {
 		setOpen(true);
 		setCategoryId(categoryId);

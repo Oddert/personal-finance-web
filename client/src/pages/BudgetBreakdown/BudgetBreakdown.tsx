@@ -20,10 +20,10 @@ import { getTransactionsResponse } from '../../redux/selectors/transactionsSelec
 
 import ActiveBudget from '../../components/ActiveBudget';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
-import PercentageChart from '../../components/BudgetPercentageChart';
 
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
+import PercentageChart from './components/PercentageChart';
 import GlanceCards from './components/GlanceCards';
 import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
@@ -234,7 +234,11 @@ const BudgetBreakdown: FC = () => {
                         justifyContent: 'space-around',
                     }}
                 >
-                    <PercentageChart data={data} />
+                    <PercentageChart
+						data={data}
+						endDate={endDate}
+						startDate={startDate}
+					/>
                     <RadialChart categoryBreakdown={categoryBreakdown} />
                 </Paper>
                 <GlanceCards
