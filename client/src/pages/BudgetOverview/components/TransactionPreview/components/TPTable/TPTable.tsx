@@ -3,21 +3,22 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { ColumnDef } from '@tanstack/react-table';
+import { CircularProgress } from '@mui/material';
 
 import { Transaction } from '../../../../../../types/Transaction';
 
 import { LOCALE } from '../../../../../../constants/appConstants';
 
+import { meanValue, standardDeviation } from '../../../../../../utils/mathsUtils';
+
 import { getTransactionsOrderedByDate } from '../../../../../../redux/selectors/transactionsSelectors';
 
 import { useAppSelector } from '../../../../../../hooks/ReduxHookWrappers';
 
-import { addCurrencySymbol } from '../../../../../../utils/transactionUtils';
-
 import Table from '../../../../../../components/Table';
 
-import { IProps } from './TPTable.types';
-import { CircularProgress } from '@mui/material';
+import { addCurrencySymbol, debitCell } from './TPTableUtils';
+import { IProps, TransactionExtended } from './TPTable.types';
 
 dayjs.extend(localizedFormat);
 
@@ -27,20 +28,20 @@ const TPTable: FC<IProps> = ({
 	startDate,
 }) => {
     const [loading, setLoading] = useState(true);
-	const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+	const [filteredTransactions, setFilteredTransactions] = useState<TransactionExtended[]>([]);
 
 	const transactions = useAppSelector(getTransactionsOrderedByDate);
 	
-    const columns = useMemo<ColumnDef<Transaction>[]>(() => [
+    const columns = useMemo<ColumnDef<TransactionExtended>[]>(() => [
         {
             header: 'Date',
             accessorKey: 'date',
             cell: (cell) => {
-                const value = cell.renderValue()
+                const value = cell.renderValue();
                 if (typeof value === 'number') {
-                    return new Date(value).toLocaleDateString(LOCALE)
+                    return new Date(value).toLocaleDateString(LOCALE);
                 }
-                return value
+                return value;
             }
         },
         {
@@ -50,12 +51,16 @@ const TPTable: FC<IProps> = ({
         {
             header: 'Out',
             accessorKey: 'debit',
-            cell: addCurrencySymbol,
+            cell: debitCell,
         },
         {
             header: 'In',
             accessorKey: 'credit',
             cell: addCurrencySymbol,
+        },
+        {
+            header: '',
+            accessorKey: 'outOfBounds',
         },
         // {
         //     header: 'Ballance',
@@ -79,7 +84,8 @@ const TPTable: FC<IProps> = ({
         let sDate = dayjs(startDate);
         const eDate = dayjs(endDate);
 
-        const response: Transaction[] = [];
+        const transactionList: Transaction[] = [];
+		const values: number[] = [];
 
         while (sDate < eDate) {
             const year = sDate.year()
@@ -88,10 +94,20 @@ const TPTable: FC<IProps> = ({
                 const transactionBlock = transactions[year][month].filter((transaction) => {
                     return transaction.category_id === categoryId;
                 });
-                response.push(...transactionBlock);
+                transactionList.push(...transactionBlock);
+                values.push(...transactionBlock.map((transaction) => transaction.debit));
             }
             sDate = sDate.add(1, 'month').set('date', 10)
         }
+
+		const mean = meanValue(values);
+		const sd = standardDeviation(values);
+		const high = mean + sd;
+
+		const response: TransactionExtended[] = transactionList.map((transaction) => ({
+			...transaction,
+			outOfBounds: transaction.debit > high,
+		}))
 
         setFilteredTransactions(response.reverse());
         setLoading(false);
@@ -100,7 +116,13 @@ const TPTable: FC<IProps> = ({
 	if (loading) {
 		return <CircularProgress />;
 	}
-	return <Table columns={columns} data={filteredTransactions} />
+	return (
+		<Table
+			columns={columns}
+			columnVisibility={{ outOfBounds: false }}
+			data={filteredTransactions}
+		/>
+	);
 }
 
 export default TPTable

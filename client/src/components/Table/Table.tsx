@@ -14,9 +14,10 @@ interface ReactTableProps<TData> {
     data: TData[]
     columns: ColumnDef<TData>[]
     compact?: boolean
+	columnVisibility?: { [column: string]: boolean }
 }
 
-const Table = <TData extends object>({ data, columns, compact }: ReactTableProps<TData>) => {
+const Table = <TData extends object>({ data, columns, compact, columnVisibility }: ReactTableProps<TData>) => {	  
     const {
         getHeaderGroups,
         getRowModel,
@@ -25,6 +26,9 @@ const Table = <TData extends object>({ data, columns, compact }: ReactTableProps
         enableGrouping: false,
         data,
         getCoreRowModel: getCoreRowModel(),
+		initialState: {
+			columnVisibility,
+		},
     })
 
     return (

@@ -29,7 +29,7 @@ const PercentageChartWrapper: FC<IProps> = ({
 
 	const ref = useRef<Element | null>(null);
 	
-	const factoryDataPointCb = (categoryId: number) => {
+	const dataPointCallback = (categoryId: number) => {
 		setOpen(true);
 		setCategoryId(categoryId);
 		setStartDate(toBeginningMonth(String(monthData.timestamp)));
@@ -43,7 +43,7 @@ const PercentageChartWrapper: FC<IProps> = ({
 			</Typography>
 			<BudgetPercentageChart
 				data={monthData.data}
-				dataPointCallback={factoryDataPointCb}
+				dataPointCallback={dataPointCallback}
 				height={zoomDim.height}
 				useFloat={useFloat}
 				width={zoomDim.width}

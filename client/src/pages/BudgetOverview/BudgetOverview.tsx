@@ -22,6 +22,7 @@ import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 import { budget } from '../BudgetBreakdown/BudgetBreakdown';
 
@@ -31,7 +32,6 @@ import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
-import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 dayjs.extend(localizedFormat);
 
