@@ -19,6 +19,11 @@ export const getTransactionsOrderedByDate = createSelector(
     (orderedData) => orderedData.byDate,
 )
 
+export const getTransactionsOrderedByCategory = createSelector(
+    getTransactionsOrdered,
+    (orderedData) => orderedData.byCategory,
+)
+
 export const getTransactionsStartDate = createSelector(
     getTransactionsState,
     (transactionsState) => transactionsState.startDate

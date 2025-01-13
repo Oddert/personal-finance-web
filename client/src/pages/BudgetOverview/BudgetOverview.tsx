@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Checkbox, FormControlLabel, Paper, Typography } from '@mui/material';
 
@@ -146,7 +146,9 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Aggregate % Spend Discrepancy</Typography>
+                    <Typography>
+                        Aggregate % Spend Discrepancy
+                    </Typography>
                     <AggregateTimeChart
                         chartList={chartList}
                         endDate={endDate}
@@ -163,7 +165,9 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Spend Discrepancy & Trend Per Month</Typography>
+                    <Typography>
+                        Spend Discrepancy & Trend Per Month
+                    </Typography>
                     <TimeChart
                         chartList={chartList}
                         endDate={endDate}

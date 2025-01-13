@@ -3,26 +3,42 @@ import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
-import { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
 import { IBudgetDatum } from '../../pages/BudgetBreakdown/BudgetBreakdown.types';
 
-const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, useFloat = false, width = 350 }) => {
-    const { seriesData, seriesRef } = useMemo(() => {
+import { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
+
+const BudgetPercentageChart: FC<IProps> = ({
+    data,
+    dataPointCallback,
+    height = 350,
+    useFloat = false,
+    width = 350,
+}) => {
+    const { categoryIdsOrdered, seriesData, seriesRef } = useMemo(() => {
         const values = Object.values(data);
 
         return values.reduce(
-			(acc: { seriesData: ISeriesDatum[], seriesRef: IBudgetDatum[] }, budgetDatum) => {
+			(
+                acc: {
+                    categoryIdsOrdered: number[],
+                    seriesData: ISeriesDatum[],
+                    seriesRef: IBudgetDatum[],
+                },
+                budgetDatum,
+            ) => {
 				acc.seriesData.push({
 					x: budgetDatum.categoryName,
 					y: useFloat ? budgetDatum.diffFloat :budgetDatum.diffPc,
 					fillColor: budgetDatum.colour,
 				})
 				acc.seriesRef.push(budgetDatum);
+                acc.categoryIdsOrdered.push(budgetDatum.categoryId);
 				return acc
 			},
 			{
+                categoryIdsOrdered: [],
 				seriesData: [],
-				seriesRef: []
+				seriesRef: [],
 			}
 		)
     }, [data, useFloat]);
@@ -43,6 +59,16 @@ const BudgetPercentageChart: FC<IProps> = ({ data, height = 350, useFloat = fals
                         height: height,
                         toolbar: {
 							show: false,
+                        },
+                        events: {
+                            dataPointSelection: (event, chartContext, opts) => {
+                                if (dataPointCallback) {
+                                    dataPointCallback(
+                                        event.currentTarget as Element,
+                                        categoryIdsOrdered[opts.dataPointIndex],
+                                    )
+                                }
+                            }
                         },
                     },
 					legend: {
