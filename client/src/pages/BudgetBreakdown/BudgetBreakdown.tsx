@@ -36,8 +36,8 @@ dayjs.extend(localizedFormat)
 export const budget: IBudget[] = [{
     id: 1,
     name: 'Standard',
-    shortDescription: '',
-    longDescription: '',
+    shortDescription: 'My typical day-to-day budget.',
+    longDescription: 'My typical day-to-day budget.',
 	createdOn: new Date().toString(),
 	updatedOn: new Date().toString(),
     budget: {

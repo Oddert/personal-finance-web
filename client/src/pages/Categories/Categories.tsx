@@ -67,6 +67,7 @@ const Categories = () => {
                             width: '100%',
                             height: '100%',
                         }}
+						title='Add a new category'
                         variant='outlined'
                     >
                         <PlusIcon fontSize='large' />
