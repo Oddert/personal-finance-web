@@ -12,7 +12,7 @@ import {
     TableRows as LayoutListIcon,
 } from '@mui/icons-material'
 
-import { IDynamicCardLayoutModes } from '../../../../types/Common.types';
+import { IDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { IProps } from './LayoutControls.types';
 

@@ -18,7 +18,7 @@ import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
 import Category from '../../components/Category'
 import CategoryAdd from '../../components/CategoryAdd'
 import DynamicCardList from '../../components/DynamicCardList'
-import LayoutControls from './components/LayoutControls'
+import LayoutControls from '../../components/LayoutControls'
 
 const Categories = () => {
     const [dialogOpen, setDialogOpen] = useState(false)
