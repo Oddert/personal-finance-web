@@ -10,7 +10,8 @@ import {
 } from '@mui/material'
 import { Add as PlusIcon } from '@mui/icons-material'
 
-import { Category as CategoryT, ICategoryLayoutModes } from '../../types/Category'
+import { Category as CategoryT } from '../../types/Category'
+import { IDynamicCardLayoutModes } from '../../types/Common.types'
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
 
@@ -21,7 +22,7 @@ import LayoutControls from './components/LayoutControls'
 
 const Categories = () => {
     const [dialogOpen, setDialogOpen] = useState(false)
-    const [layout, setLayout] = useState<ICategoryLayoutModes>('standard')
+    const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard')
 
     const categories = useSelector(getCategoryResponse)
 

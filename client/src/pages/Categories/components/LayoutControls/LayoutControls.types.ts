@@ -1,6 +1,6 @@
-import { ICategoryLayoutModes } from '../../../../types/Category';
+import { IDynamicCardLayoutModes } from '../../../../types/Common.types'
 
 export interface IProps {
-    layout: ICategoryLayoutModes
-    setLayout: (value: ICategoryLayoutModes) => void
+    layout: IDynamicCardLayoutModes
+    setLayout: (value: IDynamicCardLayoutModes) => void
 }

@@ -1,4 +1,5 @@
-import type { Category as CategoryT, ICategoryLayoutModes } from '../../types/Category'
+import type { Category as CategoryT } from '../../types/Category'
+import { IDynamicCardLayoutModes } from '../../types/Common.types'
 import type { Matcher as MatcherT } from '../../types/Matcher'
 
 export interface IProps {
@@ -6,5 +7,5 @@ export interface IProps {
     defaultOpenAddNew?: boolean
     defaultOpenMatcher?: Partial<MatcherT>
     onAddNewSubmit?: (matcher: Partial<MatcherT>) => any
-    layout?: ICategoryLayoutModes
+    layout?: IDynamicCardLayoutModes
 }

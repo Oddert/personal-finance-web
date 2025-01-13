@@ -8,6 +8,10 @@ export interface IBudgetRow {
 export interface IBudget {
     id: number
     name: string
+    shortDescription: string
+    longDescription: string
+	createdOn: string
+	updatedOn: string
     budget: {
         [key: number]: IBudgetRow
     }
