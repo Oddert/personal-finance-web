@@ -68,6 +68,7 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 	}
 
 	const factoryDataPointCb = (timestamp: Dayjs) => (elem: Element, categoryId: number) => {
+		console.log(elem, categoryId);
 		setAnchorEl(elem);
 		setCategoryId(categoryId);
 		setStartDate(toBeginningMonth(String(timestamp)));

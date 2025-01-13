@@ -1,21 +1,10 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { ColumnDef } from '@tanstack/react-table';
 import { Button, CircularProgress, Popover } from '@mui/material';
 
-import { LOCALE } from '../../../../constants/appConstants';
-
-import { Transaction } from '../../../../types/Transaction';
-
-import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
-
-import { addCurrencySymbol } from '../../../../utils/transactionUtils';
-
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import Table from '../../../../components/Table';
+import TPTable from './components/TPTable';
 
 import { IProps } from './TransactionPreview.types';
 
@@ -28,76 +17,7 @@ const TransactionPreview: FC<IProps> = ({
     endDate,
     startDate,
 }) => {
-    const transactions = useAppSelector(getTransactionsOrderedByDate);
-    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let sDate = dayjs(startDate);
-        const eDate = dayjs(endDate);
-
-        const response: Transaction[] = [];
-
-        while (sDate < eDate) {
-            const year = sDate.year()
-            const month = sDate.month()
-            if (year in transactions && month in transactions[year]) {
-                const transactionBlock = transactions[year][month].filter((transaction) => {
-                    return transaction.category_id === categoryId;
-                });
-                response.push(...transactionBlock);
-            }
-            sDate = sDate.add(1, 'month').set('date', 10)
-        }
-
-        setFilteredTransactions(response);
-        setLoading(false);
-    }, [categoryId, endDate, transactions, startDate]);
-
-
-    const columns = useMemo<ColumnDef<Transaction>[]>(() => [
-        {
-            header: 'Date',
-            accessorKey: 'date',
-            cell: (cell) => {
-                const value = cell.renderValue()
-                if (typeof value === 'number') {
-                    return new Date(value).toLocaleDateString(LOCALE)
-                }
-                return value
-            }
-        },
-        {
-            header: 'Description',
-            accessorKey: 'description'
-        },
-        {
-            header: 'Out',
-            accessorKey: 'debit',
-            cell: addCurrencySymbol,
-        },
-        {
-            header: 'In',
-            accessorKey: 'credit',
-            cell: addCurrencySymbol,
-        },
-        // {
-        //     header: 'Ballance',
-        //     accessorKey: 'ballance',
-        //     cell: addCurrencySymbol,
-        // },
-        // {
-        //     header: 'Category',
-        //     accessorKey: 'assignedCategory',
-        //     cell: (cell) => {
-        //         const value: Category | unknown = cell.renderValue()
-        //         if (value && typeof value === 'object' && 'label' in value) {
-        //             return value.label
-        //         }
-        //         return '- uncategorised -'
-        //     }
-        // }
-    ], []);
 
     const handleClose = () => {
         setLoading(true);
@@ -122,7 +42,12 @@ const TransactionPreview: FC<IProps> = ({
             {loading ? (
                 <CircularProgress />
             ) : (
-                <Table columns={columns} data={filteredTransactions} />
+                <TPTable
+					categoryId={categoryId}
+					endDate={endDate}
+					setLoading={setLoading}
+					startDate={startDate}
+				/>
             )}
         </Popover>
     )
