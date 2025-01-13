@@ -17,15 +17,16 @@ import { addCurrencySymbol } from '../../../../../../utils/transactionUtils';
 import Table from '../../../../../../components/Table';
 
 import { IProps } from './TPTable.types';
+import { CircularProgress } from '@mui/material';
 
 dayjs.extend(localizedFormat);
 
 const TPTable: FC<IProps> = ({
 	categoryId,
 	endDate,
-	setLoading,
 	startDate,
 }) => {
+    const [loading, setLoading] = useState(true);
 	const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
 
 	const transactions = useAppSelector(getTransactionsOrderedByDate);
@@ -94,8 +95,11 @@ const TPTable: FC<IProps> = ({
 
         setFilteredTransactions(response);
         setLoading(false);
-    }, [categoryId, endDate, setLoading, startDate, transactions]);
+    }, [categoryId, endDate, startDate, transactions]);
 
+	if (loading) {
+		return <CircularProgress />;
+	}
 	return <Table columns={columns} data={filteredTransactions} />
 }
 

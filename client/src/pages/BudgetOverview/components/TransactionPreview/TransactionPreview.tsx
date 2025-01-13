@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Button, CircularProgress, Popover } from '@mui/material';
+import { Button, Popover } from '@mui/material';
 
 import TPTable from './components/TPTable';
 
@@ -18,10 +18,8 @@ const TransactionPreview: FC<IProps> = ({
 	open,
     startDate,
 }) => {
-    const [loading, setLoading] = useState(true);
 
     const handleClose = () => {
-        setLoading(true);
         clearAnchorEl();
     };
 
@@ -34,21 +32,16 @@ const TransactionPreview: FC<IProps> = ({
             anchorEl={anchorEl}
             onClose={handleClose}
             anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: 'top',
+                horizontal: 'right',
             }}
         >
             <Button onClick={handleClose}>Close</Button>
-            {loading ? (
-                <CircularProgress />
-            ) : (
-                <TPTable
-					categoryId={categoryId}
-					endDate={endDate}
-					setLoading={setLoading}
-					startDate={startDate}
-				/>
-            )}
+			<TPTable
+				categoryId={categoryId}
+				endDate={endDate}
+				startDate={startDate}
+			/>
         </Popover>
     )
 }
