@@ -13,13 +13,12 @@ import {
 	ZoomOut as ZoomMinusIcon,
 } from '@mui/icons-material';
 
-import { defaultZoomLevel } from '../../pages/BudgetOverview/components/PercentageCharts/PercentageCharts';
-
 import { IProps } from './BudgetPercentageControls.types';
 
 // Integer equivalent to 'xs', 'sm', 'md', 'lg', 'xl'
 type IZoomLevel = 0 | 1 | 2 | 3 | 4
 const zoomLabelLookup = ['xs', 'sm', 'md', 'lg', 'xl']
+const defaultZoomLevel = 1
 
 const BudgetPercentageControls: FC<IProps> = ({
 	setUseFloat,

@@ -4,11 +4,12 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Paper } from '@mui/material';
 
+import BudgetPercentageControls from '../../../../components/BudgetPercentageControls/';
+
 import { IProps } from './PercentageCharts.types';
 import PercentageChartWrapper from './components/PercentageChartWrapper';
-import BudgetPercentageControls from '../../../../components/BudgetPercentageControls/BudgetPercentageControls';
 
-export const defaultZoomLevel = 1
+const defaultZoomLevel = 1
 const zoomDimensionsLookup:
 [
 	{ height: number, width: number },
@@ -31,7 +32,6 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 		zoomDimensionsLookup[defaultZoomLevel],
 	);
 	const [useFloat, setUseFloat] = useState(false);
-
 
 	return (
 		<Paper elevation={0}>
