@@ -64,7 +64,6 @@ const BudgetPercentageChart: FC<IProps> = ({
                             dataPointSelection: (event, chartContext, opts) => {
                                 if (dataPointCallback) {
                                     dataPointCallback(
-                                        event.currentTarget as Element,
                                         categoryIdsOrdered[opts.dataPointIndex],
                                     )
                                 }

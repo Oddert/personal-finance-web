@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
@@ -15,13 +15,8 @@ import {
 	ZoomOut as ZoomMinusIcon,
 } from '@mui/icons-material';
 
-import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
-
-import BudgetPercentageChart from '../../../../components/BudgetPercentageChart';
-
-import TransactionPreview from '../TransactionPreview';
-
 import { IProps } from './PercentageCharts.types';
+import PercentageChartWrapper from './components/PercentageChartWrapper';
 
 // Integer equivalent to 'xs', 'sm', 'md', 'lg', 'xl'
 type IZoomLevel = 0 | 1 | 2 | 3 | 4
@@ -38,9 +33,6 @@ const zoomDimensionsLookup = [
 
 dayjs.extend(localizedFormat);
 
-const defaultStart = toBeginningMonth(String(dayjs()))
-const defaultEnd = toEndMonth(String(dayjs()))
-
 const PercentageCharts: FC<IProps> = ({ chartList }) => {
 	const [zoomLevel, setZoomLevel] = useState<IZoomLevel>(defaultZoomLevel);
 	const [zoomLabel, setZoomLabel] = useState(zoomLabelLookup[defaultZoomLevel]);
@@ -48,10 +40,6 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 		zoomDimensionsLookup[defaultZoomLevel],
 	);
 	const [useFloat, setUseFloat] = useState(false);
-	const [anchorEl, setAnchorEl] = useState<Element | null>(null);
-	const [categoryId, setCategoryId] = useState(-1);
-	const [startDate, setStartDate] = useState(defaultStart);
-	const [endDate, setEndDate] = useState(defaultEnd);
 
 	const incrementZoom = () => {
 		const nextZoomLevel = zoomLevel + 1
@@ -65,14 +53,6 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 		setZoomLevel(nextZoomLevel as IZoomLevel);
 		setZoomLabel(zoomLabelLookup[nextZoomLevel]);
 		setZoomDim(zoomDimensionsLookup[nextZoomLevel]);
-	}
-
-	const factoryDataPointCb = (timestamp: Dayjs) => (elem: Element, categoryId: number) => {
-		console.log(elem, categoryId);
-		setAnchorEl(elem);
-		setCategoryId(categoryId);
-		setStartDate(toBeginningMonth(String(timestamp)));
-		setEndDate(toEndMonth(String(timestamp)));
 	}
 
 	return (
@@ -121,25 +101,12 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 				}}
 			>
 				{chartList.map((monthData, idx) => (
-					<Box key={idx} sx={{ mb: '16px' }}>
-						<Typography>
-							{monthData.timestamp.format('MMM YYYY')}
-						</Typography>
-						<BudgetPercentageChart
-							data={monthData.data}
-							dataPointCallback={factoryDataPointCb(monthData.timestamp)}
-							height={zoomDim.height}
-							useFloat={useFloat}
-							width={zoomDim.width}
-						/>
-						<TransactionPreview
-							anchorEl={anchorEl}
-							categoryId={categoryId}
-							clearAnchorEl={() => setAnchorEl(null)}
-							endDate={endDate}
-							startDate={startDate}
-						/>
-					</Box>
+					<PercentageChartWrapper
+						key={idx}
+						monthData={monthData}
+						useFloat={useFloat}
+						zoomDim={zoomDim}
+					/>
 				))}
 			</Box>
 		</Paper>

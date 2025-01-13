@@ -3,5 +3,6 @@ export interface IProps {
     categoryId: number
     clearAnchorEl: () => void
     endDate: string
+	open: boolean
     startDate: string
 }

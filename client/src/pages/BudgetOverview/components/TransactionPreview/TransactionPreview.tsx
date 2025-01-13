@@ -15,6 +15,7 @@ const TransactionPreview: FC<IProps> = ({
     categoryId,
     clearAnchorEl,
     endDate,
+	open,
     startDate,
 }) => {
     const [loading, setLoading] = useState(true);
@@ -24,7 +25,6 @@ const TransactionPreview: FC<IProps> = ({
         clearAnchorEl();
     };
 
-    const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
     return (
