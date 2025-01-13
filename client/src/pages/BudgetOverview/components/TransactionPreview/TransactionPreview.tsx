@@ -27,14 +27,21 @@ const TransactionPreview: FC<IProps> = ({
 
     return (
         <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
+			anchorEl={anchorEl}
             anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
             }}
+            id={id}
+            onClose={handleClose}
+            open={open}
+			slotProps={{
+				paper: {
+					sx: {
+						maxHeight: '80vh',
+					},
+				},
+			}}
         >
             <Button onClick={handleClose}>Close</Button>
 			<TPTable

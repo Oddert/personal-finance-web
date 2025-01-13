@@ -5,6 +5,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import {
 	Box,
 	Checkbox,
+	Divider,
 	FormControlLabel,
 	IconButton,
 	Paper,
@@ -61,6 +62,9 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 				sx={{
 					display: 'flex',
 					alignItems: 'center',
+					justifyContent: 'center',
+					gridGap: '16px',
+					padding: '16px 32px',
 				}}
 			>
 				<Typography component='label' htmlFor='zoom-control'>Zoom level: {zoomLabel}</Typography>
@@ -80,6 +84,7 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 						<ZoomPlusIcon />
 					</IconButton>
 				</Box>
+				<Divider orientation='vertical' flexItem />
 				<FormControlLabel
 					control={
 						<Checkbox

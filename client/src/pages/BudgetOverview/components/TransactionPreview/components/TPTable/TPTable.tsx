@@ -93,7 +93,7 @@ const TPTable: FC<IProps> = ({
             sDate = sDate.add(1, 'month').set('date', 10)
         }
 
-        setFilteredTransactions(response);
+        setFilteredTransactions(response.reverse());
         setLoading(false);
     }, [categoryId, endDate, startDate, transactions]);
 
