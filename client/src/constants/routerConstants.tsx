@@ -1,24 +1,26 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import CategoryIcon from '@mui/icons-material/Category'
 import AllDataIcon from '@mui/icons-material/WaterfallChart'
+import CategoryIcon from '@mui/icons-material/Category'
+import BudgetBreakdownIcon from '@mui/icons-material/DonutSmall';
+import BudgetOverviewIcon from '@mui/icons-material/CandlestickChart';
 import TransactionsIcon from '@mui/icons-material/ReceiptLong'
 
 import Layout from '../components/Layout'
 
 import AllData from '../pages/AllData'
 import BudgetBreakdown from '../pages/BudgetBreakdown'
+import BudgetOverview from '../pages/BudgetOverview'
 import Categories from '../pages/Categories/'
 import Home from '../pages/Home'
 import Transactions from '../pages/Transactions/'
-import BudgetOverview from '../pages/BudgetOverview'
 
 export const ROUTES = Object.freeze({
     HOME: '/',
-    CATEGORIES: '/categories',
+    ALL_DATA: '/all-data',
     BUDGET_BREAKDOWN: '/budget-breakdown',
     BUDGET_OVERVIEW: '/budget-overview',
-    ALL_DATA: '/all-data',
+    CATEGORIES: '/categories',
     TRANSACTIONS: '/transactions',
 })
 
@@ -78,31 +80,31 @@ const router = createBrowserRouter([
 ])
 
 export const navigation = [
+	{
+		label: 'All Historical Data',
+		Icon: AllDataIcon,
+		location: ROUTES.ALL_DATA,
+	},
+	{
+		label: 'Budget Breakdown',
+		Icon: BudgetBreakdownIcon,
+		location: ROUTES.BUDGET_BREAKDOWN,
+	},
+	{
+		label: 'Budget Overview',
+		Icon: BudgetOverviewIcon,
+		location: ROUTES.BUDGET_OVERVIEW,
+	},
     {
-        label: 'Transactions',
-        Icon: TransactionsIcon,
-        location: ROUTES.TRANSACTIONS,
-    },
-    {
-        label: 'Categories',
+		label: 'Manage Categories',
         Icon: CategoryIcon,
         location: ROUTES.CATEGORIES,
     },
-    {
-        label: 'All Data',
-        Icon: AllDataIcon,
-        location: ROUTES.ALL_DATA,
-    },
-    {
-        label: 'Budget Breakdown',
-        Icon: AllDataIcon,
-        location: ROUTES.BUDGET_BREAKDOWN,
-    },
-    {
-        label: 'Budget Overview',
-        Icon: AllDataIcon,
-        location: ROUTES.BUDGET_OVERVIEW,
-    },
+	{
+		label: 'Upload & View Transactions',
+		Icon: TransactionsIcon,
+		location: ROUTES.TRANSACTIONS,
+	},
 ]
 
 export default router
