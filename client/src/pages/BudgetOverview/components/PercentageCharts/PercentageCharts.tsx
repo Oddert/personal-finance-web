@@ -67,7 +67,7 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 		setZoomDim(zoomDimensionsLookup[nextZoomLevel]);
 	}
 
-	const temp = (timestamp: Dayjs) => (elem: Element, categoryId: number) => {
+	const factoryDataPointCb = (timestamp: Dayjs) => (elem: Element, categoryId: number) => {
 		setAnchorEl(elem);
 		setCategoryId(categoryId);
 		setStartDate(toBeginningMonth(String(timestamp)));
@@ -126,7 +126,7 @@ const PercentageCharts: FC<IProps> = ({ chartList }) => {
 						</Typography>
 						<BudgetPercentageChart
 							data={monthData.data}
-							dataPointCallback={temp(monthData.timestamp)}
+							dataPointCallback={factoryDataPointCb(monthData.timestamp)}
 							height={zoomDim.height}
 							useFloat={useFloat}
 							width={zoomDim.width}
