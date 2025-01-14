@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 
-import { Box, Button, ListItem, Typography } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material'
+import { Box, Typography } from '@mui/material';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
@@ -13,14 +12,13 @@ import LayoutControls from '../../components/LayoutControls';
 import { budget as tempBudgets } from '../BudgetBreakdown/BudgetBreakdown';
 
 import BudgetCard from './components/BudgetCard';
+import CreateBudgetButton from './components/CreateBudgetButton';
+import CreateBudgetCard from './components/CreateBudgetCard';
 
 import { IProps } from './ManageBudgets.types';
 
-
 const ManageBudgets: FC<IProps> = () => {
 	const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
-
-	const handleDialogOpen = () => {}
 
 	return (
 		<ResponsiveContainer>
@@ -43,27 +41,13 @@ const ManageBudgets: FC<IProps> = () => {
 					}}
 				>
 					<LayoutControls layout={layout} setLayout={setLayout} />
-					<Button onClick={handleDialogOpen} variant='contained'>
-						<PlusIcon /> Create new budget
-					</Button>
+					<CreateBudgetButton />
 				</Box>
 				<DynamicCardList layout={layout}>
 					{tempBudgets.map((budget, idx) => (
 						<BudgetCard budget={budget} key={idx} />
 					))}
-					<ListItem>
-						<Button
-							onClick={handleDialogOpen}
-							sx={{
-								width: '100%',
-								height: '100%',
-							}}
-							title='Create a new budget'
-							variant='outlined'
-						>
-							<PlusIcon fontSize='large' />
-						</Button>
-					</ListItem>
+					<CreateBudgetCard />
 				</DynamicCardList>
 			</Box>
 		</ResponsiveContainer>
