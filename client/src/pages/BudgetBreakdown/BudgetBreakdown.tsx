@@ -33,124 +33,142 @@ import { ICategoryBreakdown } from './BudgetBreakdown.types';
 
 dayjs.extend(localizedFormat)
 
-export const budget: IBudget[] = [{
-    id: 1,
-    name: 'Standard',
-    shortDescription: 'My typical day-to-day budget.',
-    longDescription: 'My typical day-to-day budget.',
-	createdOn: new Date().toString(),
-	updatedOn: new Date().toString(),
-    budget: {
-        1: {
-            label: 'food',
-            value: 200,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        2: {
-            label: 'support',
-            value: 35,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        3: {
-            label: 'travel',
-            value: 80,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        4: {
-            label: 'health',
-            value: 50,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        5: {
-            label: 'subscriptions',
-            value: 10,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        6: {
-            label: 'bike',
-            value: 70,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        7: {
-            label: 'income',
-            value: 0,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        8: {
-            label: 'work',
-            value: 20,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        9: {
-            label: 'phone',
-            value: 30,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        10: {
-            label: 'dentist',
-            value: 21,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        11: {
-            label: 'therapy',
-            value: 280,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        12: {
-            label: 'home',
-            value: 100,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        13: {
-            label: 'investment',
-            value: 0,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        14: {
-            label: 'rent',
-            value: 1350,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        15: {
-            label: 'gifts',
-            value: 30,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        16: {
-            label: 'garden',
-            value: 30,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        17: {
-            label: 'clothes',
-            value: 30,
-            varLowPc: 10,
-            varHighPc: 10,
-        },
-        20: {
-            label: 'utilities',
-            value: 350,
-            varLowPc: 0,
-            varHighPc: 0,
-        },
-    }
-}]
+export const budget: IBudget[] = [
+	{
+		id: 1,
+		name: 'Standard',
+		shortDescription: 'My typical day-to-day budget.',
+		longDescription: 'My typical day-to-day budget.',
+		createdOn: new Date().toString(),
+		updatedOn: new Date().toString(),
+		budget: {
+			1: {
+				label: 'food',
+				value: 200,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			2: {
+				label: 'support',
+				value: 35,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			3: {
+				label: 'travel',
+				value: 80,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			4: {
+				label: 'health',
+				value: 50,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			5: {
+				label: 'subscriptions',
+				value: 10,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			6: {
+				label: 'bike',
+				value: 70,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			7: {
+				label: 'income',
+				value: 0,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			8: {
+				label: 'work',
+				value: 20,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			9: {
+				label: 'phone',
+				value: 30,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			10: {
+				label: 'dentist',
+				value: 21,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			11: {
+				label: 'therapy',
+				value: 280,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			12: {
+				label: 'home',
+				value: 100,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			13: {
+				label: 'investment',
+				value: 0,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			14: {
+				label: 'rent',
+				value: 1350,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			15: {
+				label: 'gifts',
+				value: 30,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			16: {
+				label: 'garden',
+				value: 30,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			17: {
+				label: 'clothes',
+				value: 30,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+			20: {
+				label: 'utilities',
+				value: 350,
+				varLowPc: 0,
+				varHighPc: 0,
+			},
+		},
+	},
+	{
+		id: 2,
+		name: 'Just food',
+		shortDescription: "Who's idea was it to have a budget with just food?",
+		longDescription: 'Nostrud sunt velit ullamco mollit aliquip laboris irure et officia aliquip.',
+		createdOn: new Date().toString(),
+		updatedOn: new Date().toString(),
+		budget: {
+			1: {
+				label: 'food',
+				value: 200,
+				varLowPc: 10,
+				varHighPc: 10,
+			},
+		},
+	},
+]
 
 const BudgetBreakdown: FC = () => {
     const navigation = useSearchParams()

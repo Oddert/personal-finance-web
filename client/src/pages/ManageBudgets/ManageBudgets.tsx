@@ -51,9 +51,9 @@ const ManageBudgets: FC<IProps> = () => {
 						<PlusIcon /> Create new budget
 					</Button>
 				</Box>
-				<DynamicCardList layout='standard'>
+				<DynamicCardList layout={layout}>
 					{tempBudgets.map((budget, idx) => (
-						<ListItem key={idx}>
+						<ListItem key={idx} sx={{ height: '100%' }}>
 							<Paper
 								elevation={6}
 								sx={(theme) => ({
@@ -65,7 +65,7 @@ const ManageBudgets: FC<IProps> = () => {
 									height: '100%',
 								})}
 							>
-								<Box sx={{ display: 'flex', 'justifyContent': 'space-between' }}>
+								<Box sx={{ display: 'flex', justifyContent: 'space-between', mb: '8px' }}>
 									<Typography variant='h3'>
 										{budget.name}
 									</Typography>
@@ -77,10 +77,10 @@ const ManageBudgets: FC<IProps> = () => {
 								<Typography variant='subtitle1'>
 									{budget.shortDescription}
 								</Typography>
-								<Typography variant='body2'>
+								<Typography sx={(theme) => ({ color: theme.palette.text.disabled })} variant='body2'>
 									Last updated: {new Date(budget.updatedOn).toLocaleString(LOCALE)}
 								</Typography>
-								<Button sx={{ display: 'flex', alignItems: 'center' }}>
+								<Button sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}>
 									<Typography component='span'>View and edit</Typography>{' '}
 									<RightArrowIcon />
 								</Button>
