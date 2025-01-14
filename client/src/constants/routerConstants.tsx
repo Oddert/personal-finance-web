@@ -18,6 +18,7 @@ import Categories from '../pages/Categories/'
 import Home from '../pages/Home'
 import ManageBudgets from '../pages/ManageBudgets';
 import Transactions from '../pages/Transactions/'
+import EditBudget from '../pages/EditBudget';
 
 export const ROUTES = Object.freeze({
     HOME: '/',
@@ -25,6 +26,8 @@ export const ROUTES = Object.freeze({
     BUDGET_BREAKDOWN: '/budget-breakdown',
     BUDGET_OVERVIEW: '/budget-overview',
     CATEGORIES: '/categories',
+    CREATE_BUDGET: '/create-budget',
+    EDIT_BUDGET: '/edit-budget',
     MANAGE_BUDGETS: '/manage-budgets',
     TRANSACTIONS: '/transactions',
 })
@@ -87,6 +90,22 @@ const router = createBrowserRouter([
         element: (
             <Layout>
                 <ManageBudgets />
+            </Layout>
+        ),
+    },
+    {
+        path: ROUTES.CREATE_BUDGET,
+        element: (
+            <Layout>
+                <EditBudget />
+            </Layout>
+        ),
+    },
+    {
+        path: ROUTES.EDIT_BUDGET,
+        element: (
+            <Layout>
+                <EditBudget />
             </Layout>
         ),
     },
