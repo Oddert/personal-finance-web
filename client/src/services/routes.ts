@@ -4,6 +4,7 @@ import type { Category } from '../types/Category';
 import type { Matcher } from '../types/Matcher';
 
 const routes = {
+    /* Transactions */
     getAllTransactions: async (startDate?: string, endDate?: string) => {
         const from = startDate ? `?from=${startDate}` : ''
         const to = endDate ? `&to=${endDate}` : ''
@@ -15,6 +16,7 @@ const routes = {
     updateManyTransactions: async (transactions: any) => {
         return await request.put(`/transaction/update-many`, { transactions })
     },
+    /* Categories */
     getAllCategories: async () => {
         return await request.get(`/category`)
     },
@@ -30,6 +32,7 @@ const routes = {
     deleteSingleCategory: async (categoryId: Category['id']) => {
         return await request.delete(`/category/${categoryId}`)
     },
+    /* Matchers */
     addSingleMatcher: async (matcher: Partial<Matcher>, categoryId: Category['id']) => {
         return await request.post(`/matcher/`, { ...matcher, categoryId })
     },
@@ -39,6 +42,10 @@ const routes = {
     deleteSingleMatcher: async (id: number|string) => {
         return await request.delete(`/matcher/${id}`)
     },
+    /* Budget */
+    getAllBudgets: async () => {
+        return await request.get('/budget')
+    }
 }
 
 export default routes
