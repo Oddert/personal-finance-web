@@ -9,7 +9,7 @@ import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import { IProps } from './BudgetRow.types';
 
-const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => {
+const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
     const categories = useAppSelector(getCategoryResponse);
 
     const categoryOptions = useMemo(() => categories.map((category) => ({
@@ -18,7 +18,7 @@ const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => 
     })), [categories]);
 
     const handleChangeCategory = (event: SyntheticEvent, value: { id: number, label: string } | null) => {
-        const filteredRows = budgetDatums.map((row) => {
+        const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id && value) {
                 return {
                     ...row,
@@ -28,11 +28,11 @@ const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => 
             }
             return row
         });
-        setBudgetDatums(filteredRows);
+        setBudgetRows(filteredRows);
     };
 
     const handleChangeTargetValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const filteredRows = budgetDatums.map((row) => {
+        const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id) {
                 return {
                     ...row,
@@ -41,11 +41,11 @@ const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => 
             }
             return row
         });
-        setBudgetDatums(filteredRows);
+        setBudgetRows(filteredRows);
     };
 
     const handleChangeOverspend = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const filteredRows = budgetDatums.map((row) => {
+        const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id) {
                 return {
                     ...row,
@@ -54,11 +54,11 @@ const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => 
             }
             return row
         });
-        setBudgetDatums(filteredRows);
+        setBudgetRows(filteredRows);
     };
 
     const handleChangeUnderspend = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const filteredRows = budgetDatums.map((row) => {
+        const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id) {
                 return {
                     ...row,
@@ -67,14 +67,14 @@ const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => 
             }
             return row
         });
-        setBudgetDatums(filteredRows);
+        setBudgetRows(filteredRows);
     };
 
     const handleClickDelete = () => {
         if (budgetRow.staged) {
-            setBudgetDatums(budgetDatums.filter((row) => row.id !== budgetRow.id));
+            setBudgetRows(budgetRows.filter((row) => row.id !== budgetRow.id));
         } else {
-            const filteredRows = budgetDatums.map((row) => {
+            const filteredRows = budgetRows.map((row) => {
                 if (row.id === budgetRow.id) {
                     return {
                         ...row,
@@ -83,12 +83,12 @@ const BudgetRow: FC<IProps> = ({ budgetDatums, budgetRow, setBudgetDatums }) => 
                 }
                 return row
             });
-            setBudgetDatums(filteredRows);
+            setBudgetRows(filteredRows);
         }
     };
 
     return (
-        <ListItem sx={{ p: 0 }}>
+        <ListItem sx={{ p: 0, mb: 1 }}>
             <Paper
                 sx={{
                     width: '100%',

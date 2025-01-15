@@ -45,7 +45,10 @@ const routes = {
     /* Budget */
     getAllBudgets: async () => {
         return await request.get('/budget')
-    }
+    },
+    getSingelBudget: async (id: number) => {
+        return await request.get(`/budget/${id}`)
+    },
 }
 
 export default routes

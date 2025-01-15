@@ -15,7 +15,5 @@ export interface IBudget {
     isDefault: boolean
 	createdOn: string
 	updatedOn: string
-    budget: {
-        [key: number]: IBudgetRow
-    }
+    budgetRows: IBudgetRow[]
 }

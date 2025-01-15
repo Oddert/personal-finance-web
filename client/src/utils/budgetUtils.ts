@@ -114,7 +114,7 @@ export const createCategoryBreakdown = (
  */
 export const createBudgetChartData = (categoryBreakdown: ICategoryBreakdown, budget: IBudget, numMonths = 1) => {
     const chart = Object.entries(categoryBreakdown).reduce((acc: IBudgetDatum[], [uid, each]) => {
-        const budgetDatum = budget.budget[Number(uid)];
+        const budgetDatum = budget.budgetRows[Number(uid)];
         const normalisedValue = normaliseNum(each.value);
 
         if (budgetDatum?.value) {

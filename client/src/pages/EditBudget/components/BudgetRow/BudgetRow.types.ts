@@ -1,7 +1,7 @@
 import { IBudgetRowEditable } from '../../EditBudget.types';
 
 export interface IProps {
-    budgetDatums: IBudgetRowEditable[]
+    budgetRows: IBudgetRowEditable[]
     budgetRow: IBudgetRowEditable
-    setBudgetDatums: (budgetRows: IBudgetRowEditable[]) => void
+    setBudgetRows: (budgetRows: IBudgetRowEditable[]) => void
 }
