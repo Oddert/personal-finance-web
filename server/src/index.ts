@@ -5,6 +5,7 @@ import express from 'express'
 import morgan from 'morgan'
 
 import root from './routes/root'
+import budget from './routes/BudgetRoutes'
 import category from './routes/CategoryRoutes'
 import debug from './routes/DebugRoutes'
 import matcher from './routes/MatcherRoutes'
@@ -29,6 +30,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/', root)
+app.use('/budget', budget)
 app.use('/category', category)
 app.use('/debug', debug)
 app.use('/matcher', matcher)

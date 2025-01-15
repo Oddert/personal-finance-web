@@ -14,7 +14,7 @@ exports.up = function(knex) {
         table.string('description').notNullable().defaultTo('')
         table.integer('start_ballance').defaultTo(null)
     })
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -22,4 +22,4 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema.dropTableIfExists('scenario')
-};
+}

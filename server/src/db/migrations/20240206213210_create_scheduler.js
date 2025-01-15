@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -14,7 +15,7 @@ exports.up = function(knex) {
         table.integer('nth_day').defaultTo(null)
         table.integer('transactor_id').references('transactor.id')
     })
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -22,4 +23,4 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema.dropTableIfExists('scheduler')
-};
+}
