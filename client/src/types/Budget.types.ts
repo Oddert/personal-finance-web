@@ -1,4 +1,6 @@
 export interface IBudgetRow {
+    id: number
+    categoryId: number
     label: string
     value: number
     varLowPc: number

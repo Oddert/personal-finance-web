@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useNavigate } from 'react-router';
 
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
 import {
@@ -8,10 +9,17 @@ import {
 import { LOCALE } from '../../../../constants/appConstants';
 
 import { IProps } from './BudgetCard.types';
+import { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
 const tempActiveBudget = 1;
 
 const BudgetCard: FC<IProps> = ({ budget }) => {
+	const navigate = useNavigate();
+
+	const handleClickEdit = () => {
+		navigate(ROUTES_FACTORY.EDIT_BUDGET(budget.id));
+	}
+
 	return (
 		<ListItem sx={{ height: '100%' }}>
 			<Paper
@@ -40,7 +48,10 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
 				<Typography sx={(theme) => ({ color: theme.palette.text.disabled })} variant='body2'>
 					Last updated: {new Date(budget.updatedOn).toLocaleString(LOCALE)}
 				</Typography>
-				<Button sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}>
+				<Button
+					onClick={handleClickEdit}
+					sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}
+				>
 					<Typography component='span'>View and edit</Typography>{' '}
 					<RightArrowIcon />
 				</Button>

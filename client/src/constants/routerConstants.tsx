@@ -32,6 +32,11 @@ export const ROUTES = Object.freeze({
     TRANSACTIONS: '/transactions',
 })
 
+export const ROUTES_FACTORY = Object.freeze({
+    CREATE_BUDGET: (templateId: string|number) => `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
+    EDIT_BUDGET: (budgetId: string|number) => `${ROUTES.EDIT_BUDGET}/${budgetId}`,
+});
+
 // export const GO = Object.freeze({
 //     HOME: () => push(ROUTES.HOME)
 // })
@@ -102,7 +107,7 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: ROUTES.EDIT_BUDGET,
+        path: `${ROUTES.EDIT_BUDGET}/:budgetId`,
         element: (
             <Layout>
                 <EditBudget />
