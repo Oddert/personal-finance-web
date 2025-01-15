@@ -61,11 +61,16 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
         setNumOverSpend(_numOverSpend)
     }, [data])
     
-    const expectedSpend = useMemo(() => 
-        Object.values(monthBudget.budget).reduce(
-			(a: number, e) => a + e.value,
-            0,
-        ) * numMonths,
+    const expectedSpend = useMemo(
+		() => {
+			if (monthBudget) {
+				return Object.values(monthBudget.budget).reduce(
+					(a: number, e) => a + e.value,
+					0,
+				) * numMonths;
+			}
+			return 0;
+		},
         [monthBudget, numMonths],
     );
 

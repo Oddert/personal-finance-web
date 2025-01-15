@@ -13,9 +13,8 @@ import {
 } from '../../utils/budgetUtils';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
+import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
-
-import { IBudget } from '../../types/Budget.types';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
@@ -23,8 +22,6 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import ActiveBudget from '../../components/ActiveBudget';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
-
-import { budget } from '../BudgetBreakdown/BudgetBreakdown';
 
 import AggregateTimeChart from './components/AggregateTimeChart';
 import DateRange from './components/DateRange';
@@ -43,42 +40,45 @@ const BudgetOverview: FC<IProps> = () => {
 
     const [startDate, setStartDate] = useState(defaultStart);
     const [endDate, setEndDate] = useState(defaultEnd);
-    const [monthBudget, setMonthBudget] = useState<IBudget>(budget[0]);
 	const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
+	const monthBudget = useAppSelector(getActiveBudget);
     
     const chartList = useMemo(() => {
-        let sDate = dayjs(startDate);
-        const eDate = dayjs(endDate);
-
-        const charts: IBudgetOverviewChart[] = [];
-
-		while (sDate < eDate) {
-			const year = sDate.year()
-			const month = sDate.month()
-			if (year in transactions && month in transactions[year]) {
-				const categoryBreakdown = createCategoryBreakdown(
-					transactions[year][month],
-					categories,
-					displayEmptyCats,
-				);
-				const data = createBudgetChartData(
-					categoryBreakdown,
-					monthBudget,
-					1,
-				);
-				const chart = {
-					timestamp: dayjs(`${year}-${month + 1}-02`),
-					data,
+		if (monthBudget) {
+			let sDate = dayjs(startDate);
+			const eDate = dayjs(endDate);
+	
+			const charts: IBudgetOverviewChart[] = [];
+	
+			while (sDate < eDate) {
+				const year = sDate.year()
+				const month = sDate.month()
+				if (year in transactions && month in transactions[year]) {
+					const categoryBreakdown = createCategoryBreakdown(
+						transactions[year][month],
+						categories,
+						displayEmptyCats,
+					);
+					const data = createBudgetChartData(
+						categoryBreakdown,
+						monthBudget,
+						1,
+					);
+					const chart = {
+						timestamp: dayjs(`${year}-${month + 1}-02`),
+						data,
+					}
+					charts.push(chart);
 				}
-				charts.push(chart);
+				sDate = sDate.add(1, 'month').set('date', 10)
 			}
-			sDate = sDate.add(1, 'month').set('date', 10)
-		}
 
-        return charts
+			return charts
+		}
+		return [];
     }, [
 		categories,
 		displayEmptyCats,
@@ -120,10 +120,7 @@ const BudgetOverview: FC<IProps> = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
-                <ActiveBudget
-                    monthBudget={monthBudget}
-                    setMonthBudget={setMonthBudget}
-                />
+                <ActiveBudget />
 				<FormControlLabel
 					control={
 						<Checkbox

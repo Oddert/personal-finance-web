@@ -6,11 +6,24 @@ import {
     TextField,
 } from '@mui/material';
 
-import { budget } from '../../pages/BudgetBreakdown/BudgetBreakdown';
+import { getActiveBudget, getBudgetResponse } from '../../redux/selectors/budgetSelectors';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
+
+import { IBudget } from '../../types/Budget.types';
 import { IProps } from './ActiveBudget.types';
+import { setActiveBudget } from '../../redux/slices/budgetSlice';
 
-const ActiveBudget: FC<IProps> = ({ monthBudget, setMonthBudget }) => {
+const ActiveBudget: FC<IProps> = () => {
+	const dispatch = useAppDispatch();
+
+	const budgets = useAppSelector(getBudgetResponse);
+	const monthBudget = useAppSelector(getActiveBudget);
+
+	const setMonthBudget = (nextBudget: IBudget) => {
+		dispatch(setActiveBudget({ budget: nextBudget }));
+	}
+
     return (
         <Box
             sx={{
@@ -31,7 +44,7 @@ const ActiveBudget: FC<IProps> = ({ monthBudget, setMonthBudget }) => {
                     }
                     setMonthBudget(nextBudget)
                 }}
-                options={budget}
+                options={budgets}
                 renderInput={(params) => (
 					<TextField
 						{...params}

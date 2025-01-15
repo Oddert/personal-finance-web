@@ -4,6 +4,6 @@ import { IBudgetDatum } from '../../BudgetBreakdown.types';
 
 export interface IProps {
     data: IBudgetDatum[]
-    monthBudget: IBudget
+    monthBudget: IBudget|null
 	numMonths: number
 }

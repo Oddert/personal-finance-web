@@ -2,14 +2,15 @@ import { FC, useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
 
-import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-
 import { IDynamicCardLayoutModes } from '../../types/Common.types';
+
+import { getBudgetResponse } from '../../redux/selectors/budgetSelectors';
+
+import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
-
-import { budget as tempBudgets } from '../BudgetBreakdown/BudgetBreakdown';
 
 import BudgetCard from './components/BudgetCard';
 import CreateBudgetButton from './components/CreateBudgetButton';
@@ -19,6 +20,8 @@ import { IProps } from './ManageBudgets.types';
 
 const ManageBudgets: FC<IProps> = () => {
 	const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
+
+	const budgets = useAppSelector(getBudgetResponse);
 
 	return (
 		<ResponsiveContainer>
@@ -44,7 +47,7 @@ const ManageBudgets: FC<IProps> = () => {
 					<CreateBudgetButton />
 				</Box>
 				<DynamicCardList layout={layout}>
-					{tempBudgets.map((budget, idx) => (
+					{budgets.map((budget, idx) => (
 						<BudgetCard budget={budget} key={idx} />
 					))}
 					<CreateBudgetCard />
