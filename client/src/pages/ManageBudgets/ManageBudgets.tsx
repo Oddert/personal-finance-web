@@ -1,13 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
 
 import { IDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { getBudgetResponse } from '../../redux/selectors/budgetSelectors';
+import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
@@ -19,9 +20,16 @@ import CreateBudgetCard from './components/CreateBudgetCard';
 import { IProps } from './ManageBudgets.types';
 
 const ManageBudgets: FC<IProps> = () => {
+	const dispatch = useAppDispatch();
+
 	const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
 
 	const budgets = useAppSelector(getBudgetResponse);
+
+	useEffect(() => {
+		dispatch(refreshBudgets(true));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	return (
 		<ResponsiveContainer>

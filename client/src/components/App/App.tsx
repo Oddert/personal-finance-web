@@ -11,6 +11,7 @@ import router from '../../constants/routerConstants'
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
 import { requestTransactions } from '../../redux/slices/transactionsSlice'
+import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 
 import './App.css';
 
@@ -24,6 +25,7 @@ const App = () => {
         const startDate = date.format('YYYY-MM-DD')
         const endDate = dayjs().format('YYYY-MM-DD')
         dispatch(requestTransactions({ startDate, endDate }))
+		dispatch(refreshBudgets());
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
