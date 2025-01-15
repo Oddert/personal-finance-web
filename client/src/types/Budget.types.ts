@@ -12,6 +12,7 @@ export interface IBudget {
     name: string
     shortDescription: string
     longDescription: string
+    isDefault: boolean
 	createdOn: string
 	updatedOn: string
     budget: {

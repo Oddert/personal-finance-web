@@ -39,6 +39,7 @@ export default class Budget extends Model {
                 name: { type: 'string', minLength: 3 },
                 shortDescription: { type: 'string' },
                 longDescription: { type: 'string' },
+                isDefault: { type: 'boolean' },
                 createdOn: { type: 'string' },
                 updatedOn: { type: 'string' },
             },
@@ -66,6 +67,7 @@ export default class Budget extends Model {
                 name: obj.name,
                 shortDescription: obj.short_desc,
                 longDescription: obj.long_desc,
+                isDefault: obj.is_default,
                 createdOn: obj.created_on,
                 updatedOn: obj.updated_on,
             }
@@ -76,6 +78,7 @@ export default class Budget extends Model {
                 name: obj.name,
                 short_desc: obj.shortDescription,
                 long_desc: obj.longDescription,
+                is_default: obj.isDefault,
                 created_on: obj.createdOn,
                 updated_on: obj.updatedOn,
             }

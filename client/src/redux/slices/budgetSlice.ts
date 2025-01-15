@@ -33,8 +33,11 @@ export const budgetSlice = createSlice({
 			state.loaded = true;
 			state.loading = false;
 			state.timestamp = Date.now();
-			state.activeBudget = payload.budgets[0] || null;
 			state.response = payload.budgets;
+			if (payload.budgets.length) {
+				const foundActive = payload.budgets.find((budget) => budget.isDefault);
+				state.activeBudget = foundActive ||  payload.budgets[0] 
+			}
 		},
 	},
 });
