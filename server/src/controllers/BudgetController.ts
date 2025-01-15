@@ -14,6 +14,15 @@ export const getBudgets = async (req: Request, res: Response) => {
     }
 }
 
+export const getSingalBudget = async (req: Request, res: Response) => {
+    try {
+        const budget = await Budget.query().findById(req.params.id).withGraphJoined('budgetRows')
+        return respondOk(req, res, { budget })
+    } catch (error: any) {
+        return respondServerError(req, res, null, 'Something went wrong processing your request', 500, error.message)
+    }
+}
+
 export const getBudgetRows = async (req: Request, res: Response) => {
     try {
         const budgetRows = await BudgetRow.query().withGraphJoined('budget')
