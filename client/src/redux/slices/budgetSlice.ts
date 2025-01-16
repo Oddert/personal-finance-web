@@ -22,6 +22,11 @@ export const budgetSlice = createSlice({
 	name: 'budget',
 	initialState,
 	reducers: {
+		addBudget: (state, { payload }: { payload: { budget: IBudget } }) => {
+			state.loaded = true;
+			state.loading = false;
+			state.response.push(payload.budget);
+		},
 		budgetLoading: (state) => {
 			state.loaded = false;
 			state.loading = true;
@@ -43,6 +48,7 @@ export const budgetSlice = createSlice({
 });
 
 export const {
+	addBudget,
 	budgetLoading,
 	setActiveBudget,
 	writeBudgets,

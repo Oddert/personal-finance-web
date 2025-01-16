@@ -1,23 +1,50 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router';
 
-import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
+import {
+	Box,
+	Button,
+	Chip,
+	ListItem,
+	Paper,
+	Typography,
+} from '@mui/material';
 import {
 	ArrowForward as RightArrowIcon,
 } from '@mui/icons-material'
 
 import { LOCALE } from '../../../../constants/appConstants';
-
-import { IProps } from './BudgetCard.types';
 import { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
-const tempActiveBudget = 1;
+import routes from '../../../../services/routes';
+
+import { useAppDispatch, useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+
+import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
+import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
+
+import { IProps } from './BudgetCard.types';
 
 const BudgetCard: FC<IProps> = ({ budget }) => {
+	const dispatch = useAppDispatch()
 	const navigate = useNavigate();
+
+	const activeBudgetId = useAppSelector(getActiveBudgetId)
 
 	const handleClickEdit = () => {
 		navigate(ROUTES_FACTORY.EDIT_BUDGET(budget.id));
+	}
+
+	const handleClickActivate = () => {
+		try {
+			const request = async () => {
+				await routes.setBudgetPreference(budget.id)
+				dispatch(setActiveBudget({ budget }))
+			}
+			request();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	return (
@@ -37,9 +64,13 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
 					<Typography variant='h3'>
 						{budget.name}
 					</Typography>
-					{(tempActiveBudget === budget.id)
+					{(activeBudgetId === budget.id)
 						? <Chip color='success' label='Enabled' />
-						: <Button variant='text'>Activate</Button>
+						: (
+							<Button onClick={handleClickActivate} variant='text'>
+								Activate
+							</Button>
+						)
 					}
 				</Box>
 				<Typography variant='subtitle1'>

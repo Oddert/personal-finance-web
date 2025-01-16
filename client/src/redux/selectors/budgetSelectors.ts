@@ -23,3 +23,8 @@ export const getActiveBudget = createSelector(
 	getBudgetSate,
 	(budgetState) => budgetState.activeBudget,
 );
+
+export const getActiveBudgetId = createSelector(
+	getActiveBudget,
+	(budgetState) => budgetState?.id || null,
+);
