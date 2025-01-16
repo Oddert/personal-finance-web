@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import {
     createSingleBudget,
+    deleteSingleBudget,
     getBudgetRows,
     getBudgets,
     getSingleBudget,
@@ -18,6 +19,7 @@ router.route('/')
 router.route('/:id')
     .get(getSingleBudget)
     .put(updateSingleBudget)
+    .delete(deleteSingleBudget)
 
 router.route('/preferences/:id')
     .put(setActiveBudget)

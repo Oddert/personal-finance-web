@@ -81,6 +81,16 @@ export const updateSingleBudget = async (req: Request, res: Response) => {
     }
 }
 
+export const deleteSingleBudget = async (req: Request, res: Response) => {
+    try {
+        await Budget.query().deleteById(req.params.id)
+
+        return respondCreated(req, res, null, 'Budget deleted successfully')
+    } catch (error: any) {
+        return respondServerError(req, res, null, 'Something went wrong processing your request', 500, error.message)
+    }
+}
+
 export const setActiveBudget = async (req: Request, res: Response) => {
     try {
         const actives = await Budget.query().where('is_default', true)
