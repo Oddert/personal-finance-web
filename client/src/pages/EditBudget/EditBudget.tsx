@@ -3,7 +3,11 @@ import { useNavigate, useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
-import { Add as PlusIcon, Save as SaveIcon } from '@mui/icons-material';
+import {
+	Add as PlusIcon,
+	ArrowBack as ArrowLeftIcon,
+	Save as SaveIcon,
+} from '@mui/icons-material';
 
 import { IBudget, IBudgetRow } from '../../types/Budget.types';
 
@@ -120,7 +124,14 @@ const EditBudget: FC<IProps> = () => {
                     padding: '0 0 64px 0',
                 }}
             >
-                <Typography variant='h2' sx={{ margin: '32px 0' }}>
+				<Button
+					onClick={() => navigate(ROUTES.MANAGE_BUDGETS)}
+					sx={{ alignSelf: 'flex-start', mt: '32px' }}
+					variant='outlined'
+				>
+					<ArrowLeftIcon /> Return to all budgets
+				</Button>
+                <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
                     {isEdit ? 'Edit ' : 'Create '}Budget
                 </Typography>
 				<TextField
