@@ -1,8 +1,8 @@
 import React from 'react'
 import { Container } from '@mui/material'
 
+// import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart'
 import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLineChart'
-import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart'
 
 const Home = () => {
     return (
@@ -17,7 +17,7 @@ const Home = () => {
                 // gridAutoRows: '400px',
             }}
         >
-            <ExistingDataLineChart compact />
+            {/* <ExistingDataLineChart compact /> */}
             <ProjectionLineChart compact />
         </Container>
     )

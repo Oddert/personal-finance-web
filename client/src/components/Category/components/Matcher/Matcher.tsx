@@ -37,7 +37,10 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 const response: any = await routes.updateSingleMatcher({ ..._matcher,  }, matcher.id)
                 dispatch(categorySlice.actions.updateSingleMatcher({
                     categoryId,
-                    matcher: response.payload.matcher,
+                    matcher: {
+                        ...response.payload.matcher,
+                        case_sensitive: Boolean(response.payload.matcher.case_sensitive),
+                    },
                 }));
                 setOpen(false);
             } catch (error) {

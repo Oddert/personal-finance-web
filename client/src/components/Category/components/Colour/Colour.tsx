@@ -19,7 +19,14 @@ const Colour = ({ category }: Props) => {
 
     const handleSubmit = useCallback((editedColour: string) => {
         dispatch(initUpdateSingleCategory({
-            category: { ...category, colour: editedColour },
+            category: {
+                ...category,
+                matchers: category.matchers.map((matcher) => ({
+                    ...matcher,
+                    case_sensitive: Boolean(matcher.case_sensitive)
+                })),
+                colour: editedColour,
+            },
         }))
     }, [category, dispatch])
         

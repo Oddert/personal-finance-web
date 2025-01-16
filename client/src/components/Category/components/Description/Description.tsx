@@ -17,7 +17,14 @@ const Title = ({ category }: Props) => {
 
     const handleChange = useCallback((value: string) => {
         dispatch(initUpdateSingleCategory({
-            category: { ...category, description: value },
+            category: {
+                ...category,
+                matchers: category.matchers.map((matcher) => ({
+                    ...matcher,
+                    case_sensitive: Boolean(matcher.case_sensitive),
+                })),
+                label: value,
+            },
         }))
     }, [category, dispatch])
 

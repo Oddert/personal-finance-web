@@ -18,7 +18,14 @@ const Title: FC<IProps> = ({ category, small = false }) => {
 
     const handleChange = useCallback((value: string) => {
         dispatch(initUpdateSingleCategory({
-            category: { ...category, label: value },
+            category: {
+                ...category,
+                matchers: category.matchers.map((matcher) => ({
+                    ...matcher,
+                    case_sensitive: Boolean(matcher.case_sensitive),
+                })),
+                label: value,
+            },
         }))
     }, [category, dispatch])
 
