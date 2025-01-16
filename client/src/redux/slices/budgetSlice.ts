@@ -31,6 +31,14 @@ export const budgetSlice = createSlice({
 			state.loaded = false;
 			state.loading = true;
 		},
+		deleteBudget: (state, { payload }: { payload: { budgetId: number } }) => {
+			state.loaded = true;
+			state.loading = false;
+			state.response = state.response.filter((budget) => budget.id !== payload.budgetId);
+			if (payload.budgetId === state.activeBudget?.id) {
+				state.activeBudget = null;
+			}
+		},
 		setActiveBudget: (state, { payload }: { payload: { budget: IBudget } }) => {
 			state.activeBudget = payload.budget;
 		},
@@ -50,6 +58,7 @@ export const budgetSlice = createSlice({
 export const {
 	addBudget,
 	budgetLoading,
+	deleteBudget,
 	setActiveBudget,
 	writeBudgets,
 } = budgetSlice.actions;

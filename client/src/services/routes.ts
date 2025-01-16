@@ -47,20 +47,23 @@ const routes = {
     },
 
     /* Budget */
+    createSingleBudget: async (budget: IBudget) => {
+        return await request.post(`/budget`, budget)
+    },
+    deleteSingleBudget: async (id: number) => {
+        return await request.delete(`/budget/${id}`)
+    },
     getAllBudgets: async () => {
         return await request.get('/budget')
     },
     getSingelBudget: async (id: number) => {
         return await request.get(`/budget/${id}`)
     },
-    createSingleBudget: async (budget: IBudget) => {
-        return await request.post(`/budget`, budget)
+    setBudgetPreference: async (id: number) => {
+        return await request.put(`/budget/preferences/${id}`)
     },
     updateSingleBudget: async (budget: IBudget, id: number) => {
         return await request.put(`/budget/${id}`, budget)
-    },
-    setBudgetPreference: async (id: number) => {
-        return await request.put(`/budget/preferences/${id}`)
     },
 }
 

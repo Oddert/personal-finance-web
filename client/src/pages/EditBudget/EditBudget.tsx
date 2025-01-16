@@ -21,6 +21,7 @@ import DynamicCardList from '../../components/DynamicCardList';
 import BudgetRow from './components/BudgetRow';
 
 import { IBudgetRowEditable, IProps } from './EditBudget.types';
+import DeleteBudget from './components/DeleteBudget';
 
 const createEmptyBudget = (id: number): IBudget => ({
 	id,
@@ -185,6 +186,7 @@ const EditBudget: FC<IProps> = () => {
 					<SaveIcon />{' '}
 					{isEdit ? 'Save changes' : 'Create budget'}
 				</Button>
+				<DeleteBudget budget={budget} />
 			</Box>
 		</ResponsiveContainer>
 	)
