@@ -6,6 +6,12 @@ Model.knex(knex)
 
 export default class Budget extends Model {
     id?: number
+    name: string
+    shortDescription: string
+    longDescription: string
+    isDefault: boolean
+    createdOn: string
+    updatedOn: string
     static created_on: Date | string
     static updated_on: Date | string
 

@@ -36,6 +36,7 @@ export default class Budget extends Model {
             required: [
                 'categoryId',
                 'label',
+                'colour',
                 'value',
                 'varLowPc',
                 'varHighPc',
@@ -43,6 +44,7 @@ export default class Budget extends Model {
             properties: {
                 id: { type: 'number' },
                 budgetId: { type: 'number' },
+                colour: { type: 'string' },
                 categoryId: { type: 'number' },
                 label: { type: 'string', minLength: 3 },
                 value: { type: 'number' },
@@ -72,6 +74,7 @@ export default class Budget extends Model {
                 id: obj.id,
                 budgetId: obj.budget_id,
                 categoryId: obj.category_id,
+                colour: obj.colour,
                 label: obj.label,
                 value: obj.value,
                 varLowPc: obj.var_low_pc,
@@ -83,6 +86,7 @@ export default class Budget extends Model {
                 id: obj.id,
                 budget_id: obj.budgetId,
                 category_id: obj.categoryId,
+                colour: obj.colour,
                 label: obj.label,
                 value: obj.value,
                 var_low_pc: obj.varLowPc,

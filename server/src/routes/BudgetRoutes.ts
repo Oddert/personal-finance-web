@@ -4,7 +4,9 @@ import {
     createSingleBudget,
     getBudgetRows,
     getBudgets,
-    getSingalBudget,
+    getSingleBudget,
+    setActiveBudget,
+    updateSingleBudget,
 } from '../controllers/BudgetController'
 
 const router = Router()
@@ -14,7 +16,11 @@ router.route('/')
     .post(createSingleBudget)
 
 router.route('/:id')
-    .get(getSingalBudget)
+    .get(getSingleBudget)
+    .put(updateSingleBudget)
+
+router.route('/preferences/:id')
+    .put(setActiveBudget)
 
 router.route('/rows')
     .get(getBudgetRows)
