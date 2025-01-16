@@ -12,11 +12,13 @@ export interface TransactionEditState {
     sideBarOpen: boolean
     transactions: { [key: string]: string|number }[]
     mode: 'upload' | 'edit'
+    loading: boolean
 }
 
 const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
+    setLoading: 'setLoading',
     toggleSideBarOpen: 'toggleSideBarOpen',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
@@ -32,10 +34,11 @@ export const transactionEditInitialState: TransactionEditState = {
         'credit': 'Credit Amount',
         'ballance': 'Balance',
     },
+    loading: false,
     headers: [],
+    mode: 'upload',
     sideBarOpen: false,
     transactions: [],
-    mode: 'upload',
 }
 
 // TODO: remove react-table logic once new logic is confirmed stable and better.
@@ -143,6 +146,11 @@ export const transactionEditReducer = (
                 ...state,
                 columnMap: action?.payload?.columnMap,
             }
+        case TransactionEditActionTypes.setLoading:
+            return {
+                ...state,
+                loading: action?.payload?.loading,
+            }
         case TransactionEditActionTypes.setMode:
             return {
                 ...state,
@@ -185,6 +193,13 @@ export const setColumnMap = (
 ) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap }
+})
+
+export const setLoading = (
+    loading: TransactionEditState['loading'],
+) => ({
+    type: TransactionEditActionTypes.setLoading,
+    payload: { loading }
 })
 
 export const setMode = (
