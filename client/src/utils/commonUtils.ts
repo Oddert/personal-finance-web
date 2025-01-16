@@ -57,3 +57,14 @@ export const readCsv = (file: unknown) => {
         }
     }
 }
+
+/**
+ * Escapes a string which may contain RegExp compatible special characters.
+ *
+ * Polyfill for RegExp.escape().
+ * @param text Text to be sanitised/
+ * @returns The sanitised literal string/
+ */
+export const escapeRegex = (text: string) => {
+    return text.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+}

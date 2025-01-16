@@ -1,7 +1,9 @@
-import { TransactionEditState } from '../contexts/transactionEditContext'
-
 import { Category } from '../types/Category'
 import { Matcher } from '../types/Matcher'
+
+import { TransactionEditState } from '../contexts/transactionEditContext'
+
+import { escapeRegex } from './commonUtils'
 
 /**
  * Creates a RegExp instance from the Matcher format.
@@ -13,7 +15,7 @@ export const createRegexFromMatcher = (matcher: Matcher) => {
     const suffix = matcher.match_type === 'exact' || matcher.match_type === 'end' ? '$' : '.*'
     const location = matcher.match_type === 'any' ? 'g' : ''
     const capitalisation = matcher.case_sensitive ? '' : 'i'
-    const matchString = `${prefix}${matcher.match}${suffix}`
+    const matchString = `${prefix}${escapeRegex(matcher.match)}${suffix}`
     const options = `${location}${capitalisation}`
     const regexp = new RegExp(matchString, options)
     return regexp
