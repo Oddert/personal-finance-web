@@ -105,11 +105,8 @@ const EditMatcher: FC<IProps> = ({
             <TextField
                 autoFocus
                 label='Match'
-                onChange={(e) => {
-					console.log(e);
-					console.log(e?.target);
-					console.log(e?.target?.value);
-					setMatch(e?.target?.value)
+                onChange={(event) => {
+					setMatch(event?.target?.value)
 				}}
                 size='small'
                 sx={{

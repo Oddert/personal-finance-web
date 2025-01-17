@@ -41,7 +41,7 @@ const Submit = ({ onClose }: Props) => {
                 .reduce((acc: { [key: string]: string|number|boolean }, pair) => {
                     const key = invertMapping[pair[0]]
                     const whitelistKeys = ['debit', 'credit', 'ballance']
-                    
+
                     if (!key) {
                         return acc
                     }
