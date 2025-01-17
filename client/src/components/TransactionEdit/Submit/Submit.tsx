@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react'
+import { FC, useCallback, useContext, useState } from 'react'
 
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
@@ -12,13 +12,11 @@ import routes from '../../../services/routes'
 import { useAppDispatch } from '../../../hooks/ReduxHookWrappers'
 import { requestTransactions } from '../../../redux/slices/transactionsSlice'
 
+import { IProps } from './Submit.types'
+
 dayjs.extend(localizedFormat)
 
-interface Props {
-    onClose: () => void
-}
-
-const Submit = ({ onClose }: Props) => {
+const Submit: FC<IProps> = ({ onClose }) => {
     const appDispatch = useAppDispatch(); 
     const { state: { columnMap, mode, transactions } } = useContext(TransactionEditContext)
 

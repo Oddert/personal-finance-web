@@ -1,7 +1,6 @@
-import { useCallback, useContext, useState } from 'react'
+import { FC, useCallback, useContext, useState } from 'react'
 import { Button } from '@mui/material'
 
-import type { Category as CategoryT } from '../../../../../types/Category'
 import type { Matcher as MatcherT, MatchType } from '../../../../../types/Matcher'
 
 import { TransactionEditContext, toggleSideBar, writeTransactions } from '../../../../../contexts/transactionEditContext'
@@ -12,11 +11,9 @@ import Category from '../../../../Category/Category'
 import ColourBase from '../../../../ColourBase'
 import TitleBase from '../../../../Category/components/TitleBase'
 
-interface Props {
-    category: CategoryT
-}
+import type { IProps } from './Option.types'
 
-const Option = ({ category }: Props) => {
+const Option: FC<IProps> = ({ category }) => {
     const { dispatch, state: { match, transactions } } = useContext(TransactionEditContext)
 
     const [open, setOpen] = useState(false)

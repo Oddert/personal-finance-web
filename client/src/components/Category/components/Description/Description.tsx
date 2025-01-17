@@ -1,6 +1,4 @@
-import { useCallback } from 'react'
-
-import type { Category } from '../../../../types/Category'
+import { FC, useCallback } from 'react'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
@@ -8,11 +6,9 @@ import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice
 
 import EditableText from '../../../EditableText'
 
-interface Props {
-    category: Category
-}
+import type { IProps } from './Description.types'
 
-const Title = ({ category }: Props) => {
+const Title: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch()
 
     const handleChange = useCallback((value: string) => {

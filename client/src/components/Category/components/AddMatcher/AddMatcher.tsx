@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 
 import {
     Button,
@@ -7,7 +7,6 @@ import {
 } from '@mui/material'
 import { AddCircle as AddIcon } from '@mui/icons-material'
 
-import type { Category } from '../../../../types/Category'
 import type { Matcher } from '../../../../types/Matcher'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
@@ -16,19 +15,14 @@ import { initCreateSingleMatcher } from '../../../../redux/slices/categorySlice'
 
 import EditMatcher from '../EditMatcher'
 
-interface Props {
-    categoryId: Category['id']
-    defaultOpen?: boolean
-    matcher?: Partial<Matcher>
-    onSubmit?: (matcher: Partial<Matcher>) => void
-}
+import type { IProps } from './AddMatcher.types'
 
-const AddMatcher = ({
+const AddMatcher: FC<IProps> = ({
     categoryId,
     defaultOpen = false,
     matcher,
     onSubmit,
-}: Props) => {
+}) => {
     const dispatch = useAppDispatch()
 
     const [open, setOpen] = useState(false)
