@@ -5,8 +5,16 @@ import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
-import { IProps } from './TimeChart.types';
+import type { IProps } from './TimeChart.types';
 
+/**
+ * Area Chart component.
+ *
+ * Displays the month-to-month discrepancy across the selected time period.
+ * @category Pages
+ * @subcategory Budget Overview
+ * @component
+ */
 const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
     const series = useMemo(() => {
         chartList.map(chart => [chart.data, chart.timestamp])

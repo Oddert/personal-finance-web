@@ -1,5 +1,8 @@
-import { MatchType } from '../types/Matcher';
+import type { MatchType } from '../types/Matcher';
 
+/**
+ * List of options for a match-type selector on the Matcher edit and create forms.
+ */
 export const matchTypesOptions: { label: string, value: MatchType }[] = [
     {
         label: 'Any',

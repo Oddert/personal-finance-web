@@ -9,13 +9,21 @@ import { toBeginningMonth, toEndMonth } from '../../../../../../utils/budgetUtil
 import BudgetPercentageChart from '../../../../../../components/BudgetPercentageChart';
 import TransactionPreview from '../../../../../../components/TransactionPreview';
 
-import { IProps } from './PercentageChartWrapper.types'
+import type { IProps } from './PercentageChartWrapper.types'
 
 const defaultStart = toBeginningMonth(String(dayjs()))
 const defaultEnd = toEndMonth(String(dayjs()))
 
 dayjs.extend(localizedFormat);
 
+/**
+ * Wrapper for {@link BudgetPercentageChart}.
+ *
+ * Adds a title and {@link TransactionPreview} to quickly view contained transactions.
+ * @category Pages
+ * @subcategory Budget Overview
+ * @component
+ */
 const PercentageChartWrapper: FC<IProps> = ({
 	monthData,
 	useFloat,

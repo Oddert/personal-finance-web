@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
 
-import { IDynamicCardLayoutModes } from '../../types/Common.types';
+import type { IDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { getBudgetResponse } from '../../redux/selectors/budgetSelectors';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
@@ -17,8 +17,14 @@ import BudgetCard from './components/BudgetCard';
 import CreateBudgetButton from './components/CreateBudgetButton';
 import CreateBudgetCard from './components/CreateBudgetCard';
 
-import { IProps } from './ManageBudgets.types';
+import type { IProps } from './ManageBudgets.types';
 
+/**
+ * Page component to display all budgets.
+ * @component
+ * @category Pages
+ * @subcategory Manage Budgets
+ */
 const ManageBudgets: FC<IProps> = () => {
 	const dispatch = useAppDispatch();
 

@@ -2,9 +2,21 @@ import { FC, useMemo } from 'react';
 
 import { Box, Button } from '@mui/material';
 
-import { IProps } from './BudgetPageToggle.types';
 import { ROUTES } from '../../constants/routerConstants';
 
+import type { IProps } from './BudgetPageToggle.types';
+
+/**
+ * Allows the user to switch between the Budget Overview and Budget Breakdown pages, copying the provided date range.
+ *
+ * Static button appearing on the bottom-left of the viewport.
+ * @category Component
+ * @subcategory Budget Page Toggle
+ * @component
+ * @param props.endDate The end date of the selected view.
+ * @param props.mode The current page.
+ * @param props.startDate The start date of the selected view.
+ */
 const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
     const href = useMemo(() => 
         `${

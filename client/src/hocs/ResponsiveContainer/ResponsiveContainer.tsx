@@ -2,8 +2,17 @@ import { FC } from 'react';
 
 import { Container } from '@mui/material';
 
-import { IProps } from './ResponsiveContainer.types';
+import type { IProps } from './ResponsiveContainer.types';
 
+/**
+ * Higher order component to provide a container which adapts to the users screen width in increments.
+ *
+ * Stepped increments ensure consistency, reduce jitter, and eliminates edge-cases encountered when using fully responsive layout. 
+ * @category Hocs
+ * @subcategory Responsive Container
+ * @component
+ * @param props.children The components to be rendered inside the container.
+ */
 const ResponsiveContainer: FC<IProps> = ({ children }) => {
     return (
         <Container

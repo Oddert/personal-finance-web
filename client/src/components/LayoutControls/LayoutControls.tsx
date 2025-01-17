@@ -14,7 +14,7 @@ import {
 
 import { IDynamicCardLayoutModes } from '../../types/Common.types';
 
-import { IProps } from './LayoutControls.types';
+import type { IProps } from './LayoutControls.types';
 
 const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
     return (

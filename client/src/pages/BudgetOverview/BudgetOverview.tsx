@@ -35,6 +35,19 @@ dayjs.extend(localizedFormat);
 const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')))
 const defaultEnd = toEndMonth(String(dayjs()))
 
+/**
+ * Page to provide overview insights into transactions, compared with the active budget, within a selected range.
+ *
+ * Note: The distinction between what is appropriate for BudgetOverview and {@link BudgetBreakdown} is based on the cognitive context the user may have when looking at the page.
+ * As such, the decision on which feature should go where is a judgement call.
+ *
+ * The intention of each page is as follows:
+ * - Budget Overview: Used for comparing comparable spend and discrepancies across a date range. Provides month-to-month insights.
+ * - Budget Breakdown: Used to deep-dive into the transactions and discrepancies, identifying insights about why they are out of (or in) range. Primarily intended for a single month but can accept any date range.
+ * @category Pages
+ * @subcategory Budget Overview
+ * @component
+ */
 const BudgetOverview: FC<IProps> = () => {
     const navigation = useSearchParams();
 

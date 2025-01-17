@@ -12,7 +12,7 @@ import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import ColourBase from '../../../../components/ColourBase';
 
-import { IProps } from './BudgetRow.types';
+import type { IProps } from './BudgetRow.types';
 
 const TextFieldStyled = styled(TextField)({});
 
@@ -24,6 +24,12 @@ const inputProps = {
     }
 }
 
+/**
+ * Displays a single budget row, representing one category and pay constraints.
+ * @component
+ * @category Pages
+ * @subcategory Home
+ */
 const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
     const categories = useAppSelector(getCategoryResponse);
 

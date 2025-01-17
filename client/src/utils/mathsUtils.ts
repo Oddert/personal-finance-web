@@ -20,3 +20,12 @@ export const standardDeviation = (nums: number[], subSample: boolean = true) => 
 	const numerator = nums.reduce((a, e) => a + Math.pow(e - m, 2), 0)
 	return Math.sqrt(numerator / (subSample ? (n - 1) : n))
 }
+
+/**
+ * Flattens a number to 2 decimal points.
+ *
+ * Uses the `toFixed` utility so be careful of precision issues.
+ * @param value The raw number value.
+ * @returns The number to 2 decimal points.
+ */
+export const normaliseNum = (value: number) => Number(value.toFixed(2));

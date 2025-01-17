@@ -37,12 +37,3 @@ export const formatReadableDate = (startDate: string, endDate: string) => {
 export const formatNumMonths = (numMonths: number) => {
     return `(${numMonths} ${numMonths > 1 ? 'months' : 'month'})`
 }
-
-/**
- * Flattens a number to 2 decimal points.
- *
- * Uses the `toFixed` utility so be careful of precision issues.
- * @param value The raw number value.
- * @returns The number to 2 decimal points.
- */
-export const normaliseNum = (value: number) => Number(value.toFixed(2));

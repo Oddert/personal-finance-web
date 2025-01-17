@@ -2,14 +2,13 @@
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import { IBudget } from '../types/Budget.types';
-
-import { IBudgetDatum, ICategoryBreakdown } from '../pages/BudgetBreakdown/BudgetBreakdown.types';
-import { normaliseNum } from '../pages/BudgetBreakdown/BudgetBreakdownUtils';
+import type { IBudget, IBudgetDatum } from '../types/Budget.types';
+import type { ICategoryBreakdown } from '../types/Category';
+import type { Transaction } from '../types/Transaction';
 
 import { CategoryState } from '../redux/slices/categorySlice';
 
-import { Transaction } from '../types/Transaction';
+import { normaliseNum } from './mathsUtils';
 
 dayjs.extend(localizedFormat)
 
@@ -22,7 +21,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
  * @param rawDate The date to be flattened.
  * @returns The new date string in standard format.
  */
-export const toBeginningMonth = (rawDate: string|Date) => {
+export const toBeginningMonth = (rawDate: string | Date) => {
     const date = dayjs(rawDate).date(1);
     return date.format(DATE_FORMAT);
 }
@@ -34,8 +33,8 @@ export const toBeginningMonth = (rawDate: string|Date) => {
  * @param rawDate The date to be ceilinged.
  * @returns The new date string in standard format.
  */
-export const toEndMonth = (rawDate: string|Date) => {
-    const date = dayjs(rawDate).endOf('month')
+export const toEndMonth = (rawDate: string | Date) => {
+    const date = dayjs(rawDate).endOf('month');
     return date.format(DATE_FORMAT);
 }
 
@@ -144,7 +143,7 @@ export const createBudgetChartData = (categoryBreakdown: ICategoryBreakdown, bud
             });
         }
 
-        return acc
+        return acc;
     }, []);
 
     return chart;

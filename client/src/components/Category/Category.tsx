@@ -19,7 +19,7 @@ import Matcher from './components/Matcher'
 import Title from './components/Title'
 import HamburgerMenu from './components/HamburgerMenu'
 
-import { IProps } from './Category.types';
+import type { IProps } from './Category.types';
 
 const Category: FC<IProps> = ({
     category,

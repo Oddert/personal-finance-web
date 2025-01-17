@@ -9,6 +9,9 @@ import type { ResponseData } from '../../types/Request'
 
 import { deleteSingleMatcher } from '../slices/categorySlice'
 
+/**
+ * Deletes a matcher and updates the Category in state.
+ */
 export default function* matcherDeleteSingleSaga(
     { payload }: PayloadAction<{
         matcherId: Matcher['id'],

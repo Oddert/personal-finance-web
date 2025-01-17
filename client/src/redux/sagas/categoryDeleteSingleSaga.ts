@@ -9,6 +9,9 @@ import routes from '../../services/routes';
 
 import { deleteSingleCategory } from '../slices/categorySlice';
 
+/**
+ * Deletes a category and updates the state.
+ */
 export default function* categoryDeleteSingleSaga(
     { payload }: PayloadAction<{
         categoryId: Category['id']

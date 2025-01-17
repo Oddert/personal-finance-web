@@ -1,5 +1,11 @@
 import { ScheduleByScalarTime, ScheduleBySpecificDay } from '../utils/schedulerUtils';
 
+/**
+ * Provides a default fallback for the Scenario projection chart.
+ * @deprecated review if still needed.
+ * @category Constants
+ * @subcategory Projection
+ */
 export const defaultScenario = {
     title: 'BAU',
     transactors: [

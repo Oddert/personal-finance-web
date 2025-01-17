@@ -1,5 +1,9 @@
 import { Category } from './Category'
 
+/**
+ * A single transaction.
+ * @category Global Types
+ */
 export declare interface Transaction {
     ballance: number
     category_id: number|null

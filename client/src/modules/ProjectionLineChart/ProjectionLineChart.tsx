@@ -19,9 +19,11 @@ import { ExpandMore as ExpandIcon } from '@mui/icons-material'
 
 import { getFromLocalStore, setToLocalStore } from '../../common/localstore'
 
+import { normaliseDateStamp, ScheduleByEvent } from '../../utils/schedulerUtils'
+
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors'
 
-import { Transaction } from '../../types/Transaction'
+import type { Transaction } from '../../types/Transaction'
 
 import {
     chart1BaseOptions,
@@ -32,15 +34,17 @@ import {
     scenarios,
     title,
 } from './ProjectionLineChartUtils'
-import { normaliseDateStamp, ScheduleByEvent } from '../../utils/schedulerUtils'
 
 interface Props {
     compact?: boolean
 }
 
 /**
- * Shows future expected transactions based on Scenarios.
+ * Module to display projected expected spend based on the Scenario system.
+ * @category Modules
+ * @subcategory Projection Line Chart
  * @component
+ * @param props.compact If true, displays as a card module for composition with other modules.
  */
 const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
     /**

@@ -4,6 +4,14 @@ import { Container } from '@mui/material'
 // import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart'
 import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLineChart'
 
+/**
+ * Main home page component.
+ *
+ * Displays a series of Modules as composable cards.
+ * @component
+ * @category Pages
+ * @subcategory Home
+ */
 const Home = () => {
     return (
         <Container

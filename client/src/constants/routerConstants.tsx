@@ -1,27 +1,33 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom';
 
-import AllDataIcon from '@mui/icons-material/WaterfallChart'
-import CategoryIcon from '@mui/icons-material/Category'
+import AllDataIcon from '@mui/icons-material/WaterfallChart';
+import CategoryIcon from '@mui/icons-material/Category';
 import BudgetBreakdownIcon from '@mui/icons-material/DonutSmall';
 import BudgetOverviewIcon from '@mui/icons-material/CandlestickChart';
 import ManageBudgetIcon from '@mui/icons-material/AutoAwesomeMotion';
-// import ManageBudgetIcon from '@mui/icons-material/Tune';
-// import ScenarioEditIcon from '.@mui/icons-material/DeveloperBoard/'
-import TransactionsIcon from '@mui/icons-material/ReceiptLong'
+// import ManageBudgetIcon from '@mui/icons-material/Tune';;
+// import ScenarioEditIcon from '.@mui/icons-material/DeveloperBoard/';
+import TransactionsIcon from '@mui/icons-material/ReceiptLong';
 
-import Layout from '../components/Layout'
+import Layout from '../components/Layout';
 
-import AllData from '../pages/AllData'
-import BudgetBreakdown from '../pages/BudgetBreakdown'
-import BudgetOverview from '../pages/BudgetOverview'
-import Categories from '../pages/Categories/'
-import Home from '../pages/Home'
+import AllData from '../pages/AllData';
+import BudgetBreakdown from '../pages/BudgetBreakdown';
+import BudgetOverview from '../pages/BudgetOverview';
+import Categories from '../pages/Categories/';
+import Home from '../pages/Home';
 import ManageBudgets from '../pages/ManageBudgets';
-import Transactions from '../pages/Transactions/'
+import Transactions from '../pages/Transactions/';
 import EditBudget from '../pages/EditBudget';
 
+/**
+ * Enum object to hold all route paths.
+ * @constant
+ * @category Constants
+ * @subcategory Router
+ */
 export const ROUTES = Object.freeze({
-    HOME: '/',
+	HOME: '/',
     ALL_DATA: '/all-data',
     BUDGET_BREAKDOWN: '/budget-breakdown',
     BUDGET_OVERVIEW: '/budget-overview',
@@ -30,8 +36,16 @@ export const ROUTES = Object.freeze({
     EDIT_BUDGET: '/edit-budget',
     MANAGE_BUDGETS: '/manage-budgets',
     TRANSACTIONS: '/transactions',
-})
+});
 
+/**
+ * Provides constructor functions for routes which require optional elements to their paths.
+ *
+ * NOTE: Does not include all paths, only those with optional parameters.
+ * @constant
+ * @category Constants
+ * @subcategory Router
+ */
 export const ROUTES_FACTORY = Object.freeze({
     CREATE_BUDGET: (templateId: string|number) => `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
     EDIT_BUDGET: (budgetId: string|number) => `${ROUTES.EDIT_BUDGET}/${budgetId}`,
@@ -41,6 +55,12 @@ export const ROUTES_FACTORY = Object.freeze({
 //     HOME: () => push(ROUTES.HOME)
 // })
 
+/**
+ * React router config.
+ * @constant
+ * @category Constants
+ * @subcategory Router
+ */
 const router = createBrowserRouter([
     {
         path: ROUTES.HOME,
@@ -114,8 +134,14 @@ const router = createBrowserRouter([
             </Layout>
         ),
     },
-])
+]);
 
+/**
+ * Schema for the main navbar.
+ * @constant
+ * @category Constants
+ * @subcategory Router
+ */
 export const navigation = [
 	{
 		label: 'All Historical Data',
@@ -147,6 +173,6 @@ export const navigation = [
 		Icon: TransactionsIcon,
 		location: ROUTES.TRANSACTIONS,
 	},
-]
+];
 
-export default router
+export default router;

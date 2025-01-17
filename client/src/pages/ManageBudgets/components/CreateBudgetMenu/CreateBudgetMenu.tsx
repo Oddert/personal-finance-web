@@ -9,8 +9,14 @@ import {
 
 import { ROUTES, ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
-import { IProps } from './CreateBudgetMenu.types';
+import type { IProps } from './CreateBudgetMenu.types';
 
+/**
+ * Re-usable menu component to display options to create a new budget (from blank or from template).
+ * @component
+ * @category Pages
+ * @subcategory Manage Budgets
+ */
 const CreateBudgetMenu: FC<IProps> = ({
 	anchorEl,
 	handleClose,

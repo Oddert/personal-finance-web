@@ -5,7 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import type { ColumnDef } from '@tanstack/react-table'
 
-import { Transaction } from '../../../../types/Transaction'
+import type { Transaction } from '../../../../types/Transaction'
 
 import { TransactionRange } from '../../../../contexts/transactionRangeContext'
 
@@ -18,6 +18,12 @@ import TableWrapper from '../../../../components/Table/Table'
 
 dayjs.extend(customParseFormat);
 
+/**
+ * Displays all transactions within a selected date range as table.
+ * @component
+ * @category Pages
+ * @subcategory Transactions
+ */
 const Table = () => {
     const { state: { rangeValues, value } } = useContext(TransactionRange)
 

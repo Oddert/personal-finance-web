@@ -6,7 +6,7 @@ import { Button, Popover } from '@mui/material';
 
 import TPTable from './components/TPTable';
 
-import { IProps } from './TransactionPreview.types';
+import type { IProps } from './TransactionPreview.types';
 
 dayjs.extend(localizedFormat);
 

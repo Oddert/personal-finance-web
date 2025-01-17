@@ -10,3 +10,6 @@ export interface IProps {
 		{ height: number, width: number },
 	]
 }
+
+// Integer equivalent to 'xs', 'sm', 'md', 'lg', 'xl'
+export type IZoomLevel = 0 | 1 | 2 | 3 | 4;

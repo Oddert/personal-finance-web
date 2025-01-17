@@ -5,8 +5,14 @@ import { Add as PlusIcon } from '@mui/icons-material';
 
 import CreateBudgetMenu from '../CreateBudgetMenu';
 
-import { IProps } from './CreateBudgetCard.types';
+import type { IProps } from './CreateBudgetCard.types';
 
+/**
+ * Displays a card component, rendering similarly to the {@link BudgetCard} to allow users to navigate to the create-budget page.
+ * @component
+ * @category Pages
+ * @subcategory Manage Budgets
+ */
 const CreateBudgetCard: FC<IProps> = () => {
 	const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 

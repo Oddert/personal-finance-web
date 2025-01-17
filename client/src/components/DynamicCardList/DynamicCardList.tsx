@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { List } from '@mui/material';
 
-import { IProps } from './DynamicCardList.types';
+import type { IProps } from './DynamicCardList.types';
 
 const DynamicCardList: FC<IProps> = ({ children, layout }) => {
 	return (

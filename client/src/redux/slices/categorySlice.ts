@@ -3,6 +3,11 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Category } from '../../types/Category'
 import { Matcher } from '../../types/Matcher'
 
+/**
+ * Redux state key for 'category'
+ * @category Redux
+ * @subcategory Category Slice
+ */
 export interface CategoryState {
     loading: boolean
     queried: boolean

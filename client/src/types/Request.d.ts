@@ -1,3 +1,7 @@
+/**
+ * Wrapper for standardised API response.
+ * @category Global Types
+ */
 export declare interface ResponseData<Payload> {
     status: number
     message?: string

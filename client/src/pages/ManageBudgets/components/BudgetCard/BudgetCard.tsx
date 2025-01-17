@@ -23,8 +23,16 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks/ReduxHookWrapp
 import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
 
-import { IProps } from './BudgetCard.types';
+import type { IProps } from './BudgetCard.types';
 
+/**
+ * Displays a single budget.
+ *
+ * Contains options to navigate to the edit page.
+ * @component
+ * @category Pages
+ * @subcategory Manage Budgets
+ */
 const BudgetCard: FC<IProps> = ({ budget }) => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate();

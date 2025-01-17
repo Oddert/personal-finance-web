@@ -9,6 +9,8 @@ import { budgetLoading, writeBudgets } from '../slices/budgetSlice';
  * Conditional re-requests the budget state from the server.
  *
  * By default will abort a refresh if another refresh has occurred in the last 5 mins.
+ * @category Redux
+ * @subcategory Thunks
  * @param override If true, a refresh will be forced.
  */
 export const refreshBudgets = (override?: boolean) =>

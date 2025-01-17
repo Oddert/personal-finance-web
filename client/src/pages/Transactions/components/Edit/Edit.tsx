@@ -19,8 +19,14 @@ import { getTransactionsResponse } from '../../../../redux/selectors/transaction
 
 import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
 
-import { IProps } from './Edit.types';
+import type { IProps } from './Edit.types';
 
+/**
+ * Modal to edit all transactions currently selected in the view.
+ * @component
+ * @category Pages
+ * @subcategory Transactions
+ */
 const Edit: FC<IProps> = () => {
     const { state: { rangeValues, value } } = useContext(TransactionRange)
 

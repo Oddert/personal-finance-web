@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
+
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 
@@ -13,6 +14,12 @@ import { setEndDate, setStartDate } from '../../../../redux/slices/transactionsS
 
 dayjs.extend(localizedFormat)
 
+/**
+ * Control set to modify the date range and re-request transactions.
+ * @component
+ * @category Pages
+ * @subcategory Transactions
+ */
 const RequestControls = () => {
     const dispatch = useAppDispatch()
 

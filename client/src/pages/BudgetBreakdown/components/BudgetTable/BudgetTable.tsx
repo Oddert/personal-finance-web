@@ -1,20 +1,21 @@
 import { FC, useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { IProps } from './BudgetTable.types';
+import { Typography } from '@mui/material';
 
 import Table from '../../../../components/Table';
 
-import { IBudgetDatum } from '../../BudgetBreakdown.types';
-import { Typography } from '@mui/material';
+import type { IBudgetDatumTable, IProps } from './BudgetTable.types';
 
-type IBudgetDatumTable = IBudgetDatum & {
-    under: boolean
-    over: boolean
-}
-
+/**
+ * Displays all transactions within the selected range.
+ *
+ * Highlights transactions which fall outwith the specified accepted variance (are out of bounds).
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const BudgetTable: FC<IProps> = ({ data }) => {
-
     const dataParsed: IBudgetDatumTable[] = useMemo(() => 
         data.map((datum) => ({
             ...datum,

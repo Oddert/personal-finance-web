@@ -2,11 +2,18 @@ import { FC, useEffect, useMemo, useState } from 'react';
 
 import { Box, Paper, Tooltip, Typography } from '@mui/material';
 
-import { normaliseNum } from '../../BudgetBreakdownUtils';
-import { IBudgetDatum } from '../../BudgetBreakdown.types';
+import type { IBudgetDatum } from '../../../../types/Budget.types';
 
-import { IProps } from './GlanceCards.types';
+import { normaliseNum } from '../../../../utils/mathsUtils';
 
+import type { IProps } from './GlanceCards.types';
+
+/**
+ * A series of 'at-a-glance' cards, presenting high-level insights.
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
     const [actualSpend, setActualSpend] = useState(0);
     const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(data[0]);

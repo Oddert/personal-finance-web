@@ -12,7 +12,7 @@ import routes from '../../../services/routes'
 import { useAppDispatch } from '../../../hooks/ReduxHookWrappers'
 import { requestTransactions } from '../../../redux/slices/transactionsSlice'
 
-import { IProps } from './Submit.types'
+import type { IProps } from './Submit.types'
 
 dayjs.extend(localizedFormat)
 
