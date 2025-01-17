@@ -11,16 +11,24 @@ import {
     TextField,
 } from '@mui/material'
 
-import ColourEdit from '../ColourEdit'
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
 import { initCreateCategory } from '../../redux/slices/categorySlice'
+
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
 // import AddMatcher from '../Category/components/AddMatcher'
+
+import ColourEdit from '../ColourEdit'
 
 interface Props {
     handleClose: (payload?: any) => void
     open: boolean
 }
 
+/**
+ * Displays a single Category with optional edit capability.
+ * @category Component
+ * @subcategory Category
+ * @component
+ */
 const CategoryAdd: FC<Props> = ({ handleClose, open }) => {
     const dispatch = useAppDispatch()
 

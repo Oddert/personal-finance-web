@@ -1,5 +1,5 @@
 import type { Category as CategoryT } from '../../types/Category'
-import { IDynamicCardLayoutModes } from '../../types/Common.types'
+import type { IDynamicCardLayoutModes } from '../../types/Common.types'
 import type { Matcher as MatcherT } from '../../types/Matcher'
 
 export interface IProps {
