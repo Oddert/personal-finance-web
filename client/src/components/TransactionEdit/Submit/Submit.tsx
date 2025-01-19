@@ -12,10 +12,19 @@ import routes from '../../../services/routes'
 import { useAppDispatch } from '../../../hooks/ReduxHookWrappers'
 import { requestTransactions } from '../../../redux/slices/transactionsSlice'
 
-import { IProps } from './Submit.types'
+import type { IProps } from './Submit.types'
 
 dayjs.extend(localizedFormat)
 
+/**
+ * Button to submit / save the transactions.
+ *
+ * Formats and submits the transactions in the current context.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ * @param props.onClose Callback function invoked when the submit succeeds.
+ */
 const Submit: FC<IProps> = ({ onClose }) => {
     const appDispatch = useAppDispatch(); 
     const { state: { columnMap, mode, transactions } } = useContext(TransactionEditContext)

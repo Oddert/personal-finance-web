@@ -1,7 +1,10 @@
 import { FC } from 'react';
 
-import { IProps } from './PercentageChart.types';
+import type { IProps } from './PercentageChart.types';
 
+/**
+ * @deprecated
+ */
 const PercentageChart: FC<IProps> = () => {
     return null;
 }

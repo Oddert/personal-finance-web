@@ -1,8 +1,14 @@
 import { FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
-import { IProps } from './RadialChart.types';
+import type { IProps } from './RadialChart.types';
 
+/**
+ * Donut chart showing the percentage breakdown if each category's spend.
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
     const { labels, series, colours } = useMemo(() => {
             const asArray = Object.values(categoryBreakdown);

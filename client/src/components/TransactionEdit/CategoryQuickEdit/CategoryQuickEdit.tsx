@@ -9,6 +9,12 @@ import { TransactionEditContext, toggleSideBar } from '../../../contexts/transac
 import AddCategory from './components/AddCategory'
 import Option  from './components/Option/'
 
+/**
+ * Sidebar popover which displays transactions, allowing the user to quickly add Categories / Matchers.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ */
 const CategoryQuickEdit = () => {
     const { dispatch, state: { sideBarOpen } } = useContext(TransactionEditContext)
 

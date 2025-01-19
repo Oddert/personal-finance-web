@@ -8,6 +8,13 @@ import ColourEdit from '../../../ColourEdit'
 
 import type { IProps } from './Colour.types'
 
+/**
+ * Editable colour component for the Category.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.category The current Category.
+ */
 const Colour: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch()
 

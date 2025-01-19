@@ -15,6 +15,13 @@ interface Props {
     compact?: boolean
 }
 
+/**
+ * Module to display all existing data.
+ * @category Modules
+ * @subcategory Existing Data Chart
+ * @component
+ * @param props.compact If true, displays as a card module for composition with other modules.
+ */
 const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [ballanceData, setBallanceData] =
         useState<{ x: number|string, y: number }[]>([])

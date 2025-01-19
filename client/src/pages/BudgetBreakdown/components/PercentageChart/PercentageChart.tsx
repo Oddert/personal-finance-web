@@ -6,7 +6,7 @@ import BudgetPercentageChart from '../../../../components/BudgetPercentageChart'
 import BudgetPercentageControls from '../../../../components/BudgetPercentageControls';
 import TransactionPreview from '../../../../components/TransactionPreview';
 
-import { IProps } from './PercentageChart.types';
+import type { IProps } from './PercentageChart.types';
 
 const defaultZoomLevel = 1
 const zoomDimensionsLookup:
@@ -24,6 +24,12 @@ const zoomDimensionsLookup:
 	{ height: 500, width: 500 },
 ]
 
+/**
+ * Wrapper for the {@link BudgetPercentageChart} adding in {@link TransactionPreview} and a custom title.
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const PercentageChart: FC<IProps> = ({ data, endDate, startDate }) => {
 	const [categoryId, setCategoryId] = useState(-1);
 	const [open, setOpen] = useState(false);

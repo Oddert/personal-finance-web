@@ -6,7 +6,7 @@ import { Box, Paper } from '@mui/material';
 
 import BudgetPercentageControls from '../../../../components/BudgetPercentageControls/';
 
-import { IProps } from './PercentageCharts.types';
+import type { IProps } from './PercentageCharts.types';
 import PercentageChartWrapper from './components/PercentageChartWrapper';
 
 const defaultZoomLevel = 1
@@ -27,6 +27,12 @@ const zoomDimensionsLookup:
 
 dayjs.extend(localizedFormat);
 
+/**
+ * Displays a series of Budget Percentage Charts for the selected date range.
+ * @category Pages
+ * @subcategory Budget Overview
+ * @component
+ */
 const PercentageCharts: FC<IProps> = ({ chartList }) => {
 	const [zoomDim, setZoomDim] = useState<{ height: number, width: number }>(
 		zoomDimensionsLookup[defaultZoomLevel],

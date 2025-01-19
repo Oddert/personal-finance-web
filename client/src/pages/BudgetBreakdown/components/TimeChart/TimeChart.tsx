@@ -9,10 +9,16 @@ import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
-import { IProps, ISortedByCategory, ISortedByCategoryRow } from './TimeChart.types';
+import type { IProps, ISortedByCategory, ISortedByCategoryRow } from './TimeChart.types';
 
 dayjs.extend(localizedFormat);
 
+/**
+ * Area chart showing how each category's spend aggregates across the time period.
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const TimeChart: FC<IProps> = ({ endDate, filteredTransactions, startDate }) => {
     const categories = useAppSelector(getCategoryOrderedDataById);
 

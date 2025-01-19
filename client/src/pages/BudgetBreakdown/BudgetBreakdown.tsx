@@ -5,7 +5,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import {Box, Paper, Typography } from '@mui/material';
 
-import { Transaction } from '../../types/Transaction';
+import type { ICategoryBreakdown } from '../../types/Category';
+import type { Transaction } from '../../types/Transaction';
 
 import { createBudgetChartData, createCategoryBreakdown, toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
 
@@ -28,10 +29,22 @@ import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
 import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
-import { ICategoryBreakdown } from './BudgetBreakdown.types';
 
 dayjs.extend(localizedFormat)
 
+/**
+ * Page to provide detailed insights into transactions, compared with the active budget, within a selected range.
+ *
+ * Note: The distinction between what is appropriate for BudgetBreakdown and {@link BudgetOverview} is based on the cognitive context the user may have when looking at the page.
+ * As such, the decision on which feature should go where is a judgement call.
+ *
+ * The intention of each page is as follows:
+ * - Budget Overview: Used for comparing comparable spend and discrepancies across a date range. Provides month-to-month insights.
+ * - Budget Breakdown: Used to deep-dive into the transactions and discrepancies, identifying insights about why they are out of (or in) range. Primarily intended for a single month but can accept any date range.
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const BudgetBreakdown: FC = () => {
     const navigation = useSearchParams()
 

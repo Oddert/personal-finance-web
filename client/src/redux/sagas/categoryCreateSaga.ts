@@ -9,6 +9,9 @@ import routes from '../../services/routes'
 
 import { createCategory } from '../slices/categorySlice'
 
+/**
+ * Creates a category and adds it to the state.
+ */
 export default function* categoryCreateSaga(
     { payload }: PayloadAction<{
         category: Partial<Category>

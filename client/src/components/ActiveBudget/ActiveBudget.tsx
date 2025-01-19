@@ -6,14 +6,22 @@ import {
     TextField,
 } from '@mui/material';
 
+import type{ IBudget } from '../../types/Budget.types';
+
 import { getActiveBudget, getBudgetResponse } from '../../redux/selectors/budgetSelectors';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
-import { IBudget } from '../../types/Budget.types';
-import { IProps } from './ActiveBudget.types';
 import { setActiveBudget } from '../../redux/slices/budgetSlice';
 
+import type { IProps } from './ActiveBudget.types';
+
+/**
+ * A control input to select the currently active budget.
+ * @category Components
+ * @subcategory Active Budget
+ * @component
+ */
 const ActiveBudget: FC<IProps> = () => {
 	const dispatch = useAppDispatch();
 

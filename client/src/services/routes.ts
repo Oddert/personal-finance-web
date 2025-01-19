@@ -4,6 +4,12 @@ import { IBudget } from '../types/Budget.types';
 import type { Category } from '../types/Category';
 import type { Matcher } from '../types/Matcher';
 
+/**
+ * Primary interface for interacting with the API.
+ *
+ * Contains a list of functions for calling endpoints.
+ * @category Services
+ */
 const routes = {
     /* Transactions */
     getAllTransactions: async (startDate?: string, endDate?: string) => {

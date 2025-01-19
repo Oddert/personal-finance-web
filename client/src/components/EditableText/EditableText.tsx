@@ -3,16 +3,21 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { Edit as EditIcon } from '@mui/icons-material'
 
-interface IProps {
-    containerSx?: any
-    headingProps: any
-    iconPosition?: 'start'|'end'
-    onChange: (value: string) => void
-    placeholder?: string
-    text: string
-    verticalCenter?: boolean
-}
+import type { IProps } from './EditableText.types'
 
+/**
+ * Reusable, flexible text display which allows the user to edit the content via an edit button.
+ * @category Components
+ * @subcategory Editable Text
+ * @component
+ * @param props.containerSx Styling overrides to be applied to the outer container.
+ * @param props.headingProps Props applied to the main text when not editing.
+ * @param props.iconPosition Determines which end of the text to place the edit button. Note that edit buttons are absolutely positioned so will appear above overlapping content.
+ * @param props.onChange Optional callback invoked on blur. 
+ * @param props.placeholder Optional placeholder text.
+ * @param props.text The main text content.
+ * @param props.verticalCenter If true, a vertical center alignment is used, otherwise flex-start is applied.
+ */
 const EditableText: FC<IProps> = ({
     containerSx,
     headingProps,

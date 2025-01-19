@@ -17,6 +17,16 @@ import EditMatcher from '../EditMatcher'
 
 import type { IProps } from './AddMatcher.types'
 
+/**
+ * Create form to add a new Matcher.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.categoryId The ID of the current Category.
+ * @param props.defaultOpen If true, the form will render as open by default when the component renders (as opposed to on user expands).
+ * @param props.matcher Default options for the new Matcher.
+ * @param props.onSubmit Callback function invoked when the submit succeeds.
+ */
 const AddMatcher: FC<IProps> = ({
     categoryId,
     defaultOpen = false,

@@ -17,10 +17,16 @@ import type { TransactionRangeState } from '../../../../contexts/transactionRang
 
 import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
 
-function valuetext(value: number) {
-    return `${value}°C`;
-}
+const valuetext = (value: number) => `${value}°C`;
 
+/**
+ * Control set to temporarily filter the timescale in view.
+ *
+ * NOTE: Does not re-load transactions to the state, only filters the view temporarily.
+ * @component
+ * @category Pages
+ * @subcategory Transactions
+ */
 const RangeControls = () => {
     const {
         dispatch,

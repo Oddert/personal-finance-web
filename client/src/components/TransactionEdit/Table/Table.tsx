@@ -29,6 +29,12 @@ import type { Category } from '../../../types/Category'
 
 const marginTopBottom = '4px'
 
+/**
+ * Displays the transactions and edit options as a table.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ */
 const Table = () => {
     const [filterUncategorised, setFilterUncategorised] = useState(false)
 

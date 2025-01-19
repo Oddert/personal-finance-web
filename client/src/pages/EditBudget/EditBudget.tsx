@@ -27,6 +27,11 @@ import BudgetRow from './components/BudgetRow';
 import { IBudgetRowEditable, IProps } from './EditBudget.types';
 import DeleteBudget from './components/DeleteBudget';
 
+/**
+ * Creates a blank Budget Row.
+ * @param id The temporary ID.
+ * @returns An empty budget row object.
+ */
 const createEmptyBudget = (id: number): IBudget => ({
 	id,
 	name: '',

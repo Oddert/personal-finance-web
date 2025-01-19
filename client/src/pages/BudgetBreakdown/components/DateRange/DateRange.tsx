@@ -10,10 +10,18 @@ import {
 
 import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
 
-import { IProps } from './DateRange.types';
+import type { IProps } from './DateRange.types';
 
 dayjs.extend(localizedFormat)
 
+/**
+ * Displays date range controls.
+ *
+ * Includes buttons to jump to the next and previous months (resets range to 1 month).
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ */
 const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate }) => {
     const [dateError, setDateError] = useState<null|string>(null);
 

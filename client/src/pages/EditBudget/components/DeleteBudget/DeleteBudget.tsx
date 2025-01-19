@@ -4,15 +4,22 @@ import { useNavigate } from 'react-router';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material'
 
+import { ROUTES } from '../../../../constants/routerConstants';
+
 import routes from '../../../../services/routes';
 
 import { deleteBudget } from '../../../../redux/slices/budgetSlice';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { IProps } from './DeleteBudget.types';
-import { ROUTES } from '../../../../constants/routerConstants';
+import type { IProps } from './DeleteBudget.types';
 
+/**
+ * Modal component to allow the user to delete an entire budget.
+ * @component
+ * @category Pages
+ * @subcategory Home
+ */
 const DeleteBudget: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

@@ -13,13 +13,21 @@ import {
 	ZoomOut as ZoomMinusIcon,
 } from '@mui/icons-material';
 
-import { IProps } from './BudgetPercentageControls.types';
+import type { IProps, IZoomLevel } from './BudgetPercentageControls.types';
 
-// Integer equivalent to 'xs', 'sm', 'md', 'lg', 'xl'
-type IZoomLevel = 0 | 1 | 2 | 3 | 4
 const zoomLabelLookup = ['xs', 'sm', 'md', 'lg', 'xl']
 const defaultZoomLevel = 1
 
+/**
+ * Standard set of controls designed to be paired with the Budget Percentage Chart.
+ * @category Component
+ * @subcategory Budget Percentage Controls
+ * @component
+ * @param props.setUseFloat Callback function invoked when the user toggles the float/percentage checkbox.
+ * @param props.setZoomDim Callback function invoked when the zoom changes.
+ * @param props.useFloat If true, raw currency values will be used. If false, percentages will be used.
+ * @param props.zoomDimensionsLookup Values used when invoking setZoomDim.
+ */
 const BudgetPercentageControls: FC<IProps> = ({
 	setUseFloat,
 	setZoomDim,

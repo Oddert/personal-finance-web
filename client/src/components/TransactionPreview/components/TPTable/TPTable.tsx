@@ -5,7 +5,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import { Transaction } from '../../../../types/Transaction';
+import type { Transaction } from '../../../../types/Transaction';
 
 import { LOCALE } from '../../../../constants/appConstants';
 
@@ -18,10 +18,19 @@ import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import Table from '../../../Table';
 
 import { addCurrencySymbol, debitCell } from './TPTableUtils';
-import { IProps, TransactionExtended } from './TPTable.types';
+import type { IProps, TransactionExtended } from './TPTable.types';
 
 dayjs.extend(localizedFormat);
 
+/**
+ * Table component which renders the transactions.
+ * @category Components
+ * @subcategory Transaction Preview
+ * @component
+ * @param props.categoryId The category of transactions to pull.
+ * @param props.endDate The end date to pull transactions from.
+ * @param props.startDate The start date to pull transactions from.
+ */
 const TPTable: FC<IProps> = ({
 	categoryId,
 	endDate,

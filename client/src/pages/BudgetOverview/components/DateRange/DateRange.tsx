@@ -12,10 +12,16 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 
 import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
 
-import { IProps } from './DateRange.types';
+import type { IProps } from './DateRange.types';
 
 dayjs.extend(localizedFormat)
 
+/**
+ * Date range controls, including buttons to jump to set time periods.
+ * @category Pages
+ * @subcategory Budget Overview
+ * @component
+ */
 const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate }) => {
     const [dateError, setDateError] = useState<null|string>(null);
 

@@ -14,6 +14,12 @@ import Upload from '../../components/Upload';
 
 import Edit from './components/Edit';
 
+/**
+ * Page component to display transactions within a range and upload new transactions.
+ * @component
+ * @category Pages
+ * @subcategory Transactions
+ */
 const Transactions = () => {
     const [state, dispatch] = useReducer(transactionRangeReducer, initialState)
     

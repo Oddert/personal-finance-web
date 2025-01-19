@@ -5,6 +5,11 @@ import { LOCALE } from '../../constants/appConstants'
 
 import { Transaction } from '../../types/Transaction'
 
+/**
+ * Redux state key for 'transaction'
+ * @category Redux
+ * @subcategory Transaction Slice
+ */
 export interface TransactionState {
     endDate: number|null
     endDateReadable: string|null

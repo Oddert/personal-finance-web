@@ -3,10 +3,23 @@ import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
-import { IBudgetDatum } from '../../pages/BudgetBreakdown/BudgetBreakdown.types';
+import type { IBudgetDatum } from '../../types/Budget.types';
 
-import { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
+import type { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
 
+/**
+ * Vertical bar chart showing positive and negative discrepancies for a list of budget spend items.
+ *
+ * Supports both actual currency values and percentage over / under spend.
+ * @category Component
+ * @subcategory Budget Percentage Chart
+ * @component
+ * @param props.data The series of budget data.
+ * @param props.dataPointCallback Callback function invoked when a data point is clicked.
+ * @param props.height Chart height (default: 350).
+ * @param props.useFloat If true, raw currency values will be used. If false, percentages will be used.
+ * @param props.width Chart width (default: 350).
+ */
 const BudgetPercentageChart: FC<IProps> = ({
     data,
     dataPointCallback,

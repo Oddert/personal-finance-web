@@ -2,11 +2,11 @@ import { FC, useMemo } from 'react';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { Box } from '@mui/material';
 
-import { IProps } from './CategoryList.types';
+import type { ICategoryBDValue } from '../../../../types/Category';
 
 import Table from '../../../../components/Table';
 
-import { ICategoryBDValue } from '../../BudgetBreakdown.types';
+import type { IProps } from './CategoryList.types';
 
 const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
     const value = cell.renderValue() as number;
@@ -21,6 +21,14 @@ const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
     )
 }
 
+/**
+ * Simple table component to display all Category totals.
+ *
+ * @category Pages
+ * @subcategory Budget Breakdown
+ * @component
+ * @deprecated {@link BudgetPercentageChart} serves the same purpose.
+ */
 const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
     const data = useMemo(() => Object.values(categoryBreakdown), [categoryBreakdown]);
 

@@ -8,6 +8,9 @@ import type { ResponseData } from '../../types/Request'
 
 import { updateSingleCategory } from '../slices/categorySlice'
 
+/**
+ * Updates a category.
+ */
 export default function* categoryUpdateSingleSaga (
     { payload }: PayloadAction<{
         category: Partial<Category>,

@@ -1,20 +1,33 @@
-import { Box, CircularProgress, Container, Modal, Paper, Typography } from '@mui/material'
+import {
+    Box,
+    CircularProgress,
+    Container,
+    Modal,
+    Paper,
+    Typography,
+} from '@mui/material'
 
 import { Fragment, useContext, type FC } from 'react'
+
+import { TransactionEditContext } from '../../contexts/transactionEditContext'
 
 import CategoryQuickEdit from './CategoryQuickEdit/'
 import ColumnMapping from './ColumnMapping/'
 import Submit from './Submit/'
 import Table from './Table/'
-import { TransactionEditContext } from '../../contexts/transactionEditContext'
 
-interface Props {
-    open: boolean,
-    onClose: () => void
-    showMapping?: boolean
-}
+import type { IProps } from './TransactionEdit.types'
 
-const TransactionEdit: FC<Props> = ({ open, onClose, showMapping = false }) => {
+/**
+ * Allows the user to edit and submit / save transactions.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ * @param props.open If true, the modal is shown.
+ * @param props.onClose Callback function invoked when the modal requests to close.
+ * @param props.showMapping If true, the {@link ColumnMapping} options  will be displayed.
+ */
+const TransactionEdit: FC<IProps> = ({ open, onClose, showMapping = false }) => {
     const { state: { loading } } = useContext(TransactionEditContext);
     return (
         <Modal

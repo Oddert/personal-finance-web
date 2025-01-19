@@ -9,6 +9,9 @@ import type { ResponseData } from '../../types/Request'
 
 import { createSingleMatcher } from '../slices/categorySlice'
 
+/**
+ * Adds a single matcher and updates it in state.
+ */
 export default function* matcherCreateSingleSaga(
     { payload }: PayloadAction<{
         matcher: Partial<Matcher>,

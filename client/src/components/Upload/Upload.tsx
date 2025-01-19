@@ -21,6 +21,12 @@ import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
 
 import TransactionEdit from '../TransactionEdit/TransactionEdit'
 
+/**
+ * Allows the user to upload new transactions.
+ * @category Components
+ * @subcategory Upload
+ * @component
+ */
 const Upload = () => {
     const [state, dispatch] = useReducer(
         transactionEditReducer,

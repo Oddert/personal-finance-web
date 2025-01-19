@@ -1,5 +1,5 @@
-import { Category } from '../types/Category'
-import { Matcher } from '../types/Matcher'
+import type { Category } from '../types/Category'
+import type { Matcher } from '../types/Matcher'
 
 import { TransactionEditState } from '../contexts/transactionEditContext'
 
@@ -8,7 +8,7 @@ import { escapeRegex } from './commonUtils'
 /**
  * Creates a RegExp instance from the Matcher format.
  * @param matcher The Matcher to be converted.
- * @returns 
+ * @returns The created expression.
  */
 export const createRegexFromMatcher = (matcher: Matcher) => {
     const prefix = matcher.match_type === 'exact' || matcher.match_type === 'start' ? '^' : '.*'

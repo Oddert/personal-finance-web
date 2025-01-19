@@ -4,13 +4,19 @@ import { Box } from '@mui/material'
 
 import { LOCALE } from '../constants/appConstants'
 
-import { Transaction } from '../types/Transaction'
+import type { Transaction } from '../types/Transaction'
+import type{ Category } from '../types/Category'
 
 import type { CategoryState } from '../redux/slices/categorySlice'
 
 import { createReadableNumber } from './commonUtils'
-import { Category } from '../types/Category'
 
+/**
+ * Maps over a list of transactions and attempts to assign a Category to `assignedCategory`.
+ * @param transactions The incoming transactions.
+ * @param orderedCategories List of categories ordered by ID.
+ * @returns The transactions with mapped category.
+ */
 export const mapCategoriesToTransactions = (
     transactions: Transaction[],
     orderedCategories: CategoryState['orderedData']['byId'],
@@ -27,6 +33,11 @@ export const mapCategoriesToTransactions = (
     return mappedTransactions
 }
 
+/**
+ * Creates ordered data structures for a list of transactions.
+ * @param transactions The transactions to sort.
+ * @returns The transactions ordered by category and by date (year, month).
+ */
 export const orderTransactions = (transactions: Transaction[]) => {
     const orderedByDate: { [year: string]: { [month: number]: Transaction[] } } = {}
     const orderedByCategory: { [category: number|string]: Transaction[] } = { default: [] }
@@ -56,6 +67,13 @@ export const orderTransactions = (transactions: Transaction[]) => {
     }
 }
 
+/**
+ * Reusable column add-in to format currency columns.
+ *
+ * Displays zero or null values as '-'.
+ * @param cell The column cell from react table.
+ * @returns A container with the formatted text.
+ */
 export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
     const rawValue = createReadableNumber(cell.renderValue(), 0)
     const value = Number(rawValue)
@@ -70,6 +88,9 @@ export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
     )
 }
 
+/**
+ * Columns for the transaction table on the upload / edit form.
+ */
 export const transactionColumns: ColumnDef<Transaction>[] = [
     {
         header: 'Date',

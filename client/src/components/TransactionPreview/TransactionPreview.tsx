@@ -6,10 +6,24 @@ import { Button, Popover } from '@mui/material';
 
 import TPTable from './components/TPTable';
 
-import { IProps } from './TransactionPreview.types';
+import type { IProps } from './TransactionPreview.types';
 
 dayjs.extend(localizedFormat);
 
+/**
+ * Popover component which displays a range of transactions for a particular category and date range.
+ *
+ * Intended for use with {@link BudgetPercentageChart} but is flexible and can be used elsewhere if desired.
+ * @category Components
+ * @subcategory Transaction Preview
+ * @component
+ * @param props.anchorEl The element to connect the Popover to.
+ * @param props.categoryId The category of transactions to pull.
+ * @param props.clearAnchorEl Callback function invoked when the Popover requests to close.
+ * @param props.endDate The end date to pull transactions from.
+ * @param props.open If true, the popover will display.
+ * @param props.startDate The start date to pull transactions from.
+ */
 const TransactionPreview: FC<IProps> = ({
     anchorEl,
     categoryId,

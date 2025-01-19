@@ -11,17 +11,23 @@ import {
     TextField,
 } from '@mui/material'
 
-import ColourEdit from '../ColourEdit'
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
 import { initCreateCategory } from '../../redux/slices/categorySlice'
-// import AddMatcher from '../Category/components/AddMatcher'
 
-interface Props {
-    handleClose: (payload?: any) => void
-    open: boolean
-}
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
 
-const CategoryAdd: FC<Props> = ({ handleClose, open }) => {
+import ColourEdit from '../ColourEdit'
+
+import type { IProps } from './CategoryAdd.types'
+
+/**
+ * Dialog component to add a new category.
+ * @category Component
+ * @subcategory CategoryAdd
+ * @component
+ * @param props.handleClose Callback function invoked when the component requests to close. Will contain a partial Category if the close is a submission.
+ * @param props.open If true, the modal will display.
+ */
+const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
     const dispatch = useAppDispatch()
 
     const [label, setLabel] = useState('')

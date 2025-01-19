@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs'
 
-import { IBudgetDatum } from '../BudgetBreakdown/BudgetBreakdown.types'
+import type { IBudgetDatum } from '../../types/Budget.types'
 
 export interface IProps {}
 

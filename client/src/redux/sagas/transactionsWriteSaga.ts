@@ -4,14 +4,17 @@ import routes from '../../services/routes'
 
 import { mapCategoriesToTransactions, orderTransactions } from '../../utils/transactionUtils'
 
-import { ResponseData } from '../../types/Request'
-import { Transaction } from '../../types/Transaction'
+import type { ResponseData } from '../../types/Request'
+import type { Transaction } from '../../types/Transaction'
 
 import { CategoryState, requestCategories } from '../slices/categorySlice'
 import { writeTransactions } from '../slices/transactionsSlice'
 
 import { getCategoryOrderedDataById, getCategoryQueried } from '../selectors/categorySelectors'
 
+/**
+ * Bulk creates transactions and re-loads part of the state.
+ */
 export default function* transactionsWriteSaga () {
     try {
         const queried: boolean = yield select(getCategoryQueried)

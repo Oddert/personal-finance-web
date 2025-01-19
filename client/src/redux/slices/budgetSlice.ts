@@ -2,6 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { IBudget } from '../../types/Budget.types';
 
+/**
+ * Redux state key for 'budget'
+ * @category Redux
+ * @subcategory Budget Slice
+ */
 export interface IBudgetState {
 	loading: boolean
 	loaded: boolean

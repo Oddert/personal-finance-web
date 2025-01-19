@@ -2,21 +2,26 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom'
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { CssBaseline } from '@mui/material'
 
-import { Box } from '@mui/material'
+import { Box, CssBaseline } from '@mui/material'
 
 import router from '../../constants/routerConstants'
 
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
-
 import { requestTransactions } from '../../redux/slices/transactionsSlice'
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
+
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
 import './App.css';
 
 dayjs.extend(localizedFormat)
 
+/**
+ * Core component of the application to be rendered inside relevant contexts and other boilerplate.
+ * @category Components
+ * @subcategory App
+ * @component
+ */
 const App = () => {
     const dispatch = useAppDispatch()
 

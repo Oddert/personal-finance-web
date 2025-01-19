@@ -10,7 +10,7 @@ import {
     Typography,
 } from '@mui/material'
 
-import type { Matcher as MatcherT } from '../../types/Matcher'
+import type { Matcher as IMatcher } from '../../types/Matcher'
 
 import AddMatcher from './components/AddMatcher'
 import Colour from './components/Colour'
@@ -19,8 +19,19 @@ import Matcher from './components/Matcher'
 import Title from './components/Title'
 import HamburgerMenu from './components/HamburgerMenu'
 
-import { IProps } from './Category.types';
+import type { IProps } from './Category.types';
 
+/**
+ * Displays a single Category with optional edit capability.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.category The Category to display.
+ * @param props.defaultOpenAddNew If true, the 'add new matcher' modal will be open by default.
+ * @param props.defaultOpenMatcher If supplied along with a positive value for `defaultOpenAddNew`, a set of partial default attributes will be applied to the matcher editor.
+ * @param props.onAddNewSubmit Callback function invoked when the matcher add-new form is submitted.
+ * @param props.layout The layout mode, affects the display compactness of the Category.
+ */
 const Category: FC<IProps> = ({
     category,
     defaultOpenAddNew = false,
@@ -30,7 +41,7 @@ const Category: FC<IProps> = ({
 }) => {
     const CategoryList = (
         <List>
-            {category.matchers.map((matcher: MatcherT) => (
+            {category.matchers.map((matcher: IMatcher) => (
                 <Matcher
                     categoryId={category.id}
                     key={matcher.id}
