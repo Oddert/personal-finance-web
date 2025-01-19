@@ -4,7 +4,7 @@ import { put } from 'redux-saga/effects'
 import APIService from '../../services/APIService'
 
 import type { Category } from '../../types/Category'
-import type { ResponseData } from '../../types/Request'
+import type { IStandardResponse } from '../../types/Request'
 
 import { updateSingleCategory } from '../slices/categorySlice'
 
@@ -17,7 +17,7 @@ export default function* categoryUpdateSingleSaga (
     }>
 ) {
     try {
-        const response: ResponseData<{ category: Category }> =
+        const response: IStandardResponse<{ category: Category }> =
             yield APIService.updateCategory(payload.category)
 
         if (!response.payload?.category || response.error) {

@@ -4,6 +4,11 @@ import { getServerURL } from '../utils/requestUtils'
 
 const baseURL = getServerURL()
 
+/**
+ * Re-usable Axios request object.
+ *
+ * NOTE: Interceptors used will attempt to return `response.data`, not `AxiosResponse<any, any>>` as suggested.
+ */
 const request = axios.create({
     baseURL,
     headers: {

@@ -38,7 +38,10 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     const handleSubmit = (_matcher: Partial<MatcherT>) => {
         const request = async () => {
             try {
-                const response: any = await APIService.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                const response = await APIService.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                if (!response || !response.payload) {
+                    throw new Error('No response received from the server.')
+                }
                 dispatch(categorySlice.actions.updateSingleMatcher({
                     categoryId,
                     matcher: {

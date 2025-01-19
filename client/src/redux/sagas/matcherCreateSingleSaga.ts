@@ -5,7 +5,7 @@ import APIService from '../../services/APIService'
 
 import type { Category } from '../../types/Category'
 import type { Matcher } from '../../types/Matcher'
-import type { ResponseData } from '../../types/Request'
+import type { IStandardResponse } from '../../types/Request'
 
 import { createSingleMatcher } from '../slices/categorySlice'
 
@@ -19,7 +19,7 @@ export default function* matcherCreateSingleSaga(
     }>
 ) {
     try {
-        const response: ResponseData<{ matcher: Matcher }> =
+        const response: IStandardResponse<{ matcher: Matcher }> =
             yield APIService.addSingleMatcher(payload.matcher, payload.categoryId)
 
         if (response.error || !response.payload) {

@@ -13,7 +13,7 @@ export const getFromLocalStore = (key: string) => {
 /**
  * Writes JSON stringified data to Local Storage.
  * @param key The storage key to write to.
- * @param data The content to write
+ * @param data The JSON serialisable content to write
  */
 export const setToLocalStore = (key: string, data: any) => {
     localStorage.setItem(key, JSON.stringify(data))

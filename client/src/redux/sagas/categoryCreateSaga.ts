@@ -2,7 +2,7 @@ import { put } from 'redux-saga/effects'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-import type { ResponseData } from '../../types/Request'
+import type { IStandardResponse } from '../../types/Request'
 import type { Category } from '../../types/Category'
 
 import APIService from '../../services/APIService'
@@ -18,7 +18,7 @@ export default function* categoryCreateSaga(
     }>
 ) {
     try {
-        const response: ResponseData<{ category: Category }> =
+        const response: IStandardResponse<{ category: Category }> =
             yield APIService.createCategory(payload.category)
         
         if (response.error || !response.payload) {

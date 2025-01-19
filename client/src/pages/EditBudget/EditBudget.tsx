@@ -67,9 +67,13 @@ const EditBudget: FC<IProps> = () => {
 			setLoading(true)
 			dispatch(budgetLoading())
 			const request = async () => {
-				const response: any = isEdit
+				const response = isEdit
 					? await APIService.updateSingleBudget({ ...budget, budgetRows, }, budget.id)
 					: await APIService.createSingleBudget({ ...budget, budgetRows, })
+				
+				if (!response || !response.payload) {
+					throw new Error('No response received from the server.')
+				}
 				dispatch(addBudget({ budget: response.payload.budget }));
 				navigate(ROUTES.MANAGE_BUDGETS);
 			}
@@ -81,32 +85,39 @@ const EditBudget: FC<IProps> = () => {
 	}
 
 	useEffect(() => {
-		const fetchBudget = async (budgetId: number) => {
-			const response: any = await APIService.getSingleBudget(budgetId)
-			setBudget({
-				...response.payload.budget as IBudget,
-				budgetRows: [],
-			});
-			setBudgetRows(response.payload.budget.budgetRows.map(
-				(budgetRow: IBudgetRow) => ({
-					...budgetRow,
-					staged: false,
-					deleted: false,
-				}),
-			))
-			setLoading(false);
-		}
-		if ('budgetId' in params) {
-			fetchBudget(Number(params['budgetId']))
-			setIsEdit(true);
-		} else {
-			const templateId = search[0].get('templateId')
-			if (templateId) {
-				fetchBudget(Number(templateId))
-				setIsEdit(false);
-			} else {
+		try {
+			const fetchBudget = async (budgetId: number) => {
+				const response = await APIService.getSingleBudget(budgetId)
+				if (!response || !response.payload) {
+					throw new Error('No response received from the server.')
+				}
+				setBudget({
+					...response.payload.budget as IBudget,
+					budgetRows: [],
+				});
+				setBudgetRows(response.payload.budget.budgetRows.map(
+					(budgetRow: IBudgetRow) => ({
+						...budgetRow,
+						staged: false,
+						deleted: false,
+					}),
+				))
 				setLoading(false);
 			}
+			if ('budgetId' in params) {
+				fetchBudget(Number(params['budgetId']))
+				setIsEdit(true);
+			} else {
+				const templateId = search[0].get('templateId')
+				if (templateId) {
+					fetchBudget(Number(templateId))
+					setIsEdit(false);
+				} else {
+					setLoading(false);
+				}
+			}
+		} catch (error: any) {
+			console.error(error);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])

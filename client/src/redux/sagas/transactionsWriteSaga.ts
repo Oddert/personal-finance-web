@@ -4,7 +4,7 @@ import APIService from '../../services/APIService'
 
 import { mapCategoriesToTransactions, orderTransactions } from '../../utils/transactionUtils'
 
-import type { ResponseData } from '../../types/Request'
+import type { IStandardResponse } from '../../types/Request'
 import type { Transaction } from '../../types/Transaction'
 
 import { CategoryState, requestCategories } from '../slices/categorySlice'
@@ -22,7 +22,7 @@ export default function* transactionsWriteSaga () {
             yield put(requestCategories())
         }
         
-        const transactionsResponse: ResponseData<{ transactions: Transaction[] }> =
+        const transactionsResponse: IStandardResponse<{ transactions: Transaction[] }> =
             yield call(APIService.getAllTransactions)
 
         if (!transactionsResponse?.payload?.transactions) {
