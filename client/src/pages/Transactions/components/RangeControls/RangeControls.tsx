@@ -118,7 +118,7 @@ const RangeControls = () => {
     return (
         <Box>
             <Typography gutterBottom>
-                Date Range
+                Filter view by month:
             </Typography>
             <Slider
                 getAriaLabel={() => 'Transaction range'}

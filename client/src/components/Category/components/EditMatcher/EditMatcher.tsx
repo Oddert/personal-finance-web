@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -8,18 +8,18 @@ import {
     MenuItem,
     Select,
     TextField,
-} from '@mui/material'
+} from '@mui/material';
 import {
     FontDownloadOutlined as MatchNegativeIcon,
     FontDownload as MatchPositiveIcon,
-} from '@mui/icons-material'
+} from '@mui/icons-material';
 
-import type { MatchType, Matcher } from '../../../../types/Matcher'
+import type { MatchType, Matcher } from '../../../../types/Matcher';
 
-import { matchTypesOptions } from '../../../../utils/matcherUtils'
+import { matchTypesOptions } from '../../../../utils/matcherUtils';
 
-interface Props {
-    clearOnBlur: boolean
+interface IProps {
+    clearOnBlur?: boolean
     clearOnCancel: boolean
     clearOnSubmit: boolean
     matcher?: Partial<Matcher>
@@ -28,15 +28,19 @@ interface Props {
     onSubmit?: (matcher: Partial<Matcher>) => void
 }
 
-const EditMatcher = ({
-    clearOnBlur,
-    clearOnCancel,
-    clearOnSubmit,
-    matcher,
-    onBlur,
-    onCancel,
-    onSubmit
-}: Props) => {
+const EditMatcher: FC<IProps> = ({
+    clearOnBlur = false,
+    clearOnCancel = false,
+    clearOnSubmit = false,
+    matcher = {
+		case_sensitive: false,
+		match: '',
+		matchType: 'any',
+	},
+    onBlur = () => {},
+    onCancel = () => {},
+    onSubmit = () => {},
+}) => {
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
     const [match, setMatch] = useState<string>('')
     const [matchType, setMatchType] = useState<MatchType>('any')
@@ -44,7 +48,8 @@ const EditMatcher = ({
     useEffect(() => {
         setMatch(matcher?.match || '')
         setCaseSensitive(Boolean(matcher?.case_sensitive || false))
-    }, [matcher])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const reset = () => {
         setCaseSensitive(false)
@@ -75,7 +80,7 @@ const EditMatcher = ({
             reset()
         }
     }
-
+	
     const handleSave = () => {
         if (onSubmit) {
             onSubmit(createResponse())
@@ -100,7 +105,9 @@ const EditMatcher = ({
             <TextField
                 autoFocus
                 label='Match'
-                onChange={(e) => setMatch(e?.target?.value)}
+                onChange={(event) => {
+					setMatch(event?.target?.value)
+				}}
                 size='small'
                 sx={{
                     alignSelf: 'flex-end',
@@ -202,20 +209,6 @@ const EditMatcher = ({
             </Box>
         </Box>
     )
-}
-
-EditMatcher.defaultProps = {
-    clearOnBlur: false,
-    clearOnCancel: false,
-    clearOnSubmit: false,
-    matcher: {
-        case_sensitive: false,
-        match: '',
-        matchType: 'any',
-    },
-    onBlur: () => {},
-    onCancel: () => {},
-    onSubmit: () => {},
 }
 
 export default EditMatcher

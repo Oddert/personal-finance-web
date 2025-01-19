@@ -1,6 +1,4 @@
-import { useCallback } from 'react'
-
-import type { Category } from '../../../../types/Category'
+import { FC, useCallback } from 'react'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
@@ -8,16 +6,21 @@ import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice
 
 import EditableText from '../../../EditableText'
 
-interface Props {
-    category: Category
-}
+import type { IProps } from './Description.types'
 
-const Title = ({ category }: Props) => {
+const Title: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch()
 
     const handleChange = useCallback((value: string) => {
         dispatch(initUpdateSingleCategory({
-            category: { ...category, description: value },
+            category: {
+                ...category,
+                matchers: category.matchers.map((matcher) => ({
+                    ...matcher,
+                    case_sensitive: Boolean(matcher.case_sensitive),
+                })),
+                label: value,
+            },
         }))
     }, [category, dispatch])
 
@@ -35,6 +38,7 @@ const Title = ({ category }: Props) => {
                 },
             }}
             onChange={handleChange}
+            placeholder='Click to add a description.'
             text={category.description}
         />
     )

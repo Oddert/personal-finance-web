@@ -21,7 +21,7 @@ export const defaultEnd = new Date(defaultEndConstructor)
 
 export const scenarios = [defaultScenario, scenarioTrimFat, newBike, bonus]
 export const scenarioOptions = scenarios.map(
-    (scenario, idx) => ({ label: scenario.title, id: idx }),
+    (scenario, idx) => ({ label: scenario.title, id: scenario.id }),
 )
 
 export const chart1BaseOptions = (compact: boolean): ApexOptions => ({

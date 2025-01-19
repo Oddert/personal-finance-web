@@ -1,6 +1,10 @@
 import { Category } from '../types/Category'
 import { Matcher } from '../types/Matcher'
 
+import { TransactionEditState } from '../contexts/transactionEditContext'
+
+import { escapeRegex } from './commonUtils'
+
 /**
  * Creates a RegExp instance from the Matcher format.
  * @param matcher The Matcher to be converted.
@@ -11,7 +15,7 @@ export const createRegexFromMatcher = (matcher: Matcher) => {
     const suffix = matcher.match_type === 'exact' || matcher.match_type === 'end' ? '$' : '.*'
     const location = matcher.match_type === 'any' ? 'g' : ''
     const capitalisation = matcher.case_sensitive ? '' : 'i'
-    const matchString = `${prefix}${matcher.match}${suffix}`
+    const matchString = `${prefix}${escapeRegex(matcher.match)}${suffix}`
     const options = `${location}${capitalisation}`
     const regexp = new RegExp(matchString, options)
     return regexp
@@ -24,7 +28,7 @@ export const createRegexFromMatcher = (matcher: Matcher) => {
  * @returns The list of transactions with categories matched (if matches are found).
  */
 export const autoMatchCategories = (
-    transactions: { [key: string]: string|number }[],
+    transactions: TransactionEditState['transactions'],
     categories: Category[],
 ) => {
     // Reduces the list of categories down to key-value pairs and a raw list of all `match` attributes.
@@ -47,7 +51,10 @@ export const autoMatchCategories = (
     const superMatcher = new RegExp(regexList.all.join('|'), 'gi')
 
     return transactions.map((transaction) => {
-        const description: string = transaction['Transaction Description'] as string
+        const description: string = 'Transaction Description' in transaction
+            ? transaction['Transaction Description'] as string
+            : transaction.description as string
+
         superMatcher.lastIndex = 0
         // Test the label against the loose combined regex.
         if (superMatcher.test(description)) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
@@ -12,7 +13,7 @@ exports.up = function(knex) {
         table.integer('value').notNullable().defaultTo(0)
         table.integer('scenario_id').references('scenario.id')
     })
-};
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -20,4 +21,4 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
     return knex.schema.dropTableIfExists('transactor')
-};
+}

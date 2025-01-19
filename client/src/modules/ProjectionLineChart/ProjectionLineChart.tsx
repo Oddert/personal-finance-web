@@ -43,9 +43,15 @@ interface Props {
  * @component
  */
 const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
+    /**
+     * Holds value for the currently selected option(s) for the scenario selector.
+     */
     const [activeScenariosOpt, setActiveScenariosOpt] =
         useState<{ label: string; id: number; }[]>(scenarioOptions)
 
+    /**
+     * Holds a filtered list of scenarios used to project the chart.
+     */
     const [activeScenarios, setActiveScenarios] = useState(scenarios)
 
     const [startDate, setStartDate] =
@@ -71,8 +77,11 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
         }[]
     ) => {
         const ids = value.map(({ id }) => id)
+        const filteredScenarios = scenarios.filter((scenario) => {
+            return ids.includes(scenario.id)
+        })
         setActiveScenarios(
-            scenarios.filter((scenario) => ids.includes(scenario.id))
+            filteredScenarios
         )
         setActiveScenariosOpt(value)
     }
@@ -141,7 +150,6 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                 for (const scheduler of transactor.schedulers) {
                     const range = scheduler.getRange(startObj, endObj)
                     if (scheduler instanceof ScheduleByEvent) {
-                        console.log(range)
                     }
                     for (const date of range) {
                         // const date = new Date(d).toString()
@@ -154,12 +162,10 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                             annotation: transactor.annotation,
                         })
                         if (scheduler instanceof ScheduleByEvent) {
-                            console.log(actions[date])
                         }
                     }
                 }
             }
-            console.log({ actions })
             const length = Math.abs((startObj.getTime() - endObj.getTime()) / 86400000)
             let runningBallance = Number(startingBallance)
 

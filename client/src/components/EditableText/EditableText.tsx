@@ -1,25 +1,27 @@
-import { useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { Edit as EditIcon } from '@mui/icons-material'
 
-interface Props {
-    containerSx: any
+interface IProps {
+    containerSx?: any
     headingProps: any
-    iconPosition: 'start'|'end'
+    iconPosition?: 'start'|'end'
     onChange: (value: string) => void
+    placeholder?: string
     text: string
     verticalCenter?: boolean
 }
 
-const EditableText = ({
+const EditableText: FC<IProps> = ({
     containerSx,
     headingProps,
-    iconPosition,
+    iconPosition = 'end',
     onChange,
+    placeholder,
     text,
     verticalCenter,
-}: Props) => {
+}) => {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState('')
 
@@ -41,7 +43,7 @@ const EditableText = ({
                 position: 'relative',
                 '& .EditableText_open': {
                     transition: '.1s linear',
-                    opacity: 0,
+                    opacity: text.length ? 0 : 1,
                     color: theme.palette.common.white,
                     paddingLeft: 0,
                     paddingRight: 0,
@@ -64,7 +66,7 @@ const EditableText = ({
                 onClick={() => setOpen(true)}
                 sx={{
                     position: 'absolute',
-                    left: '-100%',
+                    left: iconPosition === 'end' ? '-100%' : '100%',
                 }}
             >
                 <EditIcon />
@@ -77,20 +79,24 @@ const EditableText = ({
                     value={value}
                 />
             ) : (
-                <Typography className='EditableText__title' {...headingProps}>
-                    {text}
-                </Typography>
+                !text.length && placeholder ? (
+                    <Typography
+                        className='EditableText__title'
+                        sx={(theme) => ({
+                            color: theme.palette.text.disabled,
+                        })}
+                        {...headingProps}
+                    >
+                        {placeholder}
+                    </Typography>
+                ) : (
+                    <Typography className='EditableText__title' {...headingProps}>
+                        {text}
+                    </Typography>
+                )
             )}
         </Box>
     )
-}
-
-EditableText.defaultProps = {
-    containerSx: {},
-    headingProps: {},
-    iconPosition: 'start',
-    onChange: () => {},
-    text: '',
 }
 
 export default EditableText

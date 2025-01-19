@@ -125,3 +125,24 @@ export const createManyTransactions = async (req: Request, res: Response) => {
         return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
     }
 }
+
+export const updateManyTransactions = async (req: Request, res: Response) => {
+    try {
+        const date = new Date().toISOString()
+        const updatedTransactions = []
+        
+        for (const transaction of req.body.transactions) {
+            const body = { ...transaction, created_on: date, updated_on: date }
+            if (typeof transaction.date === 'string') {
+                body.date = dayjs(transaction.date, 'DD/MM/YYYY').valueOf()
+            }
+            
+            const updatedTransaction = await Transaction.query().patchAndFetchById(transaction.id, body)
+            updatedTransactions.push(updatedTransaction)
+        }
+        
+        return respondCreated(req, res, { updatedTransactions }, 'Transactions updated successfully', 201)
+    } catch(err: any) {
+        return respondBadRequest(req, res, null, 'Something went wrong processing your request', 500, err.message)
+    }
+}

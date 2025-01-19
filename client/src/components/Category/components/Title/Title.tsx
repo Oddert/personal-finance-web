@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 
 import type { Category } from '../../../../types/Category'
 
@@ -8,16 +8,24 @@ import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice
 
 import TitleBase from '../TitleBase/TitleBase'
 
-interface Props {
+interface IProps {
     category: Category
+    small?: boolean
 }
 
-const Title = ({ category }: Props) => {
+const Title: FC<IProps> = ({ category, small = false }) => {
     const dispatch = useAppDispatch()
 
     const handleChange = useCallback((value: string) => {
         dispatch(initUpdateSingleCategory({
-            category: { ...category, label: value },
+            category: {
+                ...category,
+                matchers: category.matchers.map((matcher) => ({
+                    ...matcher,
+                    case_sensitive: Boolean(matcher.case_sensitive),
+                })),
+                label: value,
+            },
         }))
     }, [category, dispatch])
 
@@ -27,7 +35,7 @@ const Title = ({ category }: Props) => {
             editable
             handleChange={handleChange}
             text={category.label}
-            size='xl'
+            size={small ? 'md' : 'xl'}
             showBorder={false}
         />
     )

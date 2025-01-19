@@ -14,6 +14,7 @@ import {
     writeHeaders,
     writeTransactions,
     setColumnMap,
+    setLoading,
 } from '../../contexts/transactionEditContext'
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
@@ -31,6 +32,7 @@ const Upload = () => {
     const [modalOpen, setModalOpen] = useState(false)
 
     const handleChange = useCallback((files: File[]|null) => {
+        dispatch(setLoading(true));
         if (files) {
             const transactions: { [key: string]: string|number }[] = []
             let headers: string[] = []
@@ -51,6 +53,7 @@ const Upload = () => {
                         dispatch(
                             writeTransactions(withCategories)
                         )
+                        dispatch(setLoading(false));
                     }
                 }
                 reader.readAsText(file)
@@ -73,11 +76,20 @@ const Upload = () => {
 
     return (
         <Fragment>
-            <MuiFileInput multiple onChange={handleChange} />
+            <MuiFileInput
+				label='Upload'
+				multiple
+				onChange={handleChange}
+				sx={{ gridColumn: '1 / -1' }}
+			/>
             <TransactionEditContext.Provider
                 value={{ state, dispatch }}
             >
-                <TransactionEdit open={modalOpen} onClose={() => setModalOpen(false)} />
+                <TransactionEdit
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    showMapping
+                />
             </TransactionEditContext.Provider>
         </Fragment>
     )

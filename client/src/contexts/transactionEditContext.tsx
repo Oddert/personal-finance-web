@@ -5,16 +5,20 @@ import { Autocomplete, TextField } from '@mui/material';
 
 import type { Category } from '../types/Category'
 
-interface TransactionEditState {
+export interface TransactionEditState {
     columnMap: { [key: string]: string }
     headers: string[]
     match?: string
     sideBarOpen: boolean
     transactions: { [key: string]: string|number }[]
+    mode: 'upload' | 'edit'
+    loading: boolean
 }
 
 const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
+    setMode: 'setMode',
+    setLoading: 'setLoading',
     toggleSideBarOpen: 'toggleSideBarOpen',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
@@ -30,7 +34,9 @@ export const transactionEditInitialState: TransactionEditState = {
         'credit': 'Credit Amount',
         'ballance': 'Balance',
     },
+    loading: false,
     headers: [],
+    mode: 'upload',
     sideBarOpen: false,
     transactions: [],
 }
@@ -98,11 +104,11 @@ export const defaultColumns = (
                         callback(cell.row.index, category.id)
                     }}
                     options={Object.values(categories as { [id: string]: Category })}
-                    placeholder='unset'
                     renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label='Category'
+						<TextField
+							{...params}
+							label='Category'
+							placeholder='unset'
                             sx={{ paddingTop: marginTopBottom, paddingBottom: marginTopBottom }}
                         />
                     )}
@@ -140,11 +146,21 @@ export const transactionEditReducer = (
                 ...state,
                 columnMap: action?.payload?.columnMap,
             }
+        case TransactionEditActionTypes.setLoading:
+            return {
+                ...state,
+                loading: action?.payload?.loading,
+            }
+        case TransactionEditActionTypes.setMode:
+            return {
+                ...state,
+                mode: action?.payload?.mode,
+            }
         case TransactionEditActionTypes.updateCategory:
-            if (!action?.payload?.idx || !action?.payload?.assignedCategory) {
+            if (action.payload.idx === null || !action?.payload?.assignedCategory) {
                 return state
             }
-            const transactions: { [key: string]: string|number }[] = [
+            const transactions: TransactionEditState['transactions'] = [
                 ...state.transactions.slice(0, action.payload.idx),
                 {
                     ...state.transactions[action.payload.idx],
@@ -177,6 +193,20 @@ export const setColumnMap = (
 ) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap }
+})
+
+export const setLoading = (
+    loading: TransactionEditState['loading'],
+) => ({
+    type: TransactionEditActionTypes.setLoading,
+    payload: { loading }
+})
+
+export const setMode = (
+    mode: TransactionEditState['mode'],
+) => ({
+    type: TransactionEditActionTypes.setMode,
+    payload: { mode }
 })
 
 export const toggleSideBar = (

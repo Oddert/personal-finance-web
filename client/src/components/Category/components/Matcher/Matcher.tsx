@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 
 import { Box, Button, ListItem, Typography } from '@mui/material'
 import {
@@ -8,7 +8,9 @@ import {
     FontDownloadOutlined as MatchNegativeIcon,
 } from '@mui/icons-material'
 
-import { initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
+import { categorySlice, initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
+
+import routes from '../../../../services/routes'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
@@ -17,20 +19,35 @@ import { Matcher as MatcherT } from '../../../../types/Matcher'
 
 import EditMatcher from '../EditMatcher'
 
-interface Props {
+interface IProps {
     matcher: MatcherT
     categoryId: Category['id']
 }
 
 const iconWidth = 50
 
-const Matcher = ({ matcher, categoryId }: Props) => {
+const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     const dispatch = useAppDispatch()
 
     const [open, setOpen] = useState<boolean>(false)
 
-    const handleSubmit = (matcher: Partial<MatcherT>) => {
-        setOpen(false)
+    const handleSubmit = (_matcher: Partial<MatcherT>) => {
+        const request = async () => {
+            try {
+                const response: any = await routes.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                dispatch(categorySlice.actions.updateSingleMatcher({
+                    categoryId,
+                    matcher: {
+                        ...response.payload.matcher,
+                        case_sensitive: Boolean(response.payload.matcher.case_sensitive),
+                    },
+                }));
+                setOpen(false);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        request();
     }
 
     const handleDelete = useCallback(() => {
@@ -42,24 +59,24 @@ const Matcher = ({ matcher, categoryId }: Props) => {
     const matchTypeTitle = useMemo(() => {
         switch(matcher?.match_type) {
             case 'any':
-                return 'matches this text anywhere in the description'
+                return 'Matches this text anywhere in the description'
             case 'exact':
-                return 'only matches this exact string (may not have anything before or after)'
+                return 'Only matches this exact string (may not have anything before or after)'
             case 'end':
-                return 'matches only if this text is at the end of a description'
+                return 'Matches only if this text is at the end of a description'
             case 'start':
-                return 'matches only if this text is at the beginning of a description'
+                return 'Matches only if this text is at the beginning of a description'
         }
     }, [matcher?.match_type])
 
     if (open) {
         return (
             <EditMatcher
+                matcher={matcher}
                 onCancel={() => setOpen(false)}
                 onSubmit={handleSubmit}
-                clearOnBlur={true}
-                clearOnCancel={true}
-                clearOnSubmit={true}
+                clearOnCancel
+                clearOnSubmit
             />
         )
     }

@@ -10,7 +10,9 @@ import {
 import RangeControls from './components/RangeControls';
 import RequestControls from './components/RequestControls';
 import Table from './components/Table';
-import Upload from '../../components/Upload/Upload';
+import Upload from '../../components/Upload';
+
+import Edit from './components/Edit';
 
 const Transactions = () => {
     const [state, dispatch] = useReducer(transactionRangeReducer, initialState)
@@ -28,13 +30,14 @@ const Transactions = () => {
                         display: 'grid',
                         gridTemplateColumns: 'repeat(2, 1fr)',
                         margin: '24px 0',
-                        gridGap: '0 32px',
+                        gridGap: '16px 32px',
                     }}
                 >
                     <Upload />
                     <RequestControls />
                     <RangeControls />
                 </Box>
+                <Edit />
                 <Table />
             </Container>
         </TransactionRange.Provider>

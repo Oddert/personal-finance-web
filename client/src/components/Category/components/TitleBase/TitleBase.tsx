@@ -1,17 +1,10 @@
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { Typography } from '@mui/material'
 import { Variant } from '@mui/material/styles/createTypography'
 
 import EditableText from '../../../EditableText/EditableText'
 
-interface Props {
-    colour: string
-    editable: boolean
-    handleChange?: (value: string) => void
-    text: string
-    showBorder?: boolean
-    size: 'xs'|'sm'|'md'|'lg'|'xl'
-}
+import type { IProps } from './TitleBase.types'
 
 const sizeMap = {
     xs: '10px',
@@ -21,14 +14,14 @@ const sizeMap = {
     xl: '24px',
 }
 
-const TitleBase = ({
-    colour,
-    editable,
-    handleChange,
-    text,
-    showBorder,
-    size,
-}: Props) => {
+const TitleBase: FC<IProps> = ({
+    colour = '',
+    editable = true,
+    handleChange = () => {},
+    text = '',
+    showBorder = false,
+    size = 'md',
+}) => {
     const headingProps = useMemo(() => {
         return {
             sx: {
@@ -44,6 +37,7 @@ const TitleBase = ({
         return (
             <EditableText
                 headingProps={headingProps}
+                iconPosition='start'
                 onChange={handleChange}
                 text={text}
                 verticalCenter
@@ -55,14 +49,6 @@ const TitleBase = ({
             {text}
         </Typography>
     )
-}
-
-TitleBase.defaultProps = {
-    colour: '',
-    editable: true,
-    handleChange: () => {},
-    text: '',
-    size: 'md',
 }
 
 export default TitleBase

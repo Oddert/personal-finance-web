@@ -105,15 +105,15 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         header: 'Category',
         accessorKey: 'assignedCategory',
         cell: (cell) => {
-            const value: Category|unknown = cell.renderValue()
+            const value: Category | unknown = cell.renderValue()
             if (value && typeof value === 'object' && 'label' in value) {
                 return value.label
             }
-            return null
+            return '- uncategorised -'
         }
     },
     {
-        header: 'CatId',
+        header: 'Cat Id',
         accessorKey: 'category_id',
     }
 ]

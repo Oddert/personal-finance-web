@@ -5,7 +5,7 @@ import { render } from '../../utils/testUtils';
 
 import App from './App';
 
-describe('eyo', () => {
+describe('root', () => {
     test('renders learn react link', () => {
         const { container } = render(<App />)
         // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access

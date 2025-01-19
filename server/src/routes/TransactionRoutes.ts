@@ -8,6 +8,7 @@ import {
     updateSingleTransaction,
     deleteSingleTransaction,
     createManyTransactions,
+    updateManyTransactions,
 } from '../controllers/TransactionController'
 
 import {
@@ -24,6 +25,18 @@ router.route('/')
         checkSchema(createTransactionSchema),
         createSingleTransaction,
     )
+    
+router.route('/create-many')
+    .post(
+        checkSchema(createManyTransactionSchema),
+        createManyTransactions,
+    )
+
+router.route('/update-many')
+    .put(
+        checkSchema(createManyTransactionSchema),
+        updateManyTransactions,
+    )
 
 router.route('/:id')
     .get(getSingleTransactions)
@@ -32,11 +45,5 @@ router.route('/:id')
         updateSingleTransaction,
     )
     .delete(deleteSingleTransaction)
-
-router.route('/create-many')
-    .post(
-        checkSchema(createManyTransactionSchema),
-        createManyTransactions,
-    )
 
 export default router

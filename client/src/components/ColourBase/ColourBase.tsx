@@ -1,15 +1,15 @@
-import { MouseEvent } from 'react'
+import { FC, MouseEvent } from 'react'
 import { Box, Button, Theme } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 
 import { categoryBoxSizes } from '../../constants/categoryConstants'
 
-interface Props {
+interface IProps {
     asButton: boolean
     colour: string
     handleClick?: (event: MouseEvent<HTMLButtonElement>) => void
     id?: string
-    size: 'xs'|'sm'|'md'|'lg'|'xl'
+    size?: 'xs'|'sm'|'md'|'lg'|'xl'
 }
 
 /**
@@ -29,7 +29,13 @@ interface Props {
  * @param props.id HTML id attribute to be assigned to the button.
  * @param props.size The size of the icon (default: 'md').
  */
-const ColourBase = ({ asButton, colour, handleClick, id, size }: Props) => {
+const ColourBase: FC<IProps> = ({
+	asButton = true,
+	colour = '',
+	handleClick = () => {},
+	id = '',
+	size = 'md',
+}) => {
     const sx = (theme: Theme) => ({
         width: categoryBoxSizes[size],
         height: categoryBoxSizes[size],
@@ -74,14 +80,6 @@ const ColourBase = ({ asButton, colour, handleClick, id, size }: Props) => {
             sx={sx}
         />
     )
-}
-
-ColourBase.defaultProps = {
-    asButton: true,
-    colour: '',
-    handleClick: () => {},
-    id: null,
-    size: 'md',
 }
 
 export default ColourBase

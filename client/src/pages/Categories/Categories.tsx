@@ -1,18 +1,28 @@
 import { useCallback, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { Box, Button, Container, List, ListItem, Typography } from '@mui/material'
+import {
+    Box,
+    Button,
+    Container,
+    ListItem,
+    Typography,
+} from '@mui/material'
 import { Add as PlusIcon } from '@mui/icons-material'
 
 import { Category as CategoryT } from '../../types/Category'
+import { IDynamicCardLayoutModes } from '../../types/Common.types'
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors'
 
-import Category from '../../components/Category/'
-import CategoryAdd from '../../components/CategoryAdd/'
+import Category from '../../components/Category'
+import CategoryAdd from '../../components/CategoryAdd'
+import DynamicCardList from '../../components/DynamicCardList'
+import LayoutControls from '../../components/LayoutControls'
 
 const Categories = () => {
     const [dialogOpen, setDialogOpen] = useState(false)
+    const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard')
 
     const categories = useSelector(getCategoryResponse)
 
@@ -33,27 +43,22 @@ const Categories = () => {
             <Box
                 sx={{
                     display: 'flex',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     padding: '0 8px',
                 }}
             >
+                <LayoutControls layout={layout} setLayout={setLayout} />
                 <Button onClick={handleDialogOpen} variant='contained'>
-                    Add Category
+                    <PlusIcon /> Add Category
                 </Button>
             </Box>
-            <List
-                sx={(theme) => ({
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
-                    gridGap: '30px',
-                    [theme.breakpoints.down('sm')]: {
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                        gridGap: '10px',
-                    }
-                })}
-            >
+            <DynamicCardList layout={layout}>
                 {categories.map((category: CategoryT) => (
-                    <Category category={category} key={category.id} />
+                    <Category
+                        category={category}
+                        key={category.id}
+                        layout={layout}
+                    />
                 ))}
                 <ListItem>
                     <Button
@@ -62,12 +67,13 @@ const Categories = () => {
                             width: '100%',
                             height: '100%',
                         }}
+						title='Add a new category'
                         variant='outlined'
                     >
                         <PlusIcon fontSize='large' />
                     </Button>
                 </ListItem>
-            </List>
+			</DynamicCardList>
             <CategoryAdd
                 handleClose={handleDialogClose}
                 open={dialogOpen}

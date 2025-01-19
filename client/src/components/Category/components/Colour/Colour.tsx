@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
-
-import type { Category } from '../../../../types/Category'
+import { FC, useCallback, useEffect, useState } from 'react'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
@@ -8,18 +6,23 @@ import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice
 
 import ColourEdit from '../../../ColourEdit'
 
-interface Props {
-    category: Category
-}
+import type { IProps } from './Colour.types'
 
-const Colour = ({ category }: Props) => {
+const Colour: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch()
 
     const [colour, setColour] = useState<string>('#bec3c7')
 
     const handleSubmit = useCallback((editedColour: string) => {
         dispatch(initUpdateSingleCategory({
-            category: { ...category, colour: editedColour },
+            category: {
+                ...category,
+                matchers: category.matchers.map((matcher) => ({
+                    ...matcher,
+                    case_sensitive: Boolean(matcher.case_sensitive)
+                })),
+                colour: editedColour,
+            },
         }))
     }, [category, dispatch])
         

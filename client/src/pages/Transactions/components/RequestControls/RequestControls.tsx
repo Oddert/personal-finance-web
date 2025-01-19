@@ -8,6 +8,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 
 import { getTransactionsEndDate, getTransactionsStartDate } from '../../../../redux/selectors/transactionsSelectors'
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+
 import { setEndDate, setStartDate } from '../../../../redux/slices/transactionsSlice'
 
 dayjs.extend(localizedFormat)
@@ -29,6 +30,10 @@ const RequestControls = () => {
         dispatch(setEndDate({ endDate: e.target.value }))
     }, [dispatch])
 
+    // const handleSubmit = useCallback(() => {
+    //     dispatch(updateValue())
+    // }, [dispatch])
+
     useEffect(() => {
         const date = dayjs(startDate).format('YYYY-MM-DD')
         if (!(date === 'Invalid Date')) {
@@ -46,25 +51,38 @@ const RequestControls = () => {
     return (
         <Box>
             <Typography sx={{ textAlign: 'left', margin: '12px 0' }}>
-                Loaded transactions for the following dates:
+                Load data for the following dates:
             </Typography>
-            <TextField
-                name='startDate'
-                label='Start Date'
-                InputLabelProps={{ shrink: true, required: true }}
-                type='date'
-                value={start}
-                onChange={handleChangeStart}
-            />
-            <TextField
-                name='endDate'
-                label='End Date'
-                InputLabelProps={{ shrink: true, required: true }}
-                type='date'
-                value={end}
-                onChange={handleChangeEnd}
-            />
-            <Button>Refresh</Button>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    gridGap: '16px',
+                }}
+            >
+                <TextField
+                    name='startDate'
+                    label='Start Date'
+                    InputLabelProps={{ shrink: true, required: true }}
+                    type='date'
+                    value={start}
+                    onChange={handleChangeStart}
+                />
+                <TextField
+                    name='endDate'
+                    label='End Date'
+                    InputLabelProps={{ shrink: true, required: true }}
+                    type='date'
+                    value={end}
+                    onChange={handleChangeEnd}
+                />
+                <Button
+                    // onClick={handleSubmit}
+                >
+                    Refresh
+                </Button>
+            </Box>
         </Box>
     )
 }
