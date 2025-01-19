@@ -10,7 +10,7 @@ import type { Matcher } from '../types/Matcher';
  * Contains a list of functions for calling endpoints.
  * @category Services
  */
-const routes = {
+const APIService = Object.freeze({
     /* Transactions */
     getAllTransactions: async (startDate?: string, endDate?: string) => {
         const from = startDate ? `?from=${startDate}` : ''
@@ -71,6 +71,6 @@ const routes = {
     updateSingleBudget: async (budget: IBudget, id: number) => {
         return await request.put(`/budget/${id}`, budget)
     },
-}
+})
 
-export default routes
+export default APIService

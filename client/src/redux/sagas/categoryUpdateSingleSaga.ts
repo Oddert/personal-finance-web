@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { put } from 'redux-saga/effects'
 
-import routes from '../../services/routes'
+import APIService from '../../services/APIService'
 
 import type { Category } from '../../types/Category'
 import type { ResponseData } from '../../types/Request'
@@ -18,7 +18,7 @@ export default function* categoryUpdateSingleSaga (
 ) {
     try {
         const response: ResponseData<{ category: Category }> =
-            yield routes.updateCategory(payload.category)
+            yield APIService.updateCategory(payload.category)
 
         if (!response.payload?.category || response.error) {
             throw new Error(response.error || 'Issue encountered updating category.')

@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 
-import routes from '../../services/routes'
+import APIService from '../../services/APIService'
 
 import { mapCategoriesToTransactions, orderTransactions } from '../../utils/transactionUtils'
 
@@ -23,7 +23,7 @@ export default function* transactionsWriteSaga () {
         }
         
         const transactionsResponse: ResponseData<{ transactions: Transaction[] }> =
-            yield call(routes.getAllTransactions)
+            yield call(APIService.getAllTransactions)
 
         if (!transactionsResponse?.payload?.transactions) {
             return

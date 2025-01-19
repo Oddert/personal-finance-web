@@ -6,7 +6,7 @@ import { Delete as DeleteIcon } from '@mui/icons-material'
 
 import { ROUTES } from '../../../../constants/routerConstants';
 
-import routes from '../../../../services/routes';
+import APIService from '../../../../services/APIService';
 
 import { deleteBudget } from '../../../../redux/slices/budgetSlice';
 
@@ -28,7 +28,7 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
 
     const handleClickDelete = () => {
         const request = async () => {
-            await routes.deleteSingleBudget(budget.id);
+            await APIService.deleteSingleBudget(budget.id);
             dispatch(deleteBudget({ budgetId: budget.id }));
             navigate(ROUTES.MANAGE_BUDGETS);
         }

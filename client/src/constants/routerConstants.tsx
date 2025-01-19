@@ -39,7 +39,7 @@ export const ROUTES = Object.freeze({
 });
 
 /**
- * Provides constructor functions for routes which require optional elements to their paths.
+ * Provides constructor functions for APIService which require optional elements to their paths.
  *
  * NOTE: Does not include all paths, only those with optional parameters.
  * @constant

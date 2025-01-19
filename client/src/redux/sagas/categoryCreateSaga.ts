@@ -5,7 +5,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { ResponseData } from '../../types/Request'
 import type { Category } from '../../types/Category'
 
-import routes from '../../services/routes'
+import APIService from '../../services/APIService'
 
 import { createCategory } from '../slices/categorySlice'
 
@@ -19,7 +19,7 @@ export default function* categoryCreateSaga(
 ) {
     try {
         const response: ResponseData<{ category: Category }> =
-            yield routes.createCategory(payload.category)
+            yield APIService.createCategory(payload.category)
         
         if (response.error || !response.payload) {
             console.error(response.error)

@@ -11,7 +11,7 @@ import {
 
 import { IBudget, IBudgetRow } from '../../types/Budget.types';
 
-import routes from '../../services/routes';
+import APIService from '../../services/APIService';
 import { ROUTES } from '../../constants/routerConstants';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
@@ -68,8 +68,8 @@ const EditBudget: FC<IProps> = () => {
 			dispatch(budgetLoading())
 			const request = async () => {
 				const response: any = isEdit
-					? await routes.updateSingleBudget({ ...budget, budgetRows, }, budget.id)
-					: await routes.createSingleBudget({ ...budget, budgetRows, })
+					? await APIService.updateSingleBudget({ ...budget, budgetRows, }, budget.id)
+					: await APIService.createSingleBudget({ ...budget, budgetRows, })
 				dispatch(addBudget({ budget: response.payload.budget }));
 				navigate(ROUTES.MANAGE_BUDGETS);
 			}
@@ -82,7 +82,7 @@ const EditBudget: FC<IProps> = () => {
 
 	useEffect(() => {
 		const fetchBudget = async (budgetId: number) => {
-			const response: any = await routes.getSingelBudget(budgetId)
+			const response: any = await APIService.getSingelBudget(budgetId)
 			setBudget({
 				...response.payload.budget as IBudget,
 				budgetRows: [],

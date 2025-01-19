@@ -7,7 +7,7 @@ import { Button, CircularProgress } from '@mui/material'
 
 import { TransactionEditContext } from '../../../contexts/transactionEditContext'
 
-import routes from '../../../services/routes'
+import APIService from '../../../services/APIService'
 
 import { useAppDispatch } from '../../../hooks/ReduxHookWrappers'
 import { requestTransactions } from '../../../redux/slices/transactionsSlice'
@@ -68,8 +68,8 @@ const Submit: FC<IProps> = ({ onClose }) => {
 
         const request = async () => {
             const response = mode === 'upload'
-                ? await routes.createManyTransactions(transactionsWithValidKeys)
-                : await routes.updateManyTransactions(transactionsWithValidKeys);
+                ? await APIService.createManyTransactions(transactionsWithValidKeys)
+                : await APIService.updateManyTransactions(transactionsWithValidKeys);
             setLoading(false)
             if (response.status === 201) {
                 onClose()

@@ -1,4 +1,4 @@
-import routes from '../../services/routes';
+import APIService from '../../services/APIService';
 import { IBudget } from '../../types/Budget.types';
 
 import { AppDispatch, RootState } from '../constants/store';
@@ -27,7 +27,7 @@ export const refreshBudgets = (override?: boolean) =>
 					state.budget.timestamp <= thePast)
 			) {
 				dispatch(budgetLoading());
-				const response: any = await routes.getAllBudgets();
+				const response: any = await APIService.getAllBudgets();
 				if (response?.status === 200) {
 					dispatch(writeBudgets({
 						budgets: (response?.payload.budgets || []) as IBudget[]

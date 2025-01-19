@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { put } from 'redux-saga/effects'
 
-import routes from '../../services/routes'
+import APIService from '../../services/APIService'
 
 import type { Category } from '../../types/Category'
 import type { Matcher } from '../../types/Matcher'
@@ -20,7 +20,7 @@ export default function* matcherCreateSingleSaga(
 ) {
     try {
         const response: ResponseData<{ matcher: Matcher }> =
-            yield routes.addSingleMatcher(payload.matcher, payload.categoryId)
+            yield APIService.addSingleMatcher(payload.matcher, payload.categoryId)
 
         if (response.error || !response.payload) {
             console.error(response?.error)
