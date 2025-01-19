@@ -3,13 +3,34 @@ import { useSelector } from 'react-redux'
 import Chart from 'react-apexcharts'
 import { ApexOptions } from 'apexcharts'
 
-import { Box, Paper, Typography } from '@mui/material'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import {
+    Accordion,
+    AccordionActions,
+    AccordionSummary,
+    Box,
+    FormControlLabel,
+    Input,
+    Paper,
+    Typography,
+} from '@mui/material'
+import { ExpandMore as ExpandIcon } from '@mui/icons-material'
 
 import type { Transaction } from '../../types/Transaction'
 
-import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors'
+import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors'
 
-import { chart1BaseOptions, chart2BaseOptions, title } from './ExistingDataLineChartUtils'
+import {
+    chart1BaseOptions,
+    chart2BaseOptions,
+    defaultEnd,
+    defaultStart,
+    title,
+} from './ExistingDataLineChartUtils'
+
+dayjs.extend(localizedFormat);
 
 interface Props {
     compact?: boolean
@@ -32,16 +53,39 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
         useState<{ x: number|string, y: number }[]>([])
     const [debitMax, setDebitMax] = useState<number>(0)
 
+    const [startDate, setStartDate] =
+        useState<string|number>(defaultStart.toISOString().substring(0, 10))
+
+    const [endDate, setEndDate] =
+        useState<string|number>(defaultEnd.toISOString().substring(0, 10))
+
+    console.log({ startDate, endDate })
+
     // Workaround for issue owners seem unwilling / unable to resolve:
     // https://github.com/apexcharts/react-apexcharts/issues/182
     // https://github.com/apexcharts/react-apexcharts/issues/31
     const [chart1Options, setChart1Options] = useState<ApexOptions>(chart1BaseOptions)
     const [chart2Options, setChart2Options] = useState<ApexOptions>(chart2BaseOptions)
 
-    const transactions = useSelector(getTransactionsResponse)
+    const transactions = useSelector(getTransactionsOrderedByDate)
     
     useEffect(() => {
-        const sorted = transactions.reduce((acc: {
+        let sDate = dayjs(startDate);
+        const eDate = dayjs(endDate);
+
+        const transactionList: Transaction[] = [];
+
+        while (sDate < eDate) {
+            const year = sDate.year()
+            const month = sDate.month()
+            if (year in transactions && month in transactions[year]) {
+                const transactionBlock = transactions[year][month];
+                transactionList.push(...transactionBlock);
+            }
+            sDate = sDate.add(1, 'month').set('date', 10)
+        }
+
+        const sorted = transactionList.reduce((acc: {
             ballance: { x: number|string, y: number }[],
             debit: { x: number|string, y: number }[],
             credit: { x: number|string, y: number }[],
@@ -81,7 +125,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
         setBallanceData(sorted.ballance)
         setDebitData(sorted.debit)
         setCreditData(sorted.credit)
-    }, [transactions])
+    }, [endDate, startDate, transactions])
 
     useEffect(() => {
         setChart1Options(chart1BaseOptions)
@@ -102,6 +146,50 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     }, [debitTransactions, debitMax])
 
     const width = useMemo(() => compact ? '100%' : '80%', [compact])
+    
+    const Controls = (
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+            }}
+        >
+            <FormControlLabel
+                control={
+                    <Input
+                        name='start-date'
+                        onChange={(evt) => setStartDate(evt.target.value)}
+                        placeholder='Start Date'
+                        type='date'
+                        value={startDate}
+                    />
+                }
+                label='Start Date'
+                labelPlacement='top'
+                sx={(theme) => ({
+                    alignItems: 'flex-start',
+                    color: theme.palette.common.white,   
+                })}
+            />
+            <FormControlLabel
+                control={
+                    <Input
+                        name='end-date'
+                        onChange={(evt) => setEndDate(evt.target.value)}
+                        placeholder='End Date'
+                        type='date'
+                        value={endDate}
+                    />
+                }
+                label='End Date'
+                labelPlacement='top'
+                sx={(theme) => ({
+                    alignItems: 'flex-start',
+                    color: theme.palette.common.white,   
+                })}
+            />
+        </Box>
+    )
 
     return (
         <Paper
@@ -113,21 +201,38 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                     margin: '0 auto',
                 },
                 color: theme.palette.common.black,
-                '& *': {
-                    color: theme.palette.common.black,
-                },
             })}
         >
-            <Typography
-                sx={(theme) => ({
-                    color: theme.palette.common.white,
-                    width,
-                    margin: '16px auto 32px',
-                })}
-                variant='h3'
-            >
-                {title}
-            </Typography>
+            {
+                compact ? (
+                    <Accordion>
+                        <AccordionSummary
+                            aria-controls='projection-line-controls'
+                            expandIcon={<ExpandIcon />}
+                            id='projection-controls-header'
+                        >
+                            {title}
+                        </AccordionSummary>
+                        <AccordionActions>
+                            {Controls}
+                        </AccordionActions>
+                    </Accordion>
+                ) : (
+                    <Box sx={{ width: '80%', margin: '0 auto' }}>
+                        <Typography
+                            sx={(theme) => ({
+                                color: theme.palette.common.white,
+                                width,
+                                margin: '16px auto 32px',
+                            })}
+                            variant='h3'
+                        >
+                            {title}
+                        </Typography>
+                        {Controls}
+                    </Box>
+                )
+            }
             <Chart
                 options={chart1Options}
                 series={[

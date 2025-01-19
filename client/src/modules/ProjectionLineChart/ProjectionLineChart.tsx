@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, SyntheticEvent, useCallback, useEffect, useState } from 'react'
+import {
+    ChangeEvent,
+    FC,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react'
 import { useSelector } from 'react-redux'
 import Chart from 'react-apexcharts'
 

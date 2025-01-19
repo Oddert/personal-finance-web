@@ -103,3 +103,11 @@ export const chart2BaseOptions: ApexOptions = {
         // max: debitMax,
     },
 }
+
+export const defaultEnd = new Date()
+
+const defaultStartConstructor = new Date()
+defaultStartConstructor.setMonth(defaultStartConstructor.getMonth() - 3)
+defaultStartConstructor.setDate(0)
+
+export const defaultStart = new Date(defaultStartConstructor)
