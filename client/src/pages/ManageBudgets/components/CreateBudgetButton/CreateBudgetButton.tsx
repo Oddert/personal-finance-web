@@ -14,27 +14,24 @@ import type { IProps } from './CreateBudgetButton.types';
  * @subcategory Manage Budgets
  */
 const CreateBudgetButton: FC<IProps> = () => {
-	const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+    const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
-	const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	}
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-	const handleClose = () => {
-		setAnchorEl(null);
-	}
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-	return (
-		<Fragment>
-			<Button onClick={handleClick} variant='contained'>
-				<PlusIcon /> Create new budget
-			</Button>
-			<CreateBudgetMenu
-				anchorEl={anchorEl}
-				handleClose={handleClose}
-			/>
-		</Fragment>
-	);
-}
+    return (
+        <Fragment>
+            <Button onClick={handleClick} variant='contained'>
+                <PlusIcon /> Create new budget
+            </Button>
+            <CreateBudgetMenu anchorEl={anchorEl} handleClose={handleClose} />
+        </Fragment>
+    );
+};
 
 export default CreateBudgetButton;

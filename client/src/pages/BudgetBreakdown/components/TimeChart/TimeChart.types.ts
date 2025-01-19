@@ -1,19 +1,19 @@
 import { Transaction } from '../../../../types/Transaction';
 
 export interface IProps {
-    endDate: string
-    filteredTransactions: Transaction[]
-    startDate: string
+    endDate: string;
+    filteredTransactions: Transaction[];
+    startDate: string;
 }
 
 export interface ISortedByCategoryRow {
-    label: string
-    id: number
+    label: string;
+    id: number;
     transactions: {
-        [key: number]: Transaction[]
-    }
+        [key: number]: Transaction[];
+    };
 }
 
 export interface ISortedByCategory {
-    [key: number]: ISortedByCategoryRow
+    [key: number]: ISortedByCategoryRow;
 }

@@ -1,11 +1,11 @@
-import { ApexOptions } from 'apexcharts'
+import { ApexOptions } from 'apexcharts';
 
-import { LOCALE } from '../../constants/appConstants'
+import { LOCALE } from '../../constants/appConstants';
 
 /**
  * The chart title for Existing Data Line Chart.
  */
-export const title = 'Past Data'
+export const title = 'Past Data';
 
 export const chart1BaseOptions: ApexOptions = {
     chart: {
@@ -31,7 +31,7 @@ export const chart1BaseOptions: ApexOptions = {
             style: {
                 colors: '#fff',
             },
-            formatter: val => new Date(val).toLocaleDateString(LOCALE)
+            formatter: (val) => new Date(val).toLocaleDateString(LOCALE),
         },
         tickAmount: 10,
     },
@@ -43,20 +43,20 @@ export const chart1BaseOptions: ApexOptions = {
             },
             formatter: (number) => {
                 if (number === null || isNaN(number)) {
-                    return String(number)
+                    return String(number);
                 }
-                const str = number.toString().split('.')
+                const str = number.toString().split('.');
                 if (str[0].length >= 4) {
-                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
                 }
                 if (str[1] && str[1].length >= 4) {
-                    str[1] = str[1].replace(/(\d{3})/g, '$1,')
+                    str[1] = str[1].replace(/(\d{3})/g, '$1,');
                 }
-                return str.join('.')
-            }
+                return str.join('.');
+            },
         },
     },
-}
+};
 
 export const chart2BaseOptions: ApexOptions = {
     chart: {
@@ -88,7 +88,7 @@ export const chart2BaseOptions: ApexOptions = {
             style: {
                 colors: '#fff',
             },
-            formatter: val => new Date(val).toLocaleDateString(LOCALE)
+            formatter: (val) => new Date(val).toLocaleDateString(LOCALE),
         },
         tickAmount: 10,
     },
@@ -102,12 +102,12 @@ export const chart2BaseOptions: ApexOptions = {
         forceNiceScale: true,
         // max: debitMax,
     },
-}
+};
 
-export const defaultEnd = new Date()
+export const defaultEnd = new Date();
 
-const defaultStartConstructor = new Date()
-defaultStartConstructor.setMonth(defaultStartConstructor.getMonth() - 3)
-defaultStartConstructor.setDate(0)
+const defaultStartConstructor = new Date();
+defaultStartConstructor.setMonth(defaultStartConstructor.getMonth() - 3);
+defaultStartConstructor.setDate(0);
 
-export const defaultStart = new Date(defaultStartConstructor)
+export const defaultStart = new Date(defaultStartConstructor);

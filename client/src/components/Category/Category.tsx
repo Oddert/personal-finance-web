@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC } from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -8,16 +8,16 @@ import {
     ListItem,
     Paper,
     Typography,
-} from '@mui/material'
+} from '@mui/material';
 
-import type { Matcher as IMatcher } from '../../types/Matcher'
+import type { Matcher as IMatcher } from '../../types/Matcher';
 
-import AddMatcher from './components/AddMatcher'
-import Colour from './components/Colour'
-import Description from './components/Description'
-import Matcher from './components/Matcher'
-import Title from './components/Title'
-import HamburgerMenu from './components/HamburgerMenu'
+import AddMatcher from './components/AddMatcher';
+import Colour from './components/Colour';
+import Description from './components/Description';
+import Matcher from './components/Matcher';
+import Title from './components/Title';
+import HamburgerMenu from './components/HamburgerMenu';
 
 import type { IProps } from './Category.types';
 
@@ -55,7 +55,7 @@ const Category: FC<IProps> = ({
                 onSubmit={onAddNewSubmit}
             />
         </List>
-    )
+    );
 
     const MatchersTitle = (
         <Typography
@@ -63,17 +63,18 @@ const Category: FC<IProps> = ({
             align='left'
             sx={{ fontSize: '16px', fontWeight: 'bold' }}
         >
-            Matchers{category.matchers?.length ? ` (${category.matchers.length})` : ''}
+            Matchers
+            {category.matchers?.length ? ` (${category.matchers.length})` : ''}
         </Typography>
-    )
+    );
 
     const DescBox = (
         <Box sx={{ display: 'flex' }}>
             <Description category={category} />
         </Box>
-    )
+    );
 
-    switch(layout) {
+    switch (layout) {
         case 'list':
         case 'compact':
             return (
@@ -126,7 +127,7 @@ const Category: FC<IProps> = ({
                         </Accordion>
                     </Paper>
                 </ListItem>
-            )
+            );
         case 'standard':
         default:
             return (
@@ -155,7 +156,10 @@ const Category: FC<IProps> = ({
                         })}
                     >
                         <Box
-                            sx={{ display: 'flex', justifyContent: 'space-between' }}
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
                         >
                             <Colour category={category} />
                             <Box
@@ -171,17 +175,13 @@ const Category: FC<IProps> = ({
                         </Box>
                         {DescBox}
                         <Accordion>
-                            <AccordionSummary>
-                                {MatchersTitle}
-                            </AccordionSummary>
-                            <AccordionDetails>                            
-                                {CategoryList}
-                            </AccordionDetails>
+                            <AccordionSummary>{MatchersTitle}</AccordionSummary>
+                            <AccordionDetails>{CategoryList}</AccordionDetails>
                         </Accordion>
                     </Paper>
                 </ListItem>
-            )
-    }    
-}
+            );
+    }
+};
 
-export default Category
+export default Category;

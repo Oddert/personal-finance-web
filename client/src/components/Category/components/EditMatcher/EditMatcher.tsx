@@ -38,62 +38,62 @@ const EditMatcher: FC<IProps> = ({
     clearOnCancel = false,
     clearOnSubmit = false,
     matcher = {
-		case_sensitive: false,
-		match: '',
-		matchType: 'any',
-	},
+        case_sensitive: false,
+        match: '',
+        matchType: 'any',
+    },
     onBlur = () => {},
     onCancel = () => {},
     onSubmit = () => {},
 }) => {
-    const [caseSensitive, setCaseSensitive] = useState<boolean>(false)
-    const [match, setMatch] = useState<string>('')
-    const [matchType, setMatchType] = useState<MatchType>('any')
+    const [caseSensitive, setCaseSensitive] = useState<boolean>(false);
+    const [match, setMatch] = useState<string>('');
+    const [matchType, setMatchType] = useState<MatchType>('any');
 
     useEffect(() => {
-        setMatch(matcher?.match || '')
-        setCaseSensitive(Boolean(matcher?.case_sensitive || false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        setMatch(matcher?.match || '');
+        setCaseSensitive(Boolean(matcher?.case_sensitive || false));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const reset = () => {
-        setCaseSensitive(false)
-        setMatch('')
-        setMatchType('any')
-    }
+        setCaseSensitive(false);
+        setMatch('');
+        setMatchType('any');
+    };
 
     const createResponse = () => ({
         case_sensitive: caseSensitive,
         match,
         match_type: matchType,
-    })
+    });
 
     const handleBlur = () => {
         if (onBlur) {
-            onBlur(createResponse())
+            onBlur(createResponse());
             if (clearOnBlur) {
-                reset()
+                reset();
             }
         }
-    }
+    };
 
     const handleCancel = () => {
         if (onCancel) {
-            onCancel(createResponse())
+            onCancel(createResponse());
         }
         if (clearOnCancel) {
-            reset()
+            reset();
         }
-    }
-	
+    };
+
     const handleSave = () => {
         if (onSubmit) {
-            onSubmit(createResponse())
+            onSubmit(createResponse());
         }
         if (clearOnSubmit) {
-            reset()
+            reset();
         }
-    }
+    };
 
     return (
         <Box
@@ -111,8 +111,8 @@ const EditMatcher: FC<IProps> = ({
                 autoFocus
                 label='Match'
                 onChange={(event) => {
-					setMatch(event?.target?.value)
-				}}
+                    setMatch(event?.target?.value);
+                }}
                 size='small'
                 sx={{
                     alignSelf: 'flex-end',
@@ -120,12 +120,14 @@ const EditMatcher: FC<IProps> = ({
                 type='text'
                 value={match}
             />
-            <FormGroup sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                margin: '0 16px',
-            }}>
+            <FormGroup
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    margin: '0 16px',
+                }}
+            >
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -133,7 +135,11 @@ const EditMatcher: FC<IProps> = ({
                             checkedIcon={<MatchPositiveIcon />}
                             icon={<MatchNegativeIcon />}
                             onChange={() => setCaseSensitive(!caseSensitive)}
-                            title={matcher?.case_sensitive ? 'match exact case' : 'match any case'}
+                            title={
+                                matcher?.case_sensitive
+                                    ? 'match exact case'
+                                    : 'match any case'
+                            }
                         />
                     }
                     label={`Case Sensitive`}
@@ -142,8 +148,8 @@ const EditMatcher: FC<IProps> = ({
                             sx: {
                                 textWrap: 'wrap',
                                 fontSize: '12px',
-                            }
-                        }
+                            },
+                        },
                     }}
                     sx={{
                         display: 'flex',
@@ -159,25 +165,29 @@ const EditMatcher: FC<IProps> = ({
                         sx: {
                             textWrap: 'wrap',
                             fontSize: '12px',
-                        }
-                    }
+                        },
+                    },
                 }}
                 control={
                     <Select
                         aria-labelledby='EditMatcher_match_type'
                         defaultValue={matchTypesOptions[0].value}
                         name='match_type_options'
-                        onChange={(e) => setMatchType(e?.target?.value as MatchType)}
+                        onChange={(e) =>
+                            setMatchType(e?.target?.value as MatchType)
+                        }
                         size='small'
                         value={matchType}
                         MenuProps={{
                             sx: (theme) => ({
                                 zIndex: theme.zIndex.appBar * 3,
-                            })
+                            }),
                         }}
                     >
                         {matchTypesOptions.map(({ label, value }) => (
-                            <MenuItem key={value} value={value}>{label}</MenuItem>
+                            <MenuItem key={value} value={value}>
+                                {label}
+                            </MenuItem>
                         ))}
                     </Select>
                 }
@@ -200,20 +210,13 @@ const EditMatcher: FC<IProps> = ({
                     marginTop: '16px',
                 }}
             >
-                <Button
-                    onClick={handleCancel}
-                >
-                    Cancel
-                </Button>
-                <Button
-                    onClick={handleSave}
-                    variant='contained'
-                >
+                <Button onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleSave} variant='contained'>
                     Save
                 </Button>
             </Box>
         </Box>
-    )
-}
+    );
+};
 
-export default EditMatcher
+export default EditMatcher;

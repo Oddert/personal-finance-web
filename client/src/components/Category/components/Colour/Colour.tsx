@@ -1,12 +1,12 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
+import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice';
 
-import ColourEdit from '../../../ColourEdit'
+import ColourEdit from '../../../ColourEdit';
 
-import type { IProps } from './Colour.types'
+import type { IProps } from './Colour.types';
 
 /**
  * Editable colour component for the Category.
@@ -16,26 +16,31 @@ import type { IProps } from './Colour.types'
  * @param props.category The current Category.
  */
 const Colour: FC<IProps> = ({ category }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [colour, setColour] = useState<string>('#bec3c7')
+    const [colour, setColour] = useState<string>('#bec3c7');
 
-    const handleSubmit = useCallback((editedColour: string) => {
-        dispatch(initUpdateSingleCategory({
-            category: {
-                ...category,
-                matchers: category.matchers.map((matcher) => ({
-                    ...matcher,
-                    case_sensitive: Boolean(matcher.case_sensitive)
-                })),
-                colour: editedColour,
-            },
-        }))
-    }, [category, dispatch])
-        
+    const handleSubmit = useCallback(
+        (editedColour: string) => {
+            dispatch(
+                initUpdateSingleCategory({
+                    category: {
+                        ...category,
+                        matchers: category.matchers.map((matcher) => ({
+                            ...matcher,
+                            case_sensitive: Boolean(matcher.case_sensitive),
+                        })),
+                        colour: editedColour,
+                    },
+                }),
+            );
+        },
+        [category, dispatch],
+    );
+
     useEffect(() => {
-        setColour(category.colour)
-    }, [category])
+        setColour(category.colour);
+    }, [category]);
 
     return (
         <ColourEdit
@@ -43,7 +48,7 @@ const Colour: FC<IProps> = ({ category }) => {
             onSubmit={handleSubmit}
             popoverId={'choose-category-colour'}
         />
-    )
-}
+    );
+};
 
-export default Colour
+export default Colour;

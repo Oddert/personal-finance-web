@@ -1,21 +1,17 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react';
 
-import {
-    Button,
-    ListItem,
-    Tooltip,
-} from '@mui/material'
-import { AddCircle as AddIcon } from '@mui/icons-material'
+import { Button, ListItem, Tooltip } from '@mui/material';
+import { AddCircle as AddIcon } from '@mui/icons-material';
 
-import type { Matcher } from '../../../../types/Matcher'
+import type { Matcher } from '../../../../types/Matcher';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initCreateSingleMatcher } from '../../../../redux/slices/categorySlice'
+import { initCreateSingleMatcher } from '../../../../redux/slices/categorySlice';
 
-import EditMatcher from '../EditMatcher'
+import EditMatcher from '../EditMatcher';
 
-import type { IProps } from './AddMatcher.types'
+import type { IProps } from './AddMatcher.types';
 
 /**
  * Create form to add a new Matcher.
@@ -33,24 +29,27 @@ const AddMatcher: FC<IProps> = ({
     matcher,
     onSubmit,
 }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        setOpen(defaultOpen)
-    }, [defaultOpen])
+        setOpen(defaultOpen);
+    }, [defaultOpen]);
 
-    const handleSubmit = useCallback((matcher: Partial<Matcher>) => {
-        const addMatcher = async () => {
-            dispatch(initCreateSingleMatcher({ matcher, categoryId }))
-            setOpen(false)
-        }
-        addMatcher()
-        if (onSubmit) {
-            onSubmit(matcher)
-        }
-    }, [dispatch, categoryId, onSubmit])
+    const handleSubmit = useCallback(
+        (matcher: Partial<Matcher>) => {
+            const addMatcher = async () => {
+                dispatch(initCreateSingleMatcher({ matcher, categoryId }));
+                setOpen(false);
+            };
+            addMatcher();
+            if (onSubmit) {
+                onSubmit(matcher);
+            }
+        },
+        [dispatch, categoryId, onSubmit],
+    );
 
     if (open) {
         return (
@@ -70,7 +69,7 @@ const AddMatcher: FC<IProps> = ({
                     matcher={matcher}
                 />
             </ListItem>
-        )
+        );
     }
     return (
         <ListItem
@@ -99,7 +98,7 @@ const AddMatcher: FC<IProps> = ({
                 </Button>
             </Tooltip>
         </ListItem>
-    )
-}
+    );
+};
 
-export default AddMatcher
+export default AddMatcher;

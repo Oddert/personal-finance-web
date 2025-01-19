@@ -1,5 +1,5 @@
 export interface IProps {
-    open: boolean,
-    onClose: () => void
-    showMapping?: boolean
+    open: boolean;
+    onClose: () => void;
+    showMapping?: boolean;
 }

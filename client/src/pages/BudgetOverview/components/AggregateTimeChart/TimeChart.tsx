@@ -17,68 +17,75 @@ import type { IProps } from './TimeChart.types';
  */
 const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
     const series = useMemo(() => {
-        chartList.map(chart => [chart.data, chart.timestamp])
+        chartList.map((chart) => [chart.data, chart.timestamp]);
 
         interface IAccumulator {
-            totalTimeList: number[]
+            totalTimeList: number[];
             times: {
                 [categoryName: string]: {
-                    [timestamp: number]: number
-                }
-            }
+                    [timestamp: number]: number;
+                };
+            };
             categories: {
-                [categoryName: string]: number
-            }
+                [categoryName: string]: number;
+            };
         }
 
-        const { times, totalTimeList } = chartList.reduce((acc: IAccumulator, chart) => {
-            const timestamp = chart.timestamp.valueOf()
-            acc.totalTimeList.push(timestamp);
-            chart.data.forEach((budgetDatum) => {
-                const { categoryName } = budgetDatum
-    
-                if (!(categoryName in acc.categories)) {
-                    acc.categories[categoryName] = 0
-                    acc.times[categoryName] = {}
-                }
-                acc.categories[categoryName] += budgetDatum.diffPc;
-                acc.times[categoryName][timestamp] =
-                    acc.categories[categoryName]
-            })
-            return acc
-        }, {
-            totalTimeList: [],
-            times: {},
-            categories: {},
-        })
+        const { times, totalTimeList } = chartList.reduce(
+            (acc: IAccumulator, chart) => {
+                const timestamp = chart.timestamp.valueOf();
+                acc.totalTimeList.push(timestamp);
+                chart.data.forEach((budgetDatum) => {
+                    const { categoryName } = budgetDatum;
 
-        const series = Object.entries(times).map(([categoryName, timeSeries]) => {
-            return {
-                name: categoryName,
-                data: totalTimeList.map((time) => {
-                    if (time in timeSeries) {
+                    if (!(categoryName in acc.categories)) {
+                        acc.categories[categoryName] = 0;
+                        acc.times[categoryName] = {};
+                    }
+                    acc.categories[categoryName] += budgetDatum.diffPc;
+                    acc.times[categoryName][timestamp] =
+                        acc.categories[categoryName];
+                });
+                return acc;
+            },
+            {
+                totalTimeList: [],
+                times: {},
+                categories: {},
+            },
+        );
+
+        const series = Object.entries(times).map(
+            ([categoryName, timeSeries]) => {
+                return {
+                    name: categoryName,
+                    data: totalTimeList.map((time) => {
+                        if (time in timeSeries) {
+                            return {
+                                x: time,
+                                y: timeSeries[time],
+                            };
+                        }
                         return {
                             x: time,
-                            y: timeSeries[time]
-                        }
-                    }
-                    return {
-                        x: time,
-                        y: 0,
-                    }
-                })
-            }
-        })
+                            y: 0,
+                        };
+                    }),
+                };
+            },
+        );
 
-        return series
-    }, [chartList])
+        return series;
+    }, [chartList]);
 
     return (
-        <Box sx={(theme) => ({
-            '& *': {
-                color: theme.palette.primary.contrastText,
-            }
-        })}>
+        <Box
+            sx={(theme) => ({
+                '& *': {
+                    color: theme.palette.primary.contrastText,
+                },
+            })}
+        >
             <Chart
                 type='area'
                 height={500}
@@ -90,17 +97,17 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                         stacked: true,
                     },
                     dataLabels: {
-                        enabled: false
+                        enabled: false,
                     },
                     fill: {
                         type: 'gradient',
                         gradient: {
                             opacityFrom: 0.6,
                             opacityTo: 0.8,
-                        }
+                        },
                     },
                     stroke: {
-                        curve: 'straight'
+                        curve: 'straight',
                     },
                     yaxis: {
                         labels: {
@@ -108,7 +115,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                                 colors: '#fff',
                             },
                             formatter(val) {
-                                return `${Math.floor(val)}%`
+                                return `${Math.floor(val)}%`;
                             },
                         },
                     },
@@ -124,7 +131,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                     },
                     tooltip: {
                         x: {
-                            format: 'dd/MM/yy'
+                            format: 'dd/MM/yy',
                         },
                         y: {
                             formatter(val) {
@@ -142,7 +149,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                 series={series}
             />
         </Box>
-    )
-}
+    );
+};
 
 export default TimeChart;

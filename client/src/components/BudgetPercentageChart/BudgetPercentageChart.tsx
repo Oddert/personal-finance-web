@@ -31,67 +31,69 @@ const BudgetPercentageChart: FC<IProps> = ({
         const values = Object.values(data);
 
         return values.reduce(
-			(
+            (
                 acc: {
-                    categoryIdsOrdered: number[],
-                    seriesData: ISeriesDatum[],
-                    seriesRef: IBudgetDatum[],
+                    categoryIdsOrdered: number[];
+                    seriesData: ISeriesDatum[];
+                    seriesRef: IBudgetDatum[];
                 },
                 budgetDatum,
             ) => {
-				acc.seriesData.push({
-					x: budgetDatum.categoryName,
-					y: useFloat ? budgetDatum.diffFloat :budgetDatum.diffPc,
-					fillColor: budgetDatum.colour,
-				})
-				acc.seriesRef.push(budgetDatum);
+                acc.seriesData.push({
+                    x: budgetDatum.categoryName,
+                    y: useFloat ? budgetDatum.diffFloat : budgetDatum.diffPc,
+                    fillColor: budgetDatum.colour,
+                });
+                acc.seriesRef.push(budgetDatum);
                 acc.categoryIdsOrdered.push(budgetDatum.categoryId);
-				return acc
-			},
-			{
+                return acc;
+            },
+            {
                 categoryIdsOrdered: [],
-				seriesData: [],
-				seriesRef: [],
-			}
-		)
+                seriesData: [],
+                seriesRef: [],
+            },
+        );
     }, [data, useFloat]);
 
     return (
-        <Box sx={(theme) => ({
-            '& *': {
-                color: theme.palette.primary.contrastText,
-            }
-        })}>
+        <Box
+            sx={(theme) => ({
+                '& *': {
+                    color: theme.palette.primary.contrastText,
+                },
+            })}
+        >
             <Chart
                 type='bar'
                 height={height}
                 width={width}
                 options={{
-					chart: {
-						type: 'bar',
+                    chart: {
+                        type: 'bar',
                         height: height,
                         toolbar: {
-							show: false,
+                            show: false,
                         },
                         events: {
                             dataPointSelection: (event, chartContext, opts) => {
                                 if (dataPointCallback) {
                                     dataPointCallback(
                                         categoryIdsOrdered[opts.dataPointIndex],
-                                    )
+                                    );
                                 }
-                            }
+                            },
                         },
                     },
-					legend: {
-						show: false,
-					},
+                    legend: {
+                        show: false,
+                    },
                     plotOptions: {
-                    bar: {
-                        borderRadius: 4,
-                        borderRadiusApplication: 'end',
-                        horizontal: true,
-                    }
+                        bar: {
+                            borderRadius: 4,
+                            borderRadiusApplication: 'end',
+                            horizontal: true,
+                        },
                     },
                     dataLabels: {
                         enabled: false,
@@ -114,14 +116,15 @@ const BudgetPercentageChart: FC<IProps> = ({
                                 formatter: () => '',
                             },
                             formatter: (value, opts) => {
-								const budgetDatum = seriesRef[opts.dataPointIndex];
+                                const budgetDatum =
+                                    seriesRef[opts.dataPointIndex];
                                 return `
-									<p>Discrepancy (%): ${(Number(value) >= 0) ? `+${value}%` : `${value}%`}</p>
+									<p>Discrepancy (%): ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
 									<p>Discrepancy (£): ${budgetDatum.diffFloat < 0 ? `-£${Math.abs(budgetDatum.diffFloat)}` : `+£${budgetDatum.diffFloat}`}</p>
 									<p>Expected: £${budgetDatum.budget}</p>
 									<p>Actual: £${budgetDatum.spend}</p>
-								`
-							} 
+								`;
+                            },
                         },
                     },
                     xaxis: {
@@ -139,12 +142,14 @@ const BudgetPercentageChart: FC<IProps> = ({
                         },
                     },
                 }}
-                series={[{
-                    data: seriesData,
-                }]}
+                series={[
+                    {
+                        data: seriesData,
+                    },
+                ]}
             />
         </Box>
-    )
-}
+    );
+};
 
 export default BudgetPercentageChart;

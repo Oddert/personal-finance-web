@@ -1,7 +1,7 @@
-import { IBudgetDatum } from '../../../../types/Budget.types'
+import { IBudgetDatum } from '../../../../types/Budget.types';
 
 export interface IProps {
-	data: IBudgetDatum[]
-	endDate: string
-	startDate: string
+    data: IBudgetDatum[];
+    endDate: string;
+    startDate: string;
 }

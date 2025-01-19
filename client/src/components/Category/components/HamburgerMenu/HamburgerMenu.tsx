@@ -1,4 +1,4 @@
-import { FC, Fragment, MouseEvent, useState } from 'react'
+import { FC, Fragment, MouseEvent, useState } from 'react';
 
 import {
     Button,
@@ -9,13 +9,13 @@ import {
     DialogTitle,
     Menu,
     MenuItem,
-} from '@mui/material'
-import { MoreVert as DotsIcon } from '@mui/icons-material'
+} from '@mui/material';
+import { MoreVert as DotsIcon } from '@mui/icons-material';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
-import { initDeleteSingleCategory } from '../../../../redux/slices/categorySlice'
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { initDeleteSingleCategory } from '../../../../redux/slices/categorySlice';
 
-import type { IProps } from './HamburgerMenu.types'
+import type { IProps } from './HamburgerMenu.types';
 
 /**
  * Additional Category actions including delete.
@@ -25,37 +25,37 @@ import type { IProps } from './HamburgerMenu.types'
  * @param props.category The Category to display.
  */
 const HamburgerMenu: FC<IProps> = ({ category }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [anchorEl, setAnchorEl] = useState<HTMLElement|null>(null)
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget)
-    }
+        setAnchorEl(event.currentTarget);
+    };
 
-    const handleClose = () => setAnchorEl(null)
+    const handleClose = () => setAnchorEl(null);
 
     const handleDeleteOptionClick = () => {
-        handleClose()
-        setDeleteModalOpen(true)
-    }
+        handleClose();
+        setDeleteModalOpen(true);
+    };
 
-    const handleDeleteModalClose = () => setDeleteModalOpen(false)
+    const handleDeleteModalClose = () => setDeleteModalOpen(false);
 
     const handleDelete = () => {
-        handleClose()
-        setDeleteModalOpen(false)
-        dispatch(initDeleteSingleCategory({ categoryId: category.id }))
-    }
+        handleClose();
+        setDeleteModalOpen(false);
+        dispatch(initDeleteSingleCategory({ categoryId: category.id }));
+    };
 
-    const open = Boolean(anchorEl)
+    const open = Boolean(anchorEl);
     return (
         <Fragment>
             <Button
                 id='hamburger-menu'
                 aria-controls={open ? 'basic-menu' : undefined}
-                aria-haspopup="true"
+                aria-haspopup='true'
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
                 sx={{
@@ -74,7 +74,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                     })}
                 />
             </Button>
-            <Menu    
+            <Menu
                 id='hamburger-menu'
                 anchorEl={anchorEl}
                 open={open}
@@ -83,9 +83,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleDeleteOptionClick}>
-                    Delete
-                </MenuItem>
+                <MenuItem onClick={handleDeleteOptionClick}>Delete</MenuItem>
             </Menu>
             <Dialog
                 open={deleteModalOpen}
@@ -107,10 +105,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        color='error'
-                        onClick={handleDelete}
-                    >
+                    <Button color='error' onClick={handleDelete}>
                         Delete Category
                     </Button>
                     <Button
@@ -123,7 +118,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                 </DialogActions>
             </Dialog>
         </Fragment>
-    )
-}
+    );
+};
 
-export default HamburgerMenu
+export default HamburgerMenu;

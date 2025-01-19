@@ -1,7 +1,13 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 
 import { Add as PlusIcon } from '@mui/icons-material';
-import { Box, Button, FormControl, FormControlLabel, TextField } from '@mui/material';
+import {
+    Box,
+    Button,
+    FormControl,
+    FormControlLabel,
+    TextField,
+} from '@mui/material';
 
 import { initCreateCategory } from '../../../../../redux/slices/categorySlice';
 
@@ -21,7 +27,7 @@ const AddCategory: FC = () => {
     const [open, setOpen] = useState(false);
     const [label, setLabel] = useState('');
     const [labelError, setTitleError] = useState(false);
-    const [colour, setColour] = useState('#bec3c7')
+    const [colour, setColour] = useState('#bec3c7');
 
     const handleLabelChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -49,7 +55,7 @@ const AddCategory: FC = () => {
             colour,
             description: '',
             matchers: [],
-        }
+        };
         dispatch(initCreateCategory({ category: payload }));
         setLabel('');
         setColour('#bec3c7');
@@ -79,7 +85,7 @@ const AddCategory: FC = () => {
                             gridColumn: '1',
                             '& .MuiFormControlLabel-asterisk': {
                                 display: 'none',
-                            }
+                            },
                         }}
                     />
                     {/* <FormControlLabel
@@ -105,25 +111,20 @@ const AddCategory: FC = () => {
                         p: 1,
                     }}
                 >
-                    <Button onClick={() => setOpen(false)}>
-                        Cancel
-                    </Button>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
                     <Button onClick={handleSubmit} variant='contained'>
                         Create Category
                     </Button>
                 </Box>
             </FormControl>
-        )  
+        );
     }
 
     return (
-        <Button
-            onClick={() => setOpen(true)}
-            sx={{ mt: 2 }}
-        >
+        <Button onClick={() => setOpen(true)} sx={{ mt: 2 }}>
             <PlusIcon /> Add Category
         </Button>
-    )
-}
+    );
+};
 
 export default AddCategory;

@@ -3,7 +3,7 @@ import type { MatchType } from '../types/Matcher';
 /**
  * List of options for a match-type selector on the Matcher edit and create forms.
  */
-export const matchTypesOptions: { label: string, value: MatchType }[] = [
+export const matchTypesOptions: { label: string; value: MatchType }[] = [
     {
         label: 'Any',
         value: 'any',
@@ -20,4 +20,4 @@ export const matchTypesOptions: { label: string, value: MatchType }[] = [
         label: 'End',
         value: 'end',
     },
-]
+];

@@ -1,26 +1,29 @@
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react';
 
-import { Box, Button, ListItem, Typography } from '@mui/material'
+import { Box, Button, ListItem, Typography } from '@mui/material';
 import {
     Close as DeleteIcon,
     Edit as EditIcon,
     FontDownload as MatchPositiveIcon,
     FontDownloadOutlined as MatchNegativeIcon,
-} from '@mui/icons-material'
+} from '@mui/icons-material';
 
-import { categorySlice, initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
+import {
+    categorySlice,
+    initDeleteSingleMatcher,
+} from '../../../../redux/slices/categorySlice';
 
-import APIService from '../../../../services/APIService'
+import APIService from '../../../../services/APIService';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { Matcher as MatcherT } from '../../../../types/Matcher'
+import { Matcher as MatcherT } from '../../../../types/Matcher';
 
-import EditMatcher from '../EditMatcher'
+import EditMatcher from '../EditMatcher';
 
-import type { IProps } from './Matcher.types'
+import type { IProps } from './Matcher.types';
 
-const iconWidth = 50
+const iconWidth = 50;
 
 /**
  * Displays a single Matcher with optional edit capability.
@@ -31,50 +34,57 @@ const iconWidth = 50
  * @param props.categoryId The ID of the category the matcher belongs to.
  */
 const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [open, setOpen] = useState<boolean>(false)
+    const [open, setOpen] = useState<boolean>(false);
 
     const handleSubmit = (_matcher: Partial<MatcherT>) => {
         const request = async () => {
             try {
-                const response = await APIService.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                const response = await APIService.updateSingleMatcher(
+                    { ..._matcher },
+                    matcher.id,
+                );
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.')
+                    throw new Error('No response received from the server.');
                 }
-                dispatch(categorySlice.actions.updateSingleMatcher({
-                    categoryId,
-                    matcher: {
-                        ...response.payload.matcher,
-                        case_sensitive: Boolean(response.payload.matcher.case_sensitive),
-                    },
-                }));
+                dispatch(
+                    categorySlice.actions.updateSingleMatcher({
+                        categoryId,
+                        matcher: {
+                            ...response.payload.matcher,
+                            case_sensitive: Boolean(
+                                response.payload.matcher.case_sensitive,
+                            ),
+                        },
+                    }),
+                );
                 setOpen(false);
             } catch (error) {
                 console.error(error);
             }
-        }
+        };
         request();
-    }
+    };
 
     const handleDelete = useCallback(() => {
-        dispatch(            
-            initDeleteSingleMatcher({ matcherId: matcher.id, categoryId })
-        )
-    }, [dispatch, categoryId, matcher.id])
-    
+        dispatch(
+            initDeleteSingleMatcher({ matcherId: matcher.id, categoryId }),
+        );
+    }, [dispatch, categoryId, matcher.id]);
+
     const matchTypeTitle = useMemo(() => {
-        switch(matcher?.match_type) {
+        switch (matcher?.match_type) {
             case 'any':
-                return 'Matches this text anywhere in the description'
+                return 'Matches this text anywhere in the description';
             case 'exact':
-                return 'Only matches this exact string (may not have anything before or after)'
+                return 'Only matches this exact string (may not have anything before or after)';
             case 'end':
-                return 'Matches only if this text is at the end of a description'
+                return 'Matches only if this text is at the end of a description';
             case 'start':
-                return 'Matches only if this text is at the beginning of a description'
+                return 'Matches only if this text is at the beginning of a description';
         }
-    }, [matcher?.match_type])
+    }, [matcher?.match_type]);
 
     if (open) {
         return (
@@ -85,7 +95,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 clearOnCancel
                 clearOnSubmit
             />
-        )
+        );
     }
 
     return (
@@ -129,8 +139,8 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                     '&:hover': {
                         '& .MuiSvgIcon-root': {
                             opacity: 1,
-                        }
-                    }
+                        },
+                    },
                 })}
                 title='edit this matcher'
                 variant='text'
@@ -156,20 +166,24 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                         : 'ignores case'
                 }
             >
-                {
-                    matcher.case_sensitive
-                        ? <MatchPositiveIcon />
-                        : <MatchNegativeIcon />
-                }
+                {matcher.case_sensitive ? (
+                    <MatchPositiveIcon />
+                ) : (
+                    <MatchNegativeIcon />
+                )}
             </Box>
             <Typography title={matchTypeTitle} variant='body1'>
                 {matcher.match_type}
             </Typography>
-            <Button className='Matcher_delete' onClick={handleDelete} size='small'>
+            <Button
+                className='Matcher_delete'
+                onClick={handleDelete}
+                size='small'
+            >
                 <DeleteIcon />
             </Button>
         </ListItem>
-    )
-}
+    );
+};
 
-export default Matcher
+export default Matcher;

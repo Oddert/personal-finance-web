@@ -1,14 +1,12 @@
 import { FC } from 'react';
+import { Autocomplete, Box, FormLabel, TextField } from '@mui/material';
+
+import type { IBudget } from '../../types/Budget.types';
+
 import {
-    Autocomplete,
-    Box,
-    FormLabel,
-    TextField,
-} from '@mui/material';
-
-import type{ IBudget } from '../../types/Budget.types';
-
-import { getActiveBudget, getBudgetResponse } from '../../redux/selectors/budgetSelectors';
+    getActiveBudget,
+    getBudgetResponse,
+} from '../../redux/selectors/budgetSelectors';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
@@ -23,14 +21,14 @@ import type { IProps } from './ActiveBudget.types';
  * @component
  */
 const ActiveBudget: FC<IProps> = () => {
-	const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-	const budgets = useAppSelector(getBudgetResponse);
-	const monthBudget = useAppSelector(getActiveBudget);
+    const budgets = useAppSelector(getBudgetResponse);
+    const monthBudget = useAppSelector(getActiveBudget);
 
-	const setMonthBudget = (nextBudget: IBudget) => {
-		dispatch(setActiveBudget({ budget: nextBudget }));
-	}
+    const setMonthBudget = (nextBudget: IBudget) => {
+        dispatch(setActiveBudget({ budget: nextBudget }));
+    };
 
     return (
         <Box
@@ -48,28 +46,24 @@ const ActiveBudget: FC<IProps> = () => {
                 getOptionLabel={(option) => option.name}
                 onChange={(event, nextBudget) => {
                     if (!nextBudget) {
-                        return
+                        return;
                     }
-                    setMonthBudget(nextBudget)
+                    setMonthBudget(nextBudget);
                 }}
                 options={budgets}
                 renderInput={(params) => (
-					<TextField
-						{...params}
-						label=''
-						placeholder='unset'
-                    />
+                    <TextField {...params} label='' placeholder='unset' />
                 )}
                 sx={{
                     width: '100%',
                     '& .MuiInputBase-root': {
                         padding: '2px',
-                    }
+                    },
                 }}
                 value={monthBudget}
             />
         </Box>
-    )
-}
+    );
+};
 
-export default ActiveBudget
+export default ActiveBudget;

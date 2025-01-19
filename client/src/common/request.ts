@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
 
-import { getServerURL } from '../utils/requestUtils'
+import { getServerURL } from '../utils/requestUtils';
 
-const baseURL = getServerURL()
+const baseURL = getServerURL();
 
 /**
  * Re-usable Axios request object.
@@ -14,20 +14,20 @@ const request = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-})
+});
 
 request.interceptors.request.use((config) => {
     if (process.env.NODE_ENV === 'development') {
         console.log('[request]', config.url);
     }
     return config;
-})
+});
 
 request.interceptors.response.use((response) => {
     if (response.status < 200 || response.status >= 300) {
-        console.error(response)
+        console.error(response);
     }
     return response.data;
-})
+});
 
-export default request
+export default request;

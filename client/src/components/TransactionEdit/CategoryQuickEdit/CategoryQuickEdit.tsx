@@ -1,13 +1,16 @@
-import { useContext } from 'react'
-import { useSelector } from 'react-redux'
-import { Box, Drawer, Typography } from '@mui/material'
+import { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import { Box, Drawer, Typography } from '@mui/material';
 
-import { getCategoryResponse } from '../../../redux/selectors/categorySelectors'
+import { getCategoryResponse } from '../../../redux/selectors/categorySelectors';
 
-import { TransactionEditContext, toggleSideBar } from '../../../contexts/transactionEditContext'
+import {
+    TransactionEditContext,
+    toggleSideBar,
+} from '../../../contexts/transactionEditContext';
 
-import AddCategory from './components/AddCategory'
-import Option  from './components/Option/'
+import AddCategory from './components/AddCategory';
+import Option from './components/Option/';
 
 /**
  * Sidebar popover which displays transactions, allowing the user to quickly add Categories / Matchers.
@@ -16,26 +19,29 @@ import Option  from './components/Option/'
  * @component
  */
 const CategoryQuickEdit = () => {
-    const { dispatch, state: { sideBarOpen } } = useContext(TransactionEditContext)
+    const {
+        dispatch,
+        state: { sideBarOpen },
+    } = useContext(TransactionEditContext);
 
-    const categories = useSelector(getCategoryResponse)
+    const categories = useSelector(getCategoryResponse);
 
     const toggleDrawer = (toOpen?: boolean) => {
         const callback = (event: React.KeyboardEvent | React.MouseEvent) => {
             if (
                 event.type === 'keydown' &&
-                (
-                    (event as React.KeyboardEvent).key === 'Tab' ||
-                    (event as React.KeyboardEvent).key === 'Shift'
-                )
+                ((event as React.KeyboardEvent).key === 'Tab' ||
+                    (event as React.KeyboardEvent).key === 'Shift')
             ) {
-                return
+                return;
             }
 
-            dispatch(toggleSideBar(toOpen === undefined ? !sideBarOpen : toOpen))
-        }
-        return callback
-    }
+            dispatch(
+                toggleSideBar(toOpen === undefined ? !sideBarOpen : toOpen),
+            );
+        };
+        return callback;
+    };
 
     return (
         <Drawer
@@ -61,16 +67,20 @@ const CategoryQuickEdit = () => {
                     justifyContent: 'flex-start',
                 }}
             >
-                {categories?.length ? categories.map(category => (
-                    <Option category={category} key={category.id} />
-                )) : (
-                    <Typography sx={{ width: '100%', textAlign: 'center', p: 2 }}>
+                {categories?.length ? (
+                    categories.map((category) => (
+                        <Option category={category} key={category.id} />
+                    ))
+                ) : (
+                    <Typography
+                        sx={{ width: '100%', textAlign: 'center', p: 2 }}
+                    >
                         You have no Categories yet.
                     </Typography>
                 )}
             </Box>
         </Drawer>
-    )
-}
+    );
+};
 
-export default CategoryQuickEdit
+export default CategoryQuickEdit;

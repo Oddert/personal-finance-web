@@ -1,10 +1,10 @@
 import { IBudgetDatum } from '../../../../types/Budget.types';
 
 export interface IProps {
-    data: IBudgetDatum[]
+    data: IBudgetDatum[];
 }
 
 export type IBudgetDatumTable = IBudgetDatum & {
-    under: boolean
-    over: boolean
-}
+    under: boolean;
+    over: boolean;
+};

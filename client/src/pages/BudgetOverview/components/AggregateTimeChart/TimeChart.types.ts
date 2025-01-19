@@ -1,7 +1,7 @@
-import { IBudgetOverviewChart } from '../../BudgetOverview.types'
+import { IBudgetOverviewChart } from '../../BudgetOverview.types';
 
 export interface IProps {
-    chartList: IBudgetOverviewChart[]
-    endDate: string
-    startDate: string
+    chartList: IBudgetOverviewChart[];
+    endDate: string;
+    startDate: string;
 }

@@ -1,12 +1,12 @@
-import { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
+import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice';
 
-import EditableText from '../../../EditableText'
+import EditableText from '../../../EditableText';
 
-import type { IProps } from './Description.types'
+import type { IProps } from './Description.types';
 
 /**
  * Editable title component for the Category.
@@ -16,20 +16,25 @@ import type { IProps } from './Description.types'
  * @param props.category The current Category.
  */
 const Title: FC<IProps> = ({ category }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const handleChange = useCallback((value: string) => {
-        dispatch(initUpdateSingleCategory({
-            category: {
-                ...category,
-                matchers: category.matchers.map((matcher) => ({
-                    ...matcher,
-                    case_sensitive: Boolean(matcher.case_sensitive),
-                })),
-                label: value,
-            },
-        }))
-    }, [category, dispatch])
+    const handleChange = useCallback(
+        (value: string) => {
+            dispatch(
+                initUpdateSingleCategory({
+                    category: {
+                        ...category,
+                        matchers: category.matchers.map((matcher) => ({
+                            ...matcher,
+                            case_sensitive: Boolean(matcher.case_sensitive),
+                        })),
+                        label: value,
+                    },
+                }),
+            );
+        },
+        [category, dispatch],
+    );
 
     return (
         <EditableText
@@ -48,7 +53,7 @@ const Title: FC<IProps> = ({ category }) => {
             placeholder='Click to add a description.'
             text={category.description}
         />
-    )
-}
+    );
+};
 
-export default Title
+export default Title;

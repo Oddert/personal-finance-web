@@ -1,10 +1,10 @@
-import { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs';
 
-import type { IBudgetDatum } from '../../types/Budget.types'
+import type { IBudgetDatum } from '../../types/Budget.types';
 
 export interface IProps {}
 
 export interface IBudgetOverviewChart {
-    timestamp: Dayjs
-    data: IBudgetDatum[]
+    timestamp: Dayjs;
+    data: IBudgetDatum[];
 }

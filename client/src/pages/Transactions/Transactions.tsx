@@ -1,11 +1,11 @@
-import { useReducer } from 'react'
-import { Box, Container, Typography } from '@mui/material'
+import { useReducer } from 'react';
+import { Box, Container, Typography } from '@mui/material';
 
 import {
     initialState,
     transactionRangeReducer,
     TransactionRange,
-} from '../../contexts/transactionRangeContext'
+} from '../../contexts/transactionRangeContext';
 
 import RangeControls from './components/RangeControls';
 import RequestControls from './components/RequestControls';
@@ -21,12 +21,10 @@ import Edit from './components/Edit';
  * @subcategory Transactions
  */
 const Transactions = () => {
-    const [state, dispatch] = useReducer(transactionRangeReducer, initialState)
-    
+    const [state, dispatch] = useReducer(transactionRangeReducer, initialState);
+
     return (
-        <TransactionRange.Provider
-            value={{ state, dispatch }}
-        >
+        <TransactionRange.Provider value={{ state, dispatch }}>
             <Container>
                 <Typography sx={{ margin: '24px 0' }} variant='h2'>
                     Transactions
@@ -47,7 +45,7 @@ const Transactions = () => {
                 <Table />
             </Container>
         </TransactionRange.Provider>
-    )
-}
+    );
+};
 
-export default Transactions
+export default Transactions;

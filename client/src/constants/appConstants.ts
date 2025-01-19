@@ -1,11 +1,10 @@
-
 /**
  * User's locale setting for localisation functions.
  * @constant
  * @category Constants
  * @subcategory App Constants
  */
-export const LOCALE = 'en-GB'
+export const LOCALE = 'en-GB';
 
 /**
  * The predominant currency unit for the user.
@@ -13,7 +12,7 @@ export const LOCALE = 'en-GB'
  * @category Constants
  * @subcategory App Constants
  */
-export const CURRENCY_SYMBOL = '£'
+export const CURRENCY_SYMBOL = '£';
 
 /**
  * Accessor key for local storage space where the Transaction-to-CSV mapping is stored.
@@ -25,4 +24,4 @@ export const CURRENCY_SYMBOL = '£'
  * @category Constants
  * @subcategory App Constants
  */
-export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING'
+export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING';

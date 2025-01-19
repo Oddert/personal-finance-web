@@ -1,23 +1,23 @@
-import ReactDOM from 'react-dom/client'
-import { Provider as ReduxProvider } from 'react-redux'
-import { ThemeProvider } from '@mui/material'
+import ReactDOM from 'react-dom/client';
+import { Provider as ReduxProvider } from 'react-redux';
+import { ThemeProvider } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
 
 import store from './redux/constants/store';
 
-import theme from './theme/'
+import theme from './theme/';
 
-import reportWebVitals from './reportWebVitals'
+import reportWebVitals from './reportWebVitals';
 
-import App from './components/App/'
+import App from './components/App/';
 
-import './index.css'
+import './index.css';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-)
+    document.getElementById('root') as HTMLElement,
+);
 
 root.render(
     <ReduxProvider store={store}>
@@ -26,8 +26,8 @@ root.render(
                 <App />
             </ThemeProvider>
         </LocalizationProvider>
-    </ReduxProvider>
-)
+    </ReduxProvider>,
+);
 
 // <React.StrictMode>
 // </React.StrictMode>

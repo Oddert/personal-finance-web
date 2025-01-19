@@ -1,1 +1,1 @@
-export { default } from './CategoryQuickEdit'
+export { default } from './CategoryQuickEdit';

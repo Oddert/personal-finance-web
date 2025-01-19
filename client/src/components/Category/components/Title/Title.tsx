@@ -1,12 +1,12 @@
-import { FC, useCallback } from 'react'
+import { FC, useCallback } from 'react';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
+import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice';
 
-import TitleBase from '../TitleBase/TitleBase'
+import TitleBase from '../TitleBase/TitleBase';
 
-import type { IProps } from './Title.types'
+import type { IProps } from './Title.types';
 
 /**
  * Abstraction for {@link TitleBase} to provide callback props.
@@ -17,20 +17,25 @@ import type { IProps } from './Title.types'
  * @param props.small If true, a more compact size will be used.
  */
 const Title: FC<IProps> = ({ category, small = false }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const handleChange = useCallback((value: string) => {
-        dispatch(initUpdateSingleCategory({
-            category: {
-                ...category,
-                matchers: category.matchers.map((matcher) => ({
-                    ...matcher,
-                    case_sensitive: Boolean(matcher.case_sensitive),
-                })),
-                label: value,
-            },
-        }))
-    }, [category, dispatch])
+    const handleChange = useCallback(
+        (value: string) => {
+            dispatch(
+                initUpdateSingleCategory({
+                    category: {
+                        ...category,
+                        matchers: category.matchers.map((matcher) => ({
+                            ...matcher,
+                            case_sensitive: Boolean(matcher.case_sensitive),
+                        })),
+                        label: value,
+                    },
+                }),
+            );
+        },
+        [category, dispatch],
+    );
 
     return (
         <TitleBase
@@ -41,7 +46,7 @@ const Title: FC<IProps> = ({ category, small = false }) => {
             size={small ? 'md' : 'xl'}
             showBorder={false}
         />
-    )
-}
+    );
+};
 
-export default Title
+export default Title;

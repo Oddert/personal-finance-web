@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react'
+import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react';
 import {
     Button,
     Dialog,
@@ -9,15 +9,15 @@ import {
     FormControl,
     FormControlLabel,
     TextField,
-} from '@mui/material'
+} from '@mui/material';
 
-import { initCreateCategory } from '../../redux/slices/categorySlice'
+import { initCreateCategory } from '../../redux/slices/categorySlice';
 
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
-import ColourEdit from '../ColourEdit'
+import ColourEdit from '../ColourEdit';
 
-import type { IProps } from './CategoryAdd.types'
+import type { IProps } from './CategoryAdd.types';
 
 /**
  * Dialog component to add a new category.
@@ -28,47 +28,44 @@ import type { IProps } from './CategoryAdd.types'
  * @param props.open If true, the modal will display.
  */
 const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [label, setLabel] = useState('')
-    const [description, setDescription] = useState('')
-    const [colour, setColour] = useState('#bec3c7')
+    const [label, setLabel] = useState('');
+    const [description, setDescription] = useState('');
+    const [colour, setColour] = useState('#bec3c7');
 
-    const [labelError, setLabelError] = useState(false)
-    const [descError, setDescError] = useState(false)
+    const [labelError, setLabelError] = useState(false);
+    const [descError, setDescError] = useState(false);
 
-    const [saveModalOpen, setSaveModalOpen] = useState(false)
+    const [saveModalOpen, setSaveModalOpen] = useState(false);
 
     const handleTitleChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            setLabel(evt.target.value)
+            setLabel(evt.target.value);
             if (!/\w/gi.test(evt.target.value)) {
-                setLabelError(true)
+                setLabelError(true);
             } else {
-                setLabelError(false)
+                setLabelError(false);
             }
         },
         [],
-    )
+    );
 
     const handleDescChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            setDescription(evt.target.value)
+            setDescription(evt.target.value);
             if (!/\w/gi.test(evt.target.value)) {
-                setDescError(true)
+                setDescError(true);
             } else {
-                setDescError(false)
+                setDescError(false);
             }
         },
         [],
-    )
+    );
 
-    const handleColourChange = useCallback(
-        (editedColour: string) => {
-            setColour(editedColour)
-        },
-        [],
-    )
+    const handleColourChange = useCallback((editedColour: string) => {
+        setColour(editedColour);
+    }, []);
 
     const handleSaveAndClose = useCallback(() => {
         const payload = {
@@ -76,45 +73,42 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
             description,
             colour,
             matchers: [],
-        }
-        dispatch(initCreateCategory({ category: payload }))
-        setLabel('')
-        setDescription('')
-        setColour('#bec3c7')
-        setLabelError(false)
-        setDescError(false)
+        };
+        dispatch(initCreateCategory({ category: payload }));
+        setLabel('');
+        setDescription('');
+        setColour('#bec3c7');
+        setLabelError(false);
+        setDescError(false);
         if (handleClose) {
-            handleClose(payload)
+            handleClose(payload);
         }
-    }, [colour, description, dispatch, handleClose, label])
+    }, [colour, description, dispatch, handleClose, label]);
 
     const handleReset = useCallback(() => {
-        setLabel('')
-        setDescription('')
-        setColour('#bec3c7')
-        setLabelError(false)
-        setDescError(false)
-        setSaveModalOpen(false)
+        setLabel('');
+        setDescription('');
+        setColour('#bec3c7');
+        setLabelError(false);
+        setDescError(false);
+        setSaveModalOpen(false);
         if (handleClose) {
-            handleClose()
+            handleClose();
         }
-    }, [handleClose])
-    
+    }, [handleClose]);
+
     const handleConditionalClose = useCallback(
         (event?: any, reason?: 'backdropClick' | 'escapeKeyDown') => {
-            if (
-                label?.length ||
-                description?.length
-            ) {
-                setSaveModalOpen(true)
+            if (label?.length || description?.length) {
+                setSaveModalOpen(true);
             } else {
                 if (handleClose) {
-                    handleClose(null)
+                    handleClose(null);
                 }
             }
         },
         [description, handleClose, label],
-    )
+    );
 
     return (
         <Fragment>
@@ -161,7 +155,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                                 gridColumn: '1',
                                 '& .MuiFormControlLabel-asterisk': {
                                     display: 'none',
-                                }
+                                },
                             }}
                         />
                         <FormControlLabel
@@ -181,14 +175,12 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                                 gridColumn: '1',
                                 '& .MuiFormControlLabel-asterisk': {
                                     display: 'none',
-                                }
+                                },
                             }}
                         />
                         <FormControlLabel
                             control={
-                                <ColourEdit
-                                    onSubmit={handleColourChange}
-                                />
+                                <ColourEdit onSubmit={handleColourChange} />
                             }
                             label='Colour'
                             labelPlacement='top'
@@ -241,7 +233,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                 </DialogActions>
             </Dialog>
         </Fragment>
-    )
-}
+    );
+};
 
-export default CategoryAdd
+export default CategoryAdd;

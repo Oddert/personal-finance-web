@@ -1,3 +1,3 @@
 export interface IProps {
-	onClose: () => void
+    onClose: () => void;
 }

@@ -1,6 +1,14 @@
 import { ChangeEvent, FC, SyntheticEvent, useMemo } from 'react';
 
-import { Autocomplete, Box, Button, ListItem, Paper, styled, TextField } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Button,
+    ListItem,
+    Paper,
+    styled,
+    TextField,
+} from '@mui/material';
 import {
     Delete as DeleteIcon,
     DeleteForever as UnDeleteIcon,
@@ -20,9 +28,9 @@ const inputProps = {
     sx: {
         '& input': {
             py: '10px',
-        }
-    }
-}
+        },
+    },
+};
 
 /**
  * Displays a single budget row, representing one category and pay constraints.
@@ -33,27 +41,36 @@ const inputProps = {
 const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
     const categories = useAppSelector(getCategoryResponse);
 
-    const categoryOptions = useMemo(() => categories.map((category) => ({
-        id: category.id,
-        label: category.label,
-        colour: category.colour,
-    })), [categories]);
+    const categoryOptions = useMemo(
+        () =>
+            categories.map((category) => ({
+                id: category.id,
+                label: category.label,
+                colour: category.colour,
+            })),
+        [categories],
+    );
 
-    const handleChangeCategory = (event: SyntheticEvent, value: { id: number, label: string } | null) => {
+    const handleChangeCategory = (
+        event: SyntheticEvent,
+        value: { id: number; label: string } | null,
+    ) => {
         const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id && value) {
                 return {
                     ...row,
                     categoryId: value.id,
-                    label: value.label
+                    label: value.label,
                 };
             }
-            return row
+            return row;
         });
         setBudgetRows(filteredRows);
     };
 
-    const handleChangeTargetValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChangeTargetValue = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
         const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id) {
                 return {
@@ -61,12 +78,14 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     value: Number(event.target.value),
                 };
             }
-            return row
+            return row;
         });
         setBudgetRows(filteredRows);
     };
 
-    const handleChangeOverspend = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChangeOverspend = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
         const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id) {
                 return {
@@ -74,12 +93,14 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     varHighPc: Number(event.target.value),
                 };
             }
-            return row
+            return row;
         });
         setBudgetRows(filteredRows);
     };
 
-    const handleChangeUnderspend = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChangeUnderspend = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
         const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id) {
                 return {
@@ -87,7 +108,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     varLowPc: Number(event.target.value),
                 };
             }
-            return row
+            return row;
         });
         setBudgetRows(filteredRows);
     };
@@ -103,7 +124,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                         deleted: true,
                     };
                 }
-                return row
+                return row;
             });
             setBudgetRows(filteredRows);
         }
@@ -117,7 +138,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     deleted: false,
                 };
             }
-            return row
+            return row;
         });
         setBudgetRows(filteredRows);
     };
@@ -135,10 +156,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 }}
                 title={budgetRow.deleted ? 'row deleted' : undefined}
             >
-                <ColourBase
-                    asButton={false}
-                    colour={budgetRow.colour}
-                />
+                <ColourBase asButton={false} colour={budgetRow.colour} />
                 <Autocomplete
                     disabled={budgetRow.deleted}
                     getOptionKey={(category) => category.id}
@@ -153,7 +171,9 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                             placeholder='unset'
                             sx={{
                                 '& * ': {
-                                    textDecoration: budgetRow.deleted ? 'line-through' : 'none',
+                                    textDecoration: budgetRow.deleted
+                                        ? 'line-through'
+                                        : 'none',
                                 },
                             }}
                         />
@@ -171,7 +191,9 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     onChange={handleChangeTargetValue}
                     sx={{
                         '& * ': {
-                            textDecoration: budgetRow.deleted ? 'line-through' : 'none',
+                            textDecoration: budgetRow.deleted
+                                ? 'line-through'
+                                : 'none',
                         },
                     }}
                     type='number'
@@ -193,7 +215,9 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                         onChange={handleChangeOverspend}
                         sx={{
                             '& * ': {
-                                textDecoration: budgetRow.deleted ? 'line-through' : 'none',
+                                textDecoration: budgetRow.deleted
+                                    ? 'line-through'
+                                    : 'none',
                             },
                         }}
                         type='number'
@@ -206,7 +230,9 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                         onChange={handleChangeUnderspend}
                         sx={{
                             '& * ': {
-                                textDecoration: budgetRow.deleted ? 'line-through' : 'none',
+                                textDecoration: budgetRow.deleted
+                                    ? 'line-through'
+                                    : 'none',
                             },
                         }}
                         type='number'
@@ -230,7 +256,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 )}
             </Paper>
         </ListItem>
-    )
-}
+    );
+};
 
 export default BudgetRow;

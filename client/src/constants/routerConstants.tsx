@@ -27,7 +27,7 @@ import EditBudget from '../pages/EditBudget';
  * @subcategory Router
  */
 export const ROUTES = Object.freeze({
-	HOME: '/',
+    HOME: '/',
     ALL_DATA: '/all-data',
     BUDGET_BREAKDOWN: '/budget-breakdown',
     BUDGET_OVERVIEW: '/budget-overview',
@@ -47,8 +47,10 @@ export const ROUTES = Object.freeze({
  * @subcategory Router
  */
 export const ROUTES_FACTORY = Object.freeze({
-    CREATE_BUDGET: (templateId: string|number) => `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
-    EDIT_BUDGET: (budgetId: string|number) => `${ROUTES.EDIT_BUDGET}/${budgetId}`,
+    CREATE_BUDGET: (templateId: string | number) =>
+        `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
+    EDIT_BUDGET: (budgetId: string | number) =>
+        `${ROUTES.EDIT_BUDGET}/${budgetId}`,
 });
 
 // export const GO = Object.freeze({
@@ -143,36 +145,36 @@ const router = createBrowserRouter([
  * @subcategory Router
  */
 export const navigation = [
-	{
-		label: 'All Historical Data',
-		Icon: AllDataIcon,
-		location: ROUTES.ALL_DATA,
-	},
-	{
-		label: 'Budget Breakdown',
-		Icon: BudgetBreakdownIcon,
-		location: ROUTES.BUDGET_BREAKDOWN,
-	},
-	{
-		label: 'Budget Overview',
-		Icon: BudgetOverviewIcon,
-		location: ROUTES.BUDGET_OVERVIEW,
-	},
-	{
-		label: 'Manage Budgets',
-		Icon: ManageBudgetIcon,
-		location: ROUTES.MANAGE_BUDGETS,
-	},
     {
-		label: 'Manage Categories',
+        label: 'All Historical Data',
+        Icon: AllDataIcon,
+        location: ROUTES.ALL_DATA,
+    },
+    {
+        label: 'Budget Breakdown',
+        Icon: BudgetBreakdownIcon,
+        location: ROUTES.BUDGET_BREAKDOWN,
+    },
+    {
+        label: 'Budget Overview',
+        Icon: BudgetOverviewIcon,
+        location: ROUTES.BUDGET_OVERVIEW,
+    },
+    {
+        label: 'Manage Budgets',
+        Icon: ManageBudgetIcon,
+        location: ROUTES.MANAGE_BUDGETS,
+    },
+    {
+        label: 'Manage Categories',
         Icon: CategoryIcon,
         location: ROUTES.CATEGORIES,
     },
-	{
-		label: 'Upload & View Transactions',
-		Icon: TransactionsIcon,
-		location: ROUTES.TRANSACTIONS,
-	},
+    {
+        label: 'Upload & View Transactions',
+        Icon: TransactionsIcon,
+        location: ROUTES.TRANSACTIONS,
+    },
 ];
 
 export default router;

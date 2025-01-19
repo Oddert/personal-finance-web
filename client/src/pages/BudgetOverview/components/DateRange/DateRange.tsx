@@ -1,12 +1,6 @@
-import {
-    ChangeEvent,
-    FC,
-    Fragment,
-    useCallback,
-    useState,
-} from 'react';
-import dayjs, { Dayjs } from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
+import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, TextField, Typography } from '@mui/material';
 
@@ -14,7 +8,7 @@ import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
 
 import type { IProps } from './DateRange.types';
 
-dayjs.extend(localizedFormat)
+dayjs.extend(localizedFormat);
 
 /**
  * Date range controls, including buttons to jump to set time periods.
@@ -22,14 +16,19 @@ dayjs.extend(localizedFormat)
  * @subcategory Budget Overview
  * @component
  */
-const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate }) => {
-    const [dateError, setDateError] = useState<null|string>(null);
+const DateRange: FC<IProps> = ({
+    endDate,
+    setEndDate,
+    setStartDate,
+    startDate,
+}) => {
+    const [dateError, setDateError] = useState<null | string>(null);
 
     const handleChangeStartDate = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             setStartDate(toBeginningMonth(e.target.value));
             setEndDate(toEndMonth(e.target.value));
-            setDateError(null)
+            setDateError(null);
         },
         [setEndDate, setStartDate],
     );
@@ -40,8 +39,8 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
             if (dayjs(convertedEndDate).diff(dayjs(startDate)) < 0) {
                 setDateError('End date may not be before start date');
             } else {
-                setDateError(null)
-                setEndDate(toEndMonth(e.target.value))
+                setDateError(null);
+                setEndDate(toEndMonth(e.target.value));
             }
         },
         [setEndDate, startDate],
@@ -76,7 +75,13 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
 
     return (
         <Fragment>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                }}
+            >
                 <TextField
                     InputLabelProps={{ shrink: true }}
                     label='Start Date'
@@ -102,24 +107,24 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
                     gridGap: '32px',
                 }}
             >
-				<Button
-					onClick={handleClickTimeJump(
-						dayjs().subtract(7, 'months'),
-						dayjs(),
-					)}
-					variant='contained'
-				>
-					Past 6 Months
-				</Button>
-				<Button
-					onClick={handleClickTimeJump(
-						dayjs().subtract(4, 'months'),
-						dayjs(),
-					)}
-					variant='contained'
-				>
-					Past 3 Months
-				</Button>
+                <Button
+                    onClick={handleClickTimeJump(
+                        dayjs().subtract(7, 'months'),
+                        dayjs(),
+                    )}
+                    variant='contained'
+                >
+                    Past 6 Months
+                </Button>
+                <Button
+                    onClick={handleClickTimeJump(
+                        dayjs().subtract(4, 'months'),
+                        dayjs(),
+                    )}
+                    variant='contained'
+                >
+                    Past 3 Months
+                </Button>
                 <Button
                     onClick={handleClickTimeJump(
                         dayjs().subtract(12, 'months'),
@@ -139,7 +144,10 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
                     Previous Year
                 </Button>
                 <Button
-                    onClick={handleClickTimeJump(dayjs().set('month', 0), dayjs())}
+                    onClick={handleClickTimeJump(
+                        dayjs().set('month', 0),
+                        dayjs(),
+                    )}
                     variant='contained'
                 >
                     Current Year
@@ -147,7 +155,7 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
             </Box>
             <Typography color='error'>{dateError || ''}</Typography>
         </Fragment>
-    )
-}
+    );
+};
 
 export default DateRange;

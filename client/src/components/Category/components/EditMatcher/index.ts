@@ -1,1 +1,1 @@
-export { default } from './EditMatcher'
+export { default } from './EditMatcher';

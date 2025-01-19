@@ -1,8 +1,16 @@
 import { FC, Fragment, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material'
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 
 import { ROUTES } from '../../../../constants/routerConstants';
 
@@ -31,9 +39,9 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
             await APIService.deleteSingleBudget(budget.id);
             dispatch(deleteBudget({ budgetId: budget.id }));
             navigate(ROUTES.MANAGE_BUDGETS);
-        }
+        };
         request();
-    }
+    };
 
     return (
         <Fragment>
@@ -52,7 +60,8 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
             </Box>
             <Dialog open={open}>
                 <DialogTitle>
-                    Are you sure you want to delete budget &ldquo;{budget.name}&rdquo;?
+                    Are you sure you want to delete budget &ldquo;{budget.name}
+                    &rdquo;?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -70,6 +79,6 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
             </Dialog>
         </Fragment>
     );
-}
+};
 
 export default DeleteBudget;

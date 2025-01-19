@@ -1,7 +1,7 @@
-import { FC, useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import Chart from 'react-apexcharts'
-import { ApexOptions } from 'apexcharts'
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Chart from 'react-apexcharts';
+import { ApexOptions } from 'apexcharts';
 
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -15,12 +15,12 @@ import {
     Input,
     Paper,
     Typography,
-} from '@mui/material'
-import { ExpandMore as ExpandIcon } from '@mui/icons-material'
+} from '@mui/material';
+import { ExpandMore as ExpandIcon } from '@mui/icons-material';
 
-import type { Transaction } from '../../types/Transaction'
+import type { Transaction } from '../../types/Transaction';
 
-import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors'
+import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
 import {
     chart1BaseOptions,
@@ -28,12 +28,12 @@ import {
     defaultEnd,
     defaultStart,
     title,
-} from './ExistingDataLineChartUtils'
+} from './ExistingDataLineChartUtils';
 
 dayjs.extend(localizedFormat);
 
 interface Props {
-    compact?: boolean
+    compact?: boolean;
 }
 
 /**
@@ -44,31 +44,40 @@ interface Props {
  * @param props.compact If true, displays as a card module for composition with other modules.
  */
 const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
-    const [ballanceData, setBallanceData] =
-        useState<{ x: number|string, y: number }[]>([])
-    const [debitData, setDebitData] = 
-        useState<{ x: number|string, y: number }[]>([])
-    const [debitTransactions, setDebitTransactions] = useState<Transaction[]>([])
-    const [creditData, setCreditData] = 
-        useState<{ x: number|string, y: number }[]>([])
-    const [debitMax, setDebitMax] = useState<number>(0)
+    const [ballanceData, setBallanceData] = useState<
+        { x: number | string; y: number }[]
+    >([]);
+    const [debitData, setDebitData] = useState<
+        { x: number | string; y: number }[]
+    >([]);
+    const [debitTransactions, setDebitTransactions] = useState<Transaction[]>(
+        [],
+    );
+    const [creditData, setCreditData] = useState<
+        { x: number | string; y: number }[]
+    >([]);
+    const [debitMax, setDebitMax] = useState<number>(0);
 
-    const [startDate, setStartDate] =
-        useState<string|number>(defaultStart.toISOString().substring(0, 10))
+    const [startDate, setStartDate] = useState<string | number>(
+        defaultStart.toISOString().substring(0, 10),
+    );
 
-    const [endDate, setEndDate] =
-        useState<string|number>(defaultEnd.toISOString().substring(0, 10))
+    const [endDate, setEndDate] = useState<string | number>(
+        defaultEnd.toISOString().substring(0, 10),
+    );
 
-    console.log({ startDate, endDate })
+    console.log({ startDate, endDate });
 
     // Workaround for issue owners seem unwilling / unable to resolve:
     // https://github.com/apexcharts/react-apexcharts/issues/182
     // https://github.com/apexcharts/react-apexcharts/issues/31
-    const [chart1Options, setChart1Options] = useState<ApexOptions>(chart1BaseOptions)
-    const [chart2Options, setChart2Options] = useState<ApexOptions>(chart2BaseOptions)
+    const [chart1Options, setChart1Options] =
+        useState<ApexOptions>(chart1BaseOptions);
+    const [chart2Options, setChart2Options] =
+        useState<ApexOptions>(chart2BaseOptions);
 
-    const transactions = useSelector(getTransactionsOrderedByDate)
-    
+    const transactions = useSelector(getTransactionsOrderedByDate);
+
     useEffect(() => {
         let sDate = dayjs(startDate);
         const eDate = dayjs(endDate);
@@ -76,59 +85,65 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
         const transactionList: Transaction[] = [];
 
         while (sDate < eDate) {
-            const year = sDate.year()
-            const month = sDate.month()
+            const year = sDate.year();
+            const month = sDate.month();
             if (year in transactions && month in transactions[year]) {
                 const transactionBlock = transactions[year][month];
                 transactionList.push(...transactionBlock);
             }
-            sDate = sDate.add(1, 'month').set('date', 10)
+            sDate = sDate.add(1, 'month').set('date', 10);
         }
 
-        const sorted = transactionList.reduce((acc: {
-            ballance: { x: number|string, y: number }[],
-            debit: { x: number|string, y: number }[],
-            credit: { x: number|string, y: number }[],
-            debitMax: number,
-            debitTransactions: Transaction[],
-        }, transaction) => {
-            acc.ballance.push({
-                x: transaction.date,
-                y: transaction.ballance,
-            })
-            if (transaction.debit) {
-                acc.debit.push({
+        const sorted = transactionList.reduce(
+            (
+                acc: {
+                    ballance: { x: number | string; y: number }[];
+                    debit: { x: number | string; y: number }[];
+                    credit: { x: number | string; y: number }[];
+                    debitMax: number;
+                    debitTransactions: Transaction[];
+                },
+                transaction,
+            ) => {
+                acc.ballance.push({
                     x: transaction.date,
-                    y: transaction.debit,
-                })
-                if (transaction.debit > acc.debitMax) {
-                    acc.debitMax = transaction.debit
+                    y: transaction.ballance,
+                });
+                if (transaction.debit) {
+                    acc.debit.push({
+                        x: transaction.date,
+                        y: transaction.debit,
+                    });
+                    if (transaction.debit > acc.debitMax) {
+                        acc.debitMax = transaction.debit;
+                    }
+                    acc.debitTransactions.push(transaction);
                 }
-                acc.debitTransactions.push(transaction)
-            }
-            if (transaction.credit) {
-                acc.credit.push({
-                    x: transaction.date,
-                    y: transaction.credit,
-                })
-            }
-            return acc
-        }, {
-            ballance: [],
-            debit: [],
-            credit: [],
-            debitMax: 0,
-            debitTransactions: [],
-        })
-        setDebitMax(sorted.debitMax)
-        setDebitTransactions(sorted.debitTransactions)
-        setBallanceData(sorted.ballance)
-        setDebitData(sorted.debit)
-        setCreditData(sorted.credit)
-    }, [endDate, startDate, transactions])
+                if (transaction.credit) {
+                    acc.credit.push({
+                        x: transaction.date,
+                        y: transaction.credit,
+                    });
+                }
+                return acc;
+            },
+            {
+                ballance: [],
+                debit: [],
+                credit: [],
+                debitMax: 0,
+                debitTransactions: [],
+            },
+        );
+        setDebitMax(sorted.debitMax);
+        setDebitTransactions(sorted.debitTransactions);
+        setBallanceData(sorted.ballance);
+        setDebitData(sorted.debit);
+        setCreditData(sorted.credit);
+    }, [endDate, startDate, transactions]);
 
     useEffect(() => {
-        setChart1Options(chart1BaseOptions)
+        setChart1Options(chart1BaseOptions);
         setChart2Options({
             ...chart2BaseOptions,
             tooltip: {
@@ -142,11 +157,11 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 ...chart2BaseOptions.yaxis,
                 max: debitMax,
             },
-        })
-    }, [debitTransactions, debitMax])
+        });
+    }, [debitTransactions, debitMax]);
 
-    const width = useMemo(() => compact ? '100%' : '80%', [compact])
-    
+    const width = useMemo(() => (compact ? '100%' : '80%'), [compact]);
+
     const Controls = (
         <Box
             sx={{
@@ -168,7 +183,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
-                    color: theme.palette.common.white,   
+                    color: theme.palette.common.white,
                 })}
             />
             <FormControlLabel
@@ -185,11 +200,11 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
-                    color: theme.palette.common.white,   
+                    color: theme.palette.common.white,
                 })}
             />
         </Box>
-    )
+    );
 
     return (
         <Paper
@@ -197,42 +212,39 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             sx={(theme) => ({
                 margin: '20px 0 0',
                 padding: '20px',
-                '& #apexchartsexisting-data-line-chart, & #apexchartscredit-debit-chart': {
-                    margin: '0 auto',
-                },
+                '& #apexchartsexisting-data-line-chart, & #apexchartscredit-debit-chart':
+                    {
+                        margin: '0 auto',
+                    },
                 color: theme.palette.common.black,
             })}
         >
-            {
-                compact ? (
-                    <Accordion>
-                        <AccordionSummary
-                            aria-controls='projection-line-controls'
-                            expandIcon={<ExpandIcon />}
-                            id='projection-controls-header'
-                        >
-                            {title}
-                        </AccordionSummary>
-                        <AccordionActions>
-                            {Controls}
-                        </AccordionActions>
-                    </Accordion>
-                ) : (
-                    <Box sx={{ width: '80%', margin: '0 auto' }}>
-                        <Typography
-                            sx={(theme) => ({
-                                color: theme.palette.common.white,
-                                width,
-                                margin: '16px auto 32px',
-                            })}
-                            variant='h3'
-                        >
-                            {title}
-                        </Typography>
-                        {Controls}
-                    </Box>
-                )
-            }
+            {compact ? (
+                <Accordion>
+                    <AccordionSummary
+                        aria-controls='projection-line-controls'
+                        expandIcon={<ExpandIcon />}
+                        id='projection-controls-header'
+                    >
+                        {title}
+                    </AccordionSummary>
+                    <AccordionActions>{Controls}</AccordionActions>
+                </Accordion>
+            ) : (
+                <Box sx={{ width: '80%', margin: '0 auto' }}>
+                    <Typography
+                        sx={(theme) => ({
+                            color: theme.palette.common.white,
+                            width,
+                            margin: '16px auto 32px',
+                        })}
+                        variant='h3'
+                    >
+                        {title}
+                    </Typography>
+                    {Controls}
+                </Box>
+            )}
             <Chart
                 options={chart1Options}
                 series={[
@@ -285,7 +297,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 />
             </Box>
         </Paper>
-    )
-}
+    );
+};
 
-export default ExistingDataLineChart
+export default ExistingDataLineChart;

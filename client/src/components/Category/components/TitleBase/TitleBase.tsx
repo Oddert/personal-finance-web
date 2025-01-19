@@ -1,10 +1,10 @@
-import { FC, useMemo } from 'react'
-import { Typography } from '@mui/material'
-import { Variant } from '@mui/material/styles/createTypography'
+import { FC, useMemo } from 'react';
+import { Typography } from '@mui/material';
+import { Variant } from '@mui/material/styles/createTypography';
 
-import EditableText from '../../../EditableText/EditableText'
+import EditableText from '../../../EditableText/EditableText';
 
-import type { IProps } from './TitleBase.types'
+import type { IProps } from './TitleBase.types';
 
 const sizeMap = {
     xs: '10px',
@@ -12,7 +12,7 @@ const sizeMap = {
     md: '16px',
     lg: '20px',
     xl: '24px',
-}
+};
 
 /**
  * Lower level component to display the title with optional edit capability.
@@ -39,11 +39,11 @@ const TitleBase: FC<IProps> = ({
             sx: {
                 alignSelf: 'stretch',
                 borderBottom: showBorder ? `2px solid ${colour}` : 'none',
-                fontSize: sizeMap[size]
+                fontSize: sizeMap[size],
             },
             variant: 'h3' as Variant | 'inherit' | undefined,
-        }
-    }, [colour, size, showBorder])
+        };
+    }, [colour, size, showBorder]);
 
     if (editable) {
         return (
@@ -54,13 +54,9 @@ const TitleBase: FC<IProps> = ({
                 text={text}
                 verticalCenter
             />
-        )
+        );
     }
-    return (
-        <Typography {...headingProps}>
-            {text}
-        </Typography>
-    )
-}
+    return <Typography {...headingProps}>{text}</Typography>;
+};
 
-export default TitleBase
+export default TitleBase;
