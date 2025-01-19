@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import {
@@ -16,10 +15,7 @@ import {
 
 import { navigation } from '../../constants/routerConstants'
 
-interface Props {
-    handleDrawerClose: (args: any) => void
-    open: boolean
-}
+import type { IProps } from './Sidebar.types'
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -29,7 +25,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
 }))
 
-const Sidebar: FC<Props> = ({ handleDrawerClose = () => {}, open = false }) => {
+/**
+ * Main navigation component, displays the page options.
+ * @category Components
+ * @subcategory Sidebar
+ * @component
+ * @param props.handleDrawerClose Callback function invoked when the component requests to close.
+ * @param props.open If true, the drawer is open.
+ */
+const Sidebar: FC<IProps> = ({ handleDrawerClose = () => {}, open = false }) => {
     const theme = useTheme()
     return (
         <Drawer

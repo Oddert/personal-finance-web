@@ -1,18 +1,21 @@
 import { FC, useCallback } from 'react'
 
-import type { Category } from '../../../../types/Category'
-
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
 import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice'
 
 import TitleBase from '../TitleBase/TitleBase'
 
-interface IProps {
-    category: Category
-    small?: boolean
-}
+import type { IProps } from './Title.types'
 
+/**
+ * Abstraction for {@link TitleBase} to provide callback props.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.category The selected category.
+ * @param props.small If true, a more compact size will be used.
+ */
 const Title: FC<IProps> = ({ category, small = false }) => {
     const dispatch = useAppDispatch()
 

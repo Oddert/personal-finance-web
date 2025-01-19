@@ -14,18 +14,22 @@ import routes from '../../../../services/routes'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
-import { Category } from '../../../../types/Category'
 import { Matcher as MatcherT } from '../../../../types/Matcher'
 
 import EditMatcher from '../EditMatcher'
 
-interface IProps {
-    matcher: MatcherT
-    categoryId: Category['id']
-}
+import type { IProps } from './Matcher.types'
 
 const iconWidth = 50
 
+/**
+ * Displays a single Matcher with optional edit capability.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.matcher The Matcher to display.
+ * @param props.categoryId The ID of the category the matcher belongs to.
+ */
 const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     const dispatch = useAppDispatch()
 

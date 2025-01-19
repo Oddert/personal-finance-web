@@ -1,21 +1,25 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react'
-import { ColorChangeHandler, SketchPicker } from 'react-color'
+import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import { ColorChangeHandler, SketchPicker } from 'react-color';
 
-import { Theme } from '@emotion/react'
-import { Box, Button, Popover, SxProps } from '@mui/material'
+import { Box, Button, Popover } from '@mui/material';
 
-import { defaultCategoryColours } from '../../constants/categoryConstants'
+import { defaultCategoryColours } from '../../constants/categoryConstants';
 
-import ColourBase from '../ColourBase'
+import ColourBase from '../ColourBase';
 
-interface Props {
-    colour?: string
-    onSubmit: (colour: string) => void
-    popoverId?: string
-    sx?: SxProps<Theme> | undefined
-}
+import type { IProps } from './ColourEdit.types';
 
-const ColourEdit: FC<Props> = ({ colour, onSubmit, popoverId, sx }) => {
+/**
+ * Displays a Colour square with the ability to edit the colour by clicking an edit button.
+ * @category Components
+ * @subcategory Colour Edit
+ * @component
+ * @param props.colour The colour to display.
+ * @param props.onSubmit Callback function invoked when a colour change is committed.
+ * @param props.popoverId HTML ID attribute applied to the internal Popover.
+ * @param props.sx Style overrides applied to the overall container.
+ */
+const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement|null>(null)
     const [editedColour, setEditedColour] = useState<string>('#bec3c7')
     const [hasChanged, setHasChanged] = useState<boolean>(false)

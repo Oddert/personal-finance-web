@@ -12,15 +12,19 @@ import {
 } from '@mui/material'
 import { MoreVert as DotsIcon } from '@mui/icons-material'
 
-import { Category } from '../../../../types/Category'
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 import { initDeleteSingleCategory } from '../../../../redux/slices/categorySlice'
 
-interface Props {
-    category: Category
-}
+import type { IProps } from './HamburgerMenu.types'
 
-const HamburgerMenu: FC<Props> = ({ category }) => {
+/**
+ * Additional Category actions including delete.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.category The Category to display.
+ */
+const HamburgerMenu: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch()
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement|null>(null)

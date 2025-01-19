@@ -16,13 +16,20 @@ import {
 } from '@mui/material'
 import type { SelectChangeEvent } from '@mui/material'
 
+import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../constants/appConstants'
+
 import {
     defaultColumns,
     setColumnMap,
     TransactionEditContext,
 } from '../../../contexts/transactionEditContext'
-import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../constants/appConstants'
 
+/**
+ * Allows the user to change the mapping between the uploaded CSV columns and the data columns used by the application.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ */
 const ColumnMapping = () => {
     const [open, setOpen] = useState(false)
 

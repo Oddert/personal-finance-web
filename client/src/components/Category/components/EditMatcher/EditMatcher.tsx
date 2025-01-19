@@ -14,20 +14,25 @@ import {
     FontDownload as MatchPositiveIcon,
 } from '@mui/icons-material';
 
-import type { MatchType, Matcher } from '../../../../types/Matcher';
+import type { MatchType } from '../../../../types/Matcher';
 
 import { matchTypesOptions } from '../../../../utils/matcherUtils';
 
-interface IProps {
-    clearOnBlur?: boolean
-    clearOnCancel: boolean
-    clearOnSubmit: boolean
-    matcher?: Partial<Matcher>
-    onBlur?: (matcher: Partial<Matcher>) => void
-    onCancel?: (matcher: Partial<Matcher>) => void
-    onSubmit?: (matcher: Partial<Matcher>) => void
-}
+import type { IProps } from './EditMatcher.types';
 
+/**
+ * Alternate layout for a Matcher with edit options enabled.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.clearOnBlur If true, the modifications made will be reset on blur.
+ * @param props.clearOnCancel If true, the modifications made will be reset when the user cancels.
+ * @param props.clearOnSubmit If true, the modifications made will be reset when the user confirms their changes.
+ * @param props.matcher The starting values for the Matcher
+ * @param props.onBlur Callback function invoked on blur of the outer component.
+ * @param props.onCancel Callback function invoked when the user cancels their changes.
+ * @param props.onSubmit Callback function invoked when the user confirms their changes.
+ */
 const EditMatcher: FC<IProps> = ({
     clearOnBlur = false,
     clearOnCancel = false,

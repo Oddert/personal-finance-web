@@ -9,6 +9,12 @@ import { useAppDispatch } from '../../../../../hooks/ReduxHookWrappers';
 
 // import ColourEdit from '../../../../ColourEdit';
 
+/**
+ * Smaller version of the Category edit / add modal which allows the creation of Categories.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ */
 const AddCategory: FC = () => {
     const dispatch = useAppDispatch();
 

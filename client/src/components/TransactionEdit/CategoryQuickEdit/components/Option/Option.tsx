@@ -13,6 +13,13 @@ import TitleBase from '../../../../Category/components/TitleBase'
 
 import type { IProps } from './Option.types'
 
+/**
+ * Displays a category.
+ * @category Components
+ * @subcategory Transaction Edit
+ * @component
+ * @param props.onClose Callback function invoked when the submit succeeds.
+ */
 const Option: FC<IProps> = ({ category }) => {
     const { dispatch, state: { match, transactions } } = useContext(TransactionEditContext)
 

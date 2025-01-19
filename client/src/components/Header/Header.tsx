@@ -8,6 +8,12 @@ import HomeIcon from '@mui/icons-material/AutoGraph'
 
 import Sidebar from '../Sidebar/Sidebar'
 
+/**
+ * Common header component, displays navigation elements and application title as h1.
+ * @category Components
+ * @subcategory Header
+ * @component
+ */
 const Header = () => {
     const navigate = useNavigate()
 

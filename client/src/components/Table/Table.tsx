@@ -17,6 +17,16 @@ interface ReactTableProps<TData> {
 	columnVisibility?: { [column: string]: boolean }
 }
 
+/**
+ * Re-usable table component based on react-table.
+ * @category Components
+ * @subcategory Table
+ * @component
+ * @param props.data The data to display.
+ * @param props.columns List of Column Definitions
+ * @param props.compact If true, the row styling is more condensed.
+ * @param props.columnVisibility List of columns to hide.
+ */
 const Table = <TData extends object>({ data, columns, compact, columnVisibility }: ReactTableProps<TData>) => {	  
     const {
         getHeaderGroups,

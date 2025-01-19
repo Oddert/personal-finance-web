@@ -8,6 +8,13 @@ import EditableText from '../../../EditableText'
 
 import type { IProps } from './Description.types'
 
+/**
+ * Editable title component for the Category.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.category The current Category.
+ */
 const Title: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch()
 

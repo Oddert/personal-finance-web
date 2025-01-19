@@ -12,10 +12,18 @@ import {
     TableRows as LayoutListIcon,
 } from '@mui/icons-material'
 
-import { IDynamicCardLayoutModes } from '../../types/Common.types';
+import type { IDynamicCardLayoutModes } from '../../types/Common.types';
 
 import type { IProps } from './LayoutControls.types';
 
+/**
+ * Main navigation component, displays the page options.
+ * @category Components
+ * @subcategory Layout Controls
+ * @component
+ * @param props.layout The current layout mode.
+ * @param props.setLayout Callback function to change the layout mode.
+ */
 const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
     return (
         <FormControl>

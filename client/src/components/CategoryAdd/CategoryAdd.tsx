@@ -14,22 +14,20 @@ import {
 import { initCreateCategory } from '../../redux/slices/categorySlice'
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers'
-// import AddMatcher from '../Category/components/AddMatcher'
 
 import ColourEdit from '../ColourEdit'
 
-interface Props {
-    handleClose: (payload?: any) => void
-    open: boolean
-}
+import type { IProps } from './CategoryAdd.types'
 
 /**
- * Displays a single Category with optional edit capability.
+ * Dialog component to add a new category.
  * @category Component
- * @subcategory Category
+ * @subcategory CategoryAdd
  * @component
+ * @param props.handleClose Callback function invoked when the component requests to close. Will contain a partial Category if the close is a submission.
+ * @param props.open If true, the modal will display.
  */
-const CategoryAdd: FC<Props> = ({ handleClose, open }) => {
+const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
     const dispatch = useAppDispatch()
 
     const [label, setLabel] = useState('')

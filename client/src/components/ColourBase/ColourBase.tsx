@@ -1,31 +1,26 @@
-import { FC, MouseEvent } from 'react'
+import { FC } from 'react'
 import { Box, Button, Theme } from '@mui/material'
 import { Edit as EditIcon } from '@mui/icons-material'
 
 import { categoryBoxSizes } from '../../constants/categoryConstants'
 
-interface IProps {
-    asButton: boolean
-    colour: string
-    handleClick?: (event: MouseEvent<HTMLButtonElement>) => void
-    id?: string
-    size?: 'xs'|'sm'|'md'|'lg'|'xl'
-}
+import type { IProps } from './ColourBase.types'
 
 /**
  * Lower order component used to allow non-interactive rendering of the colour square.
  * @category Components
- * @subcategory Category
+ * @subcategory Colour Base
  * @component
  * @example
  *  return (
  *      <ColourBase
+ *          asButton={false}
  *          colour='#ecf0f1'
  *      />
  *  )
- * @param props.asButton If true, the component will render as a button with handleClick enabled.
+ * @param props.asButton If true, the component will render as a button with `handleClick` enabled.
  * @param props.colour The colour to be displayed.
- * @param props.handleClick Callback function to be called onClick.
+ * @param props.handleClick Callback function invoked when the button is clicked (if `asButton` is also `true`).
  * @param props.id HTML id attribute to be assigned to the button.
  * @param props.size The size of the icon (default: 'md').
  */

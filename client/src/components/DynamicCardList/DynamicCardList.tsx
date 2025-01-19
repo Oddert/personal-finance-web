@@ -4,6 +4,14 @@ import { List } from '@mui/material';
 
 import type { IProps } from './DynamicCardList.types';
 
+/**
+ * Reusable list component primarily used for card-type components (i.e. not a single-line item). 
+ * @category Components
+ * @subcategory Dynamic Card List
+ * @component
+ * @param props.children The list contents.
+ * @param props.layout The selected layout mode.
+ */
 const DynamicCardList: FC<IProps> = ({ children, layout }) => {
 	return (
 		<List

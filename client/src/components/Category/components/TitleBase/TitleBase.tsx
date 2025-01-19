@@ -14,6 +14,18 @@ const sizeMap = {
     xl: '24px',
 }
 
+/**
+ * Lower level component to display the title with optional edit capability.
+ * @category Component
+ * @subcategory Category
+ * @component
+ * @param props.colour The selected category colour, used decoratively as the title underline if `showBorder` is true.
+ * @param props.editable If true, the edit capabilities will be enabled.
+ * @param props.handleChange Callback function invoked when a change is committed.
+ * @param props.text The title text content.
+ * @param props.showBorder If true title `colour` underline will be shown.
+ * @param props.size The display size.
+ */
 const TitleBase: FC<IProps> = ({
     colour = '',
     editable = true,
