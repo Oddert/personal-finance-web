@@ -10,7 +10,7 @@ import {
 
 import { categorySlice, initDeleteSingleMatcher } from '../../../../redux/slices/categorySlice'
 
-import routes from '../../../../services/routes'
+import APIService from '../../../../services/APIService'
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
 
@@ -38,7 +38,10 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     const handleSubmit = (_matcher: Partial<MatcherT>) => {
         const request = async () => {
             try {
-                const response: any = await routes.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                const response = await APIService.updateSingleMatcher({ ..._matcher,  }, matcher.id)
+                if (!response || !response.payload) {
+                    throw new Error('No response received from the server.')
+                }
                 dispatch(categorySlice.actions.updateSingleMatcher({
                     categoryId,
                     matcher: {

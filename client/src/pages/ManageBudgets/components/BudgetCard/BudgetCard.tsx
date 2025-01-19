@@ -16,7 +16,7 @@ import {
 import { LOCALE } from '../../../../constants/appConstants';
 import { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
-import routes from '../../../../services/routes';
+import APIService from '../../../../services/APIService';
 
 import { useAppDispatch, useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
@@ -46,7 +46,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
 	const handleClickActivate = () => {
 		try {
 			const request = async () => {
-				await routes.setBudgetPreference(budget.id)
+				await APIService.setBudgetPreference(budget.id)
 				dispatch(setActiveBudget({ budget }))
 			}
 			request();

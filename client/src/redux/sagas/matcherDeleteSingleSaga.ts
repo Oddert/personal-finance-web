@@ -1,11 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { put } from 'redux-saga/effects'
 
-import routes from '../../services/routes'
+import APIService from '../../services/APIService'
 
 import type { Category } from '../../types/Category'
 import type { Matcher } from '../../types/Matcher'
-import type { ResponseData } from '../../types/Request'
+import type { IStandardResponse } from '../../types/Request'
 
 import { deleteSingleMatcher } from '../slices/categorySlice'
 
@@ -19,8 +19,8 @@ export default function* matcherDeleteSingleSaga(
     }>
 ) {
     try {
-        const response: ResponseData<{ error?: string }> =
-            yield routes.deleteSingleMatcher(payload.matcherId)
+        const response: IStandardResponse<{ error?: string }> =
+            yield APIService.deleteSingleMatcher(payload.matcherId)
 
         if (response.error) {
             console.error(response?.payload?.error)
