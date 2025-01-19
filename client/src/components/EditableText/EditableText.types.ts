@@ -1,7 +1,5 @@
-import { SxProps } from '@mui/material'
-
 export interface IProps {
-    containerSx?: SxProps
+    containerSx?: any
     headingProps: any
     iconPosition?: 'start'|'end'
     onChange: (value: string) => void
