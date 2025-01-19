@@ -2,6 +2,9 @@ import ReactDOM from 'react-dom/client'
 import { Provider as ReduxProvider } from 'react-redux'
 import { ThemeProvider } from '@mui/material'
 
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+
 import store from './redux/constants/store';
 
 import theme from './theme/'
@@ -18,9 +21,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <ReduxProvider store={store}>
-        <ThemeProvider theme={theme}>
-            <App />
-        </ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
+                <App />
+            </ThemeProvider>
+        </LocalizationProvider>
     </ReduxProvider>
 )
 
