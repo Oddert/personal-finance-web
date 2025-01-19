@@ -82,7 +82,7 @@ const EditBudget: FC<IProps> = () => {
 
 	useEffect(() => {
 		const fetchBudget = async (budgetId: number) => {
-			const response: any = await APIService.getSingelBudget(budgetId)
+			const response: any = await APIService.getSingleBudget(budgetId)
 			setBudget({
 				...response.payload.budget as IBudget,
 				budgetRows: [],
