@@ -3,9 +3,9 @@ import { put } from 'redux-saga/effects';
 
 import APIService from '../../services/APIService';
 
-import type { Category } from '../../types/Category';
-import type { Matcher } from '../../types/Matcher';
-import type { IStandardResponse } from '../../types/Request';
+import type { Category } from '../../types/Category.d';
+import type { Matcher } from '../../types/Matcher.d';
+import type { IStandardResponse } from '../../types/Request.d';
 
 import { deleteSingleMatcher } from '../slices/categorySlice';
 

@@ -8,7 +8,7 @@ import App from './App';
 describe('root', () => {
     test('renders learn react link', () => {
         const { container } = render(<App />);
-        // eslint-disable-next-line testing-library/no-container, testing-library/no-node-access
+        // TODO: investigate testing-library/no-container, testing-library/no-node-access
         // const linkElement = container.getElementsByClassName('.App')
         // expect(linkElement).toBeInTheDocument()
         expect(container).toBeInTheDocument();

@@ -1,5 +1,5 @@
-import { Category } from '../../../../types/Category';
-import { Matcher } from '../../../../types/Matcher';
+import { Category } from '../../../../types/Category.d';
+import { Matcher } from '../../../../types/Matcher.d';
 
 export interface IProps {
     categoryId: Category['id'];

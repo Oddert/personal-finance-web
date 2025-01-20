@@ -34,7 +34,7 @@ const ManageBudgets: FC<IProps> = () => {
 
     useEffect(() => {
         dispatch(refreshBudgets(true));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // TODO: re-enable react-hooks/exhaustive-deps
     }, []);
 
     return (

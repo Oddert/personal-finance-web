@@ -57,7 +57,7 @@ const RangeControls = () => {
             });
         });
 
-        const rangeKeys = rangeKeysArr.reduce(
+        const filteredRangeKeys = rangeKeysArr.reduce(
             (
                 acc: {
                     keyList: TransactionRangeState['rangeKeys'];
@@ -79,22 +79,28 @@ const RangeControls = () => {
         const rangeValues = rangeValuesArr.reduce(
             (
                 acc: { [key: number]: { top: number; bottom: number } },
-                value,
+                val,
                 idx,
             ) => {
-                acc[idx] = value;
+                acc[idx] = val;
                 return acc;
             },
             {},
         );
 
-        const customMarks = generateMarks(Object.values(rangeKeys.keyList));
+        const customMarks = generateMarks(
+            Object.values(filteredRangeKeys.keyList),
+        );
 
         dispatch(setRangeValues(rangeValues));
         dispatch(
-            setRangeKeys(rangeKeys.keyList, rangeKeys.length, customMarks),
+            setRangeKeys(
+                filteredRangeKeys.keyList,
+                filteredRangeKeys.length,
+                customMarks,
+            ),
         );
-        dispatch(updateValue([0, rangeKeys.length]));
+        dispatch(updateValue([0, filteredRangeKeys.length]));
     }, [orderedTransactions, dispatch]);
 
     const handleChange = (
@@ -141,7 +147,7 @@ const RangeControls = () => {
                 onChangeCommitted={onChangeCommitted}
                 valueLabelDisplay='auto'
                 getAriaValueText={valuetext}
-                valueLabelFormat={(value) => rangeKeys[value]}
+                valueLabelFormat={(val) => rangeKeys[val]}
                 min={0}
                 max={rangeLength}
                 step={1}

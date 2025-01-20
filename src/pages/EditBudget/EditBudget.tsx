@@ -133,7 +133,6 @@ const EditBudget: FC<IProps> = () => {
         } catch (error: any) {
             console.error(error);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (loading) {

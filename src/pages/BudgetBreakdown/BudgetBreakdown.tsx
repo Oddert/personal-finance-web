@@ -5,8 +5,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Paper, Typography } from '@mui/material';
 
-import type { ICategoryBreakdown } from '../../types/Category';
-import type { Transaction } from '../../types/Transaction';
+import type { ICategoryBreakdown } from '../../types/Category.d';
+import type { Transaction } from '../../types/Transaction.d';
 
 import {
     createBudgetChartData,
@@ -77,12 +77,12 @@ const BudgetBreakdown: FC = () => {
 
     const data = useMemo(() => {
         if (monthBudget) {
-            const _data = createBudgetChartData(
+            const nextData = createBudgetChartData(
                 categoryBreakdown,
                 monthBudget,
                 numMonths,
             );
-            return _data;
+            return nextData;
         }
         return [];
     }, [categoryBreakdown, monthBudget, numMonths]);
@@ -90,7 +90,7 @@ const BudgetBreakdown: FC = () => {
     useEffect(() => {
         setNumMonths(dayjs(endDate).diff(dayjs(startDate), 'month') + 1);
 
-        const _filteredTransactions = transactions.filter((transaction) => {
+        const nextFilteredTransactions = transactions.filter((transaction) => {
             const tDate = dayjs(transaction.date);
             const sDate = dayjs(startDate);
             const eDate = dayjs(endDate);
@@ -100,12 +100,12 @@ const BudgetBreakdown: FC = () => {
             return false;
         });
 
-        const _categoryBreakdown = createCategoryBreakdown(
-            _filteredTransactions,
+        const nextCategoryBreakdown = createCategoryBreakdown(
+            nextFilteredTransactions,
             categories,
         );
-        setCategoryBreakdown(_categoryBreakdown);
-        setFilteredTransactions(_filteredTransactions);
+        setCategoryBreakdown(nextCategoryBreakdown);
+        setFilteredTransactions(nextFilteredTransactions);
     }, [categories, endDate, startDate, transactions]);
 
     useEffect(() => {

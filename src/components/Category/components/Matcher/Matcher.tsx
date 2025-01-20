@@ -17,7 +17,7 @@ import APIService from '../../../../services/APIService';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { Matcher as MatcherT } from '../../../../types/Matcher';
+import { Matcher as MatcherT } from '../../../../types/Matcher.d';
 
 import EditMatcher from '../EditMatcher';
 

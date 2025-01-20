@@ -1,5 +1,5 @@
-import type { Category } from '../types/Category';
-import type { Matcher } from '../types/Matcher';
+import type { Category } from '../types/Category.d';
+import type { Matcher } from '../types/Matcher.d';
 
 import { TransactionEditState } from '../contexts/transactionEditContext';
 

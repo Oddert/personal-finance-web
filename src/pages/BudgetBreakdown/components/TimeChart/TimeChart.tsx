@@ -65,7 +65,7 @@ const TimeChart: FC<IProps> = ({
             {},
         );
 
-        const _series = Object.values(sortedByCategory).map(
+        const nextSeries = Object.values(sortedByCategory).map(
             (seriesItem: ISortedByCategoryRow) => {
                 const { data } = dates.reduce(
                     (
@@ -73,15 +73,15 @@ const TimeChart: FC<IProps> = ({
                             data: { x: string; y: number }[];
                             total: number;
                         },
-                        date,
+                        nextDate,
                     ) => {
-                        if (date in seriesItem.transactions) {
+                        if (nextDate in seriesItem.transactions) {
                             accumulator.total += seriesItem.transactions[
-                                date
+                                nextDate
                             ].reduce((a, e) => a + e.debit, 0);
                         }
                         accumulator.data.push({
-                            x: String(dayjs(date)),
+                            x: String(dayjs(nextDate)),
                             y: accumulator.total,
                         });
                         return accumulator;
@@ -96,7 +96,7 @@ const TimeChart: FC<IProps> = ({
             },
         );
 
-        return _series;
+        return nextSeries;
     }, [categories, endDate, filteredTransactions, startDate]);
 
     return (

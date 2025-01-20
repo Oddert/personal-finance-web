@@ -4,8 +4,8 @@ import { Box } from '@mui/material';
 
 import { LOCALE } from '../constants/appConstants';
 
-import type { Transaction } from '../types/Transaction';
-import type { Category } from '../types/Category';
+import type { Transaction } from '../types/Transaction.d';
+import type { Category } from '../types/Category.d';
 
 import type { CategoryState } from '../redux/slices/categorySlice';
 

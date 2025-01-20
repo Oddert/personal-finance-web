@@ -18,6 +18,7 @@ export const normaliseDateStamp = (date: Date | number | string) => {
 };
 
 class Schedule {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getRange(startDate: number | Date, endDate: number | Date): number[] {
         return [];
     }
@@ -136,9 +137,9 @@ export class ScheduleBySpecificDay extends Schedule {
     }
 }
 
-type shortDay = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+type IShortDay = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 
-const dayToInt: { [key in shortDay]: number } = {
+const dayToInt: { [key in IShortDay]: number } = {
     sun: 0,
     mon: 1,
     tue: 2,
@@ -148,7 +149,7 @@ const dayToInt: { [key in shortDay]: number } = {
     sat: 6,
 };
 
-const intToDay: { [key: number]: shortDay } = {
+const intToDay: { [key: number]: IShortDay } = {
     0: 'sun',
     1: 'mon',
     2: 'tue',
@@ -162,11 +163,11 @@ const intToDay: { [key: number]: shortDay } = {
 export class ScheduleByDayOfWeek extends Schedule {
     day: number;
 
-    dayReadable: shortDay;
+    dayReadable: IShortDay;
 
     everyNthDay?: number;
 
-    constructor(_day: number | shortDay, _everyNthDay?: number) {
+    constructor(_day: number | IShortDay, _everyNthDay?: number) {
         super();
         this.day = typeof _day === 'string' ? dayToInt[_day] : _day;
         this.dayReadable = typeof _day === 'number' ? intToDay[_day] : _day;

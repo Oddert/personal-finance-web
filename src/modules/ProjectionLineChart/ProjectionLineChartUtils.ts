@@ -26,7 +26,7 @@ defaultEndConstructor.setDate(0);
 export const defaultEnd = new Date(defaultEndConstructor);
 
 export const scenarios = [defaultScenario, scenarioTrimFat, newBike, bonus];
-export const scenarioOptions = scenarios.map((scenario, idx) => ({
+export const scenarioOptions = scenarios.map((scenario) => ({
     label: scenario.title,
     id: scenario.id,
 }));

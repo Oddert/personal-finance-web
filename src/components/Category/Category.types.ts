@@ -1,6 +1,6 @@
-import type { Category as CategoryT } from '../../types/Category';
+import type { Category as CategoryT } from '../../types/Category.d';
 import type { IDynamicCardLayoutModes } from '../../types/Common.types';
-import type { Matcher as MatcherT } from '../../types/Matcher';
+import type { Matcher as MatcherT } from '../../types/Matcher.d';
 
 export interface IProps {
     category: CategoryT;

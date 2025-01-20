@@ -1,10 +1,10 @@
 import request from '../common/request';
 
 import type { IBudget } from '../types/Budget.types';
-import type { Category } from '../types/Category';
-import type { Matcher } from '../types/Matcher';
-import { IStandardResponse } from '../types/Request';
-import type { Transaction } from '../types/Transaction';
+import type { Category } from '../types/Category.d';
+import type { Matcher } from '../types/Matcher.d';
+import { IStandardResponse } from '../types/Request.d';
+import type { Transaction } from '../types/Transaction.d';
 
 /**
  * Primary interface for interacting with the API.

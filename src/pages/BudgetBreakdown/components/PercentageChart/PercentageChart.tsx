@@ -39,9 +39,9 @@ const PercentageChart: FC<IProps> = ({ data, endDate, startDate }) => {
 
     const ref = useRef<Element | null>(null);
 
-    const dataPointCallback = (categoryId: number) => {
+    const dataPointCallback = (nextCategoryId: number) => {
         setOpen(true);
-        setCategoryId(categoryId);
+        setCategoryId(nextCategoryId);
     };
 
     return (

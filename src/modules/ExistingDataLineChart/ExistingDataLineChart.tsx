@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { ExpandMore as ExpandIcon } from '@mui/icons-material';
 
-import type { Transaction } from '../../types/Transaction';
+import type { Transaction } from '../../types/Transaction.d';
 
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 

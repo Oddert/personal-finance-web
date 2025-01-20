@@ -1,4 +1,4 @@
-import { Matcher } from '../../../../types/Matcher';
+import { Matcher } from '../../../../types/Matcher.d';
 
 export interface IProps {
     clearOnBlur?: boolean;

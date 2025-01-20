@@ -25,7 +25,7 @@ import {
 
 import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors';
 
-import type { Category } from '../../../types/Category';
+import type { Category } from '../../../types/Category.d';
 
 const marginTopBottom = '4px';
 

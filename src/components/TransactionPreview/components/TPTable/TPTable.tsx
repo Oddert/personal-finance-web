@@ -5,7 +5,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import type { Transaction } from '../../../../types/Transaction';
+import type { Transaction } from '../../../../types/Transaction.d';
 
 import { LOCALE } from '../../../../constants/appConstants';
 

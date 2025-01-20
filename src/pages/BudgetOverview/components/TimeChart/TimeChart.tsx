@@ -52,7 +52,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
             ([categoryName, timeSeries]) => {
                 return {
                     name: categoryName,
-                    data: totalTimeList.map((time) => {
+                    data: totalTimeList.map((time: number) => {
                         if (time in timeSeries) {
                             return {
                                 x: time,

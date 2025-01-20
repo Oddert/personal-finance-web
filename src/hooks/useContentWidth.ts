@@ -41,19 +41,19 @@ const useContentWidth = () => {
     const [breakpoint, setBreakPoint] = useState<TSizes>('xl');
 
     const handleResize = () => {
-        const _width = window.innerWidth;
-        console.log('resize', _width);
-        setWindowWidth(_width);
-        if (_width <= bp.sm && breakpoint !== 'xs') {
+        const nextWidth = window.innerWidth;
+        console.log('resize', nextWidth);
+        setWindowWidth(nextWidth);
+        if (nextWidth <= bp.sm && breakpoint !== 'xs') {
             setBreakPoint('xs');
             setContentWidth(contentWidths.xs);
-        } else if (_width <= bp.md && breakpoint !== 'sm') {
+        } else if (nextWidth <= bp.md && breakpoint !== 'sm') {
             setBreakPoint('sm');
             setContentWidth(contentWidths.sm);
-        } else if (_width <= bp.lg && breakpoint !== 'md') {
+        } else if (nextWidth <= bp.lg && breakpoint !== 'md') {
             setBreakPoint('md');
             setContentWidth(contentWidths.md);
-        } else if (_width <= bp.xl && breakpoint !== 'lg') {
+        } else if (nextWidth <= bp.xl && breakpoint !== 'lg') {
             setBreakPoint('lg');
             setContentWidth(contentWidths.lg);
         } else {
@@ -66,7 +66,6 @@ const useContentWidth = () => {
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return { breakpoint, contentWidth, windowWidth };

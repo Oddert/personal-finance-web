@@ -7,8 +7,8 @@ import {
     orderTransactions,
 } from '../../utils/transactionUtils';
 
-import type { IStandardResponse } from '../../types/Request';
-import type { Transaction } from '../../types/Transaction';
+import type { IStandardResponse } from '../../types/Request.d';
+import type { Transaction } from '../../types/Transaction.d';
 
 import { CategoryState, requestCategories } from '../slices/categorySlice';
 import { writeTransactions } from '../slices/transactionsSlice';

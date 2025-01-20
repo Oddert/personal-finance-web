@@ -2,8 +2,8 @@ import { put } from 'redux-saga/effects';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { Category } from '../../types/Category';
-import type { IStandardResponse } from '../../types/Request';
+import type { Category } from '../../types/Category.d';
+import type { IStandardResponse } from '../../types/Request.d';
 
 import APIService from '../../services/APIService';
 
@@ -16,7 +16,7 @@ export default function* categoryDeleteSingleSaga({
     payload,
 }: PayloadAction<{
     categoryId: Category['id'];
-}>) {
+}>): any {
     try {
         const response: IStandardResponse<{ error?: string }> =
             yield APIService.deleteSingleMatcher(payload.categoryId);

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Box, Button, Container, ListItem, Typography } from '@mui/material';
 import { Add as PlusIcon } from '@mui/icons-material';
 
-import type { Category as CategoryT } from '../../types/Category';
+import type { Category as CategoryT } from '../../types/Category.d';
 import type { IDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';

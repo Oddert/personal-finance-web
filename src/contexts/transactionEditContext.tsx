@@ -3,7 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 import { Autocomplete, TextField } from '@mui/material';
 
-import type { Category } from '../types/Category';
+import type { Category } from '../types/Category.d';
 
 export interface TransactionEditState {
     columnMap: { [key: string]: string };

@@ -1,5 +1,5 @@
-enum actionTypes {
+enum IActionTypes {
     transactionsWrite = 'transactions/write',
 }
 
-export default actionTypes;
+export default IActionTypes;

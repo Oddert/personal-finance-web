@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { Button, ListItem, Tooltip } from '@mui/material';
 import { AddCircle as AddIcon } from '@mui/icons-material';
 
-import type { Matcher } from '../../../../types/Matcher';
+import type { Matcher } from '../../../../types/Matcher.d';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
@@ -38,14 +38,19 @@ const AddMatcher: FC<IProps> = ({
     }, [defaultOpen]);
 
     const handleSubmit = useCallback(
-        (matcher: Partial<Matcher>) => {
+        (nextMatcher: Partial<Matcher>) => {
             const addMatcher = async () => {
-                dispatch(initCreateSingleMatcher({ matcher, categoryId }));
+                dispatch(
+                    initCreateSingleMatcher({
+                        matcher: nextMatcher,
+                        categoryId,
+                    }),
+                );
                 setOpen(false);
             };
             addMatcher();
             if (onSubmit) {
-                onSubmit(matcher);
+                onSubmit(nextMatcher);
             }
         },
         [dispatch, categoryId, onSubmit],

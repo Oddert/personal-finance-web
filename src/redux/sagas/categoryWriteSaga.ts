@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 
-import type { Category } from '../../types/Category';
-import type { IStandardResponse } from '../../types/Request';
+import type { Category } from '../../types/Category.d';
+import type { IStandardResponse } from '../../types/Request.d';
 
 import APIService from '../../services/APIService';
 

@@ -1,4 +1,4 @@
-import { Category } from '../types/Category';
+import { Category } from '../types/Category.d';
 
 import type { CategoryState } from '../redux/slices/categorySlice';
 

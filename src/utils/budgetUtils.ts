@@ -2,8 +2,8 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IBudget, IBudgetDatum } from '../types/Budget.types';
-import type { ICategoryBreakdown } from '../types/Category';
-import type { Transaction } from '../types/Transaction';
+import type { ICategoryBreakdown } from '../types/Category.d';
+import type { Transaction } from '../types/Transaction.d';
 
 import { CategoryState } from '../redux/slices/categorySlice';
 

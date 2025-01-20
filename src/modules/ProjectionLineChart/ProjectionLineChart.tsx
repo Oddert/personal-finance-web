@@ -33,7 +33,7 @@ import {
 
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
-import type { Transaction } from '../../types/Transaction';
+import type { Transaction } from '../../types/Transaction.d';
 
 import {
     chart1BaseOptions,

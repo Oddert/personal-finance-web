@@ -3,8 +3,8 @@ import { put } from 'redux-saga/effects';
 
 import APIService from '../../services/APIService';
 
-import type { Category } from '../../types/Category';
-import type { IStandardResponse } from '../../types/Request';
+import type { Category } from '../../types/Category.d';
+import type { IStandardResponse } from '../../types/Request.d';
 
 import { updateSingleCategory } from '../slices/categorySlice';
 
@@ -15,7 +15,7 @@ export default function* categoryUpdateSingleSaga({
     payload,
 }: PayloadAction<{
     category: Partial<Category>;
-}>) {
+}>): any {
     try {
         const response: IStandardResponse<{ category: Category }> =
             yield APIService.updateCategory(payload.category);

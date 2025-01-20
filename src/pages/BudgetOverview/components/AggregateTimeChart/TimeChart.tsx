@@ -55,7 +55,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
             },
         );
 
-        const series = Object.entries(times).map(
+        const createdSeries = Object.entries(times).map(
             ([categoryName, timeSeries]) => {
                 return {
                     name: categoryName,
@@ -75,7 +75,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
             },
         );
 
-        return series;
+        return createdSeries;
     }, [chartList]);
 
     return (

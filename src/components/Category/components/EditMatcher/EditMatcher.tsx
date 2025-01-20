@@ -14,7 +14,7 @@ import {
     FontDownload as MatchPositiveIcon,
 } from '@mui/icons-material';
 
-import type { MatchType } from '../../../../types/Matcher';
+import type { MatchType } from '../../../../types/Matcher.d';
 
 import { matchTypesOptions } from '../../../../utils/matcherUtils';
 
@@ -53,7 +53,6 @@ const EditMatcher: FC<IProps> = ({
     useEffect(() => {
         setMatch(matcher?.match || '');
         setCaseSensitive(Boolean(matcher?.case_sensitive || false));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const reset = () => {

@@ -5,7 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import type { ColumnDef } from '@tanstack/react-table';
 
-import type { Transaction } from '../../../../types/Transaction';
+import type { Transaction } from '../../../../types/Transaction.d';
 
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 

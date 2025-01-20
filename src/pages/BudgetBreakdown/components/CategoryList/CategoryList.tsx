@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { Box } from '@mui/material';
 
-import type { ICategoryBDValue } from '../../../../types/Category';
+import type { ICategoryBDValue } from '../../../../types/Category.d';
 
 import Table from '../../../../components/Table';
 

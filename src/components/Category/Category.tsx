@@ -10,7 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import type { Matcher as IMatcher } from '../../types/Matcher';
+import type { Matcher as IMatcher } from '../../types/Matcher.d';
 
 import AddMatcher from './components/AddMatcher';
 import Colour from './components/Colour';

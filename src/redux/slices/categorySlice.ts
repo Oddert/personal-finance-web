@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { Category } from '../../types/Category';
-import { Matcher } from '../../types/Matcher';
+import { Category } from '../../types/Category.d';
+import { Matcher } from '../../types/Matcher.d';
 
 /**
  * Redux state key for 'category'
@@ -49,6 +49,7 @@ export const categorySlice = createSlice({
         },
         initCreateCategory: (
             state,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             action: PayloadAction<{
                 category: Partial<Category>;
             }>,
@@ -69,6 +70,7 @@ export const categorySlice = createSlice({
         },
         initUpdateSingleCategory: (
             state,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             action: PayloadAction<{
                 category: Partial<Category>;
             }>,
@@ -100,6 +102,7 @@ export const categorySlice = createSlice({
         },
         initDeleteSingleCategory: (
             state,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             action: PayloadAction<{
                 categoryId: Category['id'];
             }>,
@@ -124,6 +127,7 @@ export const categorySlice = createSlice({
         },
         initCreateSingleMatcher: (
             state,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             action: PayloadAction<{
                 categoryId: Category['id'];
                 matcher: Partial<Matcher>;
@@ -160,6 +164,7 @@ export const categorySlice = createSlice({
         },
         initUpdateSingleMatcher: (
             state,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             action: PayloadAction<{
                 categoryId: Category['id'];
                 matcher: Partial<Matcher>;
@@ -205,6 +210,7 @@ export const categorySlice = createSlice({
         },
         initDeleteSingleMatcher: (
             state,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             action: PayloadAction<{
                 matcherId: Matcher['id'];
                 categoryId: Category['id'];

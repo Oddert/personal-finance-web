@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { LOCALE } from '../../constants/appConstants';
 
-import { Transaction } from '../../types/Transaction';
+import { Transaction } from '../../types/Transaction.d';
 
 /**
  * Redux state key for 'transaction'

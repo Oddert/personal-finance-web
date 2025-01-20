@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import type {
     Matcher as MatcherT,
     MatchType,
-} from '../../../../../types/Matcher';
+} from '../../../../../types/Matcher.d';
 
 import {
     TransactionEditContext,

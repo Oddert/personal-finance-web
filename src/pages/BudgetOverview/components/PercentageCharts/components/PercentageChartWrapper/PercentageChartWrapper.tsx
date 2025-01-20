@@ -39,9 +39,9 @@ const PercentageChartWrapper: FC<IProps> = ({
 
     const ref = useRef<Element | null>(null);
 
-    const dataPointCallback = (categoryId: number) => {
+    const dataPointCallback = (nextCategoryId: number) => {
         setOpen(true);
-        setCategoryId(categoryId);
+        setCategoryId(nextCategoryId);
         setStartDate(toBeginningMonth(String(monthData.timestamp)));
         setEndDate(toEndMonth(String(monthData.timestamp)));
     };

@@ -26,49 +26,49 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
 
     useEffect(() => {
         interface IAccumulator {
-            _actualSpend: number;
-            _overSpendPc: IBudgetDatum;
-            _overSpendVal: IBudgetDatum;
-            _numUnderSpend: IBudgetDatum[];
-            _numOverSpend: IBudgetDatum[];
+            nextActualSpend: number;
+            nextOverSpendPc: IBudgetDatum;
+            nextOverSpendVal: IBudgetDatum;
+            nextNumUnderSpend: IBudgetDatum[];
+            nextNumOverSpend: IBudgetDatum[];
         }
 
         const {
-            _actualSpend,
-            _overSpendPc,
-            _overSpendVal,
-            _numUnderSpend,
-            _numOverSpend,
+            nextActualSpend,
+            nextOverSpendPc,
+            nextOverSpendVal,
+            nextNumUnderSpend,
+            nextNumOverSpend,
         } = data.reduce(
             (accumulator: IAccumulator, datum) => {
-                accumulator._actualSpend += datum.spend;
-                if (datum.diffPc > accumulator._overSpendPc.diffPc) {
-                    accumulator._overSpendPc = datum;
+                accumulator.nextActualSpend += datum.spend;
+                if (datum.diffPc > accumulator.nextOverSpendPc.diffPc) {
+                    accumulator.nextOverSpendPc = datum;
                 }
-                if (datum.diffFloat > accumulator._overSpendVal.diffFloat) {
-                    accumulator._overSpendVal = datum;
+                if (datum.diffFloat > accumulator.nextOverSpendVal.diffFloat) {
+                    accumulator.nextOverSpendVal = datum;
                 }
                 if (datum.diffPc < 0 && datum.diffPc <= datum.variance[0]) {
-                    accumulator._numUnderSpend.push(datum);
+                    accumulator.nextNumUnderSpend.push(datum);
                 }
                 if (datum.diffPc > 0 && datum.diffPc >= datum.variance[1]) {
-                    accumulator._numOverSpend.push(datum);
+                    accumulator.nextNumOverSpend.push(datum);
                 }
                 return accumulator;
             },
             {
-                _actualSpend: 0,
-                _overSpendPc: data[0],
-                _overSpendVal: data[0],
-                _numUnderSpend: [],
-                _numOverSpend: [],
+                nextActualSpend: 0,
+                nextOverSpendPc: data[0],
+                nextOverSpendVal: data[0],
+                nextNumUnderSpend: [],
+                nextNumOverSpend: [],
             },
         );
-        setActualSpend(normaliseNum(_actualSpend));
-        setLargestOverspendPc(_overSpendPc);
-        setLargestOverspendVal(_overSpendVal);
-        setNumUnderspend(_numUnderSpend);
-        setNumOverSpend(_numOverSpend);
+        setActualSpend(normaliseNum(nextActualSpend));
+        setLargestOverspendPc(nextOverSpendPc);
+        setLargestOverspendVal(nextOverSpendVal);
+        setNumUnderspend(nextNumUnderSpend);
+        setNumOverSpend(nextNumOverSpend);
     }, [data]);
 
     const expectedSpend = useMemo(() => {

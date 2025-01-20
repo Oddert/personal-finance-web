@@ -97,18 +97,15 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
         }
     }, [handleClose]);
 
-    const handleConditionalClose = useCallback(
-        (event?: any, reason?: 'backdropClick' | 'escapeKeyDown') => {
-            if (label?.length || description?.length) {
-                setSaveModalOpen(true);
-            } else {
-                if (handleClose) {
-                    handleClose(null);
-                }
+    const handleConditionalClose = useCallback(() => {
+        if (label?.length || description?.length) {
+            setSaveModalOpen(true);
+        } else {
+            if (handleClose) {
+                handleClose(null);
             }
-        },
-        [description, handleClose, label],
-    );
+        }
+    }, [description, handleClose, label]);
 
     return (
         <Fragment>

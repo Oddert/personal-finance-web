@@ -31,7 +31,6 @@ const App = () => {
         const endDate = dayjs().format('YYYY-MM-DD');
         dispatch(requestTransactions({ startDate, endDate }));
         dispatch(refreshBudgets());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

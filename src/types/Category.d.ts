@@ -1,4 +1,4 @@
-import { Matcher } from './Matcher';
+import { Matcher } from './Matcher.d';
 
 /**
  * A single Category definition.
