@@ -1,6 +1,6 @@
-import { Box } from '@mui/material'
+import { Box } from '@mui/material';
 
-import Header from '../Header/Header'
+import Header from '../Header/Header';
 
 /**
  * Adds the nav bar and any other common attributes to a page.
@@ -14,6 +14,6 @@ const Layout = ({ children }) => (
         <Header />
         {children}
     </Box>
-)
+);
 
-export default Layout
+export default Layout;

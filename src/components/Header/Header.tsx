@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
-import { useNavigate } from 'react-router';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/AutoGraph';
@@ -15,8 +15,6 @@ import Sidebar from '../Sidebar/Sidebar';
  * @component
  */
 const Header = () => {
-    const navigate = useNavigate();
-
     const [open, setOpen] = useState(false);
 
     const handleDrawerClose = () => {
@@ -26,8 +24,6 @@ const Header = () => {
     const handleToggleDrawer = () => {
         setOpen(!open);
     };
-
-    const handleClickHome = () => navigate('/');
 
     return (
         <Box
@@ -57,17 +53,19 @@ const Header = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <IconButton
-                        color='inherit'
-                        aria-label='home page'
-                        onClick={handleClickHome}
-                        edge='start'
-                        sx={{
-                            marginRight: 5,
-                        }}
-                    >
-                        <HomeIcon />
-                    </IconButton>
+                    <Link to='/'>
+                        <IconButton
+                            color='inherit'
+                            aria-label='home page'
+                            edge='start'
+                            sx={(theme) => ({
+                                marginRight: 5,
+                                color: theme.palette.common.white,
+                            })}
+                        >
+                            <HomeIcon />
+                        </IconButton>
+                    </Link>
                     <Typography
                         sx={(theme) => ({
                             [theme.breakpoints.up('xs')]: {
