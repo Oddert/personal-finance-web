@@ -1,6 +1,6 @@
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from '../constants/store'
+import { RootState } from '../constants/store';
 
 /**
  * Returns the 'budget' section of the redux state.
@@ -15,8 +15,8 @@ const getBudgetSate = (state: RootState) => state.budget;
  * @subcategory Selectors
  */
 export const getBudgetResponse = createSelector(
-	getBudgetSate,
-	(budgetState) => budgetState.response,
+    getBudgetSate,
+    (budgetState) => budgetState.response,
 );
 
 /**
@@ -25,8 +25,8 @@ export const getBudgetResponse = createSelector(
  * @subcategory Selectors
  */
 export const getBudgetLoading = createSelector(
-	getBudgetSate,
-	(budgetState) => budgetState.loading,
+    getBudgetSate,
+    (budgetState) => budgetState.loading,
 );
 
 /**
@@ -35,10 +35,9 @@ export const getBudgetLoading = createSelector(
  * @subcategory Selectors
  */
 export const getBudgetLoaded = createSelector(
-	getBudgetSate,
-	(budgetState) => budgetState.loaded,
+    getBudgetSate,
+    (budgetState) => budgetState.loaded,
 );
-
 
 /**
  * Returns the currently active budget.
@@ -46,8 +45,8 @@ export const getBudgetLoaded = createSelector(
  * @subcategory Selectors
  */
 export const getActiveBudget = createSelector(
-	getBudgetSate,
-	(budgetState) => budgetState.activeBudget,
+    getBudgetSate,
+    (budgetState) => budgetState.activeBudget,
 );
 
 /**
@@ -56,6 +55,6 @@ export const getActiveBudget = createSelector(
  * @subcategory Selectors
  */
 export const getActiveBudgetId = createSelector(
-	getActiveBudget,
-	(budgetState) => budgetState?.id || null,
+    getActiveBudget,
+    (budgetState) => budgetState?.id || null,
 );

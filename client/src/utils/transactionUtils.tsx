@@ -1,15 +1,15 @@
-import { CellContext, ColumnDef } from '@tanstack/react-table'
+import { CellContext, ColumnDef } from '@tanstack/react-table';
 
-import { Box } from '@mui/material'
+import { Box } from '@mui/material';
 
-import { LOCALE } from '../constants/appConstants'
+import { LOCALE } from '../constants/appConstants';
 
-import type { Transaction } from '../types/Transaction'
-import type{ Category } from '../types/Category'
+import type { Transaction } from '../types/Transaction';
+import type { Category } from '../types/Category';
 
-import type { CategoryState } from '../redux/slices/categorySlice'
+import type { CategoryState } from '../redux/slices/categorySlice';
 
-import { createReadableNumber } from './commonUtils'
+import { createReadableNumber } from './commonUtils';
 
 /**
  * Maps over a list of transactions and attempts to assign a Category to `assignedCategory`.
@@ -22,16 +22,19 @@ export const mapCategoriesToTransactions = (
     orderedCategories: CategoryState['orderedData']['byId'],
 ) => {
     const mappedTransactions = transactions.map((transaction) => {
-        if (transaction.category_id && transaction.category_id in orderedCategories) {
+        if (
+            transaction.category_id &&
+            transaction.category_id in orderedCategories
+        ) {
             return {
                 ...transaction,
                 assignedCategory: orderedCategories[transaction.category_id],
-            }
+            };
         }
-        return transaction
-    })
-    return mappedTransactions
-}
+        return transaction;
+    });
+    return mappedTransactions;
+};
 
 /**
  * Creates ordered data structures for a list of transactions.
@@ -39,33 +42,37 @@ export const mapCategoriesToTransactions = (
  * @returns The transactions ordered by category and by date (year, month).
  */
 export const orderTransactions = (transactions: Transaction[]) => {
-    const orderedByDate: { [year: string]: { [month: number]: Transaction[] } } = {}
-    const orderedByCategory: { [category: number|string]: Transaction[] } = { default: [] }
+    const orderedByDate: {
+        [year: string]: { [month: number]: Transaction[] };
+    } = {};
+    const orderedByCategory: { [category: number | string]: Transaction[] } = {
+        default: [],
+    };
 
-    transactions.forEach(transaction => {
-        const date = new Date(transaction.date)
-        const year = date.getFullYear()
-        const month = date.getMonth()
-        const category = transaction.category_id || 'default'
+    transactions.forEach((transaction) => {
+        const date = new Date(transaction.date);
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const category = transaction.category_id || 'default';
 
         if (!(year in orderedByDate)) {
-            orderedByDate[year] = {}
+            orderedByDate[year] = {};
         }
         if (!(month in orderedByDate[year])) {
-            orderedByDate[year][month] = []
+            orderedByDate[year][month] = [];
         }
         if (!(category in orderedByCategory)) {
-            orderedByCategory[category] = []
+            orderedByCategory[category] = [];
         }
 
-        orderedByDate[year][month].push(transaction)
-        orderedByCategory[category].push(transaction)
-    })
+        orderedByDate[year][month].push(transaction);
+        orderedByCategory[category].push(transaction);
+    });
     return {
         byCategory: orderedByCategory,
         byDate: orderedByDate,
-    }
-}
+    };
+};
 
 /**
  * Reusable column add-in to format currency columns.
@@ -75,18 +82,14 @@ export const orderTransactions = (transactions: Transaction[]) => {
  * @returns A container with the formatted text.
  */
 export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
-    const rawValue = createReadableNumber(cell.renderValue(), 0)
-    const value = Number(rawValue)
+    const rawValue = createReadableNumber(cell.renderValue(), 0);
+    const value = Number(rawValue);
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {
-                isNaN(value) || value === 0
-                    ? '-'
-                    : `£${value.toFixed(2)}`
-            }
+            {isNaN(value) || value === 0 ? '-' : `£${value.toFixed(2)}`}
         </Box>
-    )
-}
+    );
+};
 
 /**
  * Columns for the transaction table on the upload / edit form.
@@ -96,16 +99,16 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         header: 'Date',
         accessorKey: 'date',
         cell: (cell) => {
-            const value = cell.renderValue()
+            const value = cell.renderValue();
             if (typeof value === 'number') {
-                return new Date(value).toLocaleDateString(LOCALE)
+                return new Date(value).toLocaleDateString(LOCALE);
             }
-            return value
-        }
+            return value;
+        },
     },
     {
         header: 'Description',
-        accessorKey: 'description'
+        accessorKey: 'description',
     },
     {
         header: 'Out',
@@ -126,18 +129,18 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         header: 'Category',
         accessorKey: 'assignedCategory',
         cell: (cell) => {
-            const value: Category | unknown = cell.renderValue()
+            const value: Category | unknown = cell.renderValue();
             if (value && typeof value === 'object' && 'label' in value) {
-                return value.label
+                return value.label;
             }
-            return '- uncategorised -'
-        }
+            return '- uncategorised -';
+        },
     },
     {
         header: 'Cat Id',
         accessorKey: 'category_id',
-    }
-]
+    },
+];
 
 /**
  * Creates a string format for month-year combinations.
@@ -148,10 +151,11 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
  * @returns The encoded string.
  */
 export const getRangeKeyEncoding = (year: string, month: string) => {
-    const adjustedMonth = Number(month) + 1
-    const stringMonth = adjustedMonth >= 10 ? adjustedMonth : `0${adjustedMonth}`
-    return `${stringMonth}-${year}`
-}
+    const adjustedMonth = Number(month) + 1;
+    const stringMonth =
+        adjustedMonth >= 10 ? adjustedMonth : `0${adjustedMonth}`;
+    return `${stringMonth}-${year}`;
+};
 
 /**
  * Splits a date encoded with {@link getRangeKeyEncoding} into a readable month and year.
@@ -161,7 +165,7 @@ export const getRangeKeyEncoding = (year: string, month: string) => {
  * @returns The month converted and the year.
  */
 const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
-    const dateComponents: string[] = rangeKey.split('-')
+    const dateComponents: string[] = rangeKey.split('-');
     const months: { [month: string]: string } = {
         '01': 'Jan',
         '02': 'Feb',
@@ -175,9 +179,9 @@ const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
         '10': 'Oct',
         '11': 'Nov',
         '12': 'Dec',
-    }
-    return [months[dateComponents[0]], dateComponents[1]]
-}
+    };
+    return [months[dateComponents[0]], dateComponents[1]];
+};
 
 /**
  * Converts a list of range-key-encoded date strings to values for the range selector.
@@ -187,25 +191,26 @@ const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
  * @returns List of values for the Range component.
  */
 export const generateMarks = (keysArray: string[]) => {
-    let markStepSize = 1
+    let markStepSize = 1;
     if (keysArray.length > 47) {
-        markStepSize = 6
+        markStepSize = 6;
     } else if (keysArray.length > 23) {
-        markStepSize = 3
+        markStepSize = 3;
     } else if (keysArray.length > 14) {
-        markStepSize = 2
+        markStepSize = 2;
     }
-    
-    const marks: { value: number, label: string }[] = []
 
-    for (let i = 0; i < keysArray.length; i+= markStepSize) {
-        const [monthLabel, yearLabel] = getMonthFromRangeKey(keysArray[i])
+    const marks: { value: number; label: string }[] = [];
+
+    for (let i = 0; i < keysArray.length; i += markStepSize) {
+        const [monthLabel, yearLabel] = getMonthFromRangeKey(keysArray[i]);
         marks.push({
             value: i,
-            label: (i === 0 || monthLabel === 'Jan')
-                ? `${monthLabel} ${yearLabel}`
-                : monthLabel
-        })
+            label:
+                i === 0 || monthLabel === 'Jan'
+                    ? `${monthLabel} ${yearLabel}`
+                    : monthLabel,
+        });
     }
-    return marks
-}
+    return marks;
+};

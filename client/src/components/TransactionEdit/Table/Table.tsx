@@ -1,5 +1,5 @@
-import { Fragment, useCallback, useContext, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { Fragment, useCallback, useContext, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
     Autocomplete,
     Checkbox,
@@ -12,22 +12,22 @@ import {
     TableRow,
     Typography,
     Button,
-} from '@mui/material'
+} from '@mui/material';
 
-import { Circle as DotIcon } from '@mui/icons-material'
+import { Circle as DotIcon } from '@mui/icons-material';
 
 import {
     defaultColumns,
     toggleSideBar,
     TransactionEditContext,
     updateCategory,
-} from '../../../contexts/transactionEditContext'
+} from '../../../contexts/transactionEditContext';
 
-import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors'
+import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors';
 
-import type { Category } from '../../../types/Category'
+import type { Category } from '../../../types/Category';
 
-const marginTopBottom = '4px'
+const marginTopBottom = '4px';
 
 /**
  * Displays the transactions and edit options as a table.
@@ -36,53 +36,64 @@ const marginTopBottom = '4px'
  * @component
  */
 const Table = () => {
-    const [filterUncategorised, setFilterUncategorised] = useState(false)
+    const [filterUncategorised, setFilterUncategorised] = useState(false);
 
-    const { dispatch, state: { columnMap, transactions } } = useContext(TransactionEditContext)
+    const {
+        dispatch,
+        state: { columnMap, transactions },
+    } = useContext(TransactionEditContext);
 
-    const categories = useSelector(getCategoryOrderedDataById)
+    const categories = useSelector(getCategoryOrderedDataById);
 
-    const updateAssignedCategory = useCallback((
-        idx: number,
-        assignedCategory: number
-    ) => {
-        console.log(idx, assignedCategory)
-        dispatch(updateCategory(idx, assignedCategory))
-    }, [dispatch])
+    const updateAssignedCategory = useCallback(
+        (idx: number, assignedCategory: number) => {
+            console.log(idx, assignedCategory);
+            dispatch(updateCategory(idx, assignedCategory));
+        },
+        [dispatch],
+    );
 
     const columns = useMemo(() => {
-        return defaultColumns(categories, updateAssignedCategory).map(header => {
-            return ({
-                ...header,
-                accessorKey: header.accessorKey === 'assignedCategory'
-                    ? header.accessorKey
-                    : columnMap[header.accessorKey],
-            })
-        })
-    }, [columnMap, categories, updateAssignedCategory])
+        return defaultColumns(categories, updateAssignedCategory).map(
+            (header) => {
+                return {
+                    ...header,
+                    accessorKey:
+                        header.accessorKey === 'assignedCategory'
+                            ? header.accessorKey
+                            : columnMap[header.accessorKey],
+                };
+            },
+        );
+    }, [columnMap, categories, updateAssignedCategory]);
 
     const handleClickTitle = useCallback(
         (match: string) => {
-            dispatch(toggleSideBar(true, match))
+            dispatch(toggleSideBar(true, match));
         },
-        [dispatch]
-    )
+        [dispatch],
+    );
 
-    const data = useMemo(() => 
-        filterUncategorised
-            ? transactions.filter(transaction => !transaction.assignedCategory)
-            : transactions,
-        [transactions, filterUncategorised]
-    )
+    const data = useMemo(
+        () =>
+            filterUncategorised
+                ? transactions.filter(
+                      (transaction) => !transaction.assignedCategory,
+                  )
+                : transactions,
+        [transactions, filterUncategorised],
+    );
 
-    const options = useMemo(() => Object.entries(
-            categories as { [id: string]: Category }
-        ).map(([id, category]) => ({
-            id,
-            label: category.label,
-        })),
-        [categories]
-    )
+    const options = useMemo(
+        () =>
+            Object.entries(categories as { [id: string]: Category }).map(
+                ([id, category]) => ({
+                    id,
+                    label: category.label,
+                }),
+            ),
+        [categories],
+    );
 
     return (
         <Fragment>
@@ -90,18 +101,18 @@ const Table = () => {
                 control={
                     <Checkbox
                         checked={filterUncategorised}
-                        onChange={(e) => setFilterUncategorised(e.currentTarget.checked)}
+                        onChange={(e) =>
+                            setFilterUncategorised(e.currentTarget.checked)
+                        }
                     />
                 }
                 label='Filter un-categorised'
             />
             <Typography>
-                {
-                    transactions.length === data.length
-                        ? `${transactions.length} rows`
-                        : `showing ${data.length} of ${transactions.length} rows`
-                }
-                </Typography>
+                {transactions.length === data.length
+                    ? `${transactions.length} rows`
+                    : `showing ${data.length} of ${transactions.length} rows`}
+            </Typography>
             <MuiTable
                 sx={{
                     width: '100%',
@@ -110,9 +121,7 @@ const Table = () => {
                 <TableHead>
                     <TableRow>
                         {columns.map((column, idx) => (
-                            <TableCell key={idx}>
-                                {column.header}
-                            </TableCell>
+                            <TableCell key={idx}>{column.header}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -120,27 +129,46 @@ const Table = () => {
                     {data.map((transaction, idx) => (
                         <TableRow key={idx}>
                             {columns.map((column, columnIdx) => {
-                                if (column.accessorKey === columnMap.description) {
+                                if (
+                                    column.accessorKey === columnMap.description
+                                ) {
                                     return (
                                         <TableCell key={idx + '_' + columnIdx}>
                                             <Button
-                                                onClick={() => handleClickTitle(
-                                                    transaction[column.accessorKey] as string,
-                                                )}
+                                                onClick={() =>
+                                                    handleClickTitle(
+                                                        transaction[
+                                                            column.accessorKey
+                                                        ] as string,
+                                                    )
+                                                }
                                                 variant='text'
                                             >
-                                                {transaction[column.accessorKey]}
+                                                {
+                                                    transaction[
+                                                        column.accessorKey
+                                                    ]
+                                                }
                                             </Button>
                                         </TableCell>
-                                    )
+                                    );
                                 }
                                 if (column.accessorKey === 'assignedCategory') {
-                                    const value = categories[transaction.assignedCategory] 
+                                    const value = categories[
+                                        transaction.assignedCategory
+                                    ]
                                         ? {
-                                            id: String(categories[transaction.assignedCategory].id),
-                                            label: categories[transaction.assignedCategory].label,
-                                        }
-                                        : null
+                                              id: String(
+                                                  categories[
+                                                      transaction
+                                                          .assignedCategory
+                                                  ].id,
+                                              ),
+                                              label: categories[
+                                                  transaction.assignedCategory
+                                              ].label,
+                                          }
+                                        : null;
                                     return (
                                         <TableCell
                                             key={idx + '_' + columnIdx}
@@ -153,35 +181,43 @@ const Table = () => {
                                             <Autocomplete
                                                 autoHighlight
                                                 disablePortal
-                                                isOptionEqualToValue={(option) => option.id === value?.id}
+                                                isOptionEqualToValue={(
+                                                    option,
+                                                ) => option.id === value?.id}
                                                 key={idx + '_' + columnIdx}
                                                 onChange={(event, category) => {
                                                     if (!category) {
-                                                        return
+                                                        return;
                                                     }
-                                                    updateAssignedCategory(idx, Number(category.id))
+                                                    updateAssignedCategory(
+                                                        idx,
+                                                        Number(category.id),
+                                                    );
                                                 }}
                                                 options={options}
                                                 renderInput={(params) => (
-													<TextField
-														{...params}
-														label='Category'
-														placeholder='unset'
+                                                    <TextField
+                                                        {...params}
+                                                        label='Category'
+                                                        placeholder='unset'
                                                         sx={{
-                                                            paddingTop: marginTopBottom,
-                                                            paddingBottom: marginTopBottom,
+                                                            paddingTop:
+                                                                marginTopBottom,
+                                                            paddingBottom:
+                                                                marginTopBottom,
                                                         }}
                                                     />
                                                 )}
                                                 sx={{
                                                     borderWidth:
-                                                        transaction.assignedCategory === 'unset'
+                                                        transaction.assignedCategory ===
+                                                        'unset'
                                                             ? 4
                                                             : 1,
                                                     width: '100%',
                                                     '& .MuiInputBase-root': {
                                                         padding: '2px',
-                                                    }
+                                                    },
                                                 }}
                                                 value={value}
                                             />
@@ -189,7 +225,8 @@ const Table = () => {
                                                 <DotIcon
                                                     fontSize='small'
                                                     sx={(theme) => ({
-                                                        color: theme.palette.warning.light,
+                                                        color: theme.palette
+                                                            .warning.light,
                                                         width: '16px',
                                                         height: '16px',
                                                         marginLeft: '6px',
@@ -197,20 +234,20 @@ const Table = () => {
                                                 />
                                             )}
                                         </TableCell>
-                                    )
+                                    );
                                 }
                                 return (
                                     <TableCell key={idx + '_' + columnIdx}>
                                         {transaction[column.accessorKey]}
                                     </TableCell>
-                                )
+                                );
                             })}
                         </TableRow>
                     ))}
                 </TableBody>
             </MuiTable>
         </Fragment>
-    )
-}
+    );
+};
 
-export default Table
+export default Table;

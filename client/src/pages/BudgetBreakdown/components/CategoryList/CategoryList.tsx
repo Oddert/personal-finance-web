@@ -12,14 +12,10 @@ const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
     const value = cell.renderValue() as number;
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {
-                isNaN(value)
-                    ? '-'
-                    : `£${value.toFixed(2)}`
-            }
+            {isNaN(value) ? '-' : `£${value.toFixed(2)}`}
         </Box>
-    )
-}
+    );
+};
 
 /**
  * Simple table component to display all Category totals.
@@ -30,21 +26,27 @@ const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
  * @deprecated {@link BudgetPercentageChart} serves the same purpose.
  */
 const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
-    const data = useMemo(() => Object.values(categoryBreakdown), [categoryBreakdown]);
+    const data = useMemo(
+        () => Object.values(categoryBreakdown),
+        [categoryBreakdown],
+    );
 
-    const columns = useMemo<ColumnDef<ICategoryBDValue>[]>(() => [
-        {
-            header: 'Category',
-            accessorKey: 'label'
-        },
-        {
-            header: 'Amount',
-            accessorKey: 'value',
-            cell: addCurrencySymbol,
-        },
-    ], [])
+    const columns = useMemo<ColumnDef<ICategoryBDValue>[]>(
+        () => [
+            {
+                header: 'Category',
+                accessorKey: 'label',
+            },
+            {
+                header: 'Amount',
+                accessorKey: 'value',
+                cell: addCurrencySymbol,
+            },
+        ],
+        [],
+    );
 
-    return <Table columns={columns} data={data} />
+    return <Table columns={columns} data={data} />;
 };
 
 export default CategoryList;

@@ -1,31 +1,35 @@
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { put } from 'redux-saga/effects'
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { put } from 'redux-saga/effects';
 
-import APIService from '../../services/APIService'
+import APIService from '../../services/APIService';
 
-import type { Category } from '../../types/Category'
-import type { IStandardResponse } from '../../types/Request'
+import type { Category } from '../../types/Category';
+import type { IStandardResponse } from '../../types/Request';
 
-import { updateSingleCategory } from '../slices/categorySlice'
+import { updateSingleCategory } from '../slices/categorySlice';
 
 /**
  * Updates a category.
  */
-export default function* categoryUpdateSingleSaga (
-    { payload }: PayloadAction<{
-        category: Partial<Category>,
-    }>
-) {
+export default function* categoryUpdateSingleSaga({
+    payload,
+}: PayloadAction<{
+    category: Partial<Category>;
+}>) {
     try {
         const response: IStandardResponse<{ category: Category }> =
-            yield APIService.updateCategory(payload.category)
+            yield APIService.updateCategory(payload.category);
 
         if (!response.payload?.category || response.error) {
-            throw new Error(response.error || 'Issue encountered updating category.')
+            throw new Error(
+                response.error || 'Issue encountered updating category.',
+            );
         }
-        
-        yield put(updateSingleCategory({ category: response.payload.category }))
+
+        yield put(
+            updateSingleCategory({ category: response.payload.category }),
+        );
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }

@@ -1,17 +1,17 @@
-import { Matcher } from './Matcher'
+import { Matcher } from './Matcher';
 
 /**
  * A single Category definition.
  * @category Global Types
  */
 export declare interface Category {
-    id: number
-    label: string
-    description: string
-    colour: string
-    created_on: string
-    updated_on: string
-    matchers: Matcher[]
+    id: number;
+    label: string;
+    description: string;
+    colour: string;
+    created_on: string;
+    updated_on: string;
+    matchers: Matcher[];
 }
 
 /**
@@ -22,9 +22,9 @@ export declare interface Category {
  * @category Global Types
  */
 export interface ICategoryBDValue {
-    value: number
-    label: string
-    colour: string
+    value: number;
+    label: string;
+    colour: string;
 }
 
 /**
@@ -35,5 +35,5 @@ export interface ICategoryBDValue {
  * @category Global Types
  */
 export interface ICategoryBreakdown {
-    [key: number|string]: ICategoryBDValue
+    [key: number | string]: ICategoryBDValue;
 }

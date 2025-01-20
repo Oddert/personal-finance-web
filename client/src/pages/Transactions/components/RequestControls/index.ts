@@ -1,1 +1,1 @@
-export { default } from './RequestControls'
+export { default } from './RequestControls';

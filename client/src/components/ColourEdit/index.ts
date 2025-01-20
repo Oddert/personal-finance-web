@@ -1,1 +1,1 @@
-export { default } from './ColourEdit'
+export { default } from './ColourEdit';

@@ -12,21 +12,21 @@ import { deleteSingleCategory } from '../slices/categorySlice';
 /**
  * Deletes a category and updates the state.
  */
-export default function* categoryDeleteSingleSaga(
-    { payload }: PayloadAction<{
-        categoryId: Category['id']
-    }>
-) {
+export default function* categoryDeleteSingleSaga({
+    payload,
+}: PayloadAction<{
+    categoryId: Category['id'];
+}>) {
     try {
         const response: IStandardResponse<{ error?: string }> =
-            yield APIService.deleteSingleMatcher(payload.categoryId)
-        
+            yield APIService.deleteSingleMatcher(payload.categoryId);
+
         if (response.error) {
-            console.error(response?.payload?.error)
-        }  else {
-            yield put(deleteSingleCategory(payload))
+            console.error(response?.payload?.error);
+        } else {
+            yield put(deleteSingleCategory(payload));
         }
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }

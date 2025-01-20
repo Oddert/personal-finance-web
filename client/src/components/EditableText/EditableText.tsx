@@ -1,9 +1,9 @@
-import { FC, useCallback, useEffect, useState } from 'react'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { FC, useCallback, useEffect, useState } from 'react';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
-import { Edit as EditIcon } from '@mui/icons-material'
+import { Edit as EditIcon } from '@mui/icons-material';
 
-import type { IProps } from './EditableText.types'
+import type { IProps } from './EditableText.types';
 
 /**
  * Reusable, flexible text display which allows the user to edit the content via an edit button.
@@ -13,7 +13,7 @@ import type { IProps } from './EditableText.types'
  * @param props.containerSx Styling overrides to be applied to the outer container.
  * @param props.headingProps Props applied to the main text when not editing.
  * @param props.iconPosition Determines which end of the text to place the edit button. Note that edit buttons are absolutely positioned so will appear above overlapping content.
- * @param props.onChange Optional callback invoked on blur. 
+ * @param props.onChange Optional callback invoked on blur.
  * @param props.placeholder Optional placeholder text.
  * @param props.text The main text content.
  * @param props.verticalCenter If true, a vertical center alignment is used, otherwise flex-start is applied.
@@ -27,17 +27,17 @@ const EditableText: FC<IProps> = ({
     text,
     verticalCenter,
 }) => {
-    const [open, setOpen] = useState(false)
-    const [value, setValue] = useState('')
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
 
     const handleBlur = useCallback(() => {
-        setOpen(false)
-        onChange(value)
-    }, [onChange, value])
+        setOpen(false);
+        onChange(value);
+    }, [onChange, value]);
 
     useEffect(() => {
-        setValue(text)
-    }, [text])
+        setValue(text);
+    }, [text]);
 
     return (
         <Box
@@ -56,7 +56,7 @@ const EditableText: FC<IProps> = ({
                 },
                 '& .EditableText__title': {
                     display: 'flex',
-                    alignItems: verticalCenter ? 'center' : 'flex-start'
+                    alignItems: verticalCenter ? 'center' : 'flex-start',
                 },
                 '&:hover': {
                     '& .EditableText_open': {
@@ -80,28 +80,26 @@ const EditableText: FC<IProps> = ({
                 <TextField
                     autoFocus
                     onBlur={handleBlur}
-                    onChange={(e) => setValue(e.target.value)}    
+                    onChange={(e) => setValue(e.target.value)}
                     value={value}
                 />
+            ) : !text.length && placeholder ? (
+                <Typography
+                    className='EditableText__title'
+                    sx={(theme) => ({
+                        color: theme.palette.text.disabled,
+                    })}
+                    {...headingProps}
+                >
+                    {placeholder}
+                </Typography>
             ) : (
-                !text.length && placeholder ? (
-                    <Typography
-                        className='EditableText__title'
-                        sx={(theme) => ({
-                            color: theme.palette.text.disabled,
-                        })}
-                        {...headingProps}
-                    >
-                        {placeholder}
-                    </Typography>
-                ) : (
-                    <Typography className='EditableText__title' {...headingProps}>
-                        {text}
-                    </Typography>
-                )
+                <Typography className='EditableText__title' {...headingProps}>
+                    {text}
+                </Typography>
             )}
         </Box>
-    )
-}
+    );
+};
 
-export default EditableText
+export default EditableText;

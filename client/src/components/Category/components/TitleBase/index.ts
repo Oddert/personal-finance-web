@@ -1,1 +1,1 @@
-export { default } from './TitleBase'
+export { default } from './TitleBase';

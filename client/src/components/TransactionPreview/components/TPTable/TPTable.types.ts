@@ -1,9 +1,9 @@
-import { Transaction } from '../../../../types/Transaction'
+import { Transaction } from '../../../../types/Transaction';
 
 export interface IProps {
-	categoryId: number
-	endDate: string
-	startDate: string
+    categoryId: number;
+    endDate: string;
+    startDate: string;
 }
 
-export type TransactionExtended = Transaction & { outOfBounds: boolean }
+export type TransactionExtended = Transaction & { outOfBounds: boolean };

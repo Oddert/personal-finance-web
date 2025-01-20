@@ -5,12 +5,12 @@ import {
     FormControlLabel,
     Radio,
     RadioGroup,
-} from '@mui/material'
+} from '@mui/material';
 import {
     Window as LayoutStandardIcon,
     Apps as LayoutCompactIcon,
     TableRows as LayoutListIcon,
-} from '@mui/icons-material'
+} from '@mui/icons-material';
 
 import type { IDynamicCardLayoutModes } from '../../types/Common.types';
 
@@ -31,7 +31,9 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 aria-label='Layout'
                 defaultValue='standard'
                 name='radio-buttons-group'
-                onChange={(event) => setLayout(event.target.value as IDynamicCardLayoutModes)}
+                onChange={(event) =>
+                    setLayout(event.target.value as IDynamicCardLayoutModes)
+                }
                 sx={{
                     flexDirection: 'row',
                     padding: '0px 32px',
@@ -73,7 +75,7 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 />
             </RadioGroup>
         </FormControl>
-    )
-}
+    );
+};
 
 export default LayoutControls;

@@ -1,14 +1,19 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import {Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 import type { ICategoryBreakdown } from '../../types/Category';
 import type { Transaction } from '../../types/Transaction';
 
-import { createBudgetChartData, createCategoryBreakdown, toBeginningMonth, toEndMonth } from '../../utils/budgetUtils';
+import {
+    createBudgetChartData,
+    createCategoryBreakdown,
+    toBeginningMonth,
+    toEndMonth,
+} from '../../utils/budgetUtils';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
@@ -30,7 +35,7 @@ import TimeChart from './components/TimeChart';
 
 import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
 
-dayjs.extend(localizedFormat)
+dayjs.extend(localizedFormat);
 
 /**
  * Page to provide detailed insights into transactions, compared with the active budget, within a selected range.
@@ -46,47 +51,59 @@ dayjs.extend(localizedFormat)
  * @component
  */
 const BudgetBreakdown: FC = () => {
-    const navigation = useSearchParams()
+    const navigation = useSearchParams();
 
-    const [startDate, setStartDate] = useState(toBeginningMonth(new Date('2024-11-01')));
+    const [startDate, setStartDate] = useState(
+        toBeginningMonth(new Date('2024-11-01')),
+    );
     const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
-    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
+    const [filteredTransactions, setFilteredTransactions] = useState<
+        Transaction[]
+    >([]);
 
     const [numMonths, setNumMonths] = useState(1);
-    const [categoryBreakdown, setCategoryBreakdown] = useState<ICategoryBreakdown>({
-        uncategorised: {
-            label: 'Uncategorised',
-            value: 0,
-            colour: '#bec3c7',
-        }
-    });
+    const [categoryBreakdown, setCategoryBreakdown] =
+        useState<ICategoryBreakdown>({
+            uncategorised: {
+                label: 'Uncategorised',
+                value: 0,
+                colour: '#bec3c7',
+            },
+        });
 
     const transactions = useAppSelector(getTransactionsResponse);
     const categories = useAppSelector(getCategoryOrderedDataById);
-	const monthBudget = useAppSelector(getActiveBudget);
+    const monthBudget = useAppSelector(getActiveBudget);
 
     const data = useMemo(() => {
-		if (monthBudget) {
-			const _data = createBudgetChartData(categoryBreakdown, monthBudget, numMonths)
-			return _data
-		}
-		return [];
+        if (monthBudget) {
+            const _data = createBudgetChartData(
+                categoryBreakdown,
+                monthBudget,
+                numMonths,
+            );
+            return _data;
+        }
+        return [];
     }, [categoryBreakdown, monthBudget, numMonths]);
 
     useEffect(() => {
         setNumMonths(dayjs(endDate).diff(dayjs(startDate), 'month') + 1);
 
         const _filteredTransactions = transactions.filter((transaction) => {
-            const tDate = dayjs(transaction.date)
-            const sDate = dayjs(startDate)
-            const eDate = dayjs(endDate)
+            const tDate = dayjs(transaction.date);
+            const sDate = dayjs(startDate);
+            const eDate = dayjs(endDate);
             if (tDate.diff(sDate) >= 0 && tDate.diff(eDate) <= 0) {
-                return true
+                return true;
             }
-            return false
+            return false;
         });
 
-        const _categoryBreakdown = createCategoryBreakdown(_filteredTransactions, categories);
+        const _categoryBreakdown = createCategoryBreakdown(
+            _filteredTransactions,
+            categories,
+        );
         setCategoryBreakdown(_categoryBreakdown);
         setFilteredTransactions(_filteredTransactions);
     }, [categories, endDate, startDate, transactions]);
@@ -114,7 +131,8 @@ const BudgetBreakdown: FC = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budget from {formatReadableDate(startDate, endDate)} {formatNumMonths(numMonths)}
+                    Budget from {formatReadableDate(startDate, endDate)}{' '}
+                    {formatNumMonths(numMonths)}
                 </Typography>
                 <DateRange
                     endDate={endDate}
@@ -132,25 +150,21 @@ const BudgetBreakdown: FC = () => {
                     }}
                 >
                     <PercentageChart
-						data={data}
-						endDate={endDate}
-						startDate={startDate}
-					/>
+                        data={data}
+                        endDate={endDate}
+                        startDate={startDate}
+                    />
                     <RadialChart categoryBreakdown={categoryBreakdown} />
                 </Paper>
                 <GlanceCards
                     data={data}
                     monthBudget={monthBudget}
-					numMonths={numMonths}
+                    numMonths={numMonths}
                 />
-                <Paper
-                    elevation={0}
-                >
+                <Paper elevation={0}>
                     <BudgetTable data={data} />
                 </Paper>
-                <Paper
-                    elevation={0}
-                >
+                <Paper elevation={0}>
                     <TimeChart
                         endDate={endDate}
                         filteredTransactions={filteredTransactions}
@@ -164,7 +178,7 @@ const BudgetBreakdown: FC = () => {
                 />
             </Box>
         </ResponsiveContainer>
-    )
-}
+    );
+};
 
 export default BudgetBreakdown;

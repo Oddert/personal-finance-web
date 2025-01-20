@@ -1,13 +1,13 @@
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from '../constants/store'
+import { RootState } from '../constants/store';
 
 /**
  * Returns the 'transaction' section of the redux state.
  * @category Redux
  * @subcategory Selectors
  */
-export const getTransactionsState = (state: RootState) => state.transaction
+export const getTransactionsState = (state: RootState) => state.transaction;
 
 /**
  * Returns the full list of Transactions.
@@ -17,7 +17,7 @@ export const getTransactionsState = (state: RootState) => state.transaction
 export const getTransactionsResponse = createSelector(
     getTransactionsState,
     (transactionsState) => transactionsState.response,
-)
+);
 
 /**
  * Gets all Transactions ordered by date and category ID.
@@ -29,7 +29,7 @@ export const getTransactionsResponse = createSelector(
 export const getTransactionsOrdered = createSelector(
     getTransactionsState,
     (transactionsState) => transactionsState.orderedData,
-)
+);
 
 /**
  * Gets all Transactions ordered by year and month, as two nested objects.
@@ -39,7 +39,7 @@ export const getTransactionsOrdered = createSelector(
 export const getTransactionsOrderedByDate = createSelector(
     getTransactionsOrdered,
     (orderedData) => orderedData.byDate,
-)
+);
 
 /**
  * Gets all Transactions as an object with Transaction.category_id as keys.
@@ -49,7 +49,7 @@ export const getTransactionsOrderedByDate = createSelector(
 export const getTransactionsOrderedByCategory = createSelector(
     getTransactionsOrdered,
     (orderedData) => orderedData.byCategory,
-)
+);
 
 /**
  * The start date of the currently loaded transactions.
@@ -58,8 +58,8 @@ export const getTransactionsOrderedByCategory = createSelector(
  */
 export const getTransactionsStartDate = createSelector(
     getTransactionsState,
-    (transactionsState) => transactionsState.startDate
-)
+    (transactionsState) => transactionsState.startDate,
+);
 
 /**
  * The start date of the currently loaded transactions.
@@ -68,5 +68,5 @@ export const getTransactionsStartDate = createSelector(
  */
 export const getTransactionsEndDate = createSelector(
     getTransactionsState,
-    (transactionsState) => transactionsState.endDate
-)
+    (transactionsState) => transactionsState.endDate,
+);

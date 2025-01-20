@@ -20,42 +20,49 @@ import type { IProps } from './ColourEdit.types';
  * @param props.sx Style overrides applied to the overall container.
  */
 const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement|null>(null)
-    const [editedColour, setEditedColour] = useState<string>('#bec3c7')
-    const [hasChanged, setHasChanged] = useState<boolean>(false)
-    const [originalColour, setOriginalColour] = useState<string>('#bec3c7')
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const [editedColour, setEditedColour] = useState<string>('#bec3c7');
+    const [hasChanged, setHasChanged] = useState<boolean>(false);
+    const [originalColour, setOriginalColour] = useState<string>('#bec3c7');
 
     const handleClose = useCallback(() => {
-        setAnchorEl(null)
-        setHasChanged(false)
-        setEditedColour(originalColour)
-    }, [originalColour])
+        setAnchorEl(null);
+        setHasChanged(false);
+        setEditedColour(originalColour);
+    }, [originalColour]);
 
-    const handleChange: ColorChangeHandler = useCallback((change) => {
-        setEditedColour(change.hex)
-        if (!hasChanged) {
-            setHasChanged(true)
-        }
-    }, [hasChanged])
+    const handleChange: ColorChangeHandler = useCallback(
+        (change) => {
+            setEditedColour(change.hex);
+            if (!hasChanged) {
+                setHasChanged(true);
+            }
+        },
+        [hasChanged],
+    );
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-        setAnchorEl(event.currentTarget)
-    }
+        setAnchorEl(event.currentTarget);
+    };
 
     const handleSubmit = useCallback(() => {
-        setAnchorEl(null)
-        onSubmit(editedColour)
-    }, [editedColour, onSubmit])
-    
+        setAnchorEl(null);
+        onSubmit(editedColour);
+    }, [editedColour, onSubmit]);
+
     useEffect(() => {
         if (colour) {
-            setEditedColour(colour)
-            setOriginalColour(colour)
+            setEditedColour(colour);
+            setOriginalColour(colour);
         }
-    }, [colour])
+    }, [colour]);
 
-    const open = Boolean(anchorEl)
-    const id = open ? popoverId ? popoverId : 'choose-category-colour' : undefined
+    const open = Boolean(anchorEl);
+    const id = open
+        ? popoverId
+            ? popoverId
+            : 'choose-category-colour'
+        : undefined;
 
     return (
         <Box
@@ -83,7 +90,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                     horizontal: 'right',
                 }}
                 sx={{
-                    zIndex: 1400
+                    zIndex: 1400,
                 }}
             >
                 <Box
@@ -139,7 +146,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                 </Box>
             </Popover>
         </Box>
-    )
-}
+    );
+};
 
-export default ColourEdit
+export default ColourEdit;

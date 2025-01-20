@@ -1,4 +1,4 @@
-import { ZIndex } from '@mui/material/styles'
+import { ZIndex } from '@mui/material/styles';
 
 const zIndex: ZIndex = {
     mobileStepper: 1000,
@@ -9,6 +9,6 @@ const zIndex: ZIndex = {
     modal: 1300,
     snackbar: 1400,
     tooltip: 1500,
-}
+};
 
-export default zIndex
+export default zIndex;

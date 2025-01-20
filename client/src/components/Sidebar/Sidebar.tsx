@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
     Drawer,
@@ -11,11 +11,11 @@ import {
     ListItemText,
     useTheme,
     styled,
-} from '@mui/material'
+} from '@mui/material';
 
-import { navigation } from '../../constants/routerConstants'
+import { navigation } from '../../constants/routerConstants';
 
-import type { IProps } from './Sidebar.types'
+import type { IProps } from './Sidebar.types';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -23,7 +23,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-}))
+}));
 
 /**
  * Main navigation component, displays the page options.
@@ -33,14 +33,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
  * @param props.handleDrawerClose Callback function invoked when the component requests to close.
  * @param props.open If true, the drawer is open.
  */
-const Sidebar: FC<IProps> = ({ handleDrawerClose = () => {}, open = false }) => {
-    const theme = useTheme()
+const Sidebar: FC<IProps> = ({
+    handleDrawerClose = () => {},
+    open = false,
+}) => {
+    const theme = useTheme();
     return (
-        <Drawer
-            onClose={handleDrawerClose}
-            open={open}
-            variant='persistent'
-        >
+        <Drawer onClose={handleDrawerClose} open={open} variant='persistent'>
             <DrawerHeader>
                 <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl'}
@@ -48,8 +47,12 @@ const Sidebar: FC<IProps> = ({ handleDrawerClose = () => {}, open = false }) => 
             </DrawerHeader>
             <List>
                 {navigation.map(({ label, Icon, location }, index) => (
-                    <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-                        <Link to={location}  >
+                    <ListItem
+                        key={index}
+                        disablePadding
+                        sx={{ display: 'block' }}
+                    >
+                        <Link to={location}>
                             <ListItemButton
                                 sx={{
                                     minHeight: 48,
@@ -67,16 +70,14 @@ const Sidebar: FC<IProps> = ({ handleDrawerClose = () => {}, open = false }) => 
                                 >
                                     <Icon />
                                 </ListItemIcon>
-                                {open && (
-                                    <ListItemText primary={label} />
-                                )}
+                                {open && <ListItemText primary={label} />}
                             </ListItemButton>
                         </Link>
                     </ListItem>
                 ))}
             </List>
         </Drawer>
-    )
-}
+    );
+};
 
-export default Sidebar
+export default Sidebar;

@@ -21,8 +21,9 @@ const APIService = Object.freeze({
      * @returns The list of created Transactions.
      */
     createManyTransactions: async (transactions: Partial<Transaction>[]) => {
-        const response: IStandardResponse<{ createdTransactions: Transaction[] }> =
-            await request.post(`/transaction/create-many`, { transactions })
+        const response: IStandardResponse<{
+            createdTransactions: Transaction[];
+        }> = await request.post(`/transaction/create-many`, { transactions });
         return response;
     },
     /**
@@ -32,10 +33,10 @@ const APIService = Object.freeze({
      * @returns Transactions within the date range.
      */
     getAllTransactions: async (startDate?: string, endDate?: string) => {
-        const from = startDate ? `?from=${startDate}` : ''
-        const to = endDate ? `&to=${endDate}` : ''
+        const from = startDate ? `?from=${startDate}` : '';
+        const to = endDate ? `&to=${endDate}` : '';
         const response: IStandardResponse<{ transactions: Transaction[] }> =
-            await request.get(`/transaction${from}${to}`)
+            await request.get(`/transaction${from}${to}`);
         return response;
     },
     /**
@@ -44,8 +45,9 @@ const APIService = Object.freeze({
      * @returns The list of updated Transactions.
      */
     updateManyTransactions: async (transactions: Partial<Transaction>[]) => {
-        const response: IStandardResponse<{ updatedTransactions: Transaction[] }> =
-            await request.put(`/transaction/update-many`, { transactions })
+        const response: IStandardResponse<{
+            updatedTransactions: Transaction[];
+        }> = await request.put(`/transaction/update-many`, { transactions });
         return response;
     },
 
@@ -57,7 +59,7 @@ const APIService = Object.freeze({
      */
     createCategory: async (category: Partial<Category>) => {
         const response: IStandardResponse<{ category: Category[] }> =
-            await request.post(`/category`, category)
+            await request.post(`/category`, category);
         return response;
     },
     /**
@@ -67,7 +69,7 @@ const APIService = Object.freeze({
      */
     deleteSingleCategory: async (categoryId: Category['id']) => {
         const response: IStandardResponse<{ deleted: number }> =
-            await request.delete(`/category/${categoryId}`)
+            await request.delete(`/category/${categoryId}`);
         return response;
     },
     /**
@@ -76,7 +78,7 @@ const APIService = Object.freeze({
      */
     getAllCategories: async () => {
         const response: IStandardResponse<{ categories: Category[] }> =
-            await request.get(`/category`)
+            await request.get(`/category`);
         return response;
     },
     /**
@@ -85,7 +87,7 @@ const APIService = Object.freeze({
      */
     getAllCategoriesWithMatchers: async () => {
         const response: IStandardResponse<{ categories: Category[] }> =
-            await request.get(`/category?includeMatchers=true`)
+            await request.get(`/category?includeMatchers=true`);
         return response;
     },
     /**
@@ -95,7 +97,7 @@ const APIService = Object.freeze({
      */
     updateCategory: async (category: Partial<Category>) => {
         const response: IStandardResponse<{ category: Category }> =
-            await request.put(`/category/${category.id}`, category)
+            await request.put(`/category/${category.id}`, category);
         return response;
     },
 
@@ -106,9 +108,12 @@ const APIService = Object.freeze({
      * @param categoryId The ID of the Category to assign the matcher to.
      * @returns The created Matcher.
      */
-    addSingleMatcher: async (matcher: Partial<Matcher>, categoryId: Category['id']) => {
+    addSingleMatcher: async (
+        matcher: Partial<Matcher>,
+        categoryId: Category['id'],
+    ) => {
         const response: IStandardResponse<{ matcher: Matcher }> =
-            await request.post(`/matcher/`, { ...matcher, categoryId })
+            await request.post(`/matcher/`, { ...matcher, categoryId });
         return response;
     },
     /**
@@ -118,7 +123,7 @@ const APIService = Object.freeze({
      */
     deleteSingleMatcher: async (matcherId: number | string) => {
         const response: IStandardResponse<{ deleted: number }> =
-            await request.delete(`/matcher/${matcherId}`)
+            await request.delete(`/matcher/${matcherId}`);
         return response;
     },
     /**
@@ -127,9 +132,12 @@ const APIService = Object.freeze({
      * @param matcherId The ID of the Matcher to update.
      * @returns The updated Matcher.
      */
-    updateSingleMatcher: async (matcher: Partial<Matcher>, matcherId: Matcher['id']) => {
+    updateSingleMatcher: async (
+        matcher: Partial<Matcher>,
+        matcherId: Matcher['id'],
+    ) => {
         const response: IStandardResponse<{ matcher: Matcher }> =
-            await request.put(`/matcher/${matcherId}`, matcher)
+            await request.put(`/matcher/${matcherId}`, matcher);
         return response;
     },
 
@@ -141,7 +149,7 @@ const APIService = Object.freeze({
      */
     createSingleBudget: async (budget: IBudget) => {
         const response: IStandardResponse<{ budget: IBudget }> =
-            await request.post(`/budget`, budget)
+            await request.post(`/budget`, budget);
         return response;
     },
     /**
@@ -150,8 +158,9 @@ const APIService = Object.freeze({
      * @returns The ID of the budget, confirming the delete.
      */
     deleteSingleBudget: async (budgetId: number) => {
-        const response: IStandardResponse<null> =
-            await request.delete(`/budget/${budgetId}`)
+        const response: IStandardResponse<null> = await request.delete(
+            `/budget/${budgetId}`,
+        );
         return response;
     },
     /**
@@ -160,7 +169,7 @@ const APIService = Object.freeze({
      */
     getAllBudgets: async () => {
         const response: IStandardResponse<{ budgets: IBudget[] }> =
-            await request.get<IBudget>('/budget')
+            await request.get<IBudget>('/budget');
         return response;
     },
     /**
@@ -172,7 +181,7 @@ const APIService = Object.freeze({
      */
     getSingleBudget: async (budgetId: number) => {
         const response: IStandardResponse<{ budget: IBudget }> =
-            await request.get(`/budget/${budgetId}`)
+            await request.get(`/budget/${budgetId}`);
         return response;
     },
     /**
@@ -180,8 +189,9 @@ const APIService = Object.freeze({
      * @param budgetId The Budget ID to set as default.
      */
     setBudgetPreference: async (budgetId: number) => {
-        const response: IStandardResponse<null> =
-            await request.put(`/budget/preferences/${budgetId}`)
+        const response: IStandardResponse<null> = await request.put(
+            `/budget/preferences/${budgetId}`,
+        );
         return response;
     },
     /**
@@ -192,9 +202,9 @@ const APIService = Object.freeze({
      */
     updateSingleBudget: async (budget: IBudget, budgetId: number) => {
         const response: IStandardResponse<{ budget: IBudget }> =
-            await request.put(`/budget/${budgetId}`, budget)
+            await request.put(`/budget/${budgetId}`, budget);
         return response;
     },
-})
+});
 
-export default APIService
+export default APIService;

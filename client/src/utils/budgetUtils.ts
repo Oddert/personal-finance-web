@@ -1,6 +1,5 @@
-
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IBudget, IBudgetDatum } from '../types/Budget.types';
 import type { ICategoryBreakdown } from '../types/Category';
@@ -10,7 +9,7 @@ import { CategoryState } from '../redux/slices/categorySlice';
 
 import { normaliseNum } from './mathsUtils';
 
-dayjs.extend(localizedFormat)
+dayjs.extend(localizedFormat);
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -24,7 +23,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
 export const toBeginningMonth = (rawDate: string | Date) => {
     const date = dayjs(rawDate).date(1);
     return date.format(DATE_FORMAT);
-}
+};
 
 /**
  * Given a date in any string format parsable by dayjs.
@@ -36,7 +35,7 @@ export const toBeginningMonth = (rawDate: string | Date) => {
 export const toEndMonth = (rawDate: string | Date) => {
     const date = dayjs(rawDate).endOf('month');
     return date.format(DATE_FORMAT);
-}
+};
 
 /**
  * Sorts transactions into an ordered structure by category.
@@ -49,58 +48,63 @@ export const toEndMonth = (rawDate: string | Date) => {
 export const createCategoryBreakdown = (
     transactions: Transaction[],
     categoriesOrderedById: CategoryState['orderedData']['byId'],
-	includeEmptyCategories = false,
+    includeEmptyCategories = false,
 ) => {
-	const createEmptyCategories = () => {
-		const categories = Object.values(categoriesOrderedById).reduce(
-			(acc: ICategoryBreakdown, datum) => {
-				acc[datum.id] = {
-					value: 0,
-					label: datum.label,
-					colour: datum.colour,
-				}
-				return acc
-			},
-			{
-				uncategorised: {
-					value: 0,
-					label: 'Uncategorised',
-					colour: '#bec3c7',
-				},
-			}
-		);
-		return categories;
-	}
+    const createEmptyCategories = () => {
+        const categories = Object.values(categoriesOrderedById).reduce(
+            (acc: ICategoryBreakdown, datum) => {
+                acc[datum.id] = {
+                    value: 0,
+                    label: datum.label,
+                    colour: datum.colour,
+                };
+                return acc;
+            },
+            {
+                uncategorised: {
+                    value: 0,
+                    label: 'Uncategorised',
+                    colour: '#bec3c7',
+                },
+            },
+        );
+        return categories;
+    };
 
     const categoryBreakdown = transactions.reduce(
         (acc: ICategoryBreakdown, transaction) => {
-            if (transaction.category_id && transaction.category_id in categoriesOrderedById) {
+            if (
+                transaction.category_id &&
+                transaction.category_id in categoriesOrderedById
+            ) {
                 if (!(transaction.category_id in acc)) {
                     acc[transaction.category_id] = {
                         value: 0,
-                        label: categoriesOrderedById[transaction.category_id].label,
-                        colour: categoriesOrderedById[transaction.category_id].colour,
+                        label: categoriesOrderedById[transaction.category_id]
+                            .label,
+                        colour: categoriesOrderedById[transaction.category_id]
+                            .colour,
                     };
                 }
                 acc[transaction.category_id].value += transaction.debit;
             } else {
-                acc['uncategorised'].value += transaction.debit;
+                acc.uncategorised.value += transaction.debit;
             }
             return acc;
         },
         includeEmptyCategories
-			? createEmptyCategories()
-			: {
-				uncategorised: {
-					value: 0,
-					label: 'Uncategorised',
-					colour: '#bec3c7',
-				},
-			},
+            ? createEmptyCategories()
+            : {
+                  uncategorised: {
+                      value: 0,
+                      label: 'Uncategorised',
+                      colour: '#bec3c7',
+                  },
+              },
     );
 
     return categoryBreakdown;
-}
+};
 
 /**
  * Creates a list of budget comparison data for general consumption in charts and insight generation.
@@ -111,40 +115,47 @@ export const createCategoryBreakdown = (
  * @param numMonths Metric used to multiply the budget. Supply the number of months included in the transaction range.
  * @returns A list of BudgetDatums.
  */
-export const createBudgetChartData = (categoryBreakdown: ICategoryBreakdown, budget: IBudget, numMonths = 1) => {
-    const chart = Object.entries(categoryBreakdown).reduce((acc: IBudgetDatum[], [uid, each]) => {
-        const budgetDatum = budget.budgetRows[Number(uid)];
-        const normalisedValue = normaliseNum(each.value);
+export const createBudgetChartData = (
+    categoryBreakdown: ICategoryBreakdown,
+    budget: IBudget,
+    numMonths = 1,
+) => {
+    const chart = Object.entries(categoryBreakdown).reduce(
+        (acc: IBudgetDatum[], [uid, each]) => {
+            const budgetDatum = budget.budgetRows[Number(uid)];
+            const normalisedValue = normaliseNum(each.value);
 
-        if (budgetDatum?.value) {
-            const budgetValue = numMonths * budgetDatum.value;
-            const diffFloat = normaliseNum(normalisedValue - budgetValue);
-            const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
-            acc.push({
-				budget: normaliseNum(budgetDatum.value * numMonths),
-                categoryId: Number(uid),
-                categoryName: each.label,
-				colour: each.colour,
-                diffFloat,
-                diffPc,
-                spend: normaliseNum(each.value),
-                variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
-            });
-        } else {
-            acc.push({
-				budget: 0,
-                categoryId: Number(uid),
-                categoryName: each.label,
-				colour: each.colour,
-                diffFloat: 0,
-                diffPc: 0,
-                spend: normalisedValue,
-                variance: [0, 0],
-            });
-        }
+            if (budgetDatum?.value) {
+                const budgetValue = numMonths * budgetDatum.value;
+                const diffFloat = normaliseNum(normalisedValue - budgetValue);
+                const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
+                acc.push({
+                    budget: normaliseNum(budgetDatum.value * numMonths),
+                    categoryId: Number(uid),
+                    categoryName: each.label,
+                    colour: each.colour,
+                    diffFloat,
+                    diffPc,
+                    spend: normaliseNum(each.value),
+                    variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
+                });
+            } else {
+                acc.push({
+                    budget: 0,
+                    categoryId: Number(uid),
+                    categoryName: each.label,
+                    colour: each.colour,
+                    diffFloat: 0,
+                    diffPc: 0,
+                    spend: normalisedValue,
+                    variance: [0, 0],
+                });
+            }
 
-        return acc;
-    }, []);
+            return acc;
+        },
+        [],
+    );
 
     return chart;
-}
+};

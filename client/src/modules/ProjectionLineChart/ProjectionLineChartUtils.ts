@@ -3,26 +3,33 @@ import { ApexOptions } from 'apexcharts';
 import { LOCALE } from '../../constants/appConstants';
 
 // temp file used for privacy, swap for ../../constants/projectionConstants.ts
-import { defaultScenario, newBike, scenarioTrimFat, bonus } from '../../constants/projectionConstants.temp';
+import {
+    defaultScenario,
+    newBike,
+    scenarioTrimFat,
+    bonus,
+} from '../../constants/projectionConstants.temp';
 
 import theme from '../../theme';
 
 import { largeValueFormatter } from '../../utils/chartUtils';
 
-export const MODULE_PROJECTION_PAST_BALLANCE = 'MODULE_PROJECTION_PAST_BALLANCE'
+export const MODULE_PROJECTION_PAST_BALLANCE =
+    'MODULE_PROJECTION_PAST_BALLANCE';
 
-export const title = 'Future Scenario Projection'
+export const title = 'Future Scenario Projection';
 
-export const defaultStart = new Date()
-const defaultEndConstructor = new Date()
-defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3)
-defaultEndConstructor.setDate(0)
-export const defaultEnd = new Date(defaultEndConstructor)
+export const defaultStart = new Date();
+const defaultEndConstructor = new Date();
+defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3);
+defaultEndConstructor.setDate(0);
+export const defaultEnd = new Date(defaultEndConstructor);
 
-export const scenarios = [defaultScenario, scenarioTrimFat, newBike, bonus]
-export const scenarioOptions = scenarios.map(
-    (scenario, idx) => ({ label: scenario.title, id: scenario.id }),
-)
+export const scenarios = [defaultScenario, scenarioTrimFat, newBike, bonus];
+export const scenarioOptions = scenarios.map((scenario, idx) => ({
+    label: scenario.title,
+    id: scenario.id,
+}));
 
 export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
     chart: {
@@ -73,7 +80,8 @@ export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
             style: {
                 colors: theme.palette.common.white,
             },
-            formatter: (val: string) => new Date(val).toLocaleDateString(LOCALE)
+            formatter: (val: string) =>
+                new Date(val).toLocaleDateString(LOCALE),
         },
         tickAmount: 10,
     },
@@ -86,4 +94,4 @@ export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
             formatter: largeValueFormatter,
         },
     },
-})
+});

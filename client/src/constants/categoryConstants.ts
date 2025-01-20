@@ -19,7 +19,7 @@ export const defaultCategoryColours = [
     '#2f1629',
     '#ecf0f1',
     '#0d1017',
-]
+];
 
 /**
  * Width and height pixel size of the category sample square.
@@ -30,4 +30,4 @@ export const categoryBoxSizes = {
     md: 50,
     lg: 60,
     xl: 70,
-}
+};

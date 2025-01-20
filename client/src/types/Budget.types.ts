@@ -3,13 +3,13 @@
  * @category Global Types
  */
 export interface IBudgetRow {
-    id: number
-    categoryId: number
-    colour: string
-    label: string
-    value: number
-    varLowPc: number
-    varHighPc: number
+    id: number;
+    categoryId: number;
+    colour: string;
+    label: string;
+    value: number;
+    varLowPc: number;
+    varHighPc: number;
 }
 
 /**
@@ -17,14 +17,14 @@ export interface IBudgetRow {
  * @category Global Types
  */
 export interface IBudget {
-    id: number
-    name: string
-    shortDescription: string
-    longDescription: string
-    isDefault: boolean
-	createdOn: string
-	updatedOn: string
-    budgetRows: IBudgetRow[]
+    id: number;
+    name: string;
+    shortDescription: string;
+    longDescription: string;
+    isDefault: boolean;
+    createdOn: string;
+    updatedOn: string;
+    budgetRows: IBudgetRow[];
 }
 
 /**
@@ -34,12 +34,12 @@ export interface IBudget {
  * @category Global Types
  */
 export interface IBudgetDatum {
-	colour: string
-    categoryId: number
-    categoryName: string
-    budget: number
-    spend: number
-    diffFloat: number
-    diffPc: number
-    variance: [number, number]
+    colour: string;
+    categoryId: number;
+    categoryName: string;
+    budget: number;
+    spend: number;
+    diffFloat: number;
+    diffPc: number;
+    variance: [number, number];
 }

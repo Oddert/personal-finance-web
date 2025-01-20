@@ -1,18 +1,24 @@
-import { useCallback, useEffect, useState } from 'react'
-import type { ChangeEvent } from 'react'
-import { useSelector } from 'react-redux'
+import { useCallback, useEffect, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useSelector } from 'react-redux';
 
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material';
 
-import { getTransactionsEndDate, getTransactionsStartDate } from '../../../../redux/selectors/transactionsSelectors'
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers'
+import {
+    getTransactionsEndDate,
+    getTransactionsStartDate,
+} from '../../../../redux/selectors/transactionsSelectors';
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { setEndDate, setStartDate } from '../../../../redux/slices/transactionsSlice'
+import {
+    setEndDate,
+    setStartDate,
+} from '../../../../redux/slices/transactionsSlice';
 
-dayjs.extend(localizedFormat)
+dayjs.extend(localizedFormat);
 
 /**
  * Control set to modify the date range and re-request transactions.
@@ -21,39 +27,45 @@ dayjs.extend(localizedFormat)
  * @subcategory Transactions
  */
 const RequestControls = () => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    const [start, setStart] = useState('2020-01-01')
-    const [end, setEnd] = useState('2020-01-01')
+    const [start, setStart] = useState('2020-01-01');
+    const [end, setEnd] = useState('2020-01-01');
 
-    const startDate = useSelector(getTransactionsStartDate)
-    const endDate = useSelector(getTransactionsEndDate)
+    const startDate = useSelector(getTransactionsStartDate);
+    const endDate = useSelector(getTransactionsEndDate);
 
-    const handleChangeStart = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setStartDate({ startDate: e.target.value }))
-    }, [dispatch])
+    const handleChangeStart = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            dispatch(setStartDate({ startDate: e.target.value }));
+        },
+        [dispatch],
+    );
 
-    const handleChangeEnd = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setEndDate({ endDate: e.target.value }))
-    }, [dispatch])
+    const handleChangeEnd = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            dispatch(setEndDate({ endDate: e.target.value }));
+        },
+        [dispatch],
+    );
 
     // const handleSubmit = useCallback(() => {
     //     dispatch(updateValue())
     // }, [dispatch])
 
     useEffect(() => {
-        const date = dayjs(startDate).format('YYYY-MM-DD')
+        const date = dayjs(startDate).format('YYYY-MM-DD');
         if (!(date === 'Invalid Date')) {
-            setStart(date)
+            setStart(date);
         }
-    }, [startDate])
+    }, [startDate]);
 
     useEffect(() => {
-        const date = dayjs(endDate).format('YYYY-MM-DD')
+        const date = dayjs(endDate).format('YYYY-MM-DD');
         if (!(date === 'Invalid Date')) {
-            setEnd(date)
+            setEnd(date);
         }
-    }, [endDate])
+    }, [endDate]);
 
     return (
         <Box>
@@ -85,13 +97,13 @@ const RequestControls = () => {
                     onChange={handleChangeEnd}
                 />
                 <Button
-                    // onClick={handleSubmit}
+                // onClick={handleSubmit}
                 >
                     Refresh
                 </Button>
             </Box>
         </Box>
-    )
-}
+    );
+};
 
-export default RequestControls
+export default RequestControls;

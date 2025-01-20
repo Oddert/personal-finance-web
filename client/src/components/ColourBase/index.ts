@@ -1,1 +1,1 @@
-export { default } from './ColourBase'
+export { default } from './ColourBase';

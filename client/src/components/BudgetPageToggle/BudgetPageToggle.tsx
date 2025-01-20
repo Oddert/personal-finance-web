@@ -18,12 +18,13 @@ import type { IProps } from './BudgetPageToggle.types';
  * @param props.startDate The start date of the selected view.
  */
 const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
-    const href = useMemo(() => 
-        `${
-            mode === 'breakdown'
-                ? ROUTES.BUDGET_OVERVIEW
-                : ROUTES.BUDGET_BREAKDOWN
-        }?startDate=${startDate}&endDate=${endDate}`,
+    const href = useMemo(
+        () =>
+            `${
+                mode === 'breakdown'
+                    ? ROUTES.BUDGET_OVERVIEW
+                    : ROUTES.BUDGET_BREAKDOWN
+            }?startDate=${startDate}&endDate=${endDate}`,
         [endDate, mode, startDate],
     );
 
@@ -36,10 +37,12 @@ const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
             }}
         >
             <Button href={href} variant='contained'>
-                {mode === 'breakdown' ? 'View budget overview' : 'View budget breakdown'}
+                {mode === 'breakdown'
+                    ? 'View budget overview'
+                    : 'View budget breakdown'}
             </Button>
         </Box>
     );
-}
+};
 
 export default BudgetPageToggle;

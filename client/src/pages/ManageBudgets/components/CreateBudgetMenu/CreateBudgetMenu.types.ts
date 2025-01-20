@@ -1,4 +1,4 @@
 export interface IProps {
-	anchorEl: Element | null
-	handleClose: () => void
+    anchorEl: Element | null;
+    handleClose: () => void;
 }

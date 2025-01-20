@@ -3,16 +3,16 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 import { Autocomplete, TextField } from '@mui/material';
 
-import type { Category } from '../types/Category'
+import type { Category } from '../types/Category';
 
 export interface TransactionEditState {
-    columnMap: { [key: string]: string }
-    headers: string[]
-    match?: string
-    sideBarOpen: boolean
-    transactions: { [key: string]: string|number }[]
-    mode: 'upload' | 'edit'
-    loading: boolean
+    columnMap: { [key: string]: string };
+    headers: string[];
+    match?: string;
+    sideBarOpen: boolean;
+    transactions: { [key: string]: string | number }[];
+    mode: 'upload' | 'edit';
+    loading: boolean;
 }
 
 const TransactionEditActionTypes = {
@@ -23,23 +23,23 @@ const TransactionEditActionTypes = {
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
     writeTransactions: 'writeTransactions',
-}
+};
 
 export const transactionEditInitialState: TransactionEditState = {
     columnMap: {
-        'date': 'Transaction Date',
-        'transaction_type': 'Transaction Type',
-        'description': 'Transaction Description',
-        'debit': 'Debit Amount',
-        'credit': 'Credit Amount',
-        'ballance': 'Balance',
+        date: 'Transaction Date',
+        transaction_type: 'Transaction Type',
+        description: 'Transaction Description',
+        debit: 'Debit Amount',
+        credit: 'Credit Amount',
+        ballance: 'Balance',
     },
     loading: false,
     headers: [],
     mode: 'upload',
     sideBarOpen: false,
     transactions: [],
-}
+};
 
 // TODO: remove react-table logic once new logic is confirmed stable and better.
 export const defaultColumns = (
@@ -52,7 +52,7 @@ export const defaultColumns = (
     },
     {
         header: 'Description',
-        accessorKey: 'description'
+        accessorKey: 'description',
     },
     {
         header: 'Out (debit)',
@@ -71,10 +71,10 @@ export const defaultColumns = (
         accessorKey: 'assignedCategory',
         cell: (cell: any) => {
             if (!categories || !callback) {
-                return
+                return;
             }
-            const value = cell.renderValue() || 'unset'
-            const marginTopBottom = '4px'
+            const value = cell.renderValue() || 'unset';
+            const marginTopBottom = '4px';
             return (
                 // <select
                 //     onChange={(e) => {
@@ -99,144 +99,146 @@ export const defaultColumns = (
                     disablePortal
                     onChange={(event, category) => {
                         if (!category) {
-                            return
+                            return;
                         }
-                        callback(cell.row.index, category.id)
+                        callback(cell.row.index, category.id);
                     }}
-                    options={Object.values(categories as { [id: string]: Category })}
+                    options={Object.values(
+                        categories as { [id: string]: Category },
+                    )}
                     renderInput={(params) => (
-						<TextField
-							{...params}
-							label='Category'
-							placeholder='unset'
-                            sx={{ paddingTop: marginTopBottom, paddingBottom: marginTopBottom }}
+                        <TextField
+                            {...params}
+                            label='Category'
+                            placeholder='unset'
+                            sx={{
+                                paddingTop: marginTopBottom,
+                                paddingBottom: marginTopBottom,
+                            }}
                         />
                     )}
-                    sx={{ borderWidth: value === 'unset' ? 4 : 1, width: '100%', padding: '4px' }}
+                    sx={{
+                        borderWidth: value === 'unset' ? 4 : 1,
+                        width: '100%',
+                        padding: '4px',
+                    }}
                     value={categories[value] || null}
                 />
-            )
-        }
+            );
+        },
     },
-]
+];
 
 const initialValue: {
-    state: TransactionEditState,
-    dispatch: Dispatch<{ payload: any, type: string }>
+    state: TransactionEditState;
+    dispatch: Dispatch<{ payload: any; type: string }>;
 } = {
     state: transactionEditInitialState,
     dispatch: () => {},
-}
+};
 
 export const transactionEditReducer = (
     state: TransactionEditState,
     action: PayloadAction<any>,
 ) => {
-    switch(action.type) {
+    switch (action.type) {
         case TransactionEditActionTypes.toggleSideBarOpen:
             return {
                 ...state,
-                sideBarOpen: action?.payload?.open === 'undefined'
-                    ? !state.sideBarOpen
-                    : action?.payload?.open,
+                sideBarOpen:
+                    action?.payload?.open === 'undefined'
+                        ? !state.sideBarOpen
+                        : action?.payload?.open,
                 match: action?.payload?.match,
-            }
+            };
         case TransactionEditActionTypes.setColumnMap:
             return {
                 ...state,
                 columnMap: action?.payload?.columnMap,
-            }
+            };
         case TransactionEditActionTypes.setLoading:
             return {
                 ...state,
                 loading: action?.payload?.loading,
-            }
+            };
         case TransactionEditActionTypes.setMode:
             return {
                 ...state,
                 mode: action?.payload?.mode,
-            }
+            };
         case TransactionEditActionTypes.updateCategory:
-            if (action.payload.idx === null || !action?.payload?.assignedCategory) {
-                return state
+            if (
+                action.payload.idx === null ||
+                !action?.payload?.assignedCategory
+            ) {
+                return state;
             }
             const transactions: TransactionEditState['transactions'] = [
                 ...state.transactions.slice(0, action.payload.idx),
                 {
                     ...state.transactions[action.payload.idx],
-                    assignedCategory: action.payload.assignedCategory
+                    assignedCategory: action.payload.assignedCategory,
                 },
                 ...state.transactions.slice(action.payload.idx + 1),
-            ]
+            ];
 
             return {
                 ...state,
                 transactions,
-            }
+            };
         case TransactionEditActionTypes.writeHeaders:
             return {
                 ...state,
                 headers: action?.payload?.headers,
-            }
+            };
         case TransactionEditActionTypes.writeTransactions:
             return {
                 ...state,
                 transactions: action?.payload?.transactions,
-            }
+            };
         default:
             return state;
     }
-}
+};
 
-export const setColumnMap = (
-    columnMap: TransactionEditState['columnMap'],
-) => ({
+export const setColumnMap = (columnMap: TransactionEditState['columnMap']) => ({
     type: TransactionEditActionTypes.setColumnMap,
-    payload: { columnMap }
-})
+    payload: { columnMap },
+});
 
-export const setLoading = (
-    loading: TransactionEditState['loading'],
-) => ({
+export const setLoading = (loading: TransactionEditState['loading']) => ({
     type: TransactionEditActionTypes.setLoading,
-    payload: { loading }
-})
+    payload: { loading },
+});
 
-export const setMode = (
-    mode: TransactionEditState['mode'],
-) => ({
+export const setMode = (mode: TransactionEditState['mode']) => ({
     type: TransactionEditActionTypes.setMode,
-    payload: { mode }
-})
+    payload: { mode },
+});
 
 export const toggleSideBar = (
     open?: TransactionEditState['sideBarOpen'],
     match?: string,
 ) => ({
     type: TransactionEditActionTypes.toggleSideBarOpen,
-    payload: { open, match }
-})
+    payload: { open, match },
+});
 
-export const updateCategory = (
-    idx: number,
-    assignedCategory: number,
-) => ({
+export const updateCategory = (idx: number, assignedCategory: number) => ({
     type: TransactionEditActionTypes.updateCategory,
-    payload: { idx, assignedCategory }
-})
+    payload: { idx, assignedCategory },
+});
 
-export const writeHeaders = (
-    headers: TransactionEditState['headers'],
-) => ({
+export const writeHeaders = (headers: TransactionEditState['headers']) => ({
     type: TransactionEditActionTypes.writeHeaders,
-    payload: { headers }
-})
+    payload: { headers },
+});
 
 export const writeTransactions = (
     transactions: TransactionEditState['transactions'],
 ) => ({
     type: TransactionEditActionTypes.writeTransactions,
-    payload: { transactions }
-})
+    payload: { transactions },
+});
 
-export const TransactionEditContext = createContext(initialValue)
+export const TransactionEditContext = createContext(initialValue);

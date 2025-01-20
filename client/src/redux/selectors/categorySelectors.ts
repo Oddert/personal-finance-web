@@ -1,13 +1,13 @@
-import { createSelector } from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from '../constants/store'
+import { RootState } from '../constants/store';
 
 /**
  * Returns the 'category' section of the redux state.
  * @category Redux
  * @subcategory Selectors
  */
-const getCategoryState = (state: RootState) => state.category
+const getCategoryState = (state: RootState) => state.category;
 
 /**
  * Returns the full list of categories.
@@ -16,8 +16,8 @@ const getCategoryState = (state: RootState) => state.category
  */
 export const getCategoryResponse = createSelector(
     getCategoryState,
-    category => category.response,
-)
+    (category) => category.response,
+);
 
 /**
  * Gets all categories ordered by ID and Label.
@@ -28,8 +28,8 @@ export const getCategoryResponse = createSelector(
  */
 export const getCategoryOrderedData = createSelector(
     getCategoryState,
-    category => category.orderedData,
-)
+    (category) => category.orderedData,
+);
 
 /**
  * Gets all categories as an object with Category.id as keys.
@@ -37,9 +37,9 @@ export const getCategoryOrderedData = createSelector(
  * @subcategory Selectors
  */
 export const getCategoryOrderedDataById = createSelector(
-	getCategoryOrderedData,
-    orderedData => orderedData.byId,
-)
+    getCategoryOrderedData,
+    (orderedData) => orderedData.byId,
+);
 
 /**
  * Gets all categories as an object with Category.label as keys.
@@ -48,8 +48,8 @@ export const getCategoryOrderedDataById = createSelector(
  */
 export const getCategoryOrderedDataByLabel = createSelector(
     getCategoryOrderedData,
-    orderedData => orderedData.byLabel,
-)
+    (orderedData) => orderedData.byLabel,
+);
 
 /**
  * True if the categories have been loaded and are ready for use.
@@ -58,5 +58,5 @@ export const getCategoryOrderedDataByLabel = createSelector(
  */
 export const getCategoryQueried = createSelector(
     getCategoryState,
-    category => category.queried
-)
+    (category) => category.queried,
+);

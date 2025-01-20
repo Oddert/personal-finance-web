@@ -3,7 +3,13 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Checkbox, FormControlLabel, Paper, Typography } from '@mui/material';
+import {
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Paper,
+    Typography,
+} from '@mui/material';
 
 import {
     createBudgetChartData,
@@ -32,8 +38,8 @@ import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 
 dayjs.extend(localizedFormat);
 
-const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')))
-const defaultEnd = toEndMonth(String(dayjs()))
+const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')));
+const defaultEnd = toEndMonth(String(dayjs()));
 
 /**
  * Page to provide overview insights into transactions, compared with the active budget, within a selected range.
@@ -53,53 +59,53 @@ const BudgetOverview: FC<IProps> = () => {
 
     const [startDate, setStartDate] = useState(defaultStart);
     const [endDate, setEndDate] = useState(defaultEnd);
-	const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
+    const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
-	const monthBudget = useAppSelector(getActiveBudget);
-    
-    const chartList = useMemo(() => {
-		if (monthBudget) {
-			let sDate = dayjs(startDate);
-			const eDate = dayjs(endDate);
-	
-			const charts: IBudgetOverviewChart[] = [];
-	
-			while (sDate < eDate) {
-				const year = sDate.year()
-				const month = sDate.month()
-				if (year in transactions && month in transactions[year]) {
-					const categoryBreakdown = createCategoryBreakdown(
-						transactions[year][month],
-						categories,
-						displayEmptyCats,
-					);
-					const data = createBudgetChartData(
-						categoryBreakdown,
-						monthBudget,
-						1,
-					);
-					const chart = {
-						timestamp: dayjs(`${year}-${month + 1}-02`),
-						data,
-					}
-					charts.push(chart);
-				}
-				sDate = sDate.add(1, 'month').set('date', 10)
-			}
+    const monthBudget = useAppSelector(getActiveBudget);
 
-			return charts
-		}
-		return [];
+    const chartList = useMemo(() => {
+        if (monthBudget) {
+            let sDate = dayjs(startDate);
+            const eDate = dayjs(endDate);
+
+            const charts: IBudgetOverviewChart[] = [];
+
+            while (sDate < eDate) {
+                const year = sDate.year();
+                const month = sDate.month();
+                if (year in transactions && month in transactions[year]) {
+                    const categoryBreakdown = createCategoryBreakdown(
+                        transactions[year][month],
+                        categories,
+                        displayEmptyCats,
+                    );
+                    const data = createBudgetChartData(
+                        categoryBreakdown,
+                        monthBudget,
+                        1,
+                    );
+                    const chart = {
+                        timestamp: dayjs(`${year}-${month + 1}-02`),
+                        data,
+                    };
+                    charts.push(chart);
+                }
+                sDate = sDate.add(1, 'month').set('date', 10);
+            }
+
+            return charts;
+        }
+        return [];
     }, [
-		categories,
-		displayEmptyCats,
-		endDate,
-		monthBudget,
-		startDate,
-		transactions,
-	]);
+        categories,
+        displayEmptyCats,
+        endDate,
+        monthBudget,
+        startDate,
+        transactions,
+    ]);
 
     useEffect(() => {
         const start = navigation[0].get('startDate');
@@ -134,18 +140,18 @@ const BudgetOverview: FC<IProps> = () => {
                     startDate={startDate}
                 />
                 <ActiveBudget />
-				<FormControlLabel
-					control={
-						<Checkbox
-							checked={displayEmptyCats}
-							onClick={() => setDisplayEmptyCats(!displayEmptyCats)}
-						/>
-					}
-					label='Include empty categories'
-				/>
-                <PercentageCharts
-					chartList={chartList}
-				/>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={displayEmptyCats}
+                            onClick={() =>
+                                setDisplayEmptyCats(!displayEmptyCats)
+                            }
+                        />
+                    }
+                    label='Include empty categories'
+                />
+                <PercentageCharts chartList={chartList} />
                 <Paper
                     elevation={0}
                     sx={{
@@ -156,9 +162,7 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>
-                        Aggregate % Spend Discrepancy
-                    </Typography>
+                    <Typography>Aggregate % Spend Discrepancy</Typography>
                     <AggregateTimeChart
                         chartList={chartList}
                         endDate={endDate}
@@ -175,9 +179,7 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>
-                        Spend Discrepancy & Trend Per Month
-                    </Typography>
+                    <Typography>Spend Discrepancy & Trend Per Month</Typography>
                     <TimeChart
                         chartList={chartList}
                         endDate={endDate}
@@ -191,7 +193,7 @@ const BudgetOverview: FC<IProps> = () => {
                 />
             </Box>
         </ResponsiveContainer>
-    )
-}
+    );
+};
 
 export default BudgetOverview;

@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
-import { useNavigate } from 'react-router'
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { useNavigate } from 'react-router';
 
-import MenuIcon from '@mui/icons-material/Menu'
-import HomeIcon from '@mui/icons-material/AutoGraph'
+import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/AutoGraph';
 
-import Sidebar from '../Sidebar/Sidebar'
+import Sidebar from '../Sidebar/Sidebar';
 
 /**
  * Common header component, displays navigation elements and application title as h1.
@@ -15,19 +15,19 @@ import Sidebar from '../Sidebar/Sidebar'
  * @component
  */
 const Header = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     const handleDrawerClose = () => {
-        setOpen(false)
-    }
+        setOpen(false);
+    };
 
     const handleToggleDrawer = () => {
-        setOpen(!open)
-    }
+        setOpen(!open);
+    };
 
-    const handleClickHome = () => navigate('/')
+    const handleClickHome = () => navigate('/');
 
     return (
         <Box
@@ -35,14 +35,14 @@ const Header = () => {
                 position: 'sticky',
                 top: 0,
                 left: 0,
-                zIndex: (theme) => (theme.zIndex.drawer || 0) + 2
+                zIndex: (theme) => (theme.zIndex.drawer || 0) + 2,
             }}
         >
             <AppBar
                 sx={{
                     position: 'sticky',
                     top: 0,
-                    zIndex: (theme) => (theme.zIndex.drawer || 0) + 2
+                    zIndex: (theme) => (theme.zIndex.drawer || 0) + 2,
                 }}
             >
                 <Toolbar>
@@ -91,13 +91,10 @@ const Header = () => {
                         Personal Finance Tracker
                     </Typography>
                 </Toolbar>
-            </AppBar>            
-            <Sidebar
-                handleDrawerClose={handleDrawerClose}
-                open={open}
-            />
+            </AppBar>
+            <Sidebar handleDrawerClose={handleDrawerClose} open={open} />
         </Box>
-    )
-}
+    );
+};
 
-export default Header
+export default Header;

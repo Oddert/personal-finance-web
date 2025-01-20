@@ -1,1 +1,1 @@
-export { default } from './RangeControls'
+export { default } from './RangeControls';

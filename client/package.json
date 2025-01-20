@@ -4,10 +4,12 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.25.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.4.0",
+    "@mui/x-date-pickers": "^7.24.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@reduxjs/toolkit": "^2.5.0",
     "@svgr/webpack": "^8.1.0",
@@ -35,7 +37,6 @@
     "dayjs": "^1.11.9",
     "dotenv": "^16.4.7",
     "dotenv-expand": "^12.0.1",
-    "eslint": "^9.18.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-webpack-plugin": "^3.1.1",
     "file-loader": "^6.2.0",
@@ -87,7 +88,9 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --verbose",
     "test:watch": "node scripts/test.js --verbose --watch",
-    "docs": "jsdoc -c jsdoc.conf.json -R README.md -r"
+    "docs": "jsdoc -c jsdoc.conf.json -R README.md -r",
+    "lint": "eslint . --config .eslintrc.json",
+    "lint:fix": "eslint . --config .eslintrc.json --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -111,7 +114,15 @@
     "@babel/preset-typescript": "^7.23.3",
     "@types/color-convert": "^2.0.0",
     "@types/react-color": "^3.0.6",
-    "jsdoc": "^4.0.2"
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.35.0",
+    "jsdoc": "^4.0.2",
+    "prettier": "^3.3.3"
   },
   "jest": {
     "roots": [

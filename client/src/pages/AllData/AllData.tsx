@@ -1,7 +1,7 @@
-import { Container } from '@mui/material'
+import { Container } from '@mui/material';
 
-import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart'
-import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLineChart'
+import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart';
+import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLineChart';
 
 /**
  * Displays all historical data.
@@ -15,7 +15,7 @@ const AllData = () => {
             <ExistingDataLineChart />
             <ProjectionLineChart />
         </Container>
-    )
-}
+    );
+};
 
-export default AllData
+export default AllData;

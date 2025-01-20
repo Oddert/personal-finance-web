@@ -29,10 +29,9 @@ const TransactionPreview: FC<IProps> = ({
     categoryId,
     clearAnchorEl,
     endDate,
-	open,
+    open,
     startDate,
 }) => {
-
     const handleClose = () => {
         clearAnchorEl();
     };
@@ -41,7 +40,7 @@ const TransactionPreview: FC<IProps> = ({
 
     return (
         <Popover
-			anchorEl={anchorEl}
+            anchorEl={anchorEl}
             anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -49,22 +48,22 @@ const TransactionPreview: FC<IProps> = ({
             id={id}
             onClose={handleClose}
             open={open}
-			slotProps={{
-				paper: {
-					sx: {
-						maxHeight: '80vh',
-					},
-				},
-			}}
+            slotProps={{
+                paper: {
+                    sx: {
+                        maxHeight: '80vh',
+                    },
+                },
+            }}
         >
             <Button onClick={handleClose}>Close</Button>
-			<TPTable
-				categoryId={categoryId}
-				endDate={endDate}
-				startDate={startDate}
-			/>
+            <TPTable
+                categoryId={categoryId}
+                endDate={endDate}
+                startDate={startDate}
+            />
         </Popover>
-    )
-}
+    );
+};
 
 export default TransactionPreview;

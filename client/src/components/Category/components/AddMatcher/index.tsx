@@ -1,1 +1,1 @@
-export { default } from './AddMatcher'
+export { default } from './AddMatcher';

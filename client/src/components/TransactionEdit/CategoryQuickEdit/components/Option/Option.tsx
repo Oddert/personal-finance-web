@@ -1,17 +1,24 @@
-import { FC, useCallback, useContext, useState } from 'react'
-import { Button } from '@mui/material'
+import { FC, useCallback, useContext, useState } from 'react';
+import { Button } from '@mui/material';
 
-import type { Matcher as MatcherT, MatchType } from '../../../../../types/Matcher'
+import type {
+    Matcher as MatcherT,
+    MatchType,
+} from '../../../../../types/Matcher';
 
-import { TransactionEditContext, toggleSideBar, writeTransactions } from '../../../../../contexts/transactionEditContext'
+import {
+    TransactionEditContext,
+    toggleSideBar,
+    writeTransactions,
+} from '../../../../../contexts/transactionEditContext';
 
-import { autoMatchCategories } from '../../../../../utils/uploadUtils'
+import { autoMatchCategories } from '../../../../../utils/uploadUtils';
 
-import Category from '../../../../Category/Category'
-import ColourBase from '../../../../ColourBase'
-import TitleBase from '../../../../Category/components/TitleBase'
+import Category from '../../../../Category/Category';
+import ColourBase from '../../../../ColourBase';
+import TitleBase from '../../../../Category/components/TitleBase';
 
-import type { IProps } from './Option.types'
+import type { IProps } from './Option.types';
 
 /**
  * Displays a category.
@@ -21,9 +28,12 @@ import type { IProps } from './Option.types'
  * @param props.onClose Callback function invoked when the submit succeeds.
  */
 const Option: FC<IProps> = ({ category }) => {
-    const { dispatch, state: { match, transactions } } = useContext(TransactionEditContext)
+    const {
+        dispatch,
+        state: { match, transactions },
+    } = useContext(TransactionEditContext);
 
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
     const handleClose = useCallback(
         (partialMatcher: Partial<MatcherT>) => {
@@ -31,25 +41,27 @@ const Option: FC<IProps> = ({ category }) => {
                 id: 0,
                 match: partialMatcher.match as string,
                 match_type: partialMatcher.match_type as MatchType,
-                case_sensitive: partialMatcher.case_sensitive as boolean|0|1,
+                case_sensitive: partialMatcher.case_sensitive as
+                    | boolean
+                    | 0
+                    | 1,
                 created_on: '',
                 updated_on: '',
-            }
-            dispatch(writeTransactions(
-                autoMatchCategories(
-                    transactions,
-                    [
+            };
+            dispatch(
+                writeTransactions(
+                    autoMatchCategories(transactions, [
                         {
                             ...category,
                             matchers: [matcher],
-                        }
-                    ]
-                )
-            ))
-            dispatch(toggleSideBar(false))
+                        },
+                    ]),
+                ),
+            );
+            dispatch(toggleSideBar(false));
         },
-        [category, dispatch, transactions]
-    )
+        [category, dispatch, transactions],
+    );
 
     if (open) {
         return (
@@ -59,7 +71,7 @@ const Option: FC<IProps> = ({ category }) => {
                 defaultOpenMatcher={{ match }}
                 onAddNewSubmit={handleClose}
             />
-        )
+        );
     }
     return (
         <Button
@@ -77,18 +89,14 @@ const Option: FC<IProps> = ({ category }) => {
                 color: theme.palette.common.white,
             })}
         >
-            <ColourBase
-                asButton={false}
-                colour={category.colour}
-                size='sm'
-            />
+            <ColourBase asButton={false} colour={category.colour} size='sm' />
             <TitleBase
                 colour={category.colour}
                 editable={false}
                 text={category.label}
             />
         </Button>
-    )
-}
+    );
+};
 
-export default Option
+export default Option;

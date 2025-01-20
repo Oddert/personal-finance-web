@@ -1,8 +1,8 @@
-import React from 'react'
-import { Container } from '@mui/material'
+import React from 'react';
+import { Container } from '@mui/material';
 
-import ExistingDataLineChart from '../../modules/ExistingDataLineChart'
-import ProjectionLineChart from '../../modules/ProjectionLineChart'
+import ExistingDataLineChart from '../../modules/ExistingDataLineChart';
+import ProjectionLineChart from '../../modules/ProjectionLineChart';
 
 /**
  * Main home page component.
@@ -28,7 +28,7 @@ const Home = () => {
             <ExistingDataLineChart compact />
             <ProjectionLineChart compact />
         </Container>
-    )
-}
+    );
+};
 
-export default Home
+export default Home;

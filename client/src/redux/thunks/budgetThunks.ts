@@ -13,30 +13,33 @@ import { budgetLoading, writeBudgets } from '../slices/budgetSlice';
  * @subcategory Thunks
  * @param override If true, a refresh will be forced.
  */
-export const refreshBudgets = (override?: boolean) =>
-	async (dispatch: AppDispatch, getState: () => RootState) => {
-		try {
-			const state = getState();
-			const thePast = new Date().getTime() - 300_000;
+export const refreshBudgets =
+    (override?: boolean) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+        try {
+            const state = getState();
+            const thePast = new Date().getTime() - 300_000;
 
-			if (
-				override ||
-				!state.budget.loaded ||
-				(state.budget.timestamp &&
-					state.budget.timestamp <= thePast)
-			) {
-				dispatch(budgetLoading());
-				const response = await APIService.getAllBudgets();
+            if (
+                override ||
+                !state.budget.loaded ||
+                (state.budget.timestamp && state.budget.timestamp <= thePast)
+            ) {
+                dispatch(budgetLoading());
+                const response = await APIService.getAllBudgets();
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.')
+                    throw new Error('No response received from the server.');
                 }
-				if (response?.status === 200) {
-					dispatch(writeBudgets({
-						budgets: (response?.payload.budgets || []) as IBudget[]
-					}));
-				}
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	}
+                if (response?.status === 200) {
+                    dispatch(
+                        writeBudgets({
+                            budgets: (response?.payload.budgets ||
+                                []) as IBudget[],
+                        }),
+                    );
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };

@@ -16,18 +16,21 @@ import type { IProps } from './GlanceCards.types';
  */
 const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
     const [actualSpend, setActualSpend] = useState(0);
-    const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(data[0]);
-    const [largestOverspendVal, setLargestOverspendVal] = useState<IBudgetDatum>(data[0]);
-    const [numUnderSpend, setNumUnderspend] = useState<IBudgetDatum[]>([])
-    const [numOverSpend, setNumOverSpend] = useState<IBudgetDatum[]>([])
+    const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(
+        data[0],
+    );
+    const [largestOverspendVal, setLargestOverspendVal] =
+        useState<IBudgetDatum>(data[0]);
+    const [numUnderSpend, setNumUnderspend] = useState<IBudgetDatum[]>([]);
+    const [numOverSpend, setNumOverSpend] = useState<IBudgetDatum[]>([]);
 
     useEffect(() => {
         interface IAccumulator {
-            _actualSpend: number,
-            _overSpendPc: IBudgetDatum,
-            _overSpendVal: IBudgetDatum,
-            _numUnderSpend: IBudgetDatum[],
-            _numOverSpend: IBudgetDatum[],
+            _actualSpend: number;
+            _overSpendPc: IBudgetDatum;
+            _overSpendVal: IBudgetDatum;
+            _numUnderSpend: IBudgetDatum[];
+            _numOverSpend: IBudgetDatum[];
         }
 
         const {
@@ -51,7 +54,7 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 if (datum.diffPc > 0 && datum.diffPc >= datum.variance[1]) {
                     accumulator._numOverSpend.push(datum);
                 }
-                return accumulator
+                return accumulator;
             },
             {
                 _actualSpend: 0,
@@ -60,29 +63,28 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 _numUnderSpend: [],
                 _numOverSpend: [],
             },
-        )
-        setActualSpend(normaliseNum(_actualSpend))
-        setLargestOverspendPc(_overSpendPc)
-        setLargestOverspendVal(_overSpendVal)
-        setNumUnderspend(_numUnderSpend)
-        setNumOverSpend(_numOverSpend)
-    }, [data])
-    
-    const expectedSpend = useMemo(
-		() => {
-			if (monthBudget) {
-				return monthBudget.budgetRows.reduce(
-					(a: number, e) => a + e.value,
-					0,
-				) * numMonths;
-			}
-			return 0;
-		},
-        [monthBudget, numMonths],
-    );
+        );
+        setActualSpend(normaliseNum(_actualSpend));
+        setLargestOverspendPc(_overSpendPc);
+        setLargestOverspendVal(_overSpendVal);
+        setNumUnderspend(_numUnderSpend);
+        setNumOverSpend(_numOverSpend);
+    }, [data]);
 
-    const spendDiff = useMemo(() => 
-        normaliseNum(actualSpend - expectedSpend),
+    const expectedSpend = useMemo(() => {
+        if (monthBudget) {
+            return (
+                monthBudget.budgetRows.reduce(
+                    (a: number, e) => a + e.value,
+                    0,
+                ) * numMonths
+            );
+        }
+        return 0;
+    }, [monthBudget, numMonths]);
+
+    const spendDiff = useMemo(
+        () => normaliseNum(actualSpend - expectedSpend),
         [actualSpend, expectedSpend],
     );
 
@@ -116,7 +118,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {spendDiff < 0 ? '-' : '+'} £{spendDiff} {spendDiff < 0 ? 'bellow' : 'above'} budget
+                    {spendDiff < 0 ? '-' : '+'} £{spendDiff}{' '}
+                    {spendDiff < 0 ? 'bellow' : 'above'} budget
                 </Typography>
             </Paper>
             <Paper
@@ -129,18 +132,20 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                     justifyContent: 'center',
                 }}
             >
+                <Typography>Largest overspend</Typography>
                 <Typography>
-                    Largest overspend
+                    By percent:{' '}
+                    <Typography component='span' sx={{ fontWeight: 'bold' }}>
+                        {largestOverspendPc.categoryName} (+{' '}
+                        {largestOverspendPc.diffPc}%)
+                    </Typography>
                 </Typography>
                 <Typography>
-                    By percent: <Typography component='span' sx={{ fontWeight: 'bold' }}>{
-                        largestOverspendPc.categoryName
-                    } (+ {largestOverspendPc.diffPc}%)</Typography>
-                </Typography>
-                <Typography>
-                    By value: <Typography component='span' sx={{ fontWeight: 'bold' }}>{
-                        largestOverspendVal.categoryName
-                    } (+ £{largestOverspendVal.diffFloat})</Typography>
+                    By value:{' '}
+                    <Typography component='span' sx={{ fontWeight: 'bold' }}>
+                        {largestOverspendVal.categoryName} (+ £
+                        {largestOverspendVal.diffFloat})
+                    </Typography>
                 </Typography>
             </Paper>
             <Paper
@@ -151,19 +156,28 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                     alignItems: 'center',
                 }}
             >
-                <Tooltip title={numOverSpend.map((datum) => datum.categoryName).join(', ')}>
+                <Tooltip
+                    title={numOverSpend
+                        .map((datum) => datum.categoryName)
+                        .join(', ')}
+                >
                     <Typography>
                         Number of categories over budget: {numOverSpend.length}
                     </Typography>
                 </Tooltip>
-                <Tooltip title={numUnderSpend.map((datum) => datum.categoryName).join(', ')}>
+                <Tooltip
+                    title={numUnderSpend
+                        .map((datum) => datum.categoryName)
+                        .join(', ')}
+                >
                     <Typography>
-                        Number of categories under budget: {numUnderSpend.length}
+                        Number of categories under budget:{' '}
+                        {numUnderSpend.length}
                     </Typography>
                 </Tooltip>
             </Paper>
         </Box>
-    )
-}
+    );
+};
 
 export default GlanceCards;

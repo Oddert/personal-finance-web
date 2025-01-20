@@ -1,10 +1,10 @@
-import { FC } from 'react'
-import { Box, Button, Theme } from '@mui/material'
-import { Edit as EditIcon } from '@mui/icons-material'
+import { FC } from 'react';
+import { Box, Button, Theme } from '@mui/material';
+import { Edit as EditIcon } from '@mui/icons-material';
 
-import { categoryBoxSizes } from '../../constants/categoryConstants'
+import { categoryBoxSizes } from '../../constants/categoryConstants';
 
-import type { IProps } from './ColourBase.types'
+import type { IProps } from './ColourBase.types';
 
 /**
  * Lower order component used to allow non-interactive rendering of the colour square.
@@ -25,11 +25,11 @@ import type { IProps } from './ColourBase.types'
  * @param props.size The size of the icon (default: 'md').
  */
 const ColourBase: FC<IProps> = ({
-	asButton = true,
-	colour = '',
-	handleClick = () => {},
-	id = '',
-	size = 'md',
+    asButton = true,
+    colour = '',
+    handleClick = () => {},
+    id = '',
+    size = 'md',
 }) => {
     const sx = (theme: Theme) => ({
         width: categoryBoxSizes[size],
@@ -56,25 +56,16 @@ const ColourBase: FC<IProps> = ({
                 opacity: 1,
             },
         },
-    })
+    });
 
     if (asButton) {
         return (
-            <Button
-                aria-describedby={id}
-                onClick={handleClick}
-                sx={sx}
-            >
+            <Button aria-describedby={id} onClick={handleClick} sx={sx}>
                 <EditIcon className='Category_Colour__icon' />
             </Button>
-        )
+        );
     }
-    return (
-        <Box
-            aria-describedby={id}
-            sx={sx}
-        />
-    )
-}
+    return <Box aria-describedby={id} sx={sx} />;
+};
 
-export default ColourBase
+export default ColourBase;

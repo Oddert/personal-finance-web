@@ -1,28 +1,29 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects';
 
-import type { Category } from '../../types/Category'
-import type { IStandardResponse } from '../../types/Request'
+import type { Category } from '../../types/Category';
+import type { IStandardResponse } from '../../types/Request';
 
-import APIService from '../../services/APIService'
+import APIService from '../../services/APIService';
 
-import { sortCategories } from '../../utils/categoryUtils'
+import { sortCategories } from '../../utils/categoryUtils';
 
-import { writeCategories } from '../slices/categorySlice'
+import { writeCategories } from '../slices/categorySlice';
 
 /**
  * Loads all categories.
  */
 export default function* categoryWriteSaga() {
     try {
-        const categoriesResponse: IStandardResponse<{ categories: Category[] }> =
-            yield call(APIService.getAllCategoriesWithMatchers)
+        const categoriesResponse: IStandardResponse<{
+            categories: Category[];
+        }> = yield call(APIService.getAllCategoriesWithMatchers);
 
-        const categories = categoriesResponse?.payload?.categories || []
-        
-        const orderedData = sortCategories(categories)
+        const categories = categoriesResponse?.payload?.categories || [];
 
-        yield put(writeCategories({ categories, orderedData }))
+        const orderedData = sortCategories(categories);
+
+        yield put(writeCategories({ categories, orderedData }));
     } catch (error) {
-        console.error(error)
+        console.error(error);
     }
 }

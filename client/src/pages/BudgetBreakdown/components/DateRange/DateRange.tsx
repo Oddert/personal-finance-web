@@ -1,6 +1,13 @@
-import { ChangeEvent, FC, Fragment, useCallback, useMemo, useState } from 'react';
-import dayjs from 'dayjs'
-import localizedFormat from 'dayjs/plugin/localizedFormat'
+import {
+    ChangeEvent,
+    FC,
+    Fragment,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, TextField, Typography } from '@mui/material';
 import {
@@ -12,7 +19,7 @@ import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
 
 import type { IProps } from './DateRange.types';
 
-dayjs.extend(localizedFormat)
+dayjs.extend(localizedFormat);
 
 /**
  * Displays date range controls.
@@ -22,14 +29,19 @@ dayjs.extend(localizedFormat)
  * @subcategory Budget Breakdown
  * @component
  */
-const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate }) => {
-    const [dateError, setDateError] = useState<null|string>(null);
+const DateRange: FC<IProps> = ({
+    endDate,
+    setEndDate,
+    setStartDate,
+    startDate,
+}) => {
+    const [dateError, setDateError] = useState<null | string>(null);
 
     const handleChangeStartDate = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             setStartDate(toBeginningMonth(e.target.value));
             setEndDate(toEndMonth(e.target.value));
-            setDateError(null)
+            setDateError(null);
         },
         [setEndDate, setStartDate],
     );
@@ -40,8 +52,8 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
             if (dayjs(convertedEndDate).diff(dayjs(startDate)) < 0) {
                 setDateError('End date may not be before start date');
             } else {
-                setDateError(null)
-                setEndDate(toEndMonth(e.target.value))
+                setDateError(null);
+                setEndDate(toEndMonth(e.target.value));
             }
         },
         [setEndDate, startDate],
@@ -50,35 +62,37 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
     const prevMonth = useMemo(() => {
         const nextDate = dayjs(startDate).subtract(1, 'month');
         return nextDate;
-    }, [startDate])
+    }, [startDate]);
 
     const handleClickPrevMonth = useCallback(() => {
         setStartDate(toBeginningMonth(String(prevMonth)));
         setEndDate(toEndMonth(String(prevMonth)));
-        setDateError(null)
+        setDateError(null);
     }, [prevMonth, setEndDate, setStartDate]);
 
     const nextMonth = useMemo(() => {
         const nextDate = dayjs(endDate).add(1, 'month').set('date', 1);
         return nextDate;
-    }, [endDate])
+    }, [endDate]);
 
     const handleClickNextMonth = useCallback(() => {
         setStartDate(toBeginningMonth(String(nextMonth)));
         setEndDate(toEndMonth(String(nextMonth)));
-        setDateError(null)
+        setDateError(null);
     }, [nextMonth, setEndDate, setStartDate]);
 
     return (
         <Fragment>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                <Button
-                    onClick={handleClickPrevMonth}
-                    variant='contained'
-                >
-                    <BackButtonIcon />{' '}
-                    Previous Month{' '}
-                    ({prevMonth.format('MMM')} {prevMonth.format('YYYY')})
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                }}
+            >
+                <Button onClick={handleClickPrevMonth} variant='contained'>
+                    <BackButtonIcon /> Previous Month ({prevMonth.format('MMM')}{' '}
+                    {prevMonth.format('YYYY')})
                 </Button>
                 <Box>
                     <TextField
@@ -98,18 +112,14 @@ const DateRange: FC<IProps> = ({ endDate, setEndDate, setStartDate, startDate })
                         value={endDate}
                     />
                 </Box>
-                <Button
-                    onClick={handleClickNextMonth}
-                    variant='contained'
-                >
-                    Next Month{' '}
-                    ({nextMonth.format('MMM')} {nextMonth.format('YYYY')}){' '}
-                    <ForwardButtonIcon />
+                <Button onClick={handleClickNextMonth} variant='contained'>
+                    Next Month ({nextMonth.format('MMM')}{' '}
+                    {nextMonth.format('YYYY')}) <ForwardButtonIcon />
                 </Button>
             </Box>
             <Typography color='error'>{dateError || ''}</Typography>
         </Fragment>
-    )
-}
+    );
+};
 
 export default DateRange;

@@ -1,1 +1,1 @@
-export { default } from './ColumnMapping'
+export { default } from './ColumnMapping';
