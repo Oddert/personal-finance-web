@@ -1,0 +1,20 @@
+{
+  "name": "personal-finance",
+  "version": "1.0.0",
+  "description": "Simple adaptable finance managagment system for personal use",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
+    "start:client": "cd client && npm run start",
+    "start:server": "cd server && npm run start",
+    "db:build": "rm -rf dist/db/ && cd server && npm run db:build",
+    "test": "npm run test:client && npm run test:server",
+    "test:client": "cd client && npm run test",
+    "test:server": "cd server && npm run test"
+  },
+  "author": "Robyn Felicity Heather Veitch",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
