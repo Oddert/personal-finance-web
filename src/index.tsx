@@ -9,6 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/L
 import store from './redux/constants/store';
 
 import ErrorBoundary from './hocs/ErrorBoundary';
+import ErrorMessage from './hocs/ErrorMessage';
 
 import theme from './theme/';
 
@@ -28,7 +29,9 @@ root.render(
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ThemeProvider theme={theme}>
                 <ErrorBoundary fallback={<FallbackError />}>
-                    <App />
+                    <ErrorMessage>
+                        <App />
+                    </ErrorMessage>
                 </ErrorBoundary>
             </ThemeProvider>
         </LocalizationProvider>

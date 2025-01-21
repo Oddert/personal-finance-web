@@ -13,7 +13,6 @@ import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
 import './App.css';
-
 dayjs.extend(localizedFormat);
 
 /**
