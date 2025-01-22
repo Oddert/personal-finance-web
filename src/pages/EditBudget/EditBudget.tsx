@@ -25,17 +25,17 @@ import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { addBudget, budgetLoading } from '../../redux/slices/budgetSlice';
-
-import DynamicCardList from '../../components/DynamicCardList';
-
-import BudgetRow from './components/BudgetRow';
-
-import { IBudgetRowEditable, IProps } from './EditBudget.types';
-import DeleteBudget from './components/DeleteBudget';
 import {
     intakeError,
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
+
+import DynamicCardList from '../../components/DynamicCardList';
+
+import BudgetRow from './components/BudgetRow';
+import DeleteBudget from './components/DeleteBudget';
+
+import { IBudgetRowEditable, IProps } from './EditBudget.types';
 
 /**
  * Creates a blank Budget Row.
@@ -99,6 +99,7 @@ const EditBudget: FC<IProps> = () => {
         } catch (error) {
             console.error(error);
             setLoading(false);
+            dispatch(intakeError(error));
         }
     };
 

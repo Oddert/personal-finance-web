@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../../hooks/ReduxHookWrappers';
 import { requestTransactions } from '../../../redux/slices/transactionsSlice';
 
 import type { IProps } from './Submit.types';
+import { intakeError } from '../../../redux/thunks/errorThunks';
 
 dayjs.extend(localizedFormat);
 
@@ -71,26 +72,30 @@ const Submit: FC<IProps> = ({ onClose }) => {
             ),
         );
 
-        const request = async () => {
-            const response =
-                mode === 'upload'
-                    ? await APIService.createManyTransactions(
-                          transactionsWithValidKeys,
-                      )
-                    : await APIService.updateManyTransactions(
-                          transactionsWithValidKeys,
-                      );
-            setLoading(false);
-            if (response.status === 201) {
-                onClose();
-                const date = dayjs().set('month', 0).set('date', 1);
-                const startDate = date.format('YYYY-MM-DD');
-                const endDate = dayjs().format('YYYY-MM-DD');
-                appDispatch(requestTransactions({ startDate, endDate }));
-            }
-        };
-        setLoading(true);
-        request();
+        try {
+            const request = async () => {
+                const response =
+                    mode === 'upload'
+                        ? await APIService.createManyTransactions(
+                              transactionsWithValidKeys,
+                          )
+                        : await APIService.updateManyTransactions(
+                              transactionsWithValidKeys,
+                          );
+                setLoading(false);
+                if (response.status === 201) {
+                    onClose();
+                    const date = dayjs().set('month', 0).set('date', 1);
+                    const startDate = date.format('YYYY-MM-DD');
+                    const endDate = dayjs().format('YYYY-MM-DD');
+                    appDispatch(requestTransactions({ startDate, endDate }));
+                }
+            };
+            setLoading(true);
+            request();
+        } catch (error) {
+            appDispatch(intakeError(error));
+        }
     }, [appDispatch, columnMap, mode, onClose, transactions]);
 
     return (

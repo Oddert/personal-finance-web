@@ -12,6 +12,7 @@ import {
     categorySlice,
     initDeleteSingleMatcher,
 } from '../../../../redux/slices/categorySlice';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 import APIService from '../../../../services/APIService';
 
@@ -62,6 +63,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 setOpen(false);
             } catch (error) {
                 console.error(error);
+                dispatch(intakeError(error));
             }
         };
         request();

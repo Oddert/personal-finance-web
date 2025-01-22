@@ -36,8 +36,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
     const handleClickActivate = () => {
         try {
             const request = async () => {
-                await APIService.setBudgetPreference(9);
-                // await APIService.setBudgetPreference(budget.id);
+                await APIService.setBudgetPreference(budget.id);
                 dispatch(setActiveBudget({ budget }));
             };
             request();

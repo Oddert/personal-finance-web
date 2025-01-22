@@ -17,6 +17,7 @@ import { ROUTES } from '../../../../constants/routerConstants';
 import APIService from '../../../../services/APIService';
 
 import { deleteBudget } from '../../../../redux/slices/budgetSlice';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
@@ -35,12 +36,16 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickDelete = () => {
-        const request = async () => {
-            await APIService.deleteSingleBudget(budget.id);
-            dispatch(deleteBudget({ budgetId: budget.id }));
-            window.location.replace(ROUTES.MANAGE_BUDGETS);
-        };
-        request();
+        try {
+            const request = async () => {
+                await APIService.deleteSingleBudget(budget.id);
+                dispatch(deleteBudget({ budgetId: budget.id }));
+                window.location.replace(ROUTES.MANAGE_BUDGETS);
+            };
+            request();
+        } catch (error) {
+            dispatch(intakeError(error));
+        }
     };
 
     return (
