@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
@@ -14,8 +14,8 @@ import {
 import {
     createBudgetChartData,
     createCategoryBreakdown,
-    toBeginningMonth,
-    toEndMonth,
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
 } from '../../utils/budgetUtils';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
@@ -38,8 +38,10 @@ import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 
 dayjs.extend(localizedFormat);
 
-const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')));
-const defaultEnd = toEndMonth(String(dayjs()));
+const defaultStart = toBeginningMonthDayjs(
+    String(dayjs().subtract(12, 'months')),
+);
+const defaultEnd = toEndMonthDayjs(String(dayjs()));
 
 /**
  * Page to provide overview insights into transactions, compared with the active budget, within a selected range.
@@ -57,8 +59,8 @@ const defaultEnd = toEndMonth(String(dayjs()));
 const BudgetOverview: FC<IProps> = () => {
     const navigation = useSearchParams();
 
-    const [startDate, setStartDate] = useState(defaultStart);
-    const [endDate, setEndDate] = useState(defaultEnd);
+    const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
+    const [endDate, setEndDate] = useState<Dayjs>(defaultEnd);
     const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
@@ -68,11 +70,10 @@ const BudgetOverview: FC<IProps> = () => {
     const chartList = useMemo(() => {
         if (monthBudget) {
             let sDate = dayjs(startDate);
-            const eDate = dayjs(endDate);
 
             const charts: IBudgetOverviewChart[] = [];
 
-            while (sDate < eDate) {
+            while (sDate < endDate) {
                 const year = sDate.year();
                 const month = sDate.month();
                 if (year in transactions && month in transactions[year]) {
@@ -111,11 +112,11 @@ const BudgetOverview: FC<IProps> = () => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
-            setStartDate(start);
+            setStartDate(dayjs(start));
             if (end) {
-                setEndDate(end);
+                setEndDate(dayjs(end));
             } else {
-                setEndDate(toEndMonth(start));
+                setEndDate(toEndMonthDayjs(start));
             }
         }
     }, [navigation]);

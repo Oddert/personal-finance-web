@@ -24,7 +24,7 @@ const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
                 mode === 'breakdown'
                     ? ROUTES.BUDGET_OVERVIEW
                     : ROUTES.BUDGET_BREAKDOWN
-            }?startDate=${startDate}&endDate=${endDate}`,
+            }?startDate=${String(startDate)}&endDate=${String(endDate)}`,
         [endDate, mode, startDate],
     );
 

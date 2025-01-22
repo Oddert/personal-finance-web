@@ -1,6 +1,4 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
@@ -19,8 +17,6 @@ import Table from '../../../Table';
 
 import { addCurrencySymbol, debitCell } from './TPTableUtils';
 import type { IProps, TransactionExtended } from './TPTable.types';
-
-dayjs.extend(localizedFormat);
 
 /**
  * Table component which renders the transactions.
@@ -91,13 +87,12 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
     );
 
     useEffect(() => {
-        let sDate = dayjs(startDate);
-        const eDate = dayjs(endDate);
+        let sDate = startDate;
 
         const transactionList: Transaction[] = [];
         const values: number[] = [];
 
-        while (sDate < eDate) {
+        while (sDate < endDate) {
             const year = sDate.year();
             const month = sDate.month();
             if (year in transactions && month in transactions[year]) {

@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Paper, Typography } from '@mui/material';
@@ -11,8 +11,9 @@ import type { Transaction } from '../../types/Transaction.d';
 import {
     createBudgetChartData,
     createCategoryBreakdown,
-    toBeginningMonth,
-    toEndMonth,
+    DATE_FORMAT,
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
 } from '../../utils/budgetUtils';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
@@ -53,10 +54,12 @@ dayjs.extend(localizedFormat);
 const BudgetBreakdown: FC = () => {
     const navigation = useSearchParams();
 
-    const [startDate, setStartDate] = useState(
-        toBeginningMonth(new Date('2024-11-01')),
+    const [startDate, setStartDate] = useState<Dayjs>(
+        toBeginningMonthDayjs(new Date('2024-11-01')),
     );
-    const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
+    const [endDate, setEndDate] = useState<Dayjs>(
+        toEndMonthDayjs(new Date('2024-11-01')),
+    );
     const [filteredTransactions, setFilteredTransactions] = useState<
         Transaction[]
     >([]);
@@ -88,12 +91,12 @@ const BudgetBreakdown: FC = () => {
     }, [categoryBreakdown, monthBudget, numMonths]);
 
     useEffect(() => {
-        setNumMonths(dayjs(endDate).diff(dayjs(startDate), 'month') + 1);
+        setNumMonths(endDate.diff(startDate, 'month') + 1);
 
         const nextFilteredTransactions = transactions.filter((transaction) => {
             const tDate = dayjs(transaction.date);
-            const sDate = dayjs(startDate);
-            const eDate = dayjs(endDate);
+            const sDate = startDate;
+            const eDate = endDate;
             if (tDate.diff(sDate) >= 0 && tDate.diff(eDate) <= 0) {
                 return true;
             }
@@ -112,11 +115,11 @@ const BudgetBreakdown: FC = () => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
-            setStartDate(start);
+            setStartDate(dayjs(start));
             if (end) {
-                setEndDate(end);
+                setEndDate(dayjs(end));
             } else {
-                setEndDate(toEndMonth(start));
+                setEndDate(toEndMonthDayjs(start));
             }
         }
     }, [navigation]);
@@ -131,7 +134,11 @@ const BudgetBreakdown: FC = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budget from {formatReadableDate(startDate, endDate)}{' '}
+                    Budget from{' '}
+                    {formatReadableDate(
+                        startDate.format(DATE_FORMAT),
+                        endDate.format(DATE_FORMAT),
+                    )}{' '}
                     {formatNumMonths(numMonths)}
                 </Typography>
                 <DateRange

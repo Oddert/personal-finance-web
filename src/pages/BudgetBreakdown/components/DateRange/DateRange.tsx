@@ -1,6 +1,5 @@
 import { FC, Fragment, useCallback, useMemo, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { Dayjs } from 'dayjs';
 
 import { Box, Button, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -10,11 +9,12 @@ import {
     ArrowRight as ForwardButtonIcon,
 } from '@mui/icons-material';
 
-import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
+import {
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
+} from '../../../../utils/budgetUtils';
 
 import type { IProps } from './DateRange.types';
-
-dayjs.extend(localizedFormat);
 
 /**
  * Displays date range controls.
@@ -35,8 +35,8 @@ const DateRange: FC<IProps> = ({
     const handleChangeStartDate = useCallback(
         (nextValue: Dayjs | null) => {
             if (nextValue) {
-                setStartDate(toBeginningMonth(nextValue));
-                setEndDate(toEndMonth(nextValue));
+                setStartDate(toBeginningMonthDayjs(nextValue));
+                setEndDate(toEndMonthDayjs(nextValue));
                 setDateError(null);
             }
         },
@@ -46,9 +46,9 @@ const DateRange: FC<IProps> = ({
     const handleChangeEndDate = useCallback(
         (nextValue: Dayjs | null) => {
             if (nextValue) {
-                setEndDate(toBeginningMonth(nextValue));
-                const convertedEndDate = toEndMonth(nextValue);
-                if (dayjs(convertedEndDate).diff(dayjs(startDate)) < 0) {
+                setEndDate(toBeginningMonthDayjs(nextValue));
+                const convertedEndDate = toEndMonthDayjs(nextValue);
+                if (convertedEndDate.diff(startDate) < 0) {
                     setDateError('End date may not be before start date');
                 } else {
                     setDateError(null);
@@ -60,24 +60,24 @@ const DateRange: FC<IProps> = ({
     );
 
     const prevMonth = useMemo(() => {
-        const nextDate = dayjs(startDate).subtract(1, 'month');
+        const nextDate = startDate.subtract(1, 'month');
         return nextDate;
     }, [startDate]);
 
     const handleClickPrevMonth = useCallback(() => {
-        setStartDate(toBeginningMonth(prevMonth));
-        setEndDate(toEndMonth(prevMonth));
+        setStartDate(toBeginningMonthDayjs(prevMonth));
+        setEndDate(toEndMonthDayjs(prevMonth));
         setDateError(null);
     }, [prevMonth, setEndDate, setStartDate]);
 
     const nextMonth = useMemo(() => {
-        const nextDate = dayjs(endDate).add(1, 'month').set('date', 1);
+        const nextDate = endDate.add(1, 'month').set('date', 1);
         return nextDate;
     }, [endDate]);
 
     const handleClickNextMonth = useCallback(() => {
-        setStartDate(toBeginningMonth(String(nextMonth)));
-        setEndDate(toEndMonth(nextMonth));
+        setStartDate(toBeginningMonthDayjs(String(nextMonth)));
+        setEndDate(toEndMonthDayjs(nextMonth));
         setDateError(null);
     }, [nextMonth, setEndDate, setStartDate]);
 
@@ -109,7 +109,7 @@ const DateRange: FC<IProps> = ({
                         sx={{
                             borderRadius: '4px',
                         }}
-                        value={dayjs(startDate)}
+                        value={startDate}
                         views={['month', 'year']}
                     />
                     <DatePicker
@@ -126,7 +126,7 @@ const DateRange: FC<IProps> = ({
                         sx={{
                             borderRadius: '4px',
                         }}
-                        value={dayjs(endDate)}
+                        value={endDate}
                         views={['month', 'year']}
                     />
                 </Box>

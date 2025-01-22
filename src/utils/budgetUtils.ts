@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IBudget, IBudgetDatum } from '../types/Budget.types';
@@ -20,7 +20,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
  * @param rawDate The date to be flattened.
  * @returns The new date string in standard format.
  */
-export const toBeginningMonth = (rawDate: string | Date) => {
+export const toBeginningMonth = (rawDate: string | Date | Dayjs) => {
     const date = dayjs(rawDate).date(1);
     return date.format(DATE_FORMAT);
 };
@@ -32,9 +32,29 @@ export const toBeginningMonth = (rawDate: string | Date) => {
  * @param rawDate The date to be ceilinged.
  * @returns The new date string in standard format.
  */
-export const toEndMonth = (rawDate: string | Date) => {
+export const toEndMonth = (rawDate: string | Date | Dayjs) => {
     const date = dayjs(rawDate).endOf('month');
     return date.format(DATE_FORMAT);
+};
+
+/**
+ * Given a DayJs instance, returns a new instance set to the beginning of the month.
+ * @param rawDate The date to be flattened.
+ * @returns The new date string in standard format.
+ */
+export const toBeginningMonthDayjs = (rawDate: string | Date | Dayjs) => {
+    const date = dayjs(rawDate).date(1);
+    return date;
+};
+
+/**
+ * Given a DayJs instance, returns a new instance set to the end date of the month.
+ * @param rawDate The date to be ceilinged.
+ * @returns The new date string in standard format.
+ */
+export const toEndMonthDayjs = (rawDate: string | Date | Dayjs) => {
+    const date = dayjs(rawDate).endOf('month');
+    return date;
 };
 
 /**

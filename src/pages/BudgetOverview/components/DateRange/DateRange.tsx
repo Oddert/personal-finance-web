@@ -4,7 +4,10 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, TextField, Typography } from '@mui/material';
 
-import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
+import {
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
+} from '../../../../utils/budgetUtils';
 
 import type { IProps } from './DateRange.types';
 
@@ -26,8 +29,8 @@ const DateRange: FC<IProps> = ({
 
     const handleChangeStartDate = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            setStartDate(toBeginningMonth(e.target.value));
-            setEndDate(toEndMonth(e.target.value));
+            setStartDate(toBeginningMonthDayjs(e.target.value));
+            setEndDate(toEndMonthDayjs(e.target.value));
             setDateError(null);
         },
         [setEndDate, setStartDate],
@@ -35,20 +38,20 @@ const DateRange: FC<IProps> = ({
 
     const handleChangeEndDate = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
-            const convertedEndDate = toEndMonth(e.target.value);
-            if (dayjs(convertedEndDate).diff(dayjs(startDate)) < 0) {
+            const convertedEndDate = toEndMonthDayjs(e.target.value);
+            if (convertedEndDate.diff(startDate) < 0) {
                 setDateError('End date may not be before start date');
             } else {
                 setDateError(null);
-                setEndDate(toEndMonth(e.target.value));
+                setEndDate(toEndMonthDayjs(e.target.value));
             }
         },
         [setEndDate, startDate],
     );
 
     const handleClickTimeJump = (fromDate: Dayjs, toDate: Dayjs) => () => {
-        setStartDate(toBeginningMonth(String(fromDate)));
-        setEndDate(toEndMonth(String(toDate)));
+        setStartDate(toBeginningMonthDayjs(fromDate));
+        setEndDate(toEndMonthDayjs(toDate));
     };
 
     // const prevMonth = useMemo(() => {

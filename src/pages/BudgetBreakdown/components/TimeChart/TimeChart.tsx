@@ -32,8 +32,8 @@ const TimeChart: FC<IProps> = ({
 
     const series = useMemo(() => {
         const dates: number[] = [];
-        const endDateJs = dayjs(endDate);
-        let date = dayjs(startDate);
+        const endDateJs = endDate;
+        let date = startDate;
         let ctrl = 0;
         while (date.valueOf() <= endDateJs.valueOf() && ctrl < 100) {
             dates.push(date.valueOf());
@@ -135,8 +135,8 @@ const TimeChart: FC<IProps> = ({
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(startDate).getTime(),
-                        max: new Date(endDate).getTime(),
+                        min: new Date(String(startDate)).getTime(),
+                        max: new Date(String(endDate)).getTime(),
                     },
                     tooltip: {
                         x: {

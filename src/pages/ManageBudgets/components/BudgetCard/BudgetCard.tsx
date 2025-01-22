@@ -85,10 +85,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     Last updated:{' '}
                     {new Date(budget.updatedOn).toLocaleString(LOCALE)}
                 </Typography>
-                <Link
-                    to={ROUTES_FACTORY.EDIT_BUDGET(budget.id)}
-                    // sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}
-                >
+                <Link to={ROUTES_FACTORY.EDIT_BUDGET(budget.id)}>
                     <Typography component='span'>View and edit</Typography>{' '}
                     <RightArrowIcon />
                 </Link>
