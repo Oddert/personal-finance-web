@@ -1,5 +1,5 @@
 import { FC, Fragment, useState } from 'react';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 
 import {
     Box,
@@ -30,7 +30,7 @@ import type { IProps } from './DeleteBudget.types';
  */
 const DeleteBudget: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
 
@@ -38,7 +38,7 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
         const request = async () => {
             await APIService.deleteSingleBudget(budget.id);
             dispatch(deleteBudget({ budgetId: budget.id }));
-            navigate(ROUTES.MANAGE_BUDGETS);
+            window.location.replace(ROUTES.MANAGE_BUDGETS);
         };
         request();
     };

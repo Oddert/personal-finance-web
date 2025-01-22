@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 
 import { ListItemIcon, Menu, MenuItem } from '@mui/material';
 import {
@@ -18,16 +18,16 @@ import type { IProps } from './CreateBudgetMenu.types';
  * @subcategory Manage Budgets
  */
 const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const open = Boolean(anchorEl);
 
     const handleClickNew = () => {
-        navigate(ROUTES.CREATE_BUDGET);
+        window.location.replace(ROUTES.CREATE_BUDGET);
         handleClose();
     };
 
     const handleClickTemplate = () => {
-        navigate(ROUTES_FACTORY.CREATE_BUDGET('undefined'));
+        window.location.replace(ROUTES_FACTORY.CREATE_BUDGET('undefined'));
         handleClose();
     };
 
