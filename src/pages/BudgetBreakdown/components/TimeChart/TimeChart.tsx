@@ -34,11 +34,10 @@ const TimeChart: FC<IProps> = ({
         const dates: number[] = [];
         const endDateJs = endDate;
         let date = startDate;
-        let ctrl = 0;
-        while (date.valueOf() <= endDateJs.valueOf() && ctrl < 100) {
+
+        while (date.valueOf() <= endDateJs.valueOf()) {
             dates.push(date.valueOf());
             date = date.add(1, 'day');
-            ctrl++;
         }
 
         const sortedByCategory = filteredTransactions.reduce(
@@ -78,10 +77,10 @@ const TimeChart: FC<IProps> = ({
                         if (nextDate in seriesItem.transactions) {
                             accumulator.total += seriesItem.transactions[
                                 nextDate
-                            ].reduce((a, e) => a + e.debit, 0);
+                            ].reduce((a, e) => a + e.debit - e.credit, 0);
                         }
                         accumulator.data.push({
-                            x: String(dayjs(nextDate)),
+                            x: dayjs(nextDate).toISOString(),
                             y: accumulator.total,
                         });
                         return accumulator;

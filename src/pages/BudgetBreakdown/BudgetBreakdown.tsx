@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
@@ -27,6 +28,7 @@ import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 import ActiveBudget from '../../components/ActiveBudget';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
 
+import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
 import PercentageChart from './components/PercentageChart';
@@ -115,14 +117,14 @@ const BudgetBreakdown: FC = () => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
-            setStartDate(dayjs(start));
+            setStartDate(toBeginningMonthDayjs(start));
             if (end) {
-                setEndDate(dayjs(end));
+                setEndDate(toEndMonthDayjs(end));
             } else {
                 setEndDate(toEndMonthDayjs(start));
             }
         }
-    }, [navigation]);
+    }, []);
 
     return (
         <ResponsiveContainer>
@@ -178,6 +180,15 @@ const BudgetBreakdown: FC = () => {
                         startDate={startDate}
                     />
                 </Paper>
+                {/* {numMonths > 1 ? (
+                    <Paper elevation={0}>
+                        <BudgetMonthSpendChart
+                            endDate={endDate}
+                            filteredTransactions={filteredTransactions}
+                            startDate={startDate}
+                        />
+                    </Paper>
+                ) : null} */}
                 <BudgetPageToggle
                     endDate={endDate}
                     mode='breakdown'
