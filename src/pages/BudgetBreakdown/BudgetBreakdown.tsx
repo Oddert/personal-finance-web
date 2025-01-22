@@ -180,7 +180,7 @@ const BudgetBreakdown: FC = () => {
                         startDate={startDate}
                     />
                 </Paper>
-                {/* {numMonths > 1 ? (
+                {numMonths > 1 ? (
                     <Paper elevation={0}>
                         <BudgetMonthSpendChart
                             endDate={endDate}
@@ -188,7 +188,7 @@ const BudgetBreakdown: FC = () => {
                             startDate={startDate}
                         />
                     </Paper>
-                ) : null} */}
+                ) : null}
                 <BudgetPageToggle
                     endDate={endDate}
                     mode='breakdown'
