@@ -21,7 +21,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
  * @returns The new date string in standard format.
  */
 export const toBeginningMonth = (rawDate: string | Date | Dayjs) => {
-    const date = dayjs(rawDate).date(1);
+    const date = dayjs(rawDate).startOf('month');
     return date.format(DATE_FORMAT);
 };
 
@@ -43,7 +43,7 @@ export const toEndMonth = (rawDate: string | Date | Dayjs) => {
  * @returns The new date string in standard format.
  */
 export const toBeginningMonthDayjs = (rawDate: string | Date | Dayjs) => {
-    const date = dayjs(rawDate).date(1);
+    const date = dayjs(rawDate).startOf('month');
     return date;
 };
 
