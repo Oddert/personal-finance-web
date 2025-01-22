@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC, Fragment, useCallback } from 'react';
 
 import {
     Box,
@@ -13,19 +13,31 @@ import { Error as ErrorIcon } from '@mui/icons-material';
 
 import { getErrorState } from '../../redux/selectors/errorSelectors';
 
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import { IProps } from './ErrorMessage.types';
+import { clearError } from '../../redux/slices/errorSlice';
 
 /**
  * Error modal to display caught error messages.
+ *
+ * Acts a a 'first line of defence' error boundary, intended to catch all application errors.
+ *
+ * Unhandled errors still pass through to {@link ErrorBoundary} as a default but this should be avoided through proper error handling if possible.
  * @component
  * @category Hocs
  * @subcategory Error Message
  * @param props.children Application content to be displayed under the dialog.
  */
 const ErrorMessage: FC<IProps> = ({ children }) => {
+    const dispatch = useAppDispatch();
     const errorState = useAppSelector(getErrorState);
+
+    const handleClickClear = useCallback(
+        () => dispatch(clearError()),
+        [dispatch],
+    );
+
     return (
         <Fragment>
             {children}
@@ -67,6 +79,7 @@ const ErrorMessage: FC<IProps> = ({ children }) => {
                 </DialogContent>
                 <DialogActions sx={{ gridColumn: 2 }}>
                     <Button
+                        onClick={handleClickClear}
                         size='large'
                         sx={(theme) => ({
                             color: theme.palette.error.contrastText,
