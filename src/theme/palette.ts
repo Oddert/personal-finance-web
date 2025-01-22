@@ -26,7 +26,7 @@ const palette: Partial<Palette> = {
     tonalOffset: 0.2,
     error: {
         main: '#f44336',
-        light: '#357373',
+        light: '#e99696',
         dark: '#d32f2f',
         contrastText: '#ffffff',
     },

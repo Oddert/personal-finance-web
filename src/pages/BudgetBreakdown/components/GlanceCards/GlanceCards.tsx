@@ -1,6 +1,12 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 
-import { Box, Paper, Tooltip, Typography } from '@mui/material';
+import {
+    Box,
+    CircularProgress,
+    Paper,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 
 import type { IBudgetDatum } from '../../../../types/Budget.types';
 
@@ -16,11 +22,10 @@ import type { IProps } from './GlanceCards.types';
  */
 const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
     const [actualSpend, setActualSpend] = useState(0);
-    const [largestOverspendPc, setLargestOverspendPc] = useState<IBudgetDatum>(
-        data[0],
-    );
+    const [largestOverspendPc, setLargestOverspendPc] =
+        useState<IBudgetDatum | null>(null);
     const [largestOverspendVal, setLargestOverspendVal] =
-        useState<IBudgetDatum>(data[0]);
+        useState<IBudgetDatum | null>(null);
     const [numUnderSpend, setNumUnderspend] = useState<IBudgetDatum[]>([]);
     const [numOverSpend, setNumOverSpend] = useState<IBudgetDatum[]>([]);
 
@@ -132,21 +137,33 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                     justifyContent: 'center',
                 }}
             >
-                <Typography>Largest overspend</Typography>
-                <Typography>
-                    By percent:{' '}
-                    <Typography component='span' sx={{ fontWeight: 'bold' }}>
-                        {largestOverspendPc.categoryName} (+{' '}
-                        {largestOverspendPc.diffPc}%)
-                    </Typography>
-                </Typography>
-                <Typography>
-                    By value:{' '}
-                    <Typography component='span' sx={{ fontWeight: 'bold' }}>
-                        {largestOverspendVal.categoryName} (+ £
-                        {largestOverspendVal.diffFloat})
-                    </Typography>
-                </Typography>
+                {largestOverspendPc && largestOverspendVal ? (
+                    <Fragment>
+                        <Typography>Largest overspend</Typography>
+                        <Typography>
+                            By percent:{' '}
+                            <Typography
+                                component='span'
+                                sx={{ fontWeight: 'bold' }}
+                            >
+                                {largestOverspendPc.categoryName} (+{' '}
+                                {largestOverspendPc.diffPc}%)
+                            </Typography>
+                        </Typography>
+                        <Typography>
+                            By value:{' '}
+                            <Typography
+                                component='span'
+                                sx={{ fontWeight: 'bold' }}
+                            >
+                                {largestOverspendVal.categoryName} (+ £
+                                {largestOverspendVal.diffFloat})
+                            </Typography>
+                        </Typography>
+                    </Fragment>
+                ) : (
+                    <CircularProgress />
+                )}
             </Paper>
             <Paper
                 elevation={0}

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router';
 
 import { ListItemIcon, Menu, MenuItem } from '@mui/material';
 import {
@@ -7,7 +6,10 @@ import {
     NoteAdd as CreateFreshIcon,
 } from '@mui/icons-material';
 
-import { ROUTES, ROUTES_FACTORY } from '../../../../constants/routerConstants';
+import router, {
+    ROUTES,
+    ROUTES_FACTORY,
+} from '../../../../constants/routerConstants';
 
 import type { IProps } from './CreateBudgetMenu.types';
 
@@ -18,16 +20,15 @@ import type { IProps } from './CreateBudgetMenu.types';
  * @subcategory Manage Budgets
  */
 const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
-    const navigate = useNavigate();
     const open = Boolean(anchorEl);
 
     const handleClickNew = () => {
-        navigate(ROUTES.CREATE_BUDGET);
+        router.navigate(ROUTES.CREATE_BUDGET);
         handleClose();
     };
 
     const handleClickTemplate = () => {
-        navigate(ROUTES_FACTORY.CREATE_BUDGET('undefined'));
+        router.navigate(ROUTES_FACTORY.CREATE_BUDGET('undefined'));
         handleClose();
     };
 

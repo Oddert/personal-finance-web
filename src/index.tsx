@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
+
 import { ThemeProvider } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,11 +8,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/L
 
 import store from './redux/constants/store';
 
+import ErrorBoundary from './hocs/ErrorBoundary';
+import ErrorMessage from './hocs/ErrorMessage';
+
 import theme from './theme/';
 
 import reportWebVitals from './reportWebVitals';
 
 import App from './components/App/';
+import FallbackError from './components/FallbackError';
 
 import './index.css';
 
@@ -23,7 +28,11 @@ root.render(
     <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <ThemeProvider theme={theme}>
-                <App />
+                <ErrorBoundary fallback={<FallbackError />}>
+                    <ErrorMessage>
+                        <App />
+                    </ErrorMessage>
+                </ErrorBoundary>
             </ThemeProvider>
         </LocalizationProvider>
     </ReduxProvider>,

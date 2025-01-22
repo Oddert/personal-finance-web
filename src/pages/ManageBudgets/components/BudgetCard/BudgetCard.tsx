@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
 import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
@@ -16,6 +16,7 @@ import {
 
 import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 import type { IProps } from './BudgetCard.types';
 
@@ -29,13 +30,8 @@ import type { IProps } from './BudgetCard.types';
  */
 const BudgetCard: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const activeBudgetId = useAppSelector(getActiveBudgetId);
-
-    const handleClickEdit = () => {
-        navigate(ROUTES_FACTORY.EDIT_BUDGET(budget.id));
-    };
 
     const handleClickActivate = () => {
         try {
@@ -46,6 +42,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
             request();
         } catch (error) {
             console.error(error);
+            dispatch(intakeError(error));
         }
     };
 
@@ -88,13 +85,13 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     Last updated:{' '}
                     {new Date(budget.updatedOn).toLocaleString(LOCALE)}
                 </Typography>
-                <Button
-                    onClick={handleClickEdit}
-                    sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}
+                <Link
+                    to={ROUTES_FACTORY.EDIT_BUDGET(budget.id)}
+                    // sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}
                 >
                     <Typography component='span'>View and edit</Typography>{' '}
                     <RightArrowIcon />
-                </Button>
+                </Link>
             </Paper>
         </ListItem>
     );

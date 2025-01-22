@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 import {
     Box,
@@ -17,21 +17,26 @@ import {
 
 import { IBudget, IBudgetRow } from '../../types/Budget.types';
 
+import router, { ROUTES } from '../../constants/routerConstants';
+
 import APIService from '../../services/APIService';
-import { ROUTES } from '../../constants/routerConstants';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { addBudget, budgetLoading } from '../../redux/slices/budgetSlice';
+import {
+    intakeError,
+    writeErrorBoundary,
+} from '../../redux/thunks/errorThunks';
 
 import DynamicCardList from '../../components/DynamicCardList';
 
 import BudgetRow from './components/BudgetRow';
+import DeleteBudget from './components/DeleteBudget';
 
 import { IBudgetRowEditable, IProps } from './EditBudget.types';
-import DeleteBudget from './components/DeleteBudget';
 
 /**
  * Creates a blank Budget Row.
@@ -58,13 +63,12 @@ const createEmptyBudget = (id: number): IBudget => ({
 const EditBudget: FC<IProps> = () => {
     const dispatch = useAppDispatch();
 
-    const navigate = useNavigate();
-
     const [loading, setLoading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
     const [budget, setBudget] = useState<IBudget>(createEmptyBudget(-1));
     const [budgetRows, setBudgetRows] = useState<IBudgetRowEditable[]>([]);
 
+    const location = useLocation();
     const params = useParams();
     const search = useSearchParams();
 
@@ -87,12 +91,13 @@ const EditBudget: FC<IProps> = () => {
                     throw new Error('No response received from the server.');
                 }
                 dispatch(addBudget({ budget: response.payload.budget }));
-                navigate(ROUTES.MANAGE_BUDGETS);
+                router.navigate(ROUTES.MANAGE_BUDGETS);
             };
             request();
         } catch (error) {
             console.error(error);
             setLoading(false);
+            dispatch(intakeError(error));
         }
     };
 
@@ -122,6 +127,15 @@ const EditBudget: FC<IProps> = () => {
                 fetchBudget(Number(params.budgetId));
                 setIsEdit(true);
             } else {
+                if (new RegExp(ROUTES.EDIT_BUDGET).test(location.pathname)) {
+                    dispatch(
+                        writeErrorBoundary({
+                            title: 'Budget not Found',
+                            message: `No budget with ID "${budget.id}" found.`,
+                            error: 'Not found error',
+                        }),
+                    );
+                }
                 const templateId = search[0].get('templateId');
                 if (templateId) {
                     fetchBudget(Number(templateId));
@@ -132,6 +146,7 @@ const EditBudget: FC<IProps> = () => {
             }
         } catch (error: any) {
             console.error(error);
+            dispatch(intakeError(error));
         }
     }, []);
 
@@ -154,7 +169,8 @@ const EditBudget: FC<IProps> = () => {
                 }}
             >
                 <Button
-                    onClick={() => navigate(ROUTES.MANAGE_BUDGETS)}
+                    // onClick={() => navigate(ROUTES.MANAGE_BUDGETS)}
+                    href={ROUTES.MANAGE_BUDGETS}
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='outlined'
                 >

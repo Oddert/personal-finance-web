@@ -1,5 +1,4 @@
 import { FC, Fragment, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import {
     Box,
@@ -12,11 +11,12 @@ import {
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 
-import { ROUTES } from '../../../../constants/routerConstants';
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 import APIService from '../../../../services/APIService';
 
 import { deleteBudget } from '../../../../redux/slices/budgetSlice';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
@@ -30,17 +30,20 @@ import type { IProps } from './DeleteBudget.types';
  */
 const DeleteBudget: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
 
     const handleClickDelete = () => {
-        const request = async () => {
-            await APIService.deleteSingleBudget(budget.id);
-            dispatch(deleteBudget({ budgetId: budget.id }));
-            navigate(ROUTES.MANAGE_BUDGETS);
-        };
-        request();
+        try {
+            const request = async () => {
+                await APIService.deleteSingleBudget(budget.id);
+                dispatch(deleteBudget({ budgetId: budget.id }));
+                router.navigate(ROUTES.MANAGE_BUDGETS);
+            };
+            request();
+        } catch (error) {
+            dispatch(intakeError(error));
+        }
     };
 
     return (

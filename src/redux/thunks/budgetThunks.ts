@@ -5,6 +5,8 @@ import { AppDispatch, RootState } from '../constants/store';
 
 import { budgetLoading, writeBudgets } from '../slices/budgetSlice';
 
+import { intakeError } from './errorThunks';
+
 /**
  * Conditional re-requests the budget state from the server.
  *
@@ -41,5 +43,6 @@ export const refreshBudgets =
             }
         } catch (error) {
             console.error(error);
+            dispatch(intakeError(error));
         }
     };
