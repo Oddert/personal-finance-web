@@ -35,6 +35,7 @@ import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 
 dayjs.extend(localizedFormat);
 
@@ -121,6 +122,8 @@ const BudgetOverview: FC<IProps> = () => {
         }
     }, [navigation]);
 
+    console.log(chartList);
+
     return (
         <ResponsiveContainer>
             <Box
@@ -153,6 +156,23 @@ const BudgetOverview: FC<IProps> = () => {
                     label='Include empty categories'
                 />
                 <PercentageCharts chartList={chartList} />
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>Budget spend each month</Typography>
+                    <BudgetMonthSpendChart
+                        chartList={chartList}
+                        startDate={startDate}
+                        endDate={endDate}
+                    />
+                </Paper>
                 <Paper
                     elevation={0}
                     sx={{
