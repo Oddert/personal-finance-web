@@ -122,8 +122,6 @@ const BudgetOverview: FC<IProps> = () => {
         }
     }, [navigation]);
 
-    console.log(chartList);
-
     return (
         <ResponsiveContainer>
             <Box

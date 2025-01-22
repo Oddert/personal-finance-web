@@ -7,3 +7,10 @@ export interface IProps {
     endDate: Dayjs;
     startDate: Dayjs;
 }
+
+export interface IAgDataAccumulator {
+    [categoryId: number]: {
+        name: string;
+        data: { x: number; y: number }[];
+    };
+}

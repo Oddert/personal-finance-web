@@ -3,40 +3,43 @@ import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
-import { IProps } from './BudgetMonthSpendChart.type';
+import { IAgDataAccumulator, IProps } from './BudgetMonthSpendChart.type';
 
+/**
+ * Displays each budgets raw spend value across the date range.
+ *
+ * "Spiritually" connected to the equivalent {@link BudgetBreakdown/components/BudgetMonthSpendChart} in BudgetBreakdown.
+ * @param props.chartList The pre-calculated Budget Overview charts.
+ * @param props.endDate The start date for the date range.
+ * @param props.startDate The end date for the date range.
+ */
 const BudgetMonthSpendChart: FC<IProps> = ({
     chartList,
     endDate,
     startDate,
 }) => {
     const series = useMemo(() => {
-        interface Temp {
-            [categoryId: number]: {
-                name: string;
-                data: { x: number; y: number }[];
-            };
-        }
-        const m = chartList.reduce((acc: Temp, monthData) => {
-            monthData.data.forEach((categoryData) => {
-                if (!(categoryData.categoryId in acc)) {
-                    acc[categoryData.categoryId] = {
-                        name: categoryData.categoryName,
-                        data: [],
-                    };
-                }
-                acc[categoryData.categoryId].data.push({
-                    x: monthData.timestamp.valueOf(),
-                    y: categoryData.spend,
+        const aggregatedData = chartList.reduce(
+            (acc: IAgDataAccumulator, monthData) => {
+                monthData.data.forEach((categoryData) => {
+                    if (!(categoryData.categoryId in acc)) {
+                        acc[categoryData.categoryId] = {
+                            name: categoryData.categoryName,
+                            data: [],
+                        };
+                    }
+                    acc[categoryData.categoryId].data.push({
+                        x: monthData.timestamp.valueOf(),
+                        y: categoryData.spend,
+                    });
                 });
-            });
-            return acc;
-        }, {});
-        console.log(m);
-        return Object.values(m);
-    }, [chartList]);
+                return acc;
+            },
+            {},
+        );
 
-    console.log({ series });
+        return Object.values(aggregatedData);
+    }, [chartList]);
 
     return (
         <Box
