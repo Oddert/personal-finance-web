@@ -17,8 +17,9 @@ import {
 
 import { IBudget, IBudgetRow } from '../../types/Budget.types';
 
+import router, { ROUTES } from '../../constants/routerConstants';
+
 import APIService from '../../services/APIService';
-import { ROUTES } from '../../constants/routerConstants';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
@@ -62,8 +63,6 @@ const createEmptyBudget = (id: number): IBudget => ({
 const EditBudget: FC<IProps> = () => {
     const dispatch = useAppDispatch();
 
-    // const navigate = useNavigate();
-
     const [loading, setLoading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
     const [budget, setBudget] = useState<IBudget>(createEmptyBudget(-1));
@@ -92,8 +91,7 @@ const EditBudget: FC<IProps> = () => {
                     throw new Error('No response received from the server.');
                 }
                 dispatch(addBudget({ budget: response.payload.budget }));
-                window.location.replace(ROUTES.MANAGE_BUDGETS);
-                // navigate(ROUTES.MANAGE_BUDGETS);
+                router.navigate(ROUTES.MANAGE_BUDGETS);
             };
             request();
         } catch (error) {
@@ -129,7 +127,6 @@ const EditBudget: FC<IProps> = () => {
                 fetchBudget(Number(params.budgetId));
                 setIsEdit(true);
             } else {
-                console.log(location.pathname);
                 if (new RegExp(ROUTES.EDIT_BUDGET).test(location.pathname)) {
                     dispatch(
                         writeErrorBoundary({

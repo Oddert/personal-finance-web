@@ -1,5 +1,4 @@
 import { FC, Fragment, useState } from 'react';
-// import { useNavigate } from 'react-router';
 
 import {
     Box,
@@ -12,7 +11,7 @@ import {
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 
-import { ROUTES } from '../../../../constants/routerConstants';
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 import APIService from '../../../../services/APIService';
 
@@ -31,7 +30,6 @@ import type { IProps } from './DeleteBudget.types';
  */
 const DeleteBudget: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
-    // const navigate = useNavigate();
 
     const [open, setOpen] = useState(false);
 
@@ -40,7 +38,7 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
             const request = async () => {
                 await APIService.deleteSingleBudget(budget.id);
                 dispatch(deleteBudget({ budgetId: budget.id }));
-                window.location.replace(ROUTES.MANAGE_BUDGETS);
+                router.navigate(ROUTES.MANAGE_BUDGETS);
             };
             request();
         } catch (error) {
