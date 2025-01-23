@@ -170,10 +170,25 @@ const BudgetBreakdown: FC = () => {
                     monthBudget={monthBudget}
                     numMonths={numMonths}
                 />
-                <Paper elevation={0}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        padding: '16px',
+                    }}
+                >
                     <BudgetTable data={data} />
                 </Paper>
-                <Paper elevation={0}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>Aggregate spend chart</Typography>
                     <TimeChart
                         endDate={endDate}
                         filteredTransactions={filteredTransactions}
@@ -181,7 +196,17 @@ const BudgetBreakdown: FC = () => {
                     />
                 </Paper>
                 {numMonths > 1 ? (
-                    <Paper elevation={0}>
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            justifyContent: 'space-around',
+                            padding: '16px',
+                        }}
+                    >
+                        <Typography>Category spend across period</Typography>
                         <BudgetMonthSpendChart
                             endDate={endDate}
                             filteredTransactions={filteredTransactions}
