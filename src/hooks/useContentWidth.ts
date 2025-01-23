@@ -36,24 +36,23 @@ const bp = breakpoints?.values
  * @subcategory useContentWidth
  */
 const useContentWidth = () => {
-    const [contentWidth, setContentWidth] = useState(1200);
-    const [windowWidth, setWindowWidth] = useState(1200);
-    const [breakpoint, setBreakPoint] = useState<TSizes>('xl');
+    const [contentWidth, setContentWidth] = useState(contentWidths.md);
+    const [windowWidth, setWindowWidth] = useState(contentWidths.md);
+    const [breakpoint, setBreakPoint] = useState<TSizes>('md');
 
     const handleResize = () => {
-        const nextWidth = window.innerWidth;
-        console.log('resize', nextWidth);
-        setWindowWidth(nextWidth);
-        if (nextWidth <= bp.sm && breakpoint !== 'xs') {
+        const nextWindowWidth = window.innerWidth;
+        setWindowWidth(nextWindowWidth);
+        if (nextWindowWidth <= bp.sm && breakpoint !== 'xs') {
             setBreakPoint('xs');
             setContentWidth(contentWidths.xs);
-        } else if (nextWidth <= bp.md && breakpoint !== 'sm') {
+        } else if (nextWindowWidth <= bp.md && breakpoint !== 'sm') {
             setBreakPoint('sm');
             setContentWidth(contentWidths.sm);
-        } else if (nextWidth <= bp.lg && breakpoint !== 'md') {
+        } else if (nextWindowWidth <= bp.lg && breakpoint !== 'md') {
             setBreakPoint('md');
             setContentWidth(contentWidths.md);
-        } else if (nextWidth <= bp.xl && breakpoint !== 'lg') {
+        } else if (nextWindowWidth <= bp.xl && breakpoint !== 'lg') {
             setBreakPoint('lg');
             setContentWidth(contentWidths.lg);
         } else {
