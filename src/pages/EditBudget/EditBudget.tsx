@@ -70,7 +70,6 @@ const EditBudget: FC<IProps> = () => {
     const location = useLocation();
     const params = useParams();
     const search = useSearchParams();
-    console.log({ params });
 
     const handleClickSave = () => {
         try {
@@ -171,7 +170,6 @@ const EditBudget: FC<IProps> = () => {
                 }}
             >
                 <Button
-                    // onClick={() => navigate(ROUTES.MANAGE_BUDGETS)}
                     href={ROUTES.MANAGE_BUDGETS}
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='text'
