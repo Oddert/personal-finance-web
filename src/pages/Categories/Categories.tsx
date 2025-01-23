@@ -38,7 +38,7 @@ const Categories = () => {
             })}
         >
             <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                Categories
+                Manage Categories
             </Typography>
             <Box
                 sx={{

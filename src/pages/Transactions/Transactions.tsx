@@ -27,7 +27,7 @@ const Transactions = () => {
         <TransactionRange.Provider value={{ state, dispatch }}>
             <Container>
                 <Typography sx={{ margin: '24px 0' }} variant='h2'>
-                    Transactions
+                    Upload & Edit Transactions
                 </Typography>
                 <Box
                     sx={{

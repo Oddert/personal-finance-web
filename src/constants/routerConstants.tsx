@@ -161,17 +161,17 @@ export const navigation = [
         location: ROUTES.BUDGET_OVERVIEW,
     },
     {
-        label: 'Manage Budgets',
+        label: 'My Budgets',
         Icon: ManageBudgetIcon,
         location: ROUTES.MANAGE_BUDGETS,
     },
     {
-        label: 'Manage Categories',
+        label: 'Categories',
         Icon: CategoryIcon,
         location: ROUTES.CATEGORIES,
     },
     {
-        label: 'Upload & View Transactions',
+        label: 'Transactions',
         Icon: TransactionsIcon,
         location: ROUTES.TRANSACTIONS,
     },
