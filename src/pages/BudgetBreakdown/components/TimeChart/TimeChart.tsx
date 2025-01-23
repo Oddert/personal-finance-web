@@ -14,6 +14,7 @@ import type {
     ISortedByCategory,
     ISortedByCategoryRow,
 } from './TimeChart.types';
+import useContentWidth from '../../../../hooks/useContentWidth';
 
 dayjs.extend(localizedFormat);
 
@@ -29,6 +30,9 @@ const TimeChart: FC<IProps> = ({
     startDate,
 }) => {
     const categories = useAppSelector(getCategoryOrderedDataById);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { contentWidth } = useContentWidth();
 
     const series = useMemo(() => {
         const dates: number[] = [];
@@ -108,11 +112,18 @@ const TimeChart: FC<IProps> = ({
         >
             <Chart
                 type='area'
+                // width={contentWidth}
+                height={500}
+                width={1000}
                 options={{
                     chart: {
                         height: 350,
                         type: 'area',
                         stacked: true,
+                        zoom: {
+                            enabled: true,
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     dataLabels: {
                         enabled: false,

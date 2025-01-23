@@ -18,6 +18,7 @@ import {
     ISPendChartMonth,
     ISpendChartYear,
 } from './BudgetMonthSpendChart.type';
+import { createReadableNumber } from '../../../../utils/commonUtils';
 
 dayjs.extend(localizedFormat);
 
@@ -167,6 +168,10 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                         height: 500,
                         type: 'area',
                         stacked: true,
+                        zoom: {
+                            enabled: true,
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     dataLabels: {
                         enabled: false,
@@ -182,12 +187,13 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                         curve: 'straight',
                     },
                     yaxis: {
+                        tickAmount: 20,
                         labels: {
                             style: {
                                 colors: '#fff',
                             },
                             formatter(val) {
-                                return `${Math.floor(val)}%`;
+                                return `£${createReadableNumber(val) || ''}`;
                             },
                         },
                     },
@@ -207,7 +213,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                         },
                         y: {
                             formatter(val) {
-                                return val?.toFixed(2) || '';
+                                return `£${createReadableNumber(val) || ''}`;
                             },
                         },
                         shared: true,
