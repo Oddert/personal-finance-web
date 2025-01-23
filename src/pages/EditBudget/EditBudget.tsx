@@ -172,7 +172,7 @@ const EditBudget: FC<IProps> = () => {
                     // onClick={() => navigate(ROUTES.MANAGE_BUDGETS)}
                     href={ROUTES.MANAGE_BUDGETS}
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
-                    variant='outlined'
+                    variant='text'
                 >
                     <ArrowLeftIcon /> Return to all budgets
                 </Button>
