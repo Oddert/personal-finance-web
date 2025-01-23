@@ -14,6 +14,7 @@ export const generateTimeChartSeries = (
     },
     endDate: Dayjs,
     filteredTransactions: Transaction[],
+    includeCredit: boolean,
     startDate: Dayjs,
 ) => {
     const dates: number[] = [];
@@ -62,7 +63,13 @@ export const generateTimeChartSeries = (
                     if (nextDate in seriesItem.transactions) {
                         accumulator.total += seriesItem.transactions[
                             nextDate
-                        ].reduce((a, e) => a + e.debit - e.credit, 0);
+                        ].reduce(
+                            (a, e) =>
+                                includeCredit
+                                    ? a + e.debit - e.credit
+                                    : a + e.debit,
+                            0,
+                        );
                     }
                     accumulator.data.push({
                         x: dayjs(nextDate).toISOString(),
