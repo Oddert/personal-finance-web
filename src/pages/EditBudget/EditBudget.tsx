@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 import {
     Box,
@@ -71,6 +70,7 @@ const EditBudget: FC<IProps> = () => {
     const location = useLocation();
     const params = useParams();
     const search = useSearchParams();
+    console.log({ params });
 
     const handleClickSave = () => {
         try {
@@ -127,7 +127,9 @@ const EditBudget: FC<IProps> = () => {
                 fetchBudget(Number(params.budgetId));
                 setIsEdit(true);
             } else {
-                if (new RegExp(ROUTES.EDIT_BUDGET).test(location.pathname)) {
+                if (
+                    new RegExp(ROUTES.EDIT_BUDGET, 'gi').test(location.pathname)
+                ) {
                     dispatch(
                         writeErrorBoundary({
                             title: 'Budget not Found',
