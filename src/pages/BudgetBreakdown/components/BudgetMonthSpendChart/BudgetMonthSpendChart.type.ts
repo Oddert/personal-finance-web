@@ -8,14 +8,18 @@ export interface IProps {
     startDate: Dayjs;
 }
 
+export interface IMonthSpendCategory {
+    categoryId: number;
+    categoryName: string;
+    colour: string;
+}
+
+export interface IAllCategories {
+    [categoryId: number]: IMonthSpendCategory;
+}
+
 export interface IAgDataAccumulator {
-    allCategories: {
-        [categoryId: number]: {
-            categoryId: number;
-            categoryName: string;
-            colour: string;
-        };
-    };
+    allCategories: IAllCategories;
     categoriesByDate: {
         [year: number]: {
             [month: number]: {
@@ -29,11 +33,14 @@ export interface IAgDataAccumulator {
     };
 }
 
+export interface ISeries {
+    categoryId: number;
+    name: string;
+    data: { x: string; y: number }[];
+}
+
 export interface IPivotAccumulator {
-    [categoryId: number]: {
-        name: string;
-        data: { x: string; y: number }[];
-    };
+    [categoryId: number]: ISeries;
 }
 
 export interface ISPendChartCategory {

@@ -1,24 +1,22 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box } from '@mui/material';
-
-import { Category } from '../../../../types/Category.d';
+import { Autocomplete, Box, TextField } from '@mui/material';
 
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
+
+import { createReadableNumber } from '../../../../utils/commonUtils';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import {
-    IAgDataAccumulator,
-    IPivotAccumulator,
+    IMonthSpendCategory,
     IProps,
-    ISPendChartMonth,
-    ISpendChartYear,
+    ISeries,
 } from './BudgetMonthSpendChart.type';
-import { createReadableNumber } from '../../../../utils/commonUtils';
+import { generateMonthSpendData } from './BudgetMonthSpendChartUtils';
 
 dayjs.extend(localizedFormat);
 
@@ -35,198 +33,126 @@ const BudgetMonthSpendChart: FC<IProps> = ({
     filteredTransactions,
     startDate,
 }) => {
+    const [fullSeries, setSeries] = useState<ISeries[]>([]);
+    const [options, setOptions] = useState<IMonthSpendCategory[]>([]);
+    const [value, setValue] = useState<IMonthSpendCategory[]>([]);
+
     const categories = useAppSelector(getCategoryOrderedDataById);
-    const series = useMemo(() => {
-        // Filter over all transactions in range and arrange them into sorted objects by year and month (as time series is month based).
-        const { allCategories, categoriesByDate } = filteredTransactions.reduce(
-            (acc: IAgDataAccumulator, transaction) => {
-                const date = dayjs(transaction.date);
-                const year = date.year();
-                const month = date.month();
-
-                const foundCategory: Category | undefined =
-                    categories[transaction.category_id || -1];
-
-                if (foundCategory) {
-                    if (!(foundCategory.id in acc.allCategories)) {
-                        acc.allCategories[foundCategory.id] = {
-                            categoryId: foundCategory.id,
-                            categoryName: foundCategory.label,
-                            colour: foundCategory.colour,
-                        };
-                    }
-                }
-
-                // For year, month, and category ID, fill in missing levels of teh accumulator structure.
-                if (!(year in acc.categoriesByDate)) {
-                    acc.categoriesByDate[year] = {};
-                }
-                if (!(month in acc.categoriesByDate[year])) {
-                    acc.categoriesByDate[year][month] = {};
-                }
-                if (!(month in acc.categoriesByDate[year])) {
-                    acc.categoriesByDate[year][month] = {};
-                }
-                // If the category is invalid, add or append to 'uncategorised'.
-                if (!transaction.category_id || !foundCategory) {
-                    if (
-                        !('uncategorised' in acc.categoriesByDate[year][month])
-                    ) {
-                        acc.categoriesByDate[year][month] = {
-                            ...acc.categoriesByDate[year][month],
-                            uncategorised: {
-                                categoryName: 'Uncategorised',
-                                colour: '#ffffff',
-                                value: 0,
-                            },
-                        };
-                    }
-                    acc.categoriesByDate[year][month].uncategorised.value +=
-                        transaction.debit - (transaction.credit || 0);
-                } else {
-                    // Category is valid, optionally add the category to the year / month if needed.
-                    if (
-                        !(
-                            transaction.category_id in
-                            acc.categoriesByDate[year][month]
-                        )
-                    ) {
-                        acc.categoriesByDate[year][month] = {
-                            ...acc.categoriesByDate[year][month],
-                            [transaction.category_id]: {
-                                categoryName: foundCategory.label,
-                                colour: foundCategory.colour,
-                                value: 0,
-                            },
-                        };
-                    }
-                    // Increment the category value
-                    acc.categoriesByDate[year][month][
-                        transaction.category_id
-                    ].value += transaction.debit - transaction.credit;
-                }
-                return acc;
-            },
-            { allCategories: {}, categoriesByDate: {} },
+    useEffect(() => {
+        const { series: nextSeries, allCategories } = generateMonthSpendData(
+            categories,
+            filteredTransactions,
         );
+        const nextOptions = Object.values(allCategories);
+        setSeries(nextSeries);
+        setOptions(nextOptions);
+        setValue([nextOptions[0]]);
+    }, [categories, filteredTransactions]);
 
-        const categoryList = Object.values(allCategories);
-
-        // "Pivot" the sorted data to create a series object per category, and a `data` item per month.
-        const pivotedData = Object.entries(categoriesByDate).reduce(
-            (
-                acc: IPivotAccumulator,
-                [year, yearVal]: [string, ISpendChartYear],
-            ) => {
-                Object.entries(yearVal).forEach(
-                    ([month, monthVal]: [string, ISPendChartMonth]) => {
-                        const date = dayjs(`${year}/${month}/01`).toISOString();
-                        categoryList.forEach((category) => {
-                            const categoryId = category.categoryId;
-                            if (!(categoryId in acc)) {
-                                acc[Number(categoryId)] = {
-                                    name: category.categoryName,
-                                    data: [],
-                                };
-                            }
-                            if (categoryId in monthVal) {
-                                acc[Number(categoryId)].data.push({
-                                    x: date,
-                                    y: monthVal[categoryId].value,
-                                });
-                            } else {
-                                acc[Number(categoryId)].data.push({
-                                    x: date,
-                                    y: 0,
-                                });
-                            }
-                        });
-                    },
-                );
+    const series = useMemo(() => {
+        const valuesLookup = value.reduce(
+            (acc: { [id: number]: boolean }, val) => {
+                acc[val.categoryId] = true;
                 return acc;
             },
             {},
         );
-
-        return Object.values(pivotedData);
-    }, [categories, filteredTransactions]);
+        return fullSeries.filter(
+            (seriesItem) => seriesItem.categoryId in valuesLookup,
+        );
+    }, [fullSeries, value]);
 
     return (
-        <Box
-            sx={(theme) => ({
-                '& *': {
-                    color: theme.palette.primary.contrastText,
-                },
-            })}
-        >
-            <Chart
-                type='line'
-                height={500}
-                width={700}
-                options={{
-                    chart: {
-                        height: 500,
-                        type: 'area',
-                        stacked: true,
-                        zoom: {
-                            enabled: true,
-                            allowMouseWheelZoom: false,
-                        },
-                    },
-                    dataLabels: {
-                        enabled: false,
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            opacityFrom: 0.6,
-                            opacityTo: 0.8,
-                        },
-                    },
-                    stroke: {
-                        curve: 'straight',
-                    },
-                    yaxis: {
-                        tickAmount: 20,
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            },
-                            formatter(val) {
-                                return `£${createReadableNumber(val) || ''}`;
-                            },
-                        },
-                    },
-                    xaxis: {
-                        type: 'datetime',
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            },
-                        },
-                        min: new Date(String(startDate)).getTime(),
-                        max: new Date(String(endDate)).getTime(),
-                    },
-                    tooltip: {
-                        x: {
-                            format: 'dd/MM/yy',
-                        },
-                        y: {
-                            formatter(val) {
-                                return `£${createReadableNumber(val) || ''}`;
-                            },
-                        },
-                        shared: true,
-                    },
-                    legend: {
-                        labels: {
-                            colors: '#fff',
-                        },
-                    },
-                }}
-                series={series}
-                // series={[{ name: 'food', data: [1, 2, 3] }]}
+        <Box>
+            <Autocomplete<IMonthSpendCategory, true>
+                getOptionLabel={(option) => option.categoryName}
+                getOptionKey={(option) => option.categoryId}
+                multiple
+                options={options}
+                onChange={(e, nextValue) => setValue(nextValue)}
+                renderInput={(params) => (
+                    <TextField {...params} label='Categories' />
+                )}
+                value={value}
             />
+            <Box
+                sx={(theme) => ({
+                    '& *': {
+                        color: theme.palette.primary.contrastText,
+                    },
+                })}
+            >
+                <Chart
+                    type='line'
+                    height={500}
+                    width={700}
+                    options={{
+                        chart: {
+                            height: 500,
+                            type: 'area',
+                            stacked: true,
+                            zoom: {
+                                enabled: true,
+                                allowMouseWheelZoom: false,
+                            },
+                        },
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                opacityFrom: 0.6,
+                                opacityTo: 0.8,
+                            },
+                        },
+                        legend: {
+                            labels: {
+                                colors: '#fff',
+                            },
+                        },
+                        markers: {
+                            size: 3,
+                        },
+                        stroke: {
+                            curve: 'smooth',
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'dd/MM/yy',
+                            },
+                            y: {
+                                formatter(val) {
+                                    return `£${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                },
+                            },
+                            shared: true,
+                        },
+                        xaxis: {
+                            type: 'datetime',
+                            labels: {
+                                style: {
+                                    colors: '#fff',
+                                },
+                            },
+                            min: new Date(String(startDate)).getTime(),
+                            max: new Date(String(endDate)).getTime(),
+                        },
+                        yaxis: {
+                            tickAmount: 20,
+                            labels: {
+                                style: {
+                                    colors: '#fff',
+                                },
+                                formatter(val) {
+                                    return `£${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                },
+                            },
+                        },
+                    }}
+                    series={series}
+                />
+            </Box>
         </Box>
     );
 };
