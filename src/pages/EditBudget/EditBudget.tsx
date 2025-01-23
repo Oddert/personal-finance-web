@@ -249,7 +249,7 @@ const EditBudget: FC<IProps> = () => {
                 >
                     <SaveIcon /> {isEdit ? 'Save changes' : 'Create budget'}
                 </Button>
-                <DeleteBudget budget={budget} />
+                {isEdit && <DeleteBudget budget={budget} />}
             </Box>
         </ResponsiveContainer>
     );
