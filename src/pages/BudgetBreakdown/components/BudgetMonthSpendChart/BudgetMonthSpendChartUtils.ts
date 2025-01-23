@@ -102,7 +102,9 @@ export const generateMonthSpendData = (
         ) => {
             Object.entries(yearVal).forEach(
                 ([month, monthVal]: [string, ISPendChartMonth]) => {
-                    const date = dayjs(`${year}/${month}/01`).toISOString();
+                    const date = dayjs(
+                        `${year}/${Number(month) + 1}/01`,
+                    ).toISOString();
                     categoryList.forEach((category) => {
                         const categoryId = category.categoryId;
                         if (!(categoryId in acc)) {
