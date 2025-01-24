@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
@@ -9,8 +8,7 @@ import type { Transaction } from '../../../../types/Transaction.d';
 
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
-import { RootState } from '../../../../redux/constants/store';
-import { getTransactionsResponse } from '../../../../redux/selectors/transactionsSelectors';
+import useTransactions from '../../../../hooks/useTransactions';
 
 import { transactionColumns } from '../../../../utils/transactionUtils';
 
@@ -33,9 +31,7 @@ const Table = () => {
         Transaction[]
     >([]);
 
-    const transactions = useSelector<RootState, Transaction[]>((state) =>
-        getTransactionsResponse(state),
-    );
+    const { transactions } = useTransactions();
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
         () => transactionColumns,

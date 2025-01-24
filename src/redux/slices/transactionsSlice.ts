@@ -1,9 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { LOCALE } from '../../constants/appConstants';
 
 import { Transaction } from '../../types/Transaction.d';
+
+dayjs.extend(localizedFormat);
 
 /**
  * Redux state key for 'transaction'
@@ -11,7 +15,7 @@ import { Transaction } from '../../types/Transaction.d';
  * @subcategory Transaction Slice
  */
 export interface TransactionState {
-    endDate: number | null;
+    endDate: number;
     endDateReadable: string | null;
     loaded: boolean;
     orderedData: {
@@ -24,21 +28,21 @@ export interface TransactionState {
             [category: number]: Transaction[];
         };
     };
-    startDate: number | null;
+    startDate: number;
     startDateReadable: string | null;
     refreshed: string | null;
     response: Transaction[];
 }
 
 const initialState: TransactionState = {
-    endDate: null,
+    endDate: dayjs().valueOf(),
     endDateReadable: null,
     loaded: false,
     orderedData: {
         byDate: {},
         byCategory: {},
     },
-    startDate: null,
+    startDate: dayjs().subtract(3, 'months').valueOf(),
     startDateReadable: null,
     refreshed: null,
     response: [],
