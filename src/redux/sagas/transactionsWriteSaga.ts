@@ -17,6 +17,10 @@ import {
     getCategoryOrderedDataById,
     getCategoryQueried,
 } from '../selectors/categorySelectors';
+import {
+    getTransactionsEndDate,
+    getTransactionsStartDate,
+} from '../selectors/transactionsSelectors';
 
 /**
  * Bulk creates transactions and re-loads part of the state.
@@ -28,9 +32,16 @@ export default function* transactionsWriteSaga() {
             yield put(requestCategories());
         }
 
+        const startDate: number = yield select(getTransactionsStartDate);
+        const endDate: number = yield select(getTransactionsEndDate);
+
         const transactionsResponse: IStandardResponse<{
             transactions: Transaction[];
-        }> = yield call(APIService.getAllTransactions);
+        }> = yield call(
+            APIService.getAllTransactionsWithinRange,
+            startDate,
+            endDate,
+        );
 
         if (!transactionsResponse?.payload?.transactions) {
             return;

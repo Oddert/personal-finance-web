@@ -27,14 +27,26 @@ const APIService = Object.freeze({
         return response;
     },
     /**
+     * Gets a list of all Transactions held by the database.
+     * @returns Transactions within the date range.
+     */
+    getAllTransactions: async () => {
+        const response: IStandardResponse<{ transactions: Transaction[] }> =
+            await request.get(`/transaction`);
+        return response;
+    },
+    /**
      * Gets a list of all Transactions between two dates.
      * @param startDate The start of the transaction query range.
      * @param endDate The end of the transaction query range.
      * @returns Transactions within the date range.
      */
-    getAllTransactions: async (startDate?: string, endDate?: string) => {
-        const from = startDate ? `?from=${startDate}` : '';
-        const to = endDate ? `&to=${endDate}` : '';
+    getAllTransactionsWithinRange: async (
+        startDate: number,
+        endDate: number,
+    ) => {
+        const from = `?from=${new Date(startDate).toISOString()}`;
+        const to = `&to=${new Date(endDate).toISOString()}`;
         const response: IStandardResponse<{ transactions: Transaction[] }> =
             await request.get(`/transaction${from}${to}`);
         return response;
