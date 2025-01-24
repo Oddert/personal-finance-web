@@ -9,8 +9,9 @@ import {
     getTransactionsOrderedByDate,
     getTransactionsStartDate,
 } from '../redux/selectors/transactionsSelectors';
+import { conditionallyRefreshTransactions } from '../redux/thunks/transactionThunks';
 
-import { useAppSelector } from './ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from './ReduxHookWrappers';
 
 type IMultiDate = string | Date | Dayjs | number;
 
@@ -24,6 +25,8 @@ dayjs.extend(localizedFormat);
  * @subcategory useContentWidth
  */
 const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
+    const dispatch = useAppDispatch();
+
     const allTransactions = useAppSelector(getTransactionsOrderedByDate);
     const rangeStartDate = useAppSelector(getTransactionsStartDate);
     const rangeEndDate = useAppSelector(getTransactionsEndDate);
@@ -44,6 +47,13 @@ const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
 
         const transactionList: Transaction[] = [];
         const values: number[] = [];
+
+        dispatch(
+            conditionallyRefreshTransactions(
+                fromDate.valueOf(),
+                toDate.valueOf(),
+            ),
+        );
 
         while (sDate < eDate) {
             const year = sDate.year();
