@@ -78,7 +78,6 @@ const RequestControls = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    gridGap: '16px',
                 }}
             >
                 <FormControlLabel

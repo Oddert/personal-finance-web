@@ -32,6 +32,7 @@ const Table = () => {
     >([]);
 
     const { transactions } = useTransactions();
+    console.log({ transactions, filteredTransactions });
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
         () => transactionColumns,

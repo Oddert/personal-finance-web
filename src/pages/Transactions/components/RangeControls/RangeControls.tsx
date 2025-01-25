@@ -1,5 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { SyntheticEvent } from 'react';
 
@@ -21,6 +23,8 @@ import type { TransactionRangeState } from '../../../../contexts/transactionRang
 import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
 
 const valuetext = (value: number) => `${value}°C`;
+
+dayjs.extend(localizedFormat);
 
 /**
  * Control set to temporarily filter the timescale in view.
@@ -47,12 +51,15 @@ const RangeControls = () => {
         Object.keys(orderedTransactions).forEach((year) => {
             Object.keys(orderedTransactions[year]).forEach((month) => {
                 rangeKeysArr.push(getRangeKeyEncoding(year, month));
-                const bottomDate = new Date(`${year}-${Number(month) + 1}-01`);
-                const topDate = new Date(`${year}-${Number(month) + 2}-01`);
-                topDate.setDate(0);
+                const bottomDate = dayjs(
+                    `${year}-${Number(month) + 1}-01`,
+                ).startOf('month');
+                const topDate = dayjs(`${year}-${Number(month) + 1}-01`).endOf(
+                    'month',
+                );
                 rangeValuesArr.push({
-                    bottom: bottomDate.getTime(),
-                    top: topDate.getTime(),
+                    bottom: bottomDate.valueOf(),
+                    top: topDate.valueOf(),
                 });
             });
         });
@@ -138,7 +145,7 @@ const RangeControls = () => {
     }, [value]);
 
     return (
-        <Box>
+        <Box sx={{ padding: '16px 64px' }}>
             <Typography gutterBottom>Filter view by month:</Typography>
             <Slider
                 getAriaLabel={() => 'Transaction range'}
