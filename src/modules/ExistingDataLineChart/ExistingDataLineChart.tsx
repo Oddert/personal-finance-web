@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
@@ -20,8 +19,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import type { Transaction } from '../../types/Transaction.d';
 
-import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
-
 import {
     chart1BaseOptions,
     chart2BaseOptions,
@@ -29,6 +26,7 @@ import {
     defaultStart,
     title,
 } from './ExistingDataLineChartUtils';
+import useTransactions from '../../hooks/useTransactions';
 
 dayjs.extend(localizedFormat);
 
@@ -57,9 +55,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
         { x: number | string; y: number }[]
     >([]);
     const [debitMax, setDebitMax] = useState<number>(0);
-
     const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultStart));
-
     const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultEnd));
 
     // Workaround for issue owners seem unwilling / unable to resolve:
@@ -70,24 +66,10 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [chart2Options, setChart2Options] =
         useState<ApexOptions>(chart2BaseOptions);
 
-    const transactions = useSelector(getTransactionsOrderedByDate);
+    const { transactions } = useTransactions(startDate, endDate);
 
     useEffect(() => {
-        let sDate = dayjs(startDate);
-
-        const transactionList: Transaction[] = [];
-
-        while (sDate < endDate) {
-            const year = sDate.year();
-            const month = sDate.month();
-            if (year in transactions && month in transactions[year]) {
-                const transactionBlock = transactions[year][month];
-                transactionList.push(...transactionBlock);
-            }
-            sDate = sDate.add(1, 'month').set('date', 10);
-        }
-
-        const sorted = transactionList.reduce(
+        const sorted = transactions.reduce(
             (
                 acc: {
                     ballance: { x: number | string; y: number }[];

@@ -21,9 +21,7 @@ import {
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import { getTransactionsResponse } from '../../../../redux/selectors/transactionsSelectors';
+import useTransactions from '../../../../hooks/useTransactions';
 
 import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
 
@@ -45,27 +43,22 @@ const Edit: FC<IProps> = () => {
         transactionEditInitialState,
     );
 
-    const transactions = useAppSelector(getTransactionsResponse);
+    const { transactions } = useTransactions(
+        rangeValues[value[0]]?.bottom,
+        rangeValues[value[1]]?.top,
+    );
 
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        const minDate = rangeValues[value[0]]?.bottom;
-        const maxDate = rangeValues[value[1]]?.top;
-
-        const filteredTransactions = transactions
-            .filter(
-                (transaction) =>
-                    transaction.date >= minDate && transaction.date <= maxDate,
-            )
-            .map((transaction) => ({
-                ...transaction,
-                date: new Date(transaction.date).toLocaleDateString(LOCALE),
-                credit: transaction.credit === 0 ? '-' : transaction.credit,
-                debit: transaction.debit === 0 ? '-' : transaction.debit,
-                category_id: transaction.category_id || 0,
-                assignedCategory: transaction.category_id || 0,
-            }));
+        const filteredTransactions = transactions.map((transaction) => ({
+            ...transaction,
+            date: new Date(transaction.date).toLocaleDateString(LOCALE),
+            credit: transaction.credit === 0 ? '-' : transaction.credit,
+            debit: transaction.debit === 0 ? '-' : transaction.debit,
+            category_id: transaction.category_id || 0,
+            assignedCategory: transaction.category_id || 0,
+        }));
         dispatch(
             setColumnMap({
                 date: 'date',

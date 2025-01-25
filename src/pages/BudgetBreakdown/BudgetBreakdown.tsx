@@ -37,6 +37,7 @@ import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
 import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
+import useTransactions from '../../hooks/useTransactions';
 
 dayjs.extend(localizedFormat);
 
@@ -62,9 +63,6 @@ const BudgetBreakdown: FC = () => {
     const [endDate, setEndDate] = useState<Dayjs>(
         toEndMonthDayjs(new Date('2024-11-01')),
     );
-    const [filteredTransactions, setFilteredTransactions] = useState<
-        Transaction[]
-    >([]);
 
     const [numMonths, setNumMonths] = useState(1);
     const [categoryBreakdown, setCategoryBreakdown] =
@@ -76,7 +74,7 @@ const BudgetBreakdown: FC = () => {
             },
         });
 
-    const transactions = useAppSelector(getTransactionsResponse);
+    const { transactions } = useTransactions(startDate, endDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
     const monthBudget = useAppSelector(getActiveBudget);
 
@@ -95,22 +93,11 @@ const BudgetBreakdown: FC = () => {
     useEffect(() => {
         setNumMonths(endDate.diff(startDate, 'month') + 1);
 
-        const nextFilteredTransactions = transactions.filter((transaction) => {
-            const tDate = dayjs(transaction.date);
-            const sDate = startDate;
-            const eDate = endDate;
-            if (tDate.diff(sDate) >= 0 && tDate.diff(eDate) <= 0) {
-                return true;
-            }
-            return false;
-        });
-
         const nextCategoryBreakdown = createCategoryBreakdown(
-            nextFilteredTransactions,
+            transactions,
             categories,
         );
         setCategoryBreakdown(nextCategoryBreakdown);
-        setFilteredTransactions(nextFilteredTransactions);
     }, [categories, endDate, startDate, transactions]);
 
     useEffect(() => {
@@ -191,7 +178,7 @@ const BudgetBreakdown: FC = () => {
                     <Typography>Aggregate spend chart</Typography>
                     <TimeChart
                         endDate={endDate}
-                        filteredTransactions={filteredTransactions}
+                        filteredTransactions={transactions}
                         startDate={startDate}
                     />
                 </Paper>
@@ -209,7 +196,7 @@ const BudgetBreakdown: FC = () => {
                         <Typography>Category spend across period</Typography>
                         <BudgetMonthSpendChart
                             endDate={endDate}
-                            filteredTransactions={filteredTransactions}
+                            filteredTransactions={transactions}
                             startDate={startDate}
                         />
                     </Paper>

@@ -3,15 +3,11 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import type { Transaction } from '../../../../types/Transaction.d';
-
 import { LOCALE } from '../../../../constants/appConstants';
-
-import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
 
 import { meanValue, standardDeviation } from '../../../../utils/mathsUtils';
 
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import useTransactions from '../../../../hooks/useTransactions';
 
 import Table from '../../../Table';
 
@@ -33,7 +29,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
         TransactionExtended[]
     >([]);
 
-    const transactions = useAppSelector(getTransactionsOrderedByDate);
+    const { transactions } = useTransactions(startDate, endDate);
 
     const columns = useMemo<ColumnDef<TransactionExtended>[]>(
         () => [
@@ -87,33 +83,18 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
     );
 
     useEffect(() => {
-        let sDate = startDate;
-
-        const transactionList: Transaction[] = [];
-        const values: number[] = [];
-
-        while (sDate < endDate) {
-            const year = sDate.year();
-            const month = sDate.month();
-            if (year in transactions && month in transactions[year]) {
-                const transactionBlock = transactions[year][month].filter(
-                    (transaction) => {
-                        return transaction.category_id === categoryId;
-                    },
-                );
-                transactionList.push(...transactionBlock);
-                values.push(
-                    ...transactionBlock.map((transaction) => transaction.debit),
-                );
-            }
-            sDate = sDate.add(1, 'month').set('date', 10);
-        }
+        const transactionsFiltered = transactions.filter(
+            (transaction) => transaction.category_id === categoryId,
+        );
+        const values: number[] = transactionsFiltered.map(
+            (transaction) => transaction.debit,
+        );
 
         const mean = meanValue(values);
         const sd = standardDeviation(values);
         const high = mean + sd;
 
-        const response: TransactionExtended[] = transactionList.map(
+        const response: TransactionExtended[] = transactionsFiltered.map(
             (transaction) => ({
                 ...transaction,
                 outOfBounds: transaction.debit > high,
