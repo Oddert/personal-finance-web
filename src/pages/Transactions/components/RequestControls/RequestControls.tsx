@@ -5,6 +5,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, FormControlLabel, Typography } from '@mui/material';
+import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
@@ -70,8 +71,11 @@ const RequestControls = () => {
 
     return (
         <Box>
-            <Typography sx={{ textAlign: 'left', margin: '12px 0' }}>
-                Load data for the following dates:
+            <Typography
+                sx={{ textAlign: 'left', margin: '12px 16px' }}
+                variant='h3'
+            >
+                Load data
             </Typography>
             <Box
                 sx={{
@@ -132,7 +136,9 @@ const RequestControls = () => {
                         color: theme.palette.common.white,
                     })}
                 />
-                <Button onClick={handleSubmit}>Refresh</Button>
+                <Button onClick={handleSubmit} size='large' sx={{ px: 2 }}>
+                    Refresh <RefreshIcon />
+                </Button>
             </Box>
         </Box>
     );

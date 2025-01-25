@@ -8,11 +8,15 @@ import type { Transaction } from '../../../../types/Transaction.d';
 
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
+import { getTransactionsLoading } from '../../../../redux/selectors/transactionsSelectors';
+
 import useTransactions from '../../../../hooks/useTransactions';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import { transactionColumns } from '../../../../utils/transactionUtils';
 
 import TableWrapper from '../../../../components/Table/Table';
+import { Box, CircularProgress } from '@mui/material';
 
 dayjs.extend(customParseFormat);
 
@@ -32,7 +36,8 @@ const Table = () => {
     >([]);
 
     const { transactions } = useTransactions();
-    console.log({ transactions, filteredTransactions });
+
+    const transactionsLoading = useAppSelector(getTransactionsLoading);
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
         () => transactionColumns,
@@ -50,6 +55,14 @@ const Table = () => {
             ),
         );
     }, [rangeValues, value, transactions]);
+
+    if (transactionsLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 6 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <TableWrapper<Transaction>

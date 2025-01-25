@@ -17,6 +17,7 @@ dayjs.extend(localizedFormat);
 export interface TransactionState {
     endDate: number;
     endDateReadable: string | null;
+    loading: boolean;
     loaded: boolean;
     orderedData: {
         byDate: {
@@ -38,6 +39,7 @@ const initialState: TransactionState = {
     endDate: dayjs().valueOf(),
     endDateReadable: null,
     loaded: false,
+    loading: false,
     orderedData: {
         byDate: {},
         byCategory: {},
@@ -60,6 +62,7 @@ export const transactionSlice = createSlice({
             } | null>,
         ) => {
             state.loaded = false;
+            state.loading = true;
             if (action?.payload?.startDate) {
                 state.startDate = new Date(action.payload.startDate).getTime();
                 state.startDateReadable = action.payload.startDate;
@@ -85,6 +88,8 @@ export const transactionSlice = createSlice({
             }>,
         ) => {
             state.refreshed = new Date().toLocaleString(LOCALE);
+            state.loaded = true;
+            state.loading = false;
             state.orderedData = action.payload.orderedTransactions;
             state.response = action.payload.transactions;
         },

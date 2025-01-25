@@ -70,3 +70,13 @@ export const getTransactionsEndDate = createSelector(
     getTransactionsState,
     (transactionsState) => transactionsState.endDate,
 );
+
+/**
+ * True if the transactions are currently refreshing.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getTransactionsLoading = createSelector(
+    getTransactionsState,
+    (transactionsState) => transactionsState.loading,
+);

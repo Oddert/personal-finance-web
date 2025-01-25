@@ -6,7 +6,8 @@ import {
     useReducer,
     useState,
 } from 'react';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { Edit as EditIcon } from '@mui/icons-material';
 
 import { LOCALE } from '../../../../constants/appConstants';
 
@@ -82,9 +83,23 @@ const Edit: FC<IProps> = () => {
 
     return (
         <Fragment>
-            <Button onClick={() => setOpen(true)}>
-                Edit transactions in range
-            </Button>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <Button
+                    onClick={() => setOpen(true)}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gridGap: '16px',
+                    }}
+                >
+                    Edit transactions in range <EditIcon />
+                </Button>
+            </Box>
             {open ? (
                 <TransactionEditContext.Provider value={{ state, dispatch }}>
                     <TransactionEdit
