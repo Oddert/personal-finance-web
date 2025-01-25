@@ -1,22 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { ChangeEvent } from 'react';
 import { useSelector } from 'react-redux';
 
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControlLabel, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
     getTransactionsEndDate,
     getTransactionsStartDate,
 } from '../../../../redux/selectors/transactionsSelectors';
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import {
-    setEndDate,
-    setStartDate,
-} from '../../../../redux/slices/transactionsSlice';
+import { conditionallyRefreshTransactions } from '../../../../redux/thunks/transactionThunks';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 dayjs.extend(localizedFormat);
 
@@ -29,42 +27,45 @@ dayjs.extend(localizedFormat);
 const RequestControls = () => {
     const dispatch = useAppDispatch();
 
-    const [start, setStart] = useState('2020-01-01');
-    const [end, setEnd] = useState('2020-01-01');
+    const [start, setStart] = useState<Dayjs | null>(dayjs().startOf('month'));
+    const [end, setEnd] = useState<Dayjs | null>(dayjs().endOf('month'));
 
     const startDate = useSelector(getTransactionsStartDate);
     const endDate = useSelector(getTransactionsEndDate);
 
     const handleChangeStart = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            dispatch(setStartDate({ startDate: e.target.value }));
+        (nextValue: Dayjs | null) => {
+            setStart(nextValue);
         },
         [dispatch],
     );
 
     const handleChangeEnd = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            dispatch(setEndDate({ endDate: e.target.value }));
+        (nextValue: Dayjs | null) => {
+            setEnd(nextValue);
         },
         [dispatch],
     );
 
-    // const handleSubmit = useCallback(() => {
-    //     dispatch(updateValue())
-    // }, [dispatch])
+    const handleSubmit = useCallback(() => {
+        if (start && end) {
+            dispatch(
+                conditionallyRefreshTransactions(
+                    start.valueOf(),
+                    end.valueOf(),
+                ),
+            );
+        }
+    }, [dispatch, end, start]);
 
     useEffect(() => {
-        const date = dayjs(startDate).format('YYYY-MM-DD');
-        if (!(date === 'Invalid Date')) {
-            setStart(date);
-        }
+        const date = dayjs(startDate);
+        setStart(date);
     }, [startDate]);
 
     useEffect(() => {
-        const date = dayjs(endDate).format('YYYY-MM-DD');
-        if (!(date === 'Invalid Date')) {
-            setEnd(date);
-        }
+        const date = dayjs(endDate);
+        setEnd(date);
     }, [endDate]);
 
     return (
@@ -80,27 +81,59 @@ const RequestControls = () => {
                     gridGap: '16px',
                 }}
             >
-                <TextField
-                    name='startDate'
+                <FormControlLabel
+                    control={
+                        <DatePicker
+                            label=''
+                            name='endDate'
+                            onChange={handleChangeStart}
+                            showDaysOutsideCurrentMonth
+                            slotProps={{
+                                toolbar: {
+                                    toolbarFormat: 'ddd DD MMMM',
+                                    hidden: false,
+                                },
+                            }}
+                            sx={{
+                                borderRadius: '4px',
+                            }}
+                            value={start}
+                        />
+                    }
                     label='Start Date'
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type='date'
-                    value={start}
-                    onChange={handleChangeStart}
+                    labelPlacement='top'
+                    sx={(theme) => ({
+                        alignItems: 'flex-start',
+                        color: theme.palette.common.white,
+                    })}
                 />
-                <TextField
-                    name='endDate'
+                <FormControlLabel
+                    control={
+                        <DatePicker
+                            label=''
+                            name='endDate'
+                            onChange={handleChangeEnd}
+                            showDaysOutsideCurrentMonth
+                            slotProps={{
+                                toolbar: {
+                                    toolbarFormat: 'ddd DD MMMM',
+                                    hidden: false,
+                                },
+                            }}
+                            sx={{
+                                borderRadius: '4px',
+                            }}
+                            value={end}
+                        />
+                    }
                     label='End Date'
-                    InputLabelProps={{ shrink: true, required: true }}
-                    type='date'
-                    value={end}
-                    onChange={handleChangeEnd}
+                    labelPlacement='top'
+                    sx={(theme) => ({
+                        alignItems: 'flex-start',
+                        color: theme.palette.common.white,
+                    })}
                 />
-                <Button
-                // onClick={handleSubmit}
-                >
-                    Refresh
-                </Button>
+                <Button onClick={handleSubmit}>Refresh</Button>
             </Box>
         </Box>
     );
