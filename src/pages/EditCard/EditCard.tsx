@@ -6,9 +6,11 @@ import {
     Button,
     CircularProgress,
     MenuItem,
+    Paper,
     Select,
     TextField,
     Typography,
+    useTheme,
 } from '@mui/material';
 import {
     ArrowBack as ArrowLeftIcon,
@@ -33,6 +35,7 @@ import {
 } from '../../redux/thunks/errorThunks';
 
 import DeleteCard from './components/DeleteCard';
+import EditImageIcon from './components/EditImageIcon';
 
 import { IProps } from './EditCard.types';
 
@@ -65,6 +68,7 @@ const createEmptyBudget = (id: number): ICard => ({
  */
 const EditBudget: FC<IProps> = () => {
     const dispatch = useAppDispatch();
+    const theme = useTheme();
 
     const [loading, setLoading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
@@ -89,7 +93,7 @@ const EditBudget: FC<IProps> = () => {
                     throw new Error('No response received from the server.');
                 }
                 dispatch(addCard({ card: response.payload.card }));
-                router.navigate(ROUTES.MANAGE_BUDGETS);
+                router.navigate(ROUTES.MANAGE_CARDS);
             };
             request();
         } catch (error) {
@@ -114,7 +118,7 @@ const EditBudget: FC<IProps> = () => {
                 setIsEdit(true);
             } else {
                 if (
-                    new RegExp(ROUTES.EDIT_BUDGET, 'gi').test(location.pathname)
+                    new RegExp(ROUTES.EDIT_CARD, 'gi').test(location.pathname)
                 ) {
                     dispatch(
                         writeErrorBoundary({
@@ -145,6 +149,7 @@ const EditBudget: FC<IProps> = () => {
             </ResponsiveContainer>
         );
     }
+    console.log(card.coverImage);
 
     return (
         <ResponsiveContainer>
@@ -157,7 +162,7 @@ const EditBudget: FC<IProps> = () => {
                 }}
             >
                 <Button
-                    href={ROUTES.MANAGE_BUDGETS}
+                    href={ROUTES.MANAGE_CARDS}
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='text'
                 >
@@ -166,62 +171,151 @@ const EditBudget: FC<IProps> = () => {
                 <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
                     {isEdit ? 'Edit ' : 'Create '}Card
                 </Typography>
-                <TextField
-                    label='Title'
-                    onChange={(event) =>
-                        setCard({ ...card, cardName: event.target.value })
-                    }
-                    value={card.cardName}
-                />
-                <TextField
-                    label='Description'
-                    onChange={(event) =>
-                        setCard({ ...card, description: event.target.value })
-                    }
-                    value={card.description}
-                />
-                <TextField
-                    label='Bank Name'
-                    onChange={(event) =>
-                        setCard({ ...card, bankName: event.target.value })
-                    }
-                    value={card.bankName}
-                />
-                <TextField
-                    label='Sort Code'
-                    onChange={(event) =>
-                        setCard({
-                            ...card,
-                            sortCode: Number(event.target.value),
-                        })
-                    }
-                    type='number'
-                    value={card.sortCode}
-                />
-                <TextField
-                    label='Card Number'
-                    onChange={(event) =>
-                        setCard({
-                            ...card,
-                            cardNumber: Number(event.target.value),
-                        })
-                    }
-                    type='number'
-                    value={card.cardNumber}
-                />
-                <Select<ICardTypes>
-                    onChange={(event) =>
-                        setCard({
-                            ...card,
-                            cardType: event.target.value as ICardTypes,
-                        })
-                    }
-                    value={card.cardType}
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gridGap: '64px',
+                    }}
                 >
-                    <MenuItem value={'OTHER'}>Other / unset</MenuItem>
-                    <MenuItem value={'DEBIT'}>Debit</MenuItem>
-                    <MenuItem value={'CREDIT'}>Credit</MenuItem>
-                </Select>
+                    <Paper
+                        sx={{
+                            display: 'grid',
+                            gridTemplateRows: '1fr 1fr',
+                            gridTemplateColumns: '1fr 1fr',
+                            gridGap: '32px',
+                            aspectRatio: '8.56 / 5',
+                            p: 4,
+                            borderRadius: '16px',
+                            backgroundSize: 'cover',
+                            ...(card.coverImage
+                                ? {
+                                      backgroundImage: `url("${card.coverImage}") !important`,
+                                  }
+                                : {}),
+                        }}
+                    >
+                        <TextField
+                            label='Bank Name'
+                            onChange={(event) =>
+                                setCard({
+                                    ...card,
+                                    bankName: event.target.value,
+                                })
+                            }
+                            sx={{
+                                background: theme.palette.secondary.main,
+                                alignSelf: 'start',
+                            }}
+                            value={card.bankName}
+                        />
+                        <Select<ICardTypes>
+                            onChange={(event) =>
+                                setCard({
+                                    ...card,
+                                    cardType: event.target.value as ICardTypes,
+                                })
+                            }
+                            sx={{
+                                justifySelf: 'end',
+                                minWidth: '50px',
+                                alignSelf: 'start',
+                                background: theme.palette.secondary.main,
+                            }}
+                            value={card.cardType}
+                        >
+                            <MenuItem value={'OTHER'}>Other / unset</MenuItem>
+                            <MenuItem value={'DEBIT'}>Debit</MenuItem>
+                            <MenuItem value={'CREDIT'}>Credit</MenuItem>
+                        </Select>
+                        <TextField
+                            label='Card Number'
+                            onChange={(event) =>
+                                setCard({
+                                    ...card,
+                                    cardNumber: Number(event.target.value),
+                                })
+                            }
+                            sx={{
+                                alignSelf: 'end',
+                                background: theme.palette.secondary.main,
+                            }}
+                            type='number'
+                            value={card.cardNumber}
+                        />
+                        <TextField
+                            label='Sort Code'
+                            onChange={(event) =>
+                                setCard({
+                                    ...card,
+                                    sortCode: Number(event.target.value),
+                                })
+                            }
+                            sx={{
+                                alignSelf: 'end',
+                                background: theme.palette.secondary.main,
+                            }}
+                            type='number'
+                            value={card.sortCode}
+                        />
+                    </Paper>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gridGap: '16px',
+                        }}
+                    >
+                        <TextField
+                            label='Title'
+                            onChange={(event) =>
+                                setCard({
+                                    ...card,
+                                    cardName: event.target.value,
+                                })
+                            }
+                            value={card.cardName}
+                        />
+                        <TextField
+                            label='Description'
+                            minRows={3}
+                            multiline
+                            onChange={(event) =>
+                                setCard({
+                                    ...card,
+                                    description: event.target.value,
+                                })
+                            }
+                            value={card.description}
+                        />
+                        <Box sx={{ display: 'flex' }}>
+                            <EditImageIcon
+                                label='Icon'
+                                onConfirmChange={(url: string | null) => {
+                                    if (url) {
+                                        setCard({ ...card, icon: url });
+                                    } else {
+                                        setCard({ ...card, icon: '' });
+                                    }
+                                }}
+                                size='sm'
+                                url={card.icon}
+                            />
+                            <EditImageIcon
+                                label='Background'
+                                onConfirmChange={(url: string | null) => {
+                                    if (url) {
+                                        setCard({ ...card, coverImage: url });
+                                    } else {
+                                        setCard({ ...card, coverImage: '' });
+                                    }
+                                }}
+                                size='md'
+                                url={card.coverImage}
+                            />
+                        </Box>
+                    </Box>
+                </Box>
                 <Button
                     onClick={handleClickSave}
                     sx={{
