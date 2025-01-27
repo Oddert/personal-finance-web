@@ -1,6 +1,7 @@
 import request from '../common/request';
 
 import type { IBudget } from '../types/Budget.types';
+import { ICard } from '../types/Card.types';
 import type { Category } from '../types/Category.d';
 import type { Matcher } from '../types/Matcher.d';
 import { IStandardResponse } from '../types/Request.d';
@@ -176,7 +177,7 @@ const APIService = Object.freeze({
         return response;
     },
     /**
-     * Returns all budgets for a user.
+     * Returns all cards for a user.
      * @returns The list of Budgets.
      */
     getAllBudgets: async () => {
@@ -215,6 +216,76 @@ const APIService = Object.freeze({
     updateSingleBudget: async (budget: IBudget, budgetId: number) => {
         const response: IStandardResponse<{ budget: IBudget }> =
             await request.put(`/budget/${budgetId}`, budget);
+        return response;
+    },
+
+    // Cards
+    /**
+     * Creates a single Card.
+     * @param card The partial Card to create.
+     * @returns The created Card.
+     */
+    createSingleCard: async (card: ICard) => {
+        const response: IStandardResponse<{ card: ICard }> = await request.post(
+            `/card`,
+            card,
+        );
+        return response;
+    },
+    /**
+     * Deletes a single Card.
+     * @param cardId The partial Card to delete.
+     * @returns The ID of the card, confirming the delete.
+     */
+    deleteSingleCard: async (cardId: number) => {
+        const response: IStandardResponse<null> = await request.delete(
+            `/card/${cardId}`,
+        );
+        return response;
+    },
+    /**
+     * Returns all cards for a user.
+     * @returns The list of Budgets.
+     */
+    getAllCards: async () => {
+        const response: IStandardResponse<{ cards: ICard[] }> =
+            await request.get<ICard>('/card');
+        return response;
+    },
+    /**
+     * Gets a card by ID.
+     *
+     * Throws 404 if the card ID is invalid.
+     * @param cardId The ID of the Card to request.
+     * @returns The Card.
+     */
+    getSingleCard: async (cardId: number) => {
+        const response: IStandardResponse<{ card: ICard }> = await request.get(
+            `/card/${cardId}`,
+        );
+        return response;
+    },
+    /**
+     * Updates the user preferences to set a new default (active) Card.
+     * @param cardId The Card ID to set as default.
+     */
+    setCardPreference: async (cardId: number) => {
+        const response: IStandardResponse<null> = await request.put(
+            `/card/preferences/${cardId}`,
+        );
+        return response;
+    },
+    /**
+     * Updates a single Card.
+     * @param card The Card to update.
+     * @param cardId The ID of the Card.
+     * @returns The updated Card.
+     */
+    updateSingleCard: async (card: ICard, cardId: number) => {
+        const response: IStandardResponse<{ card: ICard }> = await request.put(
+            `/card/${cardId}`,
+            card,
+        );
         return response;
     },
 });

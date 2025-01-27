@@ -9,6 +9,7 @@ import router from '../../constants/routerConstants';
 
 import { requestTransactions } from '../../redux/slices/transactionsSlice';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
+import { refreshCards } from '../../redux/thunks/cardThunks';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
@@ -31,6 +32,7 @@ const App = () => {
         const endDate = dayjs().format('YYYY-MM-DD');
         dispatch(requestTransactions({ startDate, endDate }));
         dispatch(refreshBudgets());
+        dispatch(refreshCards());
     }, []);
 
     return (

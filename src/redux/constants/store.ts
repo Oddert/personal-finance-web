@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
 import budgetReducer from '../slices/budgetSlice';
+import cardReducer from '../slices/cardSlice';
 import errorReducer from '../slices/errorSlice';
 import categoryReducer from '../slices/categorySlice';
 import transactionReducer from '../slices/transactionsSlice';
@@ -13,6 +14,7 @@ const sagaMiddleware = createSagaMiddleware();
 const store = configureStore({
     reducer: {
         budget: budgetReducer,
+        card: cardReducer,
         category: categoryReducer,
         error: errorReducer,
         transaction: transactionReducer,
