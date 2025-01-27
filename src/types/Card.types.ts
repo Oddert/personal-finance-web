@@ -1,8 +1,10 @@
+export type ICardTypes = 'OTHER' | 'DEBIT' | 'CREDIT';
+
 export interface ICard {
     id: number;
     isDefault: boolean;
     cardName: string;
-    cardType: 'OTHER' | 'DEBIT' | 'CREDIT';
+    cardType: ICardTypes;
     bankName: string;
     sortCode: number;
     cardNumber: number;

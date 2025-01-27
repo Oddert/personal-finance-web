@@ -3,7 +3,7 @@ import { FC, Fragment } from 'react';
 import { Button, ListItem } from '@mui/material';
 import { Add as PlusIcon } from '@mui/icons-material';
 
-import router from '../../../../constants/routerConstants';
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 import type { IProps } from './CreateCardTile.types';
 
@@ -15,7 +15,7 @@ import type { IProps } from './CreateCardTile.types';
  */
 const CreateCardTile: FC<IProps> = () => {
     const handleClick = () => {
-        router.navigate('/');
+        router.navigate(ROUTES.CREATE_CARD);
     };
 
     return (
@@ -27,7 +27,7 @@ const CreateCardTile: FC<IProps> = () => {
                         width: '100%',
                         height: '100%',
                     }}
-                    title='Create a new budget'
+                    title='Create a new card'
                     variant='outlined'
                 >
                     <PlusIcon fontSize='large' />

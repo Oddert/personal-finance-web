@@ -3,7 +3,7 @@ import { FC, Fragment } from 'react';
 import { Button } from '@mui/material';
 import { Add as PlusIcon } from '@mui/icons-material';
 
-import router from '../../../../constants/routerConstants';
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 import type { IProps } from './CreateCardButton.types';
 
@@ -15,7 +15,7 @@ import type { IProps } from './CreateCardButton.types';
  */
 const CreateCardButton: FC<IProps> = () => {
     const handleClick = () => {
-        router.navigate('/');
+        router.navigate(ROUTES.CREATE_CARD);
     };
 
     return (

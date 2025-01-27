@@ -16,11 +16,12 @@ import AllData from '../pages/AllData';
 import BudgetBreakdown from '../pages/BudgetBreakdown';
 import BudgetOverview from '../pages/BudgetOverview';
 import Categories from '../pages/Categories/';
+import EditBudget from '../pages/EditBudget';
+import EditCard from '../pages/EditCard';
 import Home from '../pages/Home';
 import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
 import Transactions from '../pages/Transactions/';
-import EditBudget from '../pages/EditBudget';
 
 /**
  * Enum object to hold all route paths.
@@ -35,7 +36,9 @@ export const ROUTES = Object.freeze({
     BUDGET_OVERVIEW: '/budget-overview',
     CATEGORIES: '/categories',
     CREATE_BUDGET: '/create-budget',
+    CREATE_CARD: '/create-card',
     EDIT_BUDGET: '/edit-budget',
+    EDIT_CARD: '/edit-card',
     MANAGE_BUDGETS: '/manage-budgets',
     MANAGE_CARDS: '/manage-cards',
     TRANSACTIONS: '/transactions',
@@ -54,6 +57,7 @@ export const ROUTES_FACTORY = Object.freeze({
         `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
     EDIT_BUDGET: (budgetId: string | number) =>
         `${ROUTES.EDIT_BUDGET}/${budgetId}`,
+    EDIT_CARD: (cardId: string | number) => `${ROUTES.EDIT_CARD}/${cardId}`,
 });
 
 // export const GO = Object.freeze({
@@ -144,6 +148,22 @@ const router = createBrowserRouter([
         element: (
             <Layout>
                 <ManageCards />
+            </Layout>
+        ),
+    },
+    {
+        path: ROUTES.CREATE_CARD,
+        element: (
+            <Layout>
+                <EditCard />
+            </Layout>
+        ),
+    },
+    {
+        path: `${ROUTES.EDIT_CARD}/:cardId`,
+        element: (
+            <Layout>
+                <EditCard />
             </Layout>
         ),
     },

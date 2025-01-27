@@ -82,7 +82,7 @@ const BudgetCard: FC<IProps> = ({ card }) => {
     };
 
     const handleClickEdit = () => {
-        router.navigate(ROUTES_FACTORY.EDIT_BUDGET(card.id));
+        router.navigate(ROUTES_FACTORY.EDIT_CARD(card.id));
     };
 
     return (
