@@ -76,20 +76,31 @@ const EditBudget: FC<IProps> = () => {
             setLoading(true);
             dispatch(budgetLoading());
             const request = async () => {
-                const response = isEdit
-                    ? await APIService.updateSingleBudget(
-                          { ...budget, budgetRows },
-                          budget.id,
-                      )
-                    : await APIService.createSingleBudget({
-                          ...budget,
-                          budgetRows,
-                      });
+                if (isEdit) {
+                    const response = await APIService.updateSingleBudget(
+                        { ...budget, budgetRows },
+                        budget.id,
+                    );
 
-                if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    if (!response || !response.payload) {
+                        throw new Error(
+                            'No response received from the server.',
+                        );
+                    }
+                    dispatch(addBudget({ budget: response.payload.budget }));
+                } else {
+                    const response = await APIService.createSingleBudget({
+                        ...budget,
+                        budgetRows,
+                    });
+
+                    if (!response || !response.payload) {
+                        throw new Error(
+                            'No response received from the server.',
+                        );
+                    }
+                    dispatch(addBudget({ budget: response.payload.budget }));
                 }
-                dispatch(addBudget({ budget: response.payload.budget }));
                 router.navigate(ROUTES.MANAGE_BUDGETS);
             };
             request();

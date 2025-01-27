@@ -28,7 +28,7 @@ import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { budgetLoading } from '../../redux/slices/budgetSlice';
-import { addCard } from '../../redux/slices/cardSlice';
+import { addCard, updateCard } from '../../redux/slices/cardSlice';
 import {
     intakeError,
     writeErrorBoundary,
@@ -83,16 +83,30 @@ const EditBudget: FC<IProps> = () => {
             setLoading(true);
             dispatch(budgetLoading());
             const request = async () => {
-                const response = isEdit
-                    ? await APIService.updateSingleCard({ ...card }, card.id)
-                    : await APIService.createSingleCard({
-                          ...card,
-                      });
+                if (isEdit) {
+                    const response = await APIService.updateSingleCard(
+                        { ...card },
+                        card.id,
+                    );
 
-                if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    if (!response || !response.payload) {
+                        throw new Error(
+                            'No response received from the server.',
+                        );
+                    }
+                    dispatch(updateCard({ card: response.payload.card }));
+                } else {
+                    const response = await APIService.createSingleCard({
+                        ...card,
+                    });
+
+                    if (!response || !response.payload) {
+                        throw new Error(
+                            'No response received from the server.',
+                        );
+                    }
+                    dispatch(addCard({ card: response.payload.card }));
                 }
-                dispatch(addCard({ card: response.payload.card }));
                 router.navigate(ROUTES.MANAGE_CARDS);
             };
             request();

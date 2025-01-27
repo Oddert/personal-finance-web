@@ -49,6 +49,13 @@ export const cardSlice = createSlice({
         setActiveCard: (state, { payload }: { payload: { card: ICard } }) => {
             state.activeCard = payload.card;
         },
+        updateCard: (state, { payload }: { payload: { card: ICard } }) => {
+            state.response = state.response.map((card) =>
+                card.id === payload.card.id ? payload.card : card,
+            );
+            state.loaded = true;
+            state.loading = false;
+        },
         writeCards: (state, { payload }: { payload: { cards: ICard[] } }) => {
             state.loaded = true;
             state.loading = false;
@@ -64,7 +71,13 @@ export const cardSlice = createSlice({
     },
 });
 
-export const { addCard, cardsLoading, deleteCard, setActiveCard, writeCards } =
-    cardSlice.actions;
+export const {
+    addCard,
+    cardsLoading,
+    deleteCard,
+    setActiveCard,
+    updateCard,
+    writeCards,
+} = cardSlice.actions;
 
 export default cardSlice.reducer;
