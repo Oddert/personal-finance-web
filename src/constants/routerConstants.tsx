@@ -5,6 +5,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import BudgetBreakdownIcon from '@mui/icons-material/DonutSmall';
 import BudgetOverviewIcon from '@mui/icons-material/CandlestickChart';
 import ManageBudgetIcon from '@mui/icons-material/AutoAwesomeMotion';
+import ManageCardsIcon from '@mui/icons-material/Payments';
 // import ManageBudgetIcon from '@mui/icons-material/Tune';;
 // import ScenarioEditIcon from '.@mui/icons-material/DeveloperBoard/';
 import TransactionsIcon from '@mui/icons-material/ReceiptLong';
@@ -17,6 +18,7 @@ import BudgetOverview from '../pages/BudgetOverview';
 import Categories from '../pages/Categories/';
 import Home from '../pages/Home';
 import ManageBudgets from '../pages/ManageBudgets';
+import ManageCards from '../pages/ManageCards';
 import Transactions from '../pages/Transactions/';
 import EditBudget from '../pages/EditBudget';
 
@@ -35,6 +37,7 @@ export const ROUTES = Object.freeze({
     CREATE_BUDGET: '/create-budget',
     EDIT_BUDGET: '/edit-budget',
     MANAGE_BUDGETS: '/manage-budgets',
+    MANAGE_CARDS: '/manage-cards',
     TRANSACTIONS: '/transactions',
 });
 
@@ -136,6 +139,14 @@ const router = createBrowserRouter([
             </Layout>
         ),
     },
+    {
+        path: ROUTES.MANAGE_CARDS,
+        element: (
+            <Layout>
+                <ManageCards />
+            </Layout>
+        ),
+    },
 ]);
 
 /**
@@ -164,6 +175,11 @@ export const navigation = [
         label: 'My Budgets',
         Icon: ManageBudgetIcon,
         location: ROUTES.MANAGE_BUDGETS,
+    },
+    {
+        label: 'My Cards',
+        Icon: ManageCardsIcon,
+        location: ROUTES.MANAGE_CARDS,
     },
     {
         label: 'Categories',
