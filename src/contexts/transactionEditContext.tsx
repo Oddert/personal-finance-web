@@ -29,7 +29,7 @@ const TransactionEditActionTypes = {
 export const transactionEditInitialState: TransactionEditState = {
     columnMap: {
         date: 'Transaction Date',
-        transaction_type: 'Transaction Type',
+        transactionType: 'Transaction Type',
         description: 'Transaction Description',
         debit: 'Debit Amount',
         credit: 'Credit Amount',

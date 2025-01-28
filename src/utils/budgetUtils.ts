@@ -94,19 +94,19 @@ export const createCategoryBreakdown = (
     const categoryBreakdown = transactions.reduce(
         (acc: ICategoryBreakdown, transaction) => {
             if (
-                transaction.category_id &&
-                transaction.category_id in categoriesOrderedById
+                transaction.categoryId &&
+                transaction.categoryId in categoriesOrderedById
             ) {
-                if (!(transaction.category_id in acc)) {
-                    acc[transaction.category_id] = {
+                if (!(transaction.categoryId in acc)) {
+                    acc[transaction.categoryId] = {
                         value: 0,
-                        label: categoriesOrderedById[transaction.category_id]
+                        label: categoriesOrderedById[transaction.categoryId]
                             .label,
-                        colour: categoriesOrderedById[transaction.category_id]
+                        colour: categoriesOrderedById[transaction.categoryId]
                             .colour,
                     };
                 }
-                acc[transaction.category_id].value += transaction.debit;
+                acc[transaction.categoryId].value += transaction.debit;
             } else {
                 acc.uncategorised.value += transaction.debit;
             }

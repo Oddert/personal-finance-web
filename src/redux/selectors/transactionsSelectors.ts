@@ -42,7 +42,7 @@ export const getTransactionsOrderedByDate = createSelector(
 );
 
 /**
- * Gets all Transactions as an object with Transaction.category_id as keys.
+ * Gets all Transactions as an object with Transaction.categoryId as keys.
  * @category Redux
  * @subcategory Selectors
  */

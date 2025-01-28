@@ -84,7 +84,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
 
     useEffect(() => {
         const transactionsFiltered = transactions.filter(
-            (transaction) => transaction.category_id === categoryId,
+            (transaction) => transaction.categoryId === categoryId,
         );
         const values: number[] = transactionsFiltered.map(
             (transaction) => transaction.debit,

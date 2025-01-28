@@ -52,7 +52,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
                 acc[pair[1]] = pair[0];
                 return acc;
             },
-            { assignedCategory: 'category_id' },
+            { assignedCategory: 'categoryId' },
         );
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.

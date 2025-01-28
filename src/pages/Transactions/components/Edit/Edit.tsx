@@ -56,13 +56,13 @@ const Edit: FC<IProps> = () => {
             date: new Date(transaction.date).toLocaleDateString(LOCALE),
             credit: transaction.credit === 0 ? '-' : transaction.credit,
             debit: transaction.debit === 0 ? '-' : transaction.debit,
-            category_id: transaction.category_id || 0,
-            assignedCategory: transaction.category_id || 0,
+            categoryId: transaction.categoryId || 0,
+            assignedCategory: transaction.categoryId || 0,
         }));
         dispatch(
             setColumnMap({
                 date: 'date',
-                transaction_type: 'transaction_type',
+                transactionType: 'transactionType',
                 description: 'description',
                 debit: 'debit',
                 credit: 'credit',

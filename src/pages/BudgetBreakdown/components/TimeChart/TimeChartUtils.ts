@@ -28,22 +28,22 @@ export const generateTimeChartSeries = (
 
     const sortedByCategory = filteredTransactions.reduce(
         (acc: ISortedByCategory, each) => {
-            if (each.category_id) {
-                if (!(each.category_id in acc)) {
-                    const foundCategory = categories[each.category_id];
-                    acc[each.category_id] = {
+            if (each.categoryId) {
+                if (!(each.categoryId in acc)) {
+                    const foundCategory = categories[each.categoryId];
+                    acc[each.categoryId] = {
                         label:
                             foundCategory?.label ||
-                            `Category ID ${each.category_id}`,
-                        id: each.category_id,
+                            `Category ID ${each.categoryId}`,
+                        id: each.categoryId,
                         transactions: {},
                     };
                 }
                 const dateInt = dayjs(each.date).valueOf();
-                if (!(dateInt in acc[each.category_id].transactions)) {
-                    acc[each.category_id].transactions[dateInt] = [];
+                if (!(dateInt in acc[each.categoryId].transactions)) {
+                    acc[each.categoryId].transactions[dateInt] = [];
                 }
-                acc[each.category_id].transactions[dateInt].push(each);
+                acc[each.categoryId].transactions[dateInt].push(each);
             }
             return acc;
         },

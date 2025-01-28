@@ -29,7 +29,7 @@ export const generateMonthSpendData = (
             const month = date.month();
 
             const foundCategory: Category | undefined =
-                categories[transaction.category_id || -1];
+                categories[transaction.categoryId || -1];
 
             if (foundCategory) {
                 if (!(foundCategory.id in acc.allCategories)) {
@@ -52,7 +52,7 @@ export const generateMonthSpendData = (
                 acc.categoriesByDate[year][month] = {};
             }
             // If the category is invalid, add or append to 'uncategorised'.
-            if (!transaction.category_id || !foundCategory) {
+            if (!transaction.categoryId || !foundCategory) {
                 if (!('uncategorised' in acc.categoriesByDate[year][month])) {
                     acc.categoriesByDate[year][month] = {
                         ...acc.categoriesByDate[year][month],
@@ -69,13 +69,13 @@ export const generateMonthSpendData = (
                 // Category is valid, optionally add the category to the year / month if needed.
                 if (
                     !(
-                        transaction.category_id in
+                        transaction.categoryId in
                         acc.categoriesByDate[year][month]
                     )
                 ) {
                     acc.categoriesByDate[year][month] = {
                         ...acc.categoriesByDate[year][month],
-                        [transaction.category_id]: {
+                        [transaction.categoryId]: {
                             categoryName: foundCategory.label,
                             colour: foundCategory.colour,
                             value: 0,
@@ -84,7 +84,7 @@ export const generateMonthSpendData = (
                 }
                 // Increment the category value
                 acc.categoriesByDate[year][month][
-                    transaction.category_id
+                    transaction.categoryId
                 ].value += transaction.debit - transaction.credit;
             }
             return acc;

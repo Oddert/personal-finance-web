@@ -23,12 +23,12 @@ export const mapCategoriesToTransactions = (
 ) => {
     const mappedTransactions = transactions.map((transaction) => {
         if (
-            transaction.category_id &&
-            transaction.category_id in orderedCategories
+            transaction.categoryId &&
+            transaction.categoryId in orderedCategories
         ) {
             return {
                 ...transaction,
-                assignedCategory: orderedCategories[transaction.category_id],
+                assignedCategory: orderedCategories[transaction.categoryId],
             };
         }
         return transaction;
@@ -53,7 +53,7 @@ export const orderTransactions = (transactions: Transaction[]) => {
         const date = new Date(transaction.date);
         const year = date.getFullYear();
         const month = date.getMonth();
-        const category = transaction.category_id || 'default';
+        const category = transaction.categoryId || 'default';
 
         if (!(year in orderedByDate)) {
             orderedByDate[year] = {};
@@ -138,7 +138,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     },
     {
         header: 'Cat Id',
-        accessorKey: 'category_id',
+        accessorKey: 'categoryId',
     },
 ];
 
