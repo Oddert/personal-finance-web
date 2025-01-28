@@ -11,6 +11,7 @@ import { Fragment, useContext, type FC } from 'react';
 
 import { TransactionEditContext } from '../../contexts/transactionEditContext';
 
+import CardSelection from './CardSelection';
 import CategoryQuickEdit from './CategoryQuickEdit/';
 import ColumnMapping from './ColumnMapping/';
 import Submit from './Submit/';
@@ -54,6 +55,7 @@ const TransactionEdit: FC<IProps> = ({
                     ) : (
                         <Fragment>
                             {showMapping ? <ColumnMapping /> : null}
+                            <CardSelection />
                             <Submit onClose={onClose} />
                             <Table />
                             <Submit onClose={onClose} />

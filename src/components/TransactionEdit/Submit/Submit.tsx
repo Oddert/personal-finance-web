@@ -5,15 +5,22 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button, CircularProgress } from '@mui/material';
 
+import { Transaction } from '../../../types/Transaction.d';
+
 import { TransactionEditContext } from '../../../contexts/transactionEditContext';
 
 import APIService from '../../../services/APIService';
 
-import { useAppDispatch } from '../../../hooks/ReduxHookWrappers';
+import {
+    useAppDispatch,
+    useAppSelector,
+} from '../../../hooks/ReduxHookWrappers';
+
 import { requestTransactions } from '../../../redux/slices/transactionsSlice';
+import { intakeError } from '../../../redux/thunks/errorThunks';
+import { getActiveCardId } from '../../../redux/selectors/cardSelectors';
 
 import type { IProps } from './Submit.types';
-import { intakeError } from '../../../redux/thunks/errorThunks';
 
 dayjs.extend(localizedFormat);
 
@@ -31,6 +38,8 @@ const Submit: FC<IProps> = ({ onClose }) => {
     const {
         state: { columnMap, mode, transactions },
     } = useContext(TransactionEditContext);
+
+    const activeCardId = useAppSelector(getActiveCardId);
 
     const [loading, setLoading] = useState(false);
 
@@ -72,15 +81,22 @@ const Submit: FC<IProps> = ({ onClose }) => {
             ),
         );
 
+        const transactionsWithCardId = transactionsWithValidKeys.map(
+            (transaction: Partial<Transaction>) => ({
+                ...transaction,
+                card_id: activeCardId,
+            }),
+        );
+
         try {
             const request = async () => {
                 const response =
                     mode === 'upload'
                         ? await APIService.createManyTransactions(
-                              transactionsWithValidKeys,
+                              transactionsWithCardId,
                           )
                         : await APIService.updateManyTransactions(
-                              transactionsWithValidKeys,
+                              transactionsWithCardId,
                           );
                 setLoading(false);
                 if (response.status === 201) {
@@ -96,7 +112,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
         } catch (error) {
             appDispatch(intakeError(error));
         }
-    }, [appDispatch, columnMap, mode, onClose, transactions]);
+    }, [activeCardId, appDispatch, columnMap, mode, onClose, transactions]);
 
     return (
         <Button

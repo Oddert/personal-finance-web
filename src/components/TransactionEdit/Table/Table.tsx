@@ -117,7 +117,12 @@ const Table = () => {
                     width: '100%',
                 }}
             >
-                <TableHead>
+                <TableHead
+                    sx={{
+                        position: 'sticky',
+                        top: 0,
+                    }}
+                >
                     <TableRow>
                         {columns.map((column, idx) => (
                             <TableCell key={idx}>{column.header}</TableCell>

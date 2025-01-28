@@ -6,6 +6,7 @@ import { Category } from './Category.d';
  */
 export declare interface Transaction {
     ballance: number;
+    card_id: number | null;
     category_id: number | null;
     created_on: string;
     credit: number;
