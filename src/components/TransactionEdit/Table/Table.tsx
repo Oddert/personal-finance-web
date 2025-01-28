@@ -11,7 +11,6 @@ import {
     TableHead,
     TableRow,
     Typography,
-    Button,
 } from '@mui/material';
 
 import { Circle as DotIcon } from '@mui/icons-material';
@@ -26,6 +25,7 @@ import {
 import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors';
 
 import type { Category } from '../../../types/Category.d';
+import TransactionDescription from '../TransactionDescription';
 
 const marginTopBottom = '4px';
 
@@ -47,7 +47,6 @@ const Table = () => {
 
     const updateAssignedCategory = useCallback(
         (idx: number, assignedCategory: number) => {
-            console.log(idx, assignedCategory);
             dispatch(updateCategory(idx, assignedCategory));
         },
         [dispatch],
@@ -127,30 +126,33 @@ const Table = () => {
                 </TableHead>
                 <TableBody>
                     {data.map((transaction, idx) => (
-                        <TableRow key={idx}>
+                        <TableRow
+                            key={idx}
+                            sx={{
+                                '& .transaction_description_edit': {
+                                    opacity: 0,
+                                    transition: '.1s linear',
+                                },
+                                '&:hover .transaction_description_edit': {
+                                    opacity: 1,
+                                },
+                            }}
+                        >
                             {columns.map((column, columnIdx) => {
                                 if (
                                     column.accessorKey === columnMap.description
                                 ) {
                                     return (
-                                        <TableCell key={idx + '_' + columnIdx}>
-                                            <Button
-                                                onClick={() =>
-                                                    handleClickTitle(
-                                                        transaction[
-                                                            column.accessorKey
-                                                        ] as string,
-                                                    )
-                                                }
-                                                variant='text'
-                                            >
-                                                {
-                                                    transaction[
-                                                        column.accessorKey
-                                                    ]
-                                                }
-                                            </Button>
-                                        </TableCell>
+                                        <TransactionDescription
+                                            handleClickTitle={handleClickTitle}
+                                            idx={idx}
+                                            key={idx + '_' + columnIdx}
+                                            title={
+                                                transaction[
+                                                    column.accessorKey
+                                                ] as string
+                                            }
+                                        />
                                     );
                                 }
                                 if (column.accessorKey === 'assignedCategory') {

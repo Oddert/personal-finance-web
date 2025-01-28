@@ -20,6 +20,7 @@ const TransactionEditActionTypes = {
     setMode: 'setMode',
     setLoading: 'setLoading',
     toggleSideBarOpen: 'toggleSideBarOpen',
+    updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
     writeTransactions: 'writeTransactions',
@@ -142,15 +143,6 @@ export const transactionEditReducer = (
     action: PayloadAction<any>,
 ) => {
     switch (action.type) {
-        case TransactionEditActionTypes.toggleSideBarOpen:
-            return {
-                ...state,
-                sideBarOpen:
-                    action?.payload?.open === 'undefined'
-                        ? !state.sideBarOpen
-                        : action?.payload?.open,
-                match: action?.payload?.match,
-            };
         case TransactionEditActionTypes.setColumnMap:
             return {
                 ...state,
@@ -165,6 +157,28 @@ export const transactionEditReducer = (
             return {
                 ...state,
                 mode: action?.payload?.mode,
+            };
+        case TransactionEditActionTypes.toggleSideBarOpen:
+            return {
+                ...state,
+                sideBarOpen:
+                    action?.payload?.open === 'undefined'
+                        ? !state.sideBarOpen
+                        : action?.payload?.open,
+                match: action?.payload?.match,
+            };
+        case TransactionEditActionTypes.updateDescription:
+            return {
+                ...state,
+                transactions: [
+                    ...state.transactions.slice(0, action.payload.idx),
+                    {
+                        ...state.transactions[action.payload.idx],
+                        [state.columnMap.description]:
+                            action?.payload?.description,
+                    },
+                    ...state.transactions.slice(action.payload.idx + 1),
+                ],
             };
         case TransactionEditActionTypes.updateCategory:
             if (
@@ -222,6 +236,11 @@ export const toggleSideBar = (
 ) => ({
     type: TransactionEditActionTypes.toggleSideBarOpen,
     payload: { open, match },
+});
+
+export const updateDescription = (idx: number, description: string) => ({
+    type: TransactionEditActionTypes.updateDescription,
+    payload: { idx, description },
 });
 
 export const updateCategory = (idx: number, assignedCategory: number) => ({
