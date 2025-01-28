@@ -10,7 +10,7 @@ export interface TransactionEditState {
     headers: string[];
     match?: string;
     sideBarOpen: boolean;
-    transactions: { [key: string]: string | number }[];
+    transactions: { [key: string]: string | number | null }[];
     mode: 'upload' | 'edit';
     loading: boolean;
 }

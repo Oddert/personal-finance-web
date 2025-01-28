@@ -58,7 +58,10 @@ const Submit: FC<IProps> = ({ onClose }) => {
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const transactionsWithValidKeys = transactions.map((transaction) =>
             Object.entries(transaction).reduce(
-                (acc: { [key: string]: string | number | boolean }, pair) => {
+                (
+                    acc: { [key: string]: string | number | boolean | null },
+                    pair,
+                ) => {
                     const key = invertMapping[pair[0]];
                     const whitelistKeys = ['debit', 'credit', 'ballance'];
 

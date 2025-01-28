@@ -161,20 +161,23 @@ const Table = () => {
                                     );
                                 }
                                 if (column.accessorKey === 'assignedCategory') {
-                                    const value = categories[
-                                        transaction.assignedCategory
-                                    ]
-                                        ? {
-                                              id: String(
-                                                  categories[
+                                    const value = transaction.assignedCategory
+                                        ? categories[
+                                              transaction.assignedCategory
+                                          ]
+                                            ? {
+                                                  id: String(
+                                                      categories[
+                                                          transaction
+                                                              .assignedCategory
+                                                      ].id,
+                                                  ),
+                                                  label: categories[
                                                       transaction
                                                           .assignedCategory
-                                                  ].id,
-                                              ),
-                                              label: categories[
-                                                  transaction.assignedCategory
-                                              ].label,
-                                          }
+                                                  ].label,
+                                              }
+                                            : null
                                         : null;
                                     return (
                                         <TableCell

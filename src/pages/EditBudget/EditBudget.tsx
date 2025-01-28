@@ -51,6 +51,7 @@ const createEmptyBudget = (id: number): IBudget => ({
     createdOn: new Date().toISOString(),
     updatedOn: new Date().toISOString(),
     budgetRows: [],
+    cardId: null,
 });
 
 /**
