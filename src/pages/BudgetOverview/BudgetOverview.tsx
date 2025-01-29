@@ -22,7 +22,7 @@ import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelect
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
@@ -36,6 +36,7 @@ import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
+import { requestTransactions } from '../../redux/slices/transactionsSlice';
 
 dayjs.extend(localizedFormat);
 
@@ -58,6 +59,7 @@ const defaultEnd = toEndMonthDayjs(String(dayjs()));
  * @component
  */
 const BudgetOverview: FC<IProps> = () => {
+    const dispatch = useAppDispatch();
     const navigation = useSearchParams();
 
     const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
@@ -108,6 +110,15 @@ const BudgetOverview: FC<IProps> = () => {
         startDate,
         transactions,
     ]);
+
+    useEffect(() => {
+        dispatch(
+            requestTransactions({
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+            }),
+        );
+    }, [endDate, startDate]);
 
     useEffect(() => {
         const start = navigation[0].get('startDate');
