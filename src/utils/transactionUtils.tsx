@@ -2,7 +2,7 @@ import { CellContext, ColumnDef } from '@tanstack/react-table';
 
 import { Box } from '@mui/material';
 
-import { LOCALE } from '../constants/appConstants';
+import { CURRENCY_SYMBOL, LOCALE } from '../constants/appConstants';
 
 import type { Transaction } from '../types/Transaction.d';
 import type { Category } from '../types/Category.d';
@@ -86,7 +86,9 @@ export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
     const value = Number(rawValue);
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {isNaN(value) || value === 0 ? '-' : `£${value.toFixed(2)}`}
+            {isNaN(value) || value === 0
+                ? '-'
+                : `${CURRENCY_SYMBOL}${value.toFixed(2)}`}
         </Box>
     );
 };

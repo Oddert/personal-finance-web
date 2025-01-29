@@ -5,6 +5,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Autocomplete, Box, TextField } from '@mui/material';
 
+import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
 import { createReadableNumber } from '../../../../utils/commonUtils';
@@ -123,7 +125,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                             },
                             y: {
                                 formatter(val) {
-                                    return `£${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                    return `${CURRENCY_SYMBOL}${createReadableNumber(Number(val.toFixed(3))) || ''}`;
                                 },
                             },
                             shared: true,
@@ -145,7 +147,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                                 formatter(val) {
-                                    return `£${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                    return `${CURRENCY_SYMBOL}${createReadableNumber(Number(val.toFixed(3))) || ''}`;
                                 },
                             },
                         },
