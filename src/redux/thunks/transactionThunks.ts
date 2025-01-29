@@ -10,7 +10,7 @@ import { intakeError } from './errorThunks';
 dayjs.extend(localizedFormat);
 
 export const conditionallyRefreshTransactions =
-    (startDate?: number, endDate?: number) =>
+    (startDate?: number, endDate?: number, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             console.log(
@@ -34,6 +34,7 @@ export const conditionallyRefreshTransactions =
                     timestamp && new Date(timestamp).getTime() <= 300_000,
                 );
                 if (
+                    override ||
                     !loaded ||
                     (timestamp && new Date(timestamp).getTime() <= 300_000)
                 ) {
@@ -63,6 +64,7 @@ export const conditionallyRefreshTransactions =
                     inboundEndDate > stateEndDate,
                 );
                 if (
+                    override ||
                     inboundStartDate < stateStartDate ||
                     inboundEndDate > stateEndDate
                 ) {
