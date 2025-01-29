@@ -1,16 +1,9 @@
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import {
-    Autocomplete,
-    Box,
-    Button,
-    FormControlLabel,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, FormControlLabel, Typography } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -25,12 +18,8 @@ import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-import {
-    getActiveCard,
-    getCardResponse,
-} from '../../../../redux/selectors/cardSelectors';
-import { ICard } from '../../../../types/Card.types';
-import { setActiveCard } from '../../../../redux/slices/cardSlice';
+
+import CardSelector from '../../../../components/CardSelector';
 
 dayjs.extend(localizedFormat);
 
@@ -48,8 +37,6 @@ const RequestControls = () => {
 
     const startDate = useAppSelector(getTransactionsStartDate);
     const endDate = useAppSelector(getTransactionsEndDate);
-    const cards = useAppSelector(getCardResponse);
-    const activeCard = useAppSelector(getActiveCard);
 
     const handleChangeStart = useCallback((nextValue: Dayjs | null) => {
         setStart(nextValue);
@@ -58,15 +45,6 @@ const RequestControls = () => {
     const handleChangeEnd = useCallback((nextValue: Dayjs | null) => {
         setEnd(nextValue);
     }, []);
-
-    const handleChangeCard = useCallback(
-        (event: SyntheticEvent, nextValue: ICard | null) => {
-            if (nextValue) {
-                dispatch(setActiveCard({ card: nextValue }));
-            }
-        },
-        [dispatch],
-    );
 
     const handleSubmit = useCallback(() => {
         if (start && end) {
@@ -159,19 +137,7 @@ const RequestControls = () => {
                     })}
                 />
                 <FormControlLabel
-                    control={
-                        <Autocomplete
-                            getOptionKey={(option) => option.id}
-                            getOptionLabel={(option) => option.cardName}
-                            onChange={handleChangeCard}
-                            options={cards}
-                            renderInput={(props) => <TextField {...props} />}
-                            sx={{
-                                minWidth: '20vw',
-                            }}
-                            value={activeCard}
-                        />
-                    }
+                    control={<CardSelector />}
                     label='Card'
                     labelPlacement='top'
                     sx={(theme) => ({

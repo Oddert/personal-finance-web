@@ -37,6 +37,7 @@ import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
 
 dayjs.extend(localizedFormat);
 
@@ -152,6 +153,7 @@ const BudgetOverview: FC<IProps> = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
+                <ActiveCard />
                 <ActiveBudget />
                 <FormControlLabel
                     control={

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
@@ -7,7 +6,6 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { Box, Paper, Typography } from '@mui/material';
 
 import type { ICategoryBreakdown } from '../../types/Category.d';
-import type { Transaction } from '../../types/Transaction.d';
 
 import {
     createBudgetChartData,
@@ -18,14 +16,15 @@ import {
 } from '../../utils/budgetUtils';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import useTransactions from '../../hooks/useTransactions';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
-import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
@@ -37,7 +36,6 @@ import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
 import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
-import useTransactions from '../../hooks/useTransactions';
 
 dayjs.extend(localizedFormat);
 
@@ -136,6 +134,7 @@ const BudgetBreakdown: FC = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
+                <ActiveCard />
                 <ActiveBudget />
                 <Paper
                     elevation={0}
