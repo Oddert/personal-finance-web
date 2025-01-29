@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import type { IBudget, IBudgetDatum } from '../types/Budget.types';
+import type { IBudget, IBudgetDatum, IBudgetRow } from '../types/Budget.types';
 import type { ICategoryBreakdown } from '../types/Category.d';
 import type { Transaction } from '../types/Transaction.d';
 
@@ -140,10 +140,17 @@ export const createBudgetChartData = (
     budget: IBudget,
     numMonths = 1,
 ) => {
+    const budgetRowsById = budget.budgetRows.reduce(
+        (acc: { [id: number]: IBudgetRow }, each) => {
+            acc[each.id] = each;
+            return acc;
+        },
+        {},
+    );
     const chart = Object.entries(categoryBreakdown).reduce(
-        (acc: IBudgetDatum[], [uid, each]) => {
-            const budgetDatum = budget.budgetRows[Number(uid)];
-            const normalisedValue = normaliseNum(each.value);
+        (acc: IBudgetDatum[], [uid, categoryBd]) => {
+            const budgetDatum = budgetRowsById[Number(uid)];
+            const normalisedValue = normaliseNum(categoryBd.value);
 
             if (budgetDatum?.value) {
                 const budgetValue = numMonths * budgetDatum.value;
@@ -152,19 +159,19 @@ export const createBudgetChartData = (
                 acc.push({
                     budget: normaliseNum(budgetDatum.value * numMonths),
                     categoryId: Number(uid),
-                    categoryName: each.label,
-                    colour: each.colour,
+                    categoryName: categoryBd.label,
+                    colour: categoryBd.colour,
                     diffFloat,
                     diffPc,
-                    spend: normaliseNum(each.value),
+                    spend: normalisedValue,
                     variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
                 });
             } else {
                 acc.push({
                     budget: 0,
                     categoryId: Number(uid),
-                    categoryName: each.label,
-                    colour: each.colour,
+                    categoryName: categoryBd.label,
+                    colour: categoryBd.colour,
                     diffFloat: 0,
                     diffPc: 0,
                     spend: normalisedValue,

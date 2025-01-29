@@ -108,8 +108,8 @@ const DateRange: FC<IProps> = ({
                     views={['month', 'year']}
                 />
                 <DatePicker
-                    label='Start date'
-                    name='startDate'
+                    label='End date'
+                    name='endDate'
                     onChange={handleChangeEndDate}
                     showDaysOutsideCurrentMonth
                     slotProps={{

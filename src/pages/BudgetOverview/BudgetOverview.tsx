@@ -21,6 +21,7 @@ import {
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
+import { requestTransactions } from '../../redux/slices/transactionsSlice';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
@@ -30,13 +31,12 @@ import ActiveBudget from '../../components/ActiveBudget';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 import AggregateTimeChart from './components/AggregateTimeChart';
+import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
-import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
-import { requestTransactions } from '../../redux/slices/transactionsSlice';
 
 dayjs.extend(localizedFormat);
 
