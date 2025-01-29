@@ -45,11 +45,13 @@ const APIService = Object.freeze({
     getAllTransactionsWithinRange: async (
         startDate: number,
         endDate: number,
+        activeCardId: number | null,
     ) => {
         const from = `?from=${new Date(startDate).toISOString()}`;
         const to = `&to=${new Date(endDate).toISOString()}`;
+        const activeCard = activeCardId ? `&cardId=${activeCardId}` : '';
         const response: IStandardResponse<{ transactions: Transaction[] }> =
-            await request.get(`/transaction${from}${to}`);
+            await request.get(`/transaction${from}${to}${activeCard}`);
         return response;
     },
     /**
