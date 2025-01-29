@@ -4,9 +4,10 @@ import { ICard } from '../../types/Card.types';
 
 import { AppDispatch, RootState } from '../constants/store';
 
-import { cardsLoading, writeCards } from '../slices/cardSlice';
+import { cardsLoading, setActiveCard, writeCards } from '../slices/cardSlice';
 
 import { intakeError } from './errorThunks';
+import { conditionallyRefreshTransactions } from './transactionThunks';
 
 /**
  * Conditional re-requests the card state from the server.
@@ -40,6 +41,33 @@ export const refreshCards =
                         }),
                     );
                 }
+            }
+        } catch (error) {
+            console.error(error);
+            dispatch(intakeError(error));
+        }
+    };
+
+/**
+ * Updates the active card and optionally refreshes transactions.
+ * @category Redux
+ * @subcategory Thunks
+ * @param card The new card to be set as active.
+ * @param refreshTransactions If true, transactions will also be refreshed after change.
+ */
+export const setActiveCardWithTransactions =
+    (card: ICard, refreshTransactions?: boolean) =>
+    async (dispatch: AppDispatch) => {
+        try {
+            dispatch(setActiveCard({ card }));
+            if (refreshTransactions) {
+                dispatch(
+                    conditionallyRefreshTransactions(
+                        undefined,
+                        undefined,
+                        true,
+                    ),
+                );
             }
         } catch (error) {
             console.error(error);
