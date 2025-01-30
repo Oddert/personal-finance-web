@@ -6,6 +6,8 @@ import {
     useReducer,
     useState,
 } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { Box, Button } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 
@@ -59,6 +61,7 @@ const Edit: FC<IProps> = () => {
             categoryId: transaction.categoryId || 0,
             assignedCategory: transaction.categoryId || 0,
             selected: 1,
+            tecTempId: uuid(),
         }));
         dispatch(
             setColumnMap({

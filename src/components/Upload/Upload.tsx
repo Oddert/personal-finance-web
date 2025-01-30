@@ -1,6 +1,8 @@
 import { Fragment, useCallback, useEffect, useReducer, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { v4 as uuid } from 'uuid';
+
 import { PERSONAL_FINANCE_CSV_MAPPING } from '../../constants/appConstants';
 
 import { readCsv } from '../../utils/commonUtils';
@@ -60,7 +62,11 @@ const Upload = () => {
                                 categories,
                             );
                             const withSelected = withCategories.map(
-                                (datum) => ({ ...datum, selected: 1 }),
+                                (datum) => ({
+                                    ...datum,
+                                    selected: 1,
+                                    tecTempId: uuid(),
+                                }),
                             );
                             dispatch(writeHeaders(headers));
                             dispatch(writeTransactions(withSelected));

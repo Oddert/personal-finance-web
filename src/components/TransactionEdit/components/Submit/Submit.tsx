@@ -5,7 +5,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button, CircularProgress } from '@mui/material';
 
-import { Transaction } from '../../../../types/Transaction';
+import { Transaction } from '../../../../types/Transaction.d';
 
 import { TransactionEditContext } from '../../../../contexts/transactionEditContext';
 

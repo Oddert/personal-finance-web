@@ -92,7 +92,7 @@ const ColumnMapping = () => {
                         Choose which columns from the uploaded file map onto
                         which headers used by the application.
                     </Typography>
-                    {defaultColumns().map((column) => (
+                    {defaultColumns.map((column) => (
                         <Fragment key={column.accessorKey}>
                             <Typography
                                 component='label'

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Autocomplete, TableCell, TextField } from '@mui/material';
 import { Circle as DotIcon } from '@mui/icons-material';
 
-import { Category } from '../../../../../../types/Category';
+import { Category } from '../../../../../../types/Category.d';
 
 import { getCategoryOrderedDataById } from '../../../../../../redux/selectors/categorySelectors';
 
