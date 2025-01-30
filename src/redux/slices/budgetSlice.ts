@@ -55,6 +55,16 @@ export const budgetSlice = createSlice({
         ) => {
             state.activeBudget = payload.budget;
         },
+        updateBudget: (
+            state,
+            { payload }: { payload: { budget: IBudget } },
+        ) => {
+            state.response = state.response.map((budget) =>
+                budget.id === payload.budget.id ? payload.budget : budget,
+            );
+            state.loaded = true;
+            state.loading = false;
+        },
         writeBudgets: (
             state,
             { payload }: { payload: { budgets: IBudget[] } },

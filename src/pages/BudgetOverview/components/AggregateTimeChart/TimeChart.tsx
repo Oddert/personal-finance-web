@@ -1,7 +1,5 @@
 import { FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
-// import dayjs from 'dayjs';
-// import localizedFormat from 'dayjs/plugin/localizedFormat'
 
 import { Box } from '@mui/material';
 
@@ -126,8 +124,8 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(startDate).getTime(),
-                        max: new Date(endDate).getTime(),
+                        min: new Date(String(startDate)).getTime(),
+                        max: new Date(String(endDate)).getTime(),
                     },
                     tooltip: {
                         x: {

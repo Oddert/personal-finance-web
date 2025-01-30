@@ -15,6 +15,14 @@ export const LOCALE = 'en-GB';
 export const CURRENCY_SYMBOL = '£';
 
 /**
+ * The predominant currency unit for the user.
+ * @constant
+ * @category Constants
+ * @subcategory App Constants
+ */
+export const CURRENCY_SYMBOL_UNICODE = '&#163;';
+
+/**
  * Accessor key for local storage space where the Transaction-to-CSV mapping is stored.
  *
  * This object informs {@link Upload} how to map the user's CSV format to the application's columns.
@@ -25,3 +33,11 @@ export const CURRENCY_SYMBOL = '£';
  * @subcategory App Constants
  */
 export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING';
+
+/**
+ * Title used in the header and anywhere the application references itself.
+ * @constant
+ * @category Constants
+ * @subcategory App Constants
+ */
+export const MAIN_TITLE = 'Personal Finance';

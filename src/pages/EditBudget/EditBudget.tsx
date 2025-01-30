@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 import {
     Box,
@@ -52,6 +51,7 @@ const createEmptyBudget = (id: number): IBudget => ({
     createdOn: new Date().toISOString(),
     updatedOn: new Date().toISOString(),
     budgetRows: [],
+    cardId: null,
 });
 
 /**
@@ -77,20 +77,31 @@ const EditBudget: FC<IProps> = () => {
             setLoading(true);
             dispatch(budgetLoading());
             const request = async () => {
-                const response = isEdit
-                    ? await APIService.updateSingleBudget(
-                          { ...budget, budgetRows },
-                          budget.id,
-                      )
-                    : await APIService.createSingleBudget({
-                          ...budget,
-                          budgetRows,
-                      });
+                if (isEdit) {
+                    const response = await APIService.updateSingleBudget(
+                        { ...budget, budgetRows },
+                        budget.id,
+                    );
 
-                if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    if (!response || !response.payload) {
+                        throw new Error(
+                            'No response received from the server.',
+                        );
+                    }
+                    dispatch(addBudget({ budget: response.payload.budget }));
+                } else {
+                    const response = await APIService.createSingleBudget({
+                        ...budget,
+                        budgetRows,
+                    });
+
+                    if (!response || !response.payload) {
+                        throw new Error(
+                            'No response received from the server.',
+                        );
+                    }
+                    dispatch(addBudget({ budget: response.payload.budget }));
                 }
-                dispatch(addBudget({ budget: response.payload.budget }));
                 router.navigate(ROUTES.MANAGE_BUDGETS);
             };
             request();
@@ -127,7 +138,9 @@ const EditBudget: FC<IProps> = () => {
                 fetchBudget(Number(params.budgetId));
                 setIsEdit(true);
             } else {
-                if (new RegExp(ROUTES.EDIT_BUDGET).test(location.pathname)) {
+                if (
+                    new RegExp(ROUTES.EDIT_BUDGET, 'gi').test(location.pathname)
+                ) {
                     dispatch(
                         writeErrorBoundary({
                             title: 'Budget not Found',
@@ -169,10 +182,9 @@ const EditBudget: FC<IProps> = () => {
                 }}
             >
                 <Button
-                    // onClick={() => navigate(ROUTES.MANAGE_BUDGETS)}
                     href={ROUTES.MANAGE_BUDGETS}
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
-                    variant='outlined'
+                    variant='text'
                 >
                     <ArrowLeftIcon /> Return to all budgets
                 </Button>
@@ -247,7 +259,7 @@ const EditBudget: FC<IProps> = () => {
                 >
                     <SaveIcon /> {isEdit ? 'Save changes' : 'Create budget'}
                 </Button>
-                <DeleteBudget budget={budget} />
+                {isEdit && <DeleteBudget budget={budget} />}
             </Box>
         </ResponsiveContainer>
     );

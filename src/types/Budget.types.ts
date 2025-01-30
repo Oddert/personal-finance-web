@@ -17,14 +17,15 @@ export interface IBudgetRow {
  * @category Global Types
  */
 export interface IBudget {
+    budgetRows: IBudgetRow[];
+    cardId: number | null;
+    createdOn: string;
     id: number;
+    isDefault: boolean;
+    longDescription: string;
     name: string;
     shortDescription: string;
-    longDescription: string;
-    isDefault: boolean;
-    createdOn: string;
     updatedOn: string;
-    budgetRows: IBudgetRow[];
 }
 
 /**

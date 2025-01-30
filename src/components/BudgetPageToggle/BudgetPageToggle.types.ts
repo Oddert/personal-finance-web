@@ -1,5 +1,7 @@
+import { Dayjs } from 'dayjs';
+
 export interface IProps {
-    endDate: string;
+    endDate: Dayjs;
     mode: 'breakdown' | 'overview';
-    startDate: string;
+    startDate: Dayjs;
 }

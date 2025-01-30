@@ -9,6 +9,7 @@ import router from '../../constants/routerConstants';
 
 import { requestTransactions } from '../../redux/slices/transactionsSlice';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
+import { refreshCards } from '../../redux/thunks/cardThunks';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
@@ -26,11 +27,12 @@ const App = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        const date = dayjs().set('month', 0).set('date', 1);
+        const date = dayjs().subtract(3, 'months').startOf('month');
         const startDate = date.format('YYYY-MM-DD');
         const endDate = dayjs().format('YYYY-MM-DD');
         dispatch(requestTransactions({ startDate, endDate }));
         dispatch(refreshBudgets());
+        dispatch(refreshCards());
     }, []);
 
     return (

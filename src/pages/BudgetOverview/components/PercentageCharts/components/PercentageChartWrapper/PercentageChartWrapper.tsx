@@ -1,12 +1,12 @@
 import { FC, useRef, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Typography } from '@mui/material';
 
 import {
-    toBeginningMonth,
-    toEndMonth,
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
 } from '../../../../../../utils/budgetUtils';
 
 import BudgetPercentageChart from '../../../../../../components/BudgetPercentageChart';
@@ -14,8 +14,8 @@ import TransactionPreview from '../../../../../../components/TransactionPreview'
 
 import type { IProps } from './PercentageChartWrapper.types';
 
-const defaultStart = toBeginningMonth(String(dayjs()));
-const defaultEnd = toEndMonth(String(dayjs()));
+const defaultStart = toBeginningMonthDayjs(String(dayjs()));
+const defaultEnd = toEndMonthDayjs(String(dayjs()));
 
 dayjs.extend(localizedFormat);
 
@@ -33,8 +33,8 @@ const PercentageChartWrapper: FC<IProps> = ({
     zoomDim,
 }) => {
     const [categoryId, setCategoryId] = useState(-1);
-    const [startDate, setStartDate] = useState(defaultStart);
-    const [endDate, setEndDate] = useState(defaultEnd);
+    const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
+    const [endDate, setEndDate] = useState<Dayjs>(defaultEnd);
     const [open, setOpen] = useState(false);
 
     const ref = useRef<Element | null>(null);
@@ -42,8 +42,8 @@ const PercentageChartWrapper: FC<IProps> = ({
     const dataPointCallback = (nextCategoryId: number) => {
         setOpen(true);
         setCategoryId(nextCategoryId);
-        setStartDate(toBeginningMonth(String(monthData.timestamp)));
-        setEndDate(toEndMonth(String(monthData.timestamp)));
+        setStartDate(toBeginningMonthDayjs(monthData.timestamp));
+        setEndDate(toEndMonthDayjs(monthData.timestamp));
     };
 
     return (

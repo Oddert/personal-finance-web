@@ -1,9 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { LOCALE } from '../../constants/appConstants';
 
 import { Transaction } from '../../types/Transaction.d';
+
+dayjs.extend(localizedFormat);
 
 /**
  * Redux state key for 'transaction'
@@ -11,8 +15,9 @@ import { Transaction } from '../../types/Transaction.d';
  * @subcategory Transaction Slice
  */
 export interface TransactionState {
-    endDate: number | null;
+    endDate: number;
     endDateReadable: string | null;
+    loading: boolean;
     loaded: boolean;
     orderedData: {
         byDate: {
@@ -24,21 +29,22 @@ export interface TransactionState {
             [category: number]: Transaction[];
         };
     };
-    startDate: number | null;
+    startDate: number;
     startDateReadable: string | null;
     refreshed: string | null;
     response: Transaction[];
 }
 
 const initialState: TransactionState = {
-    endDate: null,
+    endDate: dayjs().valueOf(),
     endDateReadable: null,
     loaded: false,
+    loading: false,
     orderedData: {
         byDate: {},
         byCategory: {},
     },
-    startDate: null,
+    startDate: dayjs().subtract(3, 'months').valueOf(),
     startDateReadable: null,
     refreshed: null,
     response: [],
@@ -56,6 +62,7 @@ export const transactionSlice = createSlice({
             } | null>,
         ) => {
             state.loaded = false;
+            state.loading = true;
             if (action?.payload?.startDate) {
                 state.startDate = new Date(action.payload.startDate).getTime();
                 state.startDateReadable = action.payload.startDate;
@@ -81,6 +88,8 @@ export const transactionSlice = createSlice({
             }>,
         ) => {
             state.refreshed = new Date().toLocaleString(LOCALE);
+            state.loaded = true;
+            state.loading = false;
             state.orderedData = action.payload.orderedTransactions;
             state.response = action.payload.transactions;
         },

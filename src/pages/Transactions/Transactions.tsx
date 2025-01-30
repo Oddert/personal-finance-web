@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Paper, Typography } from '@mui/material';
 
 import {
     initialState,
@@ -27,22 +27,24 @@ const Transactions = () => {
         <TransactionRange.Provider value={{ state, dispatch }}>
             <Container>
                 <Typography sx={{ margin: '24px 0' }} variant='h2'>
-                    Transactions
+                    Upload & Edit Transactions
                 </Typography>
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gridTemplateColumns: 'repeat(1, 1fr)',
                         margin: '24px 0',
                         gridGap: '16px 32px',
                     }}
                 >
                     <Upload />
                     <RequestControls />
-                    <RangeControls />
                 </Box>
-                <Edit />
-                <Table />
+                <Paper elevation={0} sx={{ padding: '16px 64px' }}>
+                    <RangeControls />
+                    <Edit />
+                    <Table />
+                </Paper>
             </Container>
         </TransactionRange.Provider>
     );

@@ -1,25 +1,29 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { Autocomplete, TextField } from '@mui/material';
-
-import type { Category } from '../types/Category.d';
+export interface ITECTransaction {
+    [key: string]: string | number | null;
+}
 
 export interface TransactionEditState {
     columnMap: { [key: string]: string };
     headers: string[];
     match?: string;
     sideBarOpen: boolean;
-    transactions: { [key: string]: string | number }[];
+    transactions: ITECTransaction[];
     mode: 'upload' | 'edit';
     loading: boolean;
 }
 
 const TransactionEditActionTypes = {
+    changeSelected: 'changeSelected',
+    checkAll: 'checkAll',
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
     setLoading: 'setLoading',
     toggleSideBarOpen: 'toggleSideBarOpen',
+    uncheckAll: 'uncheckAll',
+    updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
     writeTransactions: 'writeTransactions',
@@ -28,7 +32,7 @@ const TransactionEditActionTypes = {
 export const transactionEditInitialState: TransactionEditState = {
     columnMap: {
         date: 'Transaction Date',
-        transaction_type: 'Transaction Type',
+        transactionType: 'Transaction Type',
         description: 'Transaction Description',
         debit: 'Debit Amount',
         credit: 'Credit Amount',
@@ -41,11 +45,26 @@ export const transactionEditInitialState: TransactionEditState = {
     transactions: [],
 };
 
+export type TAccessorKey =
+    | 'selected'
+    | 'date'
+    | 'description'
+    | 'debit'
+    | 'credit'
+    | 'ballance'
+    | 'assignedCategory';
+
+export interface IColumnDef {
+    header: string;
+    accessorKey: TAccessorKey;
+}
+
 // TODO: remove react-table logic once new logic is confirmed stable and better.
-export const defaultColumns = (
-    categories?: { [id: string]: Category },
-    callback?: (idx: number, assignedCategory: number) => void,
-) => [
+export const defaultColumns: IColumnDef[] = [
+    {
+        header: 'Selected',
+        accessorKey: 'selected',
+    },
     {
         header: 'Date',
         accessorKey: 'date',
@@ -69,63 +88,6 @@ export const defaultColumns = (
     {
         header: 'Category',
         accessorKey: 'assignedCategory',
-        cell: (cell: any) => {
-            if (!categories || !callback) {
-                return;
-            }
-            const value = cell.renderValue() || 'unset';
-            const marginTopBottom = '4px';
-            return (
-                // <select
-                //     onChange={(e) => {
-                //         if (!e.currentTarget.value) {
-                //             return
-                //         }
-                //         callback(cell.row.index, Number(e.currentTarget.value))
-                //     }}
-                //     // value={categories[value].id || undefined}
-                // >
-                //     <option value={'unset'}>
-                //         - none -
-                //     </option>
-                //     {Object.entries(categories).map(([key, category]) => (
-                //         <option value={category.id}>
-                //             {category.label}
-                //         </option>
-                //     ))}
-                // </select>
-                <Autocomplete
-                    autoHighlight
-                    disablePortal
-                    onChange={(event, category) => {
-                        if (!category) {
-                            return;
-                        }
-                        callback(cell.row.index, category.id);
-                    }}
-                    options={Object.values(
-                        categories as { [id: string]: Category },
-                    )}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label='Category'
-                            placeholder='unset'
-                            sx={{
-                                paddingTop: marginTopBottom,
-                                paddingBottom: marginTopBottom,
-                            }}
-                        />
-                    )}
-                    sx={{
-                        borderWidth: value === 'unset' ? 4 : 1,
-                        width: '100%',
-                        padding: '4px',
-                    }}
-                    value={categories[value] || null}
-                />
-            );
-        },
     },
 ];
 
@@ -141,15 +103,24 @@ export const transactionEditReducer = (
     state: TransactionEditState,
     action: PayloadAction<any>,
 ) => {
+    console.log(action);
     switch (action.type) {
-        case TransactionEditActionTypes.toggleSideBarOpen:
+        case TransactionEditActionTypes.changeSelected:
             return {
                 ...state,
-                sideBarOpen:
-                    action?.payload?.open === 'undefined'
-                        ? !state.sideBarOpen
-                        : action?.payload?.open,
-                match: action?.payload?.match,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? { ...transaction, selected: action.payload.selected }
+                        : transaction,
+                ),
+            };
+        case TransactionEditActionTypes.checkAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    selected: true,
+                })),
             };
         case TransactionEditActionTypes.setColumnMap:
             return {
@@ -166,25 +137,47 @@ export const transactionEditReducer = (
                 ...state,
                 mode: action?.payload?.mode,
             };
-        case TransactionEditActionTypes.updateCategory:
-            if (
-                action.payload.idx === null ||
-                !action?.payload?.assignedCategory
-            ) {
-                return state;
-            }
-            const transactions: TransactionEditState['transactions'] = [
-                ...state.transactions.slice(0, action.payload.idx),
-                {
-                    ...state.transactions[action.payload.idx],
-                    assignedCategory: action.payload.assignedCategory,
-                },
-                ...state.transactions.slice(action.payload.idx + 1),
-            ];
-
+        case TransactionEditActionTypes.toggleSideBarOpen:
             return {
                 ...state,
-                transactions,
+                sideBarOpen:
+                    action?.payload?.open === 'undefined'
+                        ? !state.sideBarOpen
+                        : action?.payload?.open,
+                match: action?.payload?.match,
+            };
+        case TransactionEditActionTypes.uncheckAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    selected: false,
+                })),
+            };
+        case TransactionEditActionTypes.updateDescription:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? {
+                              ...transaction,
+                              [state.columnMap.description]:
+                                  action.payload.description,
+                          }
+                        : transaction,
+                ),
+            };
+        case TransactionEditActionTypes.updateCategory:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? {
+                              ...transaction,
+                              assignedCategory: action.payload.assignedCategory,
+                          }
+                        : transaction,
+                ),
             };
         case TransactionEditActionTypes.writeHeaders:
             return {
@@ -200,6 +193,16 @@ export const transactionEditReducer = (
             return state;
     }
 };
+
+export const changeSingleSelected = (uid: string, selected: boolean) => ({
+    type: TransactionEditActionTypes.changeSelected,
+    payload: { uid, selected },
+});
+
+export const checkAll = () => ({
+    type: TransactionEditActionTypes.checkAll,
+    payload: {},
+});
 
 export const setColumnMap = (columnMap: TransactionEditState['columnMap']) => ({
     type: TransactionEditActionTypes.setColumnMap,
@@ -224,9 +227,19 @@ export const toggleSideBar = (
     payload: { open, match },
 });
 
-export const updateCategory = (idx: number, assignedCategory: number) => ({
+export const uncheckAll = () => ({
+    type: TransactionEditActionTypes.uncheckAll,
+    payload: {},
+});
+
+export const updateDescription = (uid: string, description: string) => ({
+    type: TransactionEditActionTypes.updateDescription,
+    payload: { uid, description },
+});
+
+export const updateCategory = (uid: string, assignedCategory: number) => ({
     type: TransactionEditActionTypes.updateCategory,
-    payload: { idx, assignedCategory },
+    payload: { uid, assignedCategory },
 });
 
 export const writeHeaders = (headers: TransactionEditState['headers']) => ({

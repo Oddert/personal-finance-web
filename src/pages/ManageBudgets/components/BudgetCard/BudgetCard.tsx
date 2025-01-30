@@ -1,11 +1,10 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
 
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
 import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
 
 import { LOCALE } from '../../../../constants/appConstants';
-import { ROUTES_FACTORY } from '../../../../constants/routerConstants';
+import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
 import APIService from '../../../../services/APIService';
 
@@ -44,6 +43,10 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
             console.error(error);
             dispatch(intakeError(error));
         }
+    };
+
+    const handleClickEdit = () => {
+        router.navigate(ROUTES_FACTORY.EDIT_BUDGET(budget.id));
     };
 
     return (
@@ -85,13 +88,10 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     Last updated:{' '}
                     {new Date(budget.updatedOn).toLocaleString(LOCALE)}
                 </Typography>
-                <Link
-                    to={ROUTES_FACTORY.EDIT_BUDGET(budget.id)}
-                    // sx={{ display: 'flex', alignItems: 'center', mt: '8px' }}
-                >
+                <Button onClick={handleClickEdit}>
                     <Typography component='span'>View and edit</Typography>{' '}
                     <RightArrowIcon />
-                </Link>
+                </Button>
             </Paper>
         </ListItem>
     );

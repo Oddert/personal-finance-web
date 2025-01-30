@@ -1,7 +1,9 @@
+import { Dayjs } from 'dayjs';
+
 import { IBudgetOverviewChart } from '../../BudgetOverview.types';
 
 export interface IProps {
     chartList: IBudgetOverviewChart[];
-    endDate: string;
-    startDate: string;
+    endDate: Dayjs;
+    startDate: Dayjs;
 }

@@ -119,8 +119,8 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(startDate).getTime(),
-                        max: new Date(endDate).getTime(),
+                        min: new Date(String(startDate)).getTime(),
+                        max: new Date(String(endDate)).getTime(),
                     },
                     tooltip: {
                         x: {

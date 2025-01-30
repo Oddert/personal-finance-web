@@ -1,9 +1,8 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
@@ -12,15 +11,13 @@ import {
     AccordionSummary,
     Box,
     FormControlLabel,
-    Input,
     Paper,
     Typography,
 } from '@mui/material';
 import { ExpandMore as ExpandIcon } from '@mui/icons-material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import type { Transaction } from '../../types/Transaction.d';
-
-import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
 import {
     chart1BaseOptions,
@@ -29,6 +26,7 @@ import {
     defaultStart,
     title,
 } from './ExistingDataLineChartUtils';
+import useTransactions from '../../hooks/useTransactions';
 
 dayjs.extend(localizedFormat);
 
@@ -57,16 +55,8 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
         { x: number | string; y: number }[]
     >([]);
     const [debitMax, setDebitMax] = useState<number>(0);
-
-    const [startDate, setStartDate] = useState<string | number>(
-        defaultStart.toISOString().substring(0, 10),
-    );
-
-    const [endDate, setEndDate] = useState<string | number>(
-        defaultEnd.toISOString().substring(0, 10),
-    );
-
-    console.log({ startDate, endDate });
+    const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultStart));
+    const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultEnd));
 
     // Workaround for issue owners seem unwilling / unable to resolve:
     // https://github.com/apexcharts/react-apexcharts/issues/182
@@ -76,25 +66,10 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [chart2Options, setChart2Options] =
         useState<ApexOptions>(chart2BaseOptions);
 
-    const transactions = useSelector(getTransactionsOrderedByDate);
+    const { transactions } = useTransactions(startDate, endDate);
 
     useEffect(() => {
-        let sDate = dayjs(startDate);
-        const eDate = dayjs(endDate);
-
-        const transactionList: Transaction[] = [];
-
-        while (sDate < eDate) {
-            const year = sDate.year();
-            const month = sDate.month();
-            if (year in transactions && month in transactions[year]) {
-                const transactionBlock = transactions[year][month];
-                transactionList.push(...transactionBlock);
-            }
-            sDate = sDate.add(1, 'month').set('date', 10);
-        }
-
-        const sorted = transactionList.reduce(
+        const sorted = transactions.reduce(
             (
                 acc: {
                     ballance: { x: number | string; y: number }[];
@@ -171,11 +146,24 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
         >
             <FormControlLabel
                 control={
-                    <Input
-                        name='start-date'
-                        onChange={(evt) => setStartDate(evt.target.value)}
-                        placeholder='Start Date'
-                        type='date'
+                    <DatePicker
+                        label='Start date'
+                        name='startDate'
+                        onChange={(nextValue) => {
+                            if (nextValue) {
+                                setStartDate(nextValue);
+                            }
+                        }}
+                        showDaysOutsideCurrentMonth
+                        slotProps={{
+                            toolbar: {
+                                toolbarFormat: 'ddd DD MMMM',
+                                hidden: false,
+                            },
+                        }}
+                        sx={{
+                            borderRadius: '4px',
+                        }}
                         value={startDate}
                     />
                 }
@@ -188,11 +176,24 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             />
             <FormControlLabel
                 control={
-                    <Input
-                        name='end-date'
-                        onChange={(evt) => setEndDate(evt.target.value)}
-                        placeholder='End Date'
-                        type='date'
+                    <DatePicker
+                        label='End date'
+                        name='endDate'
+                        onChange={(nextValue) => {
+                            if (nextValue) {
+                                setEndDate(nextValue);
+                            }
+                        }}
+                        showDaysOutsideCurrentMonth
+                        slotProps={{
+                            toolbar: {
+                                toolbarFormat: 'ddd DD MMMM',
+                                hidden: false,
+                            },
+                        }}
+                        sx={{
+                            borderRadius: '4px',
+                        }}
                         value={endDate}
                     />
                 }

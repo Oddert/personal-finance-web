@@ -6,6 +6,8 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/AutoGraph';
 
+import { MAIN_TITLE } from '../../constants/appConstants';
+
 import Sidebar from '../Sidebar/Sidebar';
 
 /**
@@ -86,7 +88,7 @@ const Header = () => {
                         })}
                         variant='h1'
                     >
-                        Personal Finance Tracker
+                        {MAIN_TITLE}
                     </Typography>
                 </Toolbar>
             </AppBar>

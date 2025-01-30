@@ -10,6 +10,8 @@ import {
 
 import type { IBudgetDatum } from '../../../../types/Budget.types';
 
+import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+
 import { normaliseNum } from '../../../../utils/mathsUtils';
 
 import type { IProps } from './GlanceCards.types';
@@ -123,8 +125,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {spendDiff < 0 ? '-' : '+'} £{spendDiff}{' '}
-                    {spendDiff < 0 ? 'bellow' : 'above'} budget
+                    {spendDiff < 0 ? '-' : '+'} {CURRENCY_SYMBOL}
+                    {spendDiff} {spendDiff < 0 ? 'bellow' : 'above'} budget
                 </Typography>
             </Paper>
             <Paper
@@ -156,7 +158,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                                 component='span'
                                 sx={{ fontWeight: 'bold' }}
                             >
-                                {largestOverspendVal.categoryName} (+ £
+                                {largestOverspendVal.categoryName} (+{' '}
+                                {CURRENCY_SYMBOL}
                                 {largestOverspendVal.diffFloat})
                             </Typography>
                         </Typography>

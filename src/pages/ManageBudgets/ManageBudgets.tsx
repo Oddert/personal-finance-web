@@ -48,7 +48,7 @@ const ManageBudgets: FC<IProps> = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budgets
+                    Manage Budgets
                 </Typography>
                 <Box
                     sx={{

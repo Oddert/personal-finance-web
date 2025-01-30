@@ -1,7 +1,10 @@
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart';
 import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLineChart';
+
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
+import ActiveBudget from '../../components/ActiveBudget';
 
 /**
  * Displays all historical data.
@@ -11,7 +14,20 @@ import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLin
  */
 const AllData = () => {
     return (
-        <Container sx={{ width: '90vw', position: 'relative' }}>
+        <Container
+            sx={{
+                width: '90vw',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                gridGap: '16px',
+            }}
+        >
+            <Typography sx={{ mt: '16px' }} variant='h2'>
+                All historic data
+            </Typography>
+            <ActiveCard />
+            <ActiveBudget />
             <ExistingDataLineChart />
             <ProjectionLineChart />
         </Container>

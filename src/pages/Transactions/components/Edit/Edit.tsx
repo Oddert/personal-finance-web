@@ -6,7 +6,10 @@ import {
     useReducer,
     useState,
 } from 'react';
-import { Button } from '@mui/material';
+import { v4 as uuid } from 'uuid';
+
+import { Box, Button } from '@mui/material';
+import { Edit as EditIcon } from '@mui/icons-material';
 
 import { LOCALE } from '../../../../constants/appConstants';
 
@@ -20,9 +23,7 @@ import {
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import { getTransactionsResponse } from '../../../../redux/selectors/transactionsSelectors';
+import useTransactions from '../../../../hooks/useTransactions';
 
 import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
 
@@ -44,31 +45,28 @@ const Edit: FC<IProps> = () => {
         transactionEditInitialState,
     );
 
-    const transactions = useAppSelector(getTransactionsResponse);
+    const { transactions } = useTransactions(
+        rangeValues[value[0]]?.bottom,
+        rangeValues[value[1]]?.top,
+    );
 
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        const minDate = rangeValues[value[0]]?.bottom;
-        const maxDate = rangeValues[value[1]]?.top;
-
-        const filteredTransactions = transactions
-            .filter(
-                (transaction) =>
-                    transaction.date >= minDate && transaction.date <= maxDate,
-            )
-            .map((transaction) => ({
-                ...transaction,
-                date: new Date(transaction.date).toLocaleDateString(LOCALE),
-                credit: transaction.credit === 0 ? '-' : transaction.credit,
-                debit: transaction.debit === 0 ? '-' : transaction.debit,
-                category_id: transaction.category_id || 0,
-                assignedCategory: transaction.category_id || 0,
-            }));
+        const filteredTransactions = transactions.map((transaction) => ({
+            ...transaction,
+            date: new Date(transaction.date).toLocaleDateString(LOCALE),
+            credit: transaction.credit === 0 ? '-' : transaction.credit,
+            debit: transaction.debit === 0 ? '-' : transaction.debit,
+            categoryId: transaction.categoryId || 0,
+            assignedCategory: transaction.categoryId || 0,
+            selected: 1,
+            tecTempId: uuid(),
+        }));
         dispatch(
             setColumnMap({
                 date: 'date',
-                transaction_type: 'transaction_type',
+                transactionType: 'transactionType',
                 description: 'description',
                 debit: 'debit',
                 credit: 'credit',
@@ -82,9 +80,23 @@ const Edit: FC<IProps> = () => {
 
     return (
         <Fragment>
-            <Button onClick={() => setOpen(true)}>
-                Edit transactions in range
-            </Button>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <Button
+                    onClick={() => setOpen(true)}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gridGap: '16px',
+                    }}
+                >
+                    Edit transactions in range <EditIcon />
+                </Button>
+            </Box>
             {open ? (
                 <TransactionEditContext.Provider value={{ state, dispatch }}>
                     <TransactionEdit
