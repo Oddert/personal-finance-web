@@ -1,17 +1,7 @@
+import { Fragment, useContext, useMemo, useState } from 'react';
 import {
-    ChangeEvent,
-    Fragment,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
-} from 'react';
-import { useSelector } from 'react-redux';
-import {
-    Autocomplete,
     Checkbox,
     FormControlLabel,
-    TextField,
     Table as MuiTable,
     TableCell,
     TableBody,
@@ -21,25 +11,14 @@ import {
     Button,
 } from '@mui/material';
 
-import { Circle as DotIcon } from '@mui/icons-material';
-
-import type { Category } from '../../../types/Category.d';
-
 import {
-    changeSingleSelected,
     checkAll,
     defaultColumns,
-    toggleSideBar,
     TransactionEditContext,
     uncheckAll,
-    updateCategory,
 } from '../../../contexts/transactionEditContext';
 
-import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors';
-
-import TransactionDescription from '../TransactionDescription';
-
-const marginTopBottom = '4px';
+import Row from '../Row';
 
 /**
  * Displays the transactions and edit options as a table.
@@ -55,43 +34,18 @@ const Table = () => {
         state: { columnMap, transactions },
     } = useContext(TransactionEditContext);
 
-    const categories = useSelector(getCategoryOrderedDataById);
-
-    const updateAssignedCategory = useCallback(
-        (idx: number, assignedCategory: number) => {
-            dispatch(updateCategory(idx, assignedCategory));
-        },
-        [dispatch],
-    );
-
-    const handleChangeSelected = useCallback(
-        (event: ChangeEvent<HTMLInputElement>, idx: number) => {
-            dispatch(changeSingleSelected(idx, event.target.checked));
-        },
-        [dispatch],
-    );
-
-    const columns = useMemo(() => {
-        return defaultColumns(categories, updateAssignedCategory).map(
-            (header) => {
-                return {
-                    ...header,
-                    accessorKey: ['assignedCategory', 'selected'].includes(
-                        header.accessorKey,
-                    )
-                        ? header.accessorKey
-                        : columnMap[header.accessorKey],
-                };
-            },
-        );
-    }, [columnMap, categories, updateAssignedCategory]);
-
-    const handleClickTitle = useCallback(
-        (match: string) => {
-            dispatch(toggleSideBar(true, match));
-        },
-        [dispatch],
-    );
+    const columns: { accessorKey: string; header: string }[] = useMemo(() => {
+        return defaultColumns.map((header) => {
+            return {
+                ...header,
+                accessorKey: ['assignedCategory', 'selected'].includes(
+                    header.accessorKey,
+                )
+                    ? header.accessorKey
+                    : columnMap[header.accessorKey],
+            };
+        });
+    }, [columnMap]);
 
     const data = useMemo(
         () =>
@@ -101,17 +55,6 @@ const Table = () => {
                   )
                 : transactions,
         [transactions, filterUncategorised],
-    );
-
-    const options = useMemo(
-        () =>
-            Object.entries(categories as { [id: string]: Category }).map(
-                ([id, category]) => ({
-                    id,
-                    label: category.label,
-                }),
-            ),
-        [categories],
     );
 
     return (
@@ -153,141 +96,11 @@ const Table = () => {
                 </TableHead>
                 <TableBody>
                     {data.map((transaction, idx) => (
-                        <TableRow
-                            key={idx}
-                            sx={{
-                                '& .transaction_description_edit': {
-                                    opacity: 0,
-                                    transition: '.1s linear',
-                                },
-                                '&:hover .transaction_description_edit': {
-                                    opacity: 1,
-                                },
-                            }}
-                        >
-                            {columns.map((column, columnIdx) => {
-                                console.log(column.accessorKey);
-                                if (
-                                    column.accessorKey === columnMap.description
-                                ) {
-                                    return (
-                                        <TransactionDescription
-                                            handleClickTitle={handleClickTitle}
-                                            idx={idx}
-                                            key={idx + '_' + columnIdx}
-                                            title={
-                                                transaction[
-                                                    column.accessorKey
-                                                ] as string
-                                            }
-                                        />
-                                    );
-                                } else if (column.accessorKey === 'selected') {
-                                    return (
-                                        <Checkbox
-                                            checked={Boolean(
-                                                transaction.selected,
-                                            )}
-                                            onChange={(event) =>
-                                                handleChangeSelected(event, idx)
-                                            }
-                                        />
-                                    );
-                                } else if (
-                                    column.accessorKey === 'assignedCategory'
-                                ) {
-                                    const value = transaction.assignedCategory
-                                        ? categories[
-                                              transaction.assignedCategory
-                                          ]
-                                            ? {
-                                                  id: String(
-                                                      categories[
-                                                          transaction
-                                                              .assignedCategory
-                                                      ].id,
-                                                  ),
-                                                  label: categories[
-                                                      transaction
-                                                          .assignedCategory
-                                                  ].label,
-                                              }
-                                            : null
-                                        : null;
-                                    return (
-                                        <TableCell
-                                            key={idx + '_' + columnIdx}
-                                            sx={{
-                                                padding: '4px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                            }}
-                                        >
-                                            <Autocomplete
-                                                autoHighlight
-                                                disablePortal
-                                                isOptionEqualToValue={(
-                                                    option,
-                                                ) => option.id === value?.id}
-                                                key={idx + '_' + columnIdx}
-                                                onChange={(event, category) => {
-                                                    if (!category) {
-                                                        return;
-                                                    }
-                                                    updateAssignedCategory(
-                                                        idx,
-                                                        Number(category.id),
-                                                    );
-                                                }}
-                                                options={options}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        label='Category'
-                                                        placeholder='unset'
-                                                        sx={{
-                                                            paddingTop:
-                                                                marginTopBottom,
-                                                            paddingBottom:
-                                                                marginTopBottom,
-                                                        }}
-                                                    />
-                                                )}
-                                                sx={{
-                                                    borderWidth:
-                                                        transaction.assignedCategory ===
-                                                        'unset'
-                                                            ? 4
-                                                            : 1,
-                                                    width: '100%',
-                                                    '& .MuiInputBase-root': {
-                                                        padding: '2px',
-                                                    },
-                                                }}
-                                                value={value}
-                                            />
-                                            {value ? null : (
-                                                <DotIcon
-                                                    fontSize='small'
-                                                    sx={(theme) => ({
-                                                        color: theme.palette
-                                                            .warning.light,
-                                                        width: '16px',
-                                                        height: '16px',
-                                                        marginLeft: '6px',
-                                                    })}
-                                                />
-                                            )}
-                                        </TableCell>
-                                    );
-                                }
-                                return (
-                                    <TableCell key={idx + '_' + columnIdx}>
-                                        {transaction[column.accessorKey]}
-                                    </TableCell>
-                                );
-                            })}
-                        </TableRow>
+                        <Row
+                            columns={columns}
+                            idx={idx}
+                            transaction={transaction}
+                        />
                     ))}
                 </TableBody>
             </MuiTable>

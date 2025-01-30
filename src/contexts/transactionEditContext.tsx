@@ -1,16 +1,16 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { Autocomplete, TextField } from '@mui/material';
-
-import type { Category } from '../types/Category.d';
+export interface ITECTransaction {
+    [key: string]: string | number | null;
+}
 
 export interface TransactionEditState {
     columnMap: { [key: string]: string };
     headers: string[];
     match?: string;
     sideBarOpen: boolean;
-    transactions: { [key: string]: string | number | null }[];
+    transactions: ITECTransaction[];
     mode: 'upload' | 'edit';
     loading: boolean;
 }
@@ -45,11 +45,22 @@ export const transactionEditInitialState: TransactionEditState = {
     transactions: [],
 };
 
+export type TAccessorKey =
+    | 'selected'
+    | 'date'
+    | 'description'
+    | 'debit'
+    | 'credit'
+    | 'ballance'
+    | 'assignedCategory';
+
+export interface IColumnDef {
+    header: string;
+    accessorKey: TAccessorKey;
+}
+
 // TODO: remove react-table logic once new logic is confirmed stable and better.
-export const defaultColumns = (
-    categories?: { [id: string]: Category },
-    callback?: (idx: number, assignedCategory: number) => void,
-) => [
+export const defaultColumns: IColumnDef[] = [
     {
         header: 'Selected',
         accessorKey: 'selected',
@@ -77,45 +88,6 @@ export const defaultColumns = (
     {
         header: 'Category',
         accessorKey: 'assignedCategory',
-        cell: (cell: any) => {
-            if (!categories || !callback) {
-                return;
-            }
-            const value = cell.renderValue() || 'unset';
-            const marginTopBottom = '4px';
-            return (
-                <Autocomplete
-                    autoHighlight
-                    disablePortal
-                    onChange={(event, category) => {
-                        if (!category) {
-                            return;
-                        }
-                        callback(cell.row.index, category.id);
-                    }}
-                    options={Object.values(
-                        categories as { [id: string]: Category },
-                    )}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label='Category'
-                            placeholder='unset'
-                            sx={{
-                                paddingTop: marginTopBottom,
-                                paddingBottom: marginTopBottom,
-                            }}
-                        />
-                    )}
-                    sx={{
-                        borderWidth: value === 'unset' ? 4 : 1,
-                        width: '100%',
-                        padding: '4px',
-                    }}
-                    value={categories[value] || null}
-                />
-            );
-        },
     },
 ];
 

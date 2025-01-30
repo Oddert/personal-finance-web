@@ -1,9 +1,17 @@
-import { FC, Fragment, useContext, useEffect, useState } from 'react';
+import {
+    FC,
+    Fragment,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 
 import { Button, TableCell, TextField } from '@mui/material';
 
 import { IProps } from './TransactionDescription.types';
 import {
+    toggleSideBar,
     TransactionEditContext,
     updateDescription,
 } from '../../../contexts/transactionEditContext';
@@ -14,11 +22,7 @@ import {
  * @category Components
  * @subcategory Transaction Edit
  */
-const TransactionDescription: FC<IProps> = ({
-    handleClickTitle,
-    idx,
-    title,
-}) => {
+const TransactionDescription: FC<IProps> = ({ idx, title }) => {
     const { dispatch } = useContext(TransactionEditContext);
 
     const [editOpen, setEditOpen] = useState(false);
@@ -27,6 +31,13 @@ const TransactionDescription: FC<IProps> = ({
     useEffect(() => {
         setInternalValue(title);
     }, [title]);
+
+    const handleClickTitle = useCallback(
+        (match: string) => {
+            dispatch(toggleSideBar(true, match));
+        },
+        [dispatch],
+    );
 
     return (
         <TableCell>
