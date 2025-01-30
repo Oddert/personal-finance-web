@@ -59,8 +59,11 @@ const Upload = () => {
                                 transactions,
                                 categories,
                             );
+                            const withSelected = withCategories.map(
+                                (datum) => ({ ...datum, selected: 1 }),
+                            );
                             dispatch(writeHeaders(headers));
-                            dispatch(writeTransactions(withCategories));
+                            dispatch(writeTransactions(withSelected));
                             dispatch(setLoading(false));
                         }
                     };

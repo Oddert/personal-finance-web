@@ -58,6 +58,7 @@ const Edit: FC<IProps> = () => {
             debit: transaction.debit === 0 ? '-' : transaction.debit,
             categoryId: transaction.categoryId || 0,
             assignedCategory: transaction.categoryId || 0,
+            selected: 1,
         }));
         dispatch(
             setColumnMap({

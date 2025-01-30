@@ -1,4 +1,11 @@
-import { Fragment, useCallback, useContext, useMemo, useState } from 'react';
+import {
+    ChangeEvent,
+    Fragment,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 import {
     Autocomplete,
@@ -11,20 +18,25 @@ import {
     TableHead,
     TableRow,
     Typography,
+    Button,
 } from '@mui/material';
 
 import { Circle as DotIcon } from '@mui/icons-material';
 
+import type { Category } from '../../../types/Category.d';
+
 import {
+    changeSingleSelected,
+    checkAll,
     defaultColumns,
     toggleSideBar,
     TransactionEditContext,
+    uncheckAll,
     updateCategory,
 } from '../../../contexts/transactionEditContext';
 
 import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors';
 
-import type { Category } from '../../../types/Category.d';
 import TransactionDescription from '../TransactionDescription';
 
 const marginTopBottom = '4px';
@@ -52,15 +64,23 @@ const Table = () => {
         [dispatch],
     );
 
+    const handleChangeSelected = useCallback(
+        (event: ChangeEvent<HTMLInputElement>, idx: number) => {
+            dispatch(changeSingleSelected(idx, event.target.checked));
+        },
+        [dispatch],
+    );
+
     const columns = useMemo(() => {
         return defaultColumns(categories, updateAssignedCategory).map(
             (header) => {
                 return {
                     ...header,
-                    accessorKey:
-                        header.accessorKey === 'assignedCategory'
-                            ? header.accessorKey
-                            : columnMap[header.accessorKey],
+                    accessorKey: ['assignedCategory', 'selected'].includes(
+                        header.accessorKey,
+                    )
+                        ? header.accessorKey
+                        : columnMap[header.accessorKey],
                 };
             },
         );
@@ -112,6 +132,8 @@ const Table = () => {
                     ? `${transactions.length} rows`
                     : `showing ${data.length} of ${transactions.length} rows`}
             </Typography>
+            <Button onClick={() => dispatch(checkAll())}>Check all</Button>
+            <Button onClick={() => dispatch(uncheckAll())}>Uncheck all</Button>
             <MuiTable
                 sx={{
                     width: '100%',
@@ -144,6 +166,7 @@ const Table = () => {
                             }}
                         >
                             {columns.map((column, columnIdx) => {
+                                console.log(column.accessorKey);
                                 if (
                                     column.accessorKey === columnMap.description
                                 ) {
@@ -159,8 +182,20 @@ const Table = () => {
                                             }
                                         />
                                     );
-                                }
-                                if (column.accessorKey === 'assignedCategory') {
+                                } else if (column.accessorKey === 'selected') {
+                                    return (
+                                        <Checkbox
+                                            checked={Boolean(
+                                                transaction.selected,
+                                            )}
+                                            onChange={(event) =>
+                                                handleChangeSelected(event, idx)
+                                            }
+                                        />
+                                    );
+                                } else if (
+                                    column.accessorKey === 'assignedCategory'
+                                ) {
                                     const value = transaction.assignedCategory
                                         ? categories[
                                               transaction.assignedCategory

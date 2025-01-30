@@ -16,10 +16,13 @@ export interface TransactionEditState {
 }
 
 const TransactionEditActionTypes = {
+    changeSelected: 'changeSelected',
+    checkAll: 'checkAll',
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
     setLoading: 'setLoading',
     toggleSideBarOpen: 'toggleSideBarOpen',
+    uncheckAll: 'uncheckAll',
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
@@ -47,6 +50,10 @@ export const defaultColumns = (
     categories?: { [id: string]: Category },
     callback?: (idx: number, assignedCategory: number) => void,
 ) => [
+    {
+        header: 'Selected',
+        accessorKey: 'selected',
+    },
     {
         header: 'Date',
         accessorKey: 'date',
@@ -142,7 +149,28 @@ export const transactionEditReducer = (
     state: TransactionEditState,
     action: PayloadAction<any>,
 ) => {
+    console.log(action);
     switch (action.type) {
+        case TransactionEditActionTypes.changeSelected:
+            return {
+                ...state,
+                transactions: [
+                    ...state.transactions.slice(0, action.payload.idx),
+                    {
+                        ...state.transactions[action.payload.idx],
+                        selected: action?.payload?.selected,
+                    },
+                    ...state.transactions.slice(action.payload.idx + 1),
+                ],
+            };
+        case TransactionEditActionTypes.checkAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    selected: true,
+                })),
+            };
         case TransactionEditActionTypes.setColumnMap:
             return {
                 ...state,
@@ -166,6 +194,14 @@ export const transactionEditReducer = (
                         ? !state.sideBarOpen
                         : action?.payload?.open,
                 match: action?.payload?.match,
+            };
+        case TransactionEditActionTypes.uncheckAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    selected: false,
+                })),
             };
         case TransactionEditActionTypes.updateDescription:
             return {
@@ -215,6 +251,16 @@ export const transactionEditReducer = (
     }
 };
 
+export const changeSingleSelected = (idx: number, selected: boolean) => ({
+    type: TransactionEditActionTypes.changeSelected,
+    payload: { idx, selected },
+});
+
+export const checkAll = () => ({
+    type: TransactionEditActionTypes.checkAll,
+    payload: {},
+});
+
 export const setColumnMap = (columnMap: TransactionEditState['columnMap']) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap },
@@ -236,6 +282,11 @@ export const toggleSideBar = (
 ) => ({
     type: TransactionEditActionTypes.toggleSideBarOpen,
     payload: { open, match },
+});
+
+export const uncheckAll = () => ({
+    type: TransactionEditActionTypes.uncheckAll,
+    payload: {},
 });
 
 export const updateDescription = (idx: number, description: string) => ({
