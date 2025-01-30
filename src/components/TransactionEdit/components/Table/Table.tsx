@@ -9,6 +9,7 @@ import {
     TableRow,
     Typography,
     Button,
+    Box,
 } from '@mui/material';
 
 import {
@@ -28,6 +29,7 @@ import Row from './components/Row';
  */
 const Table = () => {
     const [filterUncategorised, setFilterUncategorised] = useState(false);
+    const [filterUnchecked, setFilterUnchecked] = useState(false);
 
     const {
         dispatch,
@@ -47,34 +49,49 @@ const Table = () => {
         });
     }, [columnMap]);
 
-    const data = useMemo(
-        () =>
-            filterUncategorised
-                ? transactions.filter(
-                      (transaction) => !transaction.assignedCategory,
-                  )
-                : transactions,
-        [transactions, filterUncategorised],
-    );
+    const data = useMemo(() => {
+        const stageUncategorised = filterUncategorised
+            ? transactions.filter(
+                  (transaction) => !transaction.assignedCategory,
+              )
+            : transactions;
+        const stageUnchecked = filterUnchecked
+            ? stageUncategorised.filter((transaction) => transaction.selected)
+            : stageUncategorised;
+        return stageUnchecked;
+    }, [filterUncategorised, filterUnchecked, transactions]);
 
     return (
         <Fragment>
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        checked={filterUncategorised}
-                        onChange={(e) =>
-                            setFilterUncategorised(e.currentTarget.checked)
-                        }
-                    />
-                }
-                label='Filter un-categorised'
-            />
             <Typography>
                 {transactions.length === data.length
                     ? `${transactions.length} rows`
-                    : `showing ${data.length} of ${transactions.length} rows`}
+                    : `Showing ${data.length} of ${transactions.length} rows`}
             </Typography>
+            <Box>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={filterUncategorised}
+                            onChange={(e) =>
+                                setFilterUncategorised(e.currentTarget.checked)
+                            }
+                        />
+                    }
+                    label='Filter un-categorised'
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={filterUnchecked}
+                            onChange={(e) =>
+                                setFilterUnchecked(e.currentTarget.checked)
+                            }
+                        />
+                    }
+                    label='Filter un-checked'
+                />
+            </Box>
             <Button onClick={() => dispatch(checkAll())}>Check all</Button>
             <Button onClick={() => dispatch(uncheckAll())}>Uncheck all</Button>
             <MuiTable
