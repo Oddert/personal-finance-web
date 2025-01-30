@@ -36,6 +36,7 @@ const TransactionEdit: FC<IProps> = ({
     const {
         state: { loading },
     } = useContext(TransactionEditContext);
+
     return (
         <Modal open={open} onClose={onClose} sx={{ overflowY: 'auto' }}>
             <Container>

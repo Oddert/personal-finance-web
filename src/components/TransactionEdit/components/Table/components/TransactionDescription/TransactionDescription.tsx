@@ -9,12 +9,13 @@ import {
 
 import { Button, TableCell, TextField } from '@mui/material';
 
-import { IProps } from './TransactionDescription.types';
 import {
     toggleSideBar,
     TransactionEditContext,
     updateDescription,
 } from '../../../../../../contexts/transactionEditContext';
+
+import { IProps } from './TransactionDescription.types';
 
 /**
  * Renders the description column as a button to activate the Category Quick Add and with edit capabilities.
@@ -22,15 +23,18 @@ import {
  * @category Components
  * @subcategory Transaction Edit
  */
-const TransactionDescription: FC<IProps> = ({ idx, title }) => {
-    const { dispatch } = useContext(TransactionEditContext);
+const TransactionDescription: FC<IProps> = ({ transaction }) => {
+    const {
+        dispatch,
+        state: { columnMap },
+    } = useContext(TransactionEditContext);
 
     const [editOpen, setEditOpen] = useState(false);
     const [internalValue, setInternalValue] = useState('');
 
     useEffect(() => {
-        setInternalValue(title);
-    }, [title]);
+        setInternalValue(transaction[columnMap.description] as string);
+    }, [transaction]);
 
     const handleClickTitle = useCallback(
         (match: string) => {
@@ -38,6 +42,8 @@ const TransactionDescription: FC<IProps> = ({ idx, title }) => {
         },
         [dispatch],
     );
+
+    const title = transaction[columnMap.description] as string;
 
     return (
         <TableCell>
@@ -62,8 +68,12 @@ const TransactionDescription: FC<IProps> = ({ idx, title }) => {
                     <Button
                         onClick={() => {
                             setEditOpen(false);
-                            console.log('save');
-                            dispatch(updateDescription(idx, internalValue));
+                            dispatch(
+                                updateDescription(
+                                    transaction.tecTempId as string,
+                                    internalValue,
+                                ),
+                            );
                         }}
                         title='Click to save the edited description'
                     >

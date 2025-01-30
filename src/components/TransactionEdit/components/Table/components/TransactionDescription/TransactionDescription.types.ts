@@ -1,4 +1,5 @@
+import { ITECTransaction } from '../../../../../../contexts/transactionEditContext';
+
 export interface IProps {
-    idx: number;
-    title: string;
+    transaction: ITECTransaction;
 }

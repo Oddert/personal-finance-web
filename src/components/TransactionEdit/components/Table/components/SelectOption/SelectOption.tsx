@@ -17,14 +17,19 @@ import { IProps } from './SelectOption.types';
  * @param props.idx The transaction index.
  * @param props.transaction The transaction row.
  */
-const SelectOption: FC<IProps> = ({ idx, transaction }) => {
+const SelectOption: FC<IProps> = ({ transaction }) => {
     const { dispatch } = useContext(TransactionEditContext);
 
     return (
         <Checkbox
             checked={Boolean(transaction.selected)}
             onChange={(event) =>
-                dispatch(changeSingleSelected(idx, event.target.checked))
+                dispatch(
+                    changeSingleSelected(
+                        transaction.tecTempId as string,
+                        event.target.checked,
+                    ),
+                )
             }
         />
     );

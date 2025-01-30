@@ -108,14 +108,11 @@ export const transactionEditReducer = (
         case TransactionEditActionTypes.changeSelected:
             return {
                 ...state,
-                transactions: [
-                    ...state.transactions.slice(0, action.payload.idx),
-                    {
-                        ...state.transactions[action.payload.idx],
-                        selected: action?.payload?.selected,
-                    },
-                    ...state.transactions.slice(action.payload.idx + 1),
-                ],
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? { ...transaction, selected: action.payload.selected }
+                        : transaction,
+                ),
             };
         case TransactionEditActionTypes.checkAll:
             return {
@@ -160,35 +157,27 @@ export const transactionEditReducer = (
         case TransactionEditActionTypes.updateDescription:
             return {
                 ...state,
-                transactions: [
-                    ...state.transactions.slice(0, action.payload.idx),
-                    {
-                        ...state.transactions[action.payload.idx],
-                        [state.columnMap.description]:
-                            action?.payload?.description,
-                    },
-                    ...state.transactions.slice(action.payload.idx + 1),
-                ],
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? {
+                              ...transaction,
+                              [state.columnMap.description]:
+                                  action.payload.description,
+                          }
+                        : transaction,
+                ),
             };
         case TransactionEditActionTypes.updateCategory:
-            if (
-                action.payload.idx === null ||
-                !action?.payload?.assignedCategory
-            ) {
-                return state;
-            }
-            const transactions: TransactionEditState['transactions'] = [
-                ...state.transactions.slice(0, action.payload.idx),
-                {
-                    ...state.transactions[action.payload.idx],
-                    assignedCategory: action.payload.assignedCategory,
-                },
-                ...state.transactions.slice(action.payload.idx + 1),
-            ];
-
             return {
                 ...state,
-                transactions,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? {
+                              ...transaction,
+                              assignedCategory: action.payload.assignedCategory,
+                          }
+                        : transaction,
+                ),
             };
         case TransactionEditActionTypes.writeHeaders:
             return {
@@ -205,9 +194,9 @@ export const transactionEditReducer = (
     }
 };
 
-export const changeSingleSelected = (idx: number, selected: boolean) => ({
+export const changeSingleSelected = (uid: string, selected: boolean) => ({
     type: TransactionEditActionTypes.changeSelected,
-    payload: { idx, selected },
+    payload: { uid, selected },
 });
 
 export const checkAll = () => ({
@@ -243,14 +232,14 @@ export const uncheckAll = () => ({
     payload: {},
 });
 
-export const updateDescription = (idx: number, description: string) => ({
+export const updateDescription = (uid: string, description: string) => ({
     type: TransactionEditActionTypes.updateDescription,
-    payload: { idx, description },
+    payload: { uid, description },
 });
 
-export const updateCategory = (idx: number, assignedCategory: number) => ({
+export const updateCategory = (uid: string, assignedCategory: number) => ({
     type: TransactionEditActionTypes.updateCategory,
-    payload: { idx, assignedCategory },
+    payload: { uid, assignedCategory },
 });
 
 export const writeHeaders = (headers: TransactionEditState['headers']) => ({

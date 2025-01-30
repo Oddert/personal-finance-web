@@ -17,7 +17,7 @@ import { IProps } from './CategorySelector.types';
 
 const marginTopBottom = '4px';
 
-const CategorySelector: FC<IProps> = ({ idx, transaction }) => {
+const CategorySelector: FC<IProps> = ({ transaction }) => {
     const { dispatch } = useContext(TransactionEditContext);
 
     const categories = useSelector(getCategoryOrderedDataById);
@@ -64,7 +64,12 @@ const CategorySelector: FC<IProps> = ({ idx, transaction }) => {
                     if (!category) {
                         return;
                     }
-                    dispatch(updateCategory(idx, Number(category.id)));
+                    dispatch(
+                        updateCategory(
+                            transaction.tecTempId as string,
+                            Number(category.id),
+                        ),
+                    );
                 }}
                 options={options}
                 renderInput={(params) => (

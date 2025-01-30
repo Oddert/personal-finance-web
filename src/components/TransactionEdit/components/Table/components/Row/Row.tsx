@@ -35,16 +35,14 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
             case columnMap.description:
                 return (
                     <TransactionDescription
-                        idx={idx}
                         key={idx + '_' + columnIdx}
-                        title={transaction[column.accessorKey] as string}
+                        transaction={transaction}
                     />
                 );
             case 'selected':
                 return (
                     <SelectOption
                         key={idx + '_' + columnIdx}
-                        idx={idx}
                         transaction={transaction}
                     />
                 );
@@ -52,7 +50,6 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                 return (
                     <CategorySelector
                         key={idx + '_' + columnIdx}
-                        idx={idx}
                         transaction={transaction}
                     />
                 );
