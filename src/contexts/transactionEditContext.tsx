@@ -84,24 +84,6 @@ export const defaultColumns = (
             const value = cell.renderValue() || 'unset';
             const marginTopBottom = '4px';
             return (
-                // <select
-                //     onChange={(e) => {
-                //         if (!e.currentTarget.value) {
-                //             return
-                //         }
-                //         callback(cell.row.index, Number(e.currentTarget.value))
-                //     }}
-                //     // value={categories[value].id || undefined}
-                // >
-                //     <option value={'unset'}>
-                //         - none -
-                //     </option>
-                //     {Object.entries(categories).map(([key, category]) => (
-                //         <option value={category.id}>
-                //             {category.label}
-                //         </option>
-                //     ))}
-                // </select>
                 <Autocomplete
                     autoHighlight
                     disablePortal

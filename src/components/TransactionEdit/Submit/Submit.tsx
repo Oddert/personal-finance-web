@@ -55,33 +55,41 @@ const Submit: FC<IProps> = ({ onClose }) => {
             { assignedCategory: 'categoryId' },
         );
 
+        // Filter only for items which are checked.
+        const filteredTransactions = transactions.filter(
+            (transaction) => transaction.selected,
+        );
+
         // Convert the keys from the user's proprietary CSV format to our transaction format.
-        const transactionsWithValidKeys = transactions.map((transaction) =>
-            Object.entries(transaction).reduce(
-                (
-                    acc: { [key: string]: string | number | boolean | null },
-                    pair,
-                ) => {
-                    const key = invertMapping[pair[0]];
-                    const whitelistKeys = ['debit', 'credit', 'ballance'];
+        const transactionsWithValidKeys = filteredTransactions.map(
+            (transaction) =>
+                Object.entries(transaction).reduce(
+                    (
+                        acc: {
+                            [key: string]: string | number | boolean | null;
+                        },
+                        pair,
+                    ) => {
+                        const key = invertMapping[pair[0]];
+                        const whitelistKeys = ['debit', 'credit', 'ballance'];
 
-                    if (!key) {
-                        return acc;
-                    }
-
-                    if (whitelistKeys.includes(key)) {
-                        if (pair[1] === '-') {
-                            acc[key] = 0;
-                        } else {
-                            acc[key] = Number(pair[1]);
+                        if (!key) {
+                            return acc;
                         }
-                    } else {
-                        acc[key] = pair[1];
-                    }
-                    return acc;
-                },
-                {},
-            ),
+
+                        if (whitelistKeys.includes(key)) {
+                            if (pair[1] === '-') {
+                                acc[key] = 0;
+                            } else {
+                                acc[key] = Number(pair[1]);
+                            }
+                        } else {
+                            acc[key] = pair[1];
+                        }
+                        return acc;
+                    },
+                    {},
+                ),
         );
 
         const transactionsWithCardId = transactionsWithValidKeys.map(
