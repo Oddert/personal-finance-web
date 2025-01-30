@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { Autocomplete, TableCell, TextField } from '@mui/material';
 import { Circle as DotIcon } from '@mui/icons-material';
 
-import { Category } from '../../../types/Category.d';
+import { Category } from '../../../../../../types/Category';
 
-import { getCategoryOrderedDataById } from '../../../redux/selectors/categorySelectors';
+import { getCategoryOrderedDataById } from '../../../../../../redux/selectors/categorySelectors';
 
 import {
     TransactionEditContext,
     updateCategory,
-} from '../../../contexts/transactionEditContext';
+} from '../../../../../../contexts/transactionEditContext';
 
 import { IProps } from './CategorySelector.types';
 

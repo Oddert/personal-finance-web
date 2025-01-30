@@ -4,19 +4,19 @@ import { Button } from '@mui/material';
 import type {
     Matcher as MatcherT,
     MatchType,
-} from '../../../../../types/Matcher.d';
+} from '../../../../../../types/Matcher';
 
 import {
     TransactionEditContext,
     toggleSideBar,
     writeTransactions,
-} from '../../../../../contexts/transactionEditContext';
+} from '../../../../../../contexts/transactionEditContext';
 
-import { autoMatchCategories } from '../../../../../utils/uploadUtils';
+import { autoMatchCategories } from '../../../../../../utils/uploadUtils';
 
-import Category from '../../../../Category/Category';
-import ColourBase from '../../../../ColourBase';
-import TitleBase from '../../../../Category/components/TitleBase';
+import Category from '../../../../../Category/Category';
+import ColourBase from '../../../../../ColourBase';
+import TitleBase from '../../../../../Category/components/TitleBase';
 
 import type { IProps } from './Option.types';
 

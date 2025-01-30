@@ -9,9 +9,9 @@ import {
     TextField,
 } from '@mui/material';
 
-import { initCreateCategory } from '../../../../../redux/slices/categorySlice';
+import { initCreateCategory } from '../../../../../../redux/slices/categorySlice';
 
-import { useAppDispatch } from '../../../../../hooks/ReduxHookWrappers';
+import { useAppDispatch } from '../../../../../../hooks/ReduxHookWrappers';
 
 // import ColourEdit from '../../../../ColourEdit';
 

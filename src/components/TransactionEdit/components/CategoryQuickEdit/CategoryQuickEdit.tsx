@@ -2,15 +2,15 @@ import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Drawer, Typography } from '@mui/material';
 
-import { getCategoryResponse } from '../../../redux/selectors/categorySelectors';
+import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
 
 import {
     TransactionEditContext,
     toggleSideBar,
-} from '../../../contexts/transactionEditContext';
+} from '../../../../contexts/transactionEditContext';
 
 import AddCategory from './components/AddCategory';
-import Option from './components/Option/';
+import Option from './components/Option';
 
 /**
  * Sidebar popover which displays transactions, allowing the user to quickly add Categories / Matchers.

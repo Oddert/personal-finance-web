@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 
 import { TableCell, TableRow } from '@mui/material';
 
-import { TransactionEditContext } from '../../../contexts/transactionEditContext';
+import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
 
 import CategorySelector from '../CategorySelector';
 import SelectOption from '../SelectOption';

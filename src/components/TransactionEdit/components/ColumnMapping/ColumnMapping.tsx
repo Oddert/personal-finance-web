@@ -10,13 +10,13 @@ import {
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 
-import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../constants/appConstants';
+import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../../constants/appConstants';
 
 import {
     defaultColumns,
     setColumnMap,
     TransactionEditContext,
-} from '../../../contexts/transactionEditContext';
+} from '../../../../contexts/transactionEditContext';
 
 /**
  * Allows the user to change the mapping between the uploaded CSV columns and the data columns used by the application.

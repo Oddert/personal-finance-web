@@ -2,18 +2,18 @@ import { FC, SyntheticEvent } from 'react';
 
 import { Autocomplete, Box, FormControlLabel, TextField } from '@mui/material';
 
-import { ICard } from '../../../types/Card.types';
+import { ICard } from '../../../../types/Card.types';
 
 import {
     getActiveCard,
     getCardResponse,
-} from '../../../redux/selectors/cardSelectors';
-import { setActiveCard } from '../../../redux/slices/cardSlice';
+} from '../../../../redux/selectors/cardSelectors';
+import { setActiveCard } from '../../../../redux/slices/cardSlice';
 
 import {
     useAppDispatch,
     useAppSelector,
-} from '../../../hooks/ReduxHookWrappers';
+} from '../../../../hooks/ReduxHookWrappers';
 
 import { IProps } from './CardSelection.types';
 

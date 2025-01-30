@@ -14,7 +14,7 @@ import {
     toggleSideBar,
     TransactionEditContext,
     updateDescription,
-} from '../../../contexts/transactionEditContext';
+} from '../../../../../../contexts/transactionEditContext';
 
 /**
  * Renders the description column as a button to activate the Category Quick Add and with edit capabilities.

@@ -5,20 +5,20 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button, CircularProgress } from '@mui/material';
 
-import { Transaction } from '../../../types/Transaction.d';
+import { Transaction } from '../../../../types/Transaction';
 
-import { TransactionEditContext } from '../../../contexts/transactionEditContext';
+import { TransactionEditContext } from '../../../../contexts/transactionEditContext';
 
-import APIService from '../../../services/APIService';
+import APIService from '../../../../services/APIService';
 
 import {
     useAppDispatch,
     useAppSelector,
-} from '../../../hooks/ReduxHookWrappers';
+} from '../../../../hooks/ReduxHookWrappers';
 
-import { requestTransactions } from '../../../redux/slices/transactionsSlice';
-import { intakeError } from '../../../redux/thunks/errorThunks';
-import { getActiveCardId } from '../../../redux/selectors/cardSelectors';
+import { requestTransactions } from '../../../../redux/slices/transactionsSlice';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
+import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
 
 import type { IProps } from './Submit.types';
 

@@ -11,11 +11,11 @@ import { Fragment, useContext, type FC } from 'react';
 
 import { TransactionEditContext } from '../../contexts/transactionEditContext';
 
-import CardSelection from './CardSelection';
-import CategoryQuickEdit from './CategoryQuickEdit/';
-import ColumnMapping from './ColumnMapping/';
-import Submit from './Submit/';
-import Table from './Table/';
+import CardSelection from './components/CardSelection';
+import CategoryQuickEdit from './components/CategoryQuickEdit';
+import ColumnMapping from './components/ColumnMapping';
+import Submit from './components/Submit';
+import Table from './components/Table';
 
 import type { IProps } from './TransactionEdit.types';
 

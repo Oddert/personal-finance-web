@@ -5,7 +5,7 @@ import { Checkbox } from '@mui/material';
 import {
     changeSingleSelected,
     TransactionEditContext,
-} from '../../../contexts/transactionEditContext';
+} from '../../../../../../contexts/transactionEditContext';
 
 import { IProps } from './SelectOption.types';
 

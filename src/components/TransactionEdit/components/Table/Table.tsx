@@ -16,9 +16,9 @@ import {
     defaultColumns,
     TransactionEditContext,
     uncheckAll,
-} from '../../../contexts/transactionEditContext';
+} from '../../../../contexts/transactionEditContext';
 
-import Row from '../Row';
+import Row from './components/Row';
 
 /**
  * Displays the transactions and edit options as a table.
