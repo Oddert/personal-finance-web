@@ -5,6 +5,7 @@ import budgetReducer from '../slices/budgetSlice';
 import cardReducer from '../slices/cardSlice';
 import errorReducer from '../slices/errorSlice';
 import categoryReducer from '../slices/categorySlice';
+import profileReducer from '../slices/profileSlice';
 import transactionReducer from '../slices/transactionsSlice';
 
 import rootSaga from './rootSaga';
@@ -17,6 +18,7 @@ const store = configureStore({
         card: cardReducer,
         category: categoryReducer,
         error: errorReducer,
+        profile: profileReducer,
         transaction: transactionReducer,
     },
     middleware: (getDefaultMiddleware) =>
