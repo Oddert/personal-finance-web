@@ -1,0 +1,168 @@
+import { FC, useMemo } from 'react';
+import Chart from 'react-apexcharts';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import { IProps } from './CandleStickChart.types';
+import { Box, useTheme } from '@mui/material';
+import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+
+dayjs.extend(localizedFormat);
+
+/**
+ * Displays the highest, lowest, start, and finish ballance across each month within the range.
+ * @component
+ * @category Pages
+ * @subcategory Budget Overview
+ * @param props.endDate The start date for the date range.
+ * @param props.startDate The end date for the date range.
+ * @param props.transactions The list of transactions ordered by date.
+ */
+const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
+    const data = useMemo(() => {
+        let sDate = dayjs(startDate);
+        const seriesData: {
+            x: number;
+            y: number[];
+        }[] = [];
+
+        while (sDate < endDate) {
+            const year = sDate.year();
+            const month = sDate.month();
+            if (year in transactions && month in transactions[year]) {
+                const monthTransactions = transactions[year][month];
+                const startBallance = monthTransactions[0].ballance;
+                const endBallance =
+                    monthTransactions[monthTransactions.length - 1].ballance;
+                const { highValue, lowValue } = monthTransactions.reduce(
+                    (
+                        acc: {
+                            highValue: number | null;
+                            lowValue: number | null;
+                        },
+                        transaction,
+                    ) => {
+                        if (
+                            !acc.highValue ||
+                            transaction.ballance > acc.highValue
+                        ) {
+                            acc.highValue = transaction.ballance;
+                        }
+                        if (
+                            !acc.lowValue ||
+                            transaction.ballance < acc.lowValue
+                        ) {
+                            acc.lowValue = transaction.ballance;
+                        }
+                        return acc;
+                    },
+                    { highValue: null, lowValue: null },
+                );
+                const chart = {
+                    x: sDate.valueOf(),
+                    y: [
+                        startBallance,
+                        highValue || 0,
+                        lowValue || 0,
+                        endBallance,
+                    ],
+                };
+                seriesData.push(chart);
+            }
+            sDate = sDate.add(1, 'month').set('date', 10);
+        }
+
+        return seriesData;
+    }, [transactions]);
+
+    const theme = useTheme();
+
+    return (
+        <Box
+            sx={{
+                '& *': {
+                    color: theme.palette.primary.contrastText,
+                },
+            }}
+        >
+            <Chart
+                type='candlestick'
+                height={500}
+                width={700}
+                options={{
+                    chart: {
+                        type: 'candlestick',
+                        height: 350,
+                        zoom: {
+                            allowMouseWheelZoom: false,
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    fill: {
+                        type: 'solid',
+                        gradient: {
+                            opacityFrom: 0.6,
+                            opacityTo: 0.8,
+                        },
+                    },
+                    legend: {
+                        labels: {
+                            colors: '#fff',
+                        },
+                    },
+                    plotOptions: {
+                        candlestick: {
+                            colors: {
+                                upward: theme.palette.success.main,
+                                downward: theme.palette.error.main,
+                            },
+                        },
+                    },
+                    stroke: {
+                        curve: 'straight',
+                    },
+                    tooltip: {
+                        x: {
+                            format: 'dd/MM/yy',
+                        },
+                        y: {
+                            formatter(val) {
+                                return val?.toFixed(2) || '';
+                            },
+                        },
+                        shared: true,
+                    },
+                    xaxis: {
+                        type: 'datetime',
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            },
+                        },
+                        min: new Date(String(startDate)).getTime(),
+                        max: new Date(String(endDate)).getTime(),
+                    },
+                    yaxis: {
+                        tickAmount: 10,
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            },
+                            formatter: (val) =>
+                                `${CURRENCY_SYMBOL}${Math.floor(val)}`,
+                        },
+                    },
+                }}
+                series={[
+                    {
+                        data,
+                    },
+                ]}
+            />
+        </Box>
+    );
+};
+
+export default CandleStickChart;

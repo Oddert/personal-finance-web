@@ -38,6 +38,7 @@ import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 import ActiveCard from '../../components/ActiveCard/ActiveCard';
+import CandleStickChart from './components/CandleStickChart';
 
 dayjs.extend(localizedFormat);
 
@@ -216,6 +217,23 @@ const BudgetOverview: FC<IProps> = () => {
                         chartList={chartList}
                         endDate={endDate}
                         startDate={startDate}
+                    />
+                </Paper>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>Ballance min / max</Typography>
+                    <CandleStickChart
+                        endDate={endDate}
+                        startDate={startDate}
+                        transactions={transactions}
                     />
                 </Paper>
                 <BudgetPageToggle
