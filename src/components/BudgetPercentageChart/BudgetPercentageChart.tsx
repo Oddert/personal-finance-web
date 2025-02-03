@@ -86,6 +86,9 @@ const BudgetPercentageChart: FC<IProps> = ({
                                 }
                             },
                         },
+                        zoom: {
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     legend: {
                         show: false,

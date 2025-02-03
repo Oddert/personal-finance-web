@@ -58,6 +58,9 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                         height: 500,
                         type: 'area',
                         stacked: true,
+                        zoom: {
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     dataLabels: {
                         enabled: false,

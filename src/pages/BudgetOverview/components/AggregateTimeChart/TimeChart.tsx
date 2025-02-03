@@ -96,6 +96,9 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                         height: 500,
                         type: 'area',
                         stacked: true,
+                        zoom: {
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     dataLabels: {
                         enabled: false,
