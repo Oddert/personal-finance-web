@@ -120,8 +120,11 @@ const BudgetBreakdown: FC = () => {
                     gridGap: '16px',
                 }}
             >
-                <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budget from{' '}
+                <Typography variant='h2' sx={{ margin: '32px 0 0' }}>
+                    Budget breakdown
+                </Typography>
+                <Typography variant='h3' sx={{ margin: '0 0 32px' }}>
+                    from{' '}
                     {formatReadableDate(
                         startDate.format(DATE_FORMAT),
                         endDate.format(DATE_FORMAT),

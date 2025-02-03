@@ -52,7 +52,7 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                     return value === 0
                         ? '-'
                         : value > 0
-                          ? `+ ${currencyLocaliser(value)}${value}`
+                          ? `+ ${currencyLocaliser(value)}`
                           : `- ${currencyLocaliser(Math.abs(value))}`;
                 },
             },
