@@ -1,7 +1,5 @@
 import { ApexOptions } from 'apexcharts';
 
-import { LOCALE } from '../../constants/appConstants';
-
 // temp file used for privacy, swap for ../../constants/projectionConstants.ts
 import {
     defaultScenario,
@@ -31,7 +29,10 @@ export const scenarioOptions = scenarios.map((scenario) => ({
     id: scenario.id,
 }));
 
-export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
+export const chart1BaseOptions = (
+    compact: boolean,
+    language: string,
+): ApexOptions => ({
     chart: {
         id: 'existing-data-line-chart',
         type: 'line',
@@ -61,7 +62,7 @@ export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
     //         return `
     //             <div>
     //                 <div>
-    //                     <p>${new Date(datum.x).toLocaleDateString(LOCALE)}</p>
+    //                     <p>${new Date(datum.x).toLocaleDateString(language)}</p>
     //                     </div>
     //                 <div>
     //                     <p>${CURRENCY_SYMBOL}${largeValueFormatter(datum.y)}</p>
@@ -81,7 +82,7 @@ export const chart1BaseOptions = (compact: boolean): ApexOptions => ({
                 colors: theme.palette.common.white,
             },
             formatter: (val: string) =>
-                new Date(val).toLocaleDateString(LOCALE),
+                new Date(val).toLocaleDateString(language),
         },
         tickAmount: 10,
     },

@@ -1,6 +1,7 @@
 /**
  * User's locale setting for localisation functions.
  * @constant
+ * @deprecated
  * @category Constants
  * @subcategory App Constants
  */

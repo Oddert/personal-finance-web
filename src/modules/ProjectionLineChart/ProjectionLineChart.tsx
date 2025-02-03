@@ -6,7 +6,6 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useSelector } from 'react-redux';
 import Chart from 'react-apexcharts';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -35,6 +34,9 @@ import {
     ScheduleByEvent,
 } from '../../utils/schedulerUtils';
 
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+
+import { getActiveLanguage } from '../../redux/selectors/profileSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
 import type { Transaction } from '../../types/Transaction.d';
@@ -88,7 +90,8 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
 
     const [showHistorical, setShowHistorical] = useState(false);
 
-    const transactions = useSelector(getTransactionsOrderedByDate);
+    const transactions = useAppSelector(getTransactionsOrderedByDate);
+    const language = useAppSelector(getActiveLanguage);
 
     const handleScenarioSelection = (
         event: SyntheticEvent<Element, Event>,
@@ -378,7 +381,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                 </Box>
             )}
             <Chart
-                options={chart1BaseOptions(compact)}
+                options={chart1BaseOptions(compact, language)}
                 series={
                     showHistorical
                         ? [

@@ -11,8 +11,6 @@ import { v4 as uuid } from 'uuid';
 import { Box, Button } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
 
-import { LOCALE } from '../../../../constants/appConstants';
-
 import {
     setColumnMap,
     setMode,
@@ -23,7 +21,10 @@ import {
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
+import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
+
 import useTransactions from '../../../../hooks/useTransactions';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
 
@@ -50,12 +51,14 @@ const Edit: FC<IProps> = () => {
         rangeValues[value[1]]?.top,
     );
 
+    const language = useAppSelector(getActiveLanguage);
+
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
         const filteredTransactions = transactions.map((transaction) => ({
             ...transaction,
-            date: new Date(transaction.date).toLocaleDateString(LOCALE),
+            date: new Date(transaction.date).toLocaleDateString(language),
             credit: transaction.credit === 0 ? '-' : transaction.credit,
             debit: transaction.debit === 0 ? '-' : transaction.debit,
             categoryId: transaction.categoryId || 0,
@@ -76,7 +79,7 @@ const Edit: FC<IProps> = () => {
         );
         dispatch(writeTransactions(filteredTransactions));
         dispatch(setMode('edit'));
-    }, [rangeValues, value, transactions]);
+    }, [language, rangeValues, transactions, value]);
 
     return (
         <Fragment>

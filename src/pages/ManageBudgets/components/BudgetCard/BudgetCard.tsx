@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
 import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
 
-import { LOCALE } from '../../../../constants/appConstants';
 import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
 import APIService from '../../../../services/APIService';
@@ -13,8 +12,9 @@ import {
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
 
-import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
+import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
+import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 import type { IProps } from './BudgetCard.types';
@@ -31,6 +31,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
 
     const activeBudgetId = useAppSelector(getActiveBudgetId);
+    const language = useAppSelector(getActiveLanguage);
 
     const handleClickActivate = () => {
         try {
@@ -86,7 +87,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     variant='body2'
                 >
                     Last updated:{' '}
-                    {new Date(budget.updatedOn).toLocaleString(LOCALE)}
+                    {new Date(budget.updatedOn).toLocaleString(language)}
                 </Typography>
                 <Button onClick={handleClickEdit}>
                     <Typography component='span'>View and edit</Typography>{' '}

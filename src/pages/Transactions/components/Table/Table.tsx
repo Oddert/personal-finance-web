@@ -17,6 +17,7 @@ import { transactionColumns } from '../../../../utils/transactionUtils';
 
 import TableWrapper from '../../../../components/Table/Table';
 import { Box, CircularProgress } from '@mui/material';
+import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
 
 dayjs.extend(customParseFormat);
 
@@ -38,10 +39,11 @@ const Table = () => {
     const { transactions } = useTransactions();
 
     const transactionsLoading = useAppSelector(getTransactionsLoading);
+    const language = useAppSelector(getActiveLanguage);
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
-        () => transactionColumns,
-        [],
+        () => transactionColumns(language),
+        [language],
     );
 
     useEffect(() => {

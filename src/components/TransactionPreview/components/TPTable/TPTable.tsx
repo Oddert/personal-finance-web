@@ -3,10 +3,11 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import { LOCALE } from '../../../../constants/appConstants';
+import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
 
 import { meanValue, standardDeviation } from '../../../../utils/mathsUtils';
 
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import useTransactions from '../../../../hooks/useTransactions';
 
 import Table from '../../../Table';
@@ -29,6 +30,8 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
         TransactionExtended[]
     >([]);
 
+    const language = useAppSelector(getActiveLanguage);
+
     const { transactions } = useTransactions(startDate, endDate);
 
     const columns = useMemo<ColumnDef<TransactionExtended>[]>(
@@ -39,7 +42,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
                 cell: (cell) => {
                     const value = cell.renderValue();
                     if (typeof value === 'number') {
-                        return new Date(value).toLocaleDateString(LOCALE);
+                        return new Date(value).toLocaleDateString(language);
                     }
                     return value;
                 },
@@ -79,7 +82,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
             //     }
             // }
         ],
-        [],
+        [language],
     );
 
     useEffect(() => {

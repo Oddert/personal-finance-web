@@ -27,6 +27,8 @@ import {
     title,
 } from './ExistingDataLineChartUtils';
 import useTransactions from '../../hooks/useTransactions';
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { getActiveLanguage } from '../../redux/selectors/profileSelectors';
 
 dayjs.extend(localizedFormat);
 
@@ -61,12 +63,11 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     // Workaround for issue owners seem unwilling / unable to resolve:
     // https://github.com/apexcharts/react-apexcharts/issues/182
     // https://github.com/apexcharts/react-apexcharts/issues/31
-    const [chart1Options, setChart1Options] =
-        useState<ApexOptions>(chart1BaseOptions);
-    const [chart2Options, setChart2Options] =
-        useState<ApexOptions>(chart2BaseOptions);
+    const [chart1Options, setChart1Options] = useState<ApexOptions>({});
+    const [chart2Options, setChart2Options] = useState<ApexOptions>({});
 
     const { transactions } = useTransactions(startDate, endDate);
+    const language = useAppSelector(getActiveLanguage);
 
     useEffect(() => {
         const sorted = transactions.reduce(
@@ -118,22 +119,23 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     }, [endDate, startDate, transactions]);
 
     useEffect(() => {
-        setChart1Options(chart1BaseOptions);
+        setChart1Options(chart1BaseOptions(language));
+        const chart2Default = chart2BaseOptions(language);
         setChart2Options({
-            ...chart2BaseOptions,
+            ...chart2Default,
             tooltip: {
-                ...chart2BaseOptions.tooltip,
+                ...chart2Default.tooltip,
                 y: {
                     formatter: (val, opts) =>
                         `${debitTransactions[opts.dataPointIndex].description} : ${val}`,
                 },
             },
             yaxis: {
-                ...chart2BaseOptions.yaxis,
+                ...chart2Default.yaxis,
                 max: debitMax,
             },
         });
-    }, [debitTransactions, debitMax]);
+    }, [debitTransactions, debitMax, language]);
 
     const width = useMemo(() => (compact ? '100%' : '80%'), [compact]);
 

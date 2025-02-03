@@ -1,11 +1,17 @@
 import { useMemo } from 'react';
 
+import { getActiveLanguage } from '../redux/selectors/profileSelectors';
+
+import { useAppSelector } from './ReduxHookWrappers';
+
 /**
  * @category Hooks
  * @subcategory Localised Number
  * @returns A formatting function to localise numbers, and a formatter for currency values.
  */
 const useLocalisedNumber = () => {
+    const language = useAppSelector(getActiveLanguage);
+
     const { currencyLocaliser, numberLocaliser } = useMemo(() => {
         /**
          * Localises a currency value, taking into account the user's language settings as well as the specified currency.
@@ -18,7 +24,7 @@ const useLocalisedNumber = () => {
             currency: string = 'GBP',
         ) => {
             // TODO: Swap with currency preferences once ready.
-            return Intl.NumberFormat('en-GB', {
+            return Intl.NumberFormat(language, {
                 currency,
                 style: 'currency',
             }).format(value);
@@ -35,14 +41,15 @@ const useLocalisedNumber = () => {
             value: number | bigint | typeof Infinity,
         ) => {
             // TODO: Swap with currency preferences once ready.
-            return Intl.NumberFormat('en-GB').format(value);
+            return Intl.NumberFormat(language).format(value);
         };
 
         return {
             currencyLocaliser: currencyLocaliserFunc,
             numberLocaliser: numberLocaliserFunc,
         };
-    }, []);
+    }, [language]);
+
     return { currencyLocaliser, numberLocaliser };
 };
 

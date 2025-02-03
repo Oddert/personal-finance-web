@@ -4,12 +4,9 @@ import { Box } from '@mui/material';
 
 import type { Transaction } from '../types/Transaction.d';
 import type { Category } from '../types/Category.d';
-
-import { LOCALE } from '../constants/appConstants';
+import type { CategoryState } from '../redux/slices/categorySlice';
 
 import useLocalisedNumber from '../hooks/useLocalisedNumber';
-
-import type { CategoryState } from '../redux/slices/categorySlice';
 
 import { createReadableNumber } from './commonUtils';
 
@@ -97,14 +94,16 @@ export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
 /**
  * Columns for the transaction table on the upload / edit form.
  */
-export const transactionColumns: ColumnDef<Transaction>[] = [
+export const transactionColumns = (
+    language: string,
+): ColumnDef<Transaction>[] => [
     {
         header: 'Date',
         accessorKey: 'date',
         cell: (cell) => {
             const value = cell.renderValue();
             if (typeof value === 'number') {
-                return new Date(value).toLocaleDateString(LOCALE);
+                return new Date(value).toLocaleDateString(language);
             }
             return value;
         },
