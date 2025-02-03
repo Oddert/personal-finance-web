@@ -9,6 +9,7 @@ export const LOCALE = 'en-GB';
 /**
  * The predominant currency unit for the user.
  * @constant
+ * @deprecated
  * @category Constants
  * @subcategory App Constants
  */
@@ -17,6 +18,7 @@ export const CURRENCY_SYMBOL = '£';
 /**
  * The predominant currency unit for the user.
  * @constant
+ * @deprecated
  * @category Constants
  * @subcategory App Constants
  */
