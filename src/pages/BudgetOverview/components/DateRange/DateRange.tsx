@@ -19,6 +19,10 @@ dayjs.extend(localizedFormat);
  * @category Pages
  * @subcategory Budget Overview
  * @component
+ * @param props.endDate The start date for the date range.
+ * @param props.setEndDate Callback function to change the end date.
+ * @param props.setStartDate Callback function to change the start date.
+ * @param props.startDate The end date for the date range.
  */
 const DateRange: FC<IProps> = ({
     endDate,
