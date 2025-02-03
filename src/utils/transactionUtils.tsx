@@ -2,10 +2,12 @@ import { CellContext, ColumnDef } from '@tanstack/react-table';
 
 import { Box } from '@mui/material';
 
-import { CURRENCY_SYMBOL, LOCALE } from '../constants/appConstants';
-
 import type { Transaction } from '../types/Transaction.d';
 import type { Category } from '../types/Category.d';
+
+import { LOCALE } from '../constants/appConstants';
+
+import useLocalisedNumber from '../hooks/useLocalisedNumber';
 
 import type { CategoryState } from '../redux/slices/categorySlice';
 
@@ -84,11 +86,10 @@ export const orderTransactions = (transactions: Transaction[]) => {
 export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
     const rawValue = createReadableNumber(cell.renderValue(), 0);
     const value = Number(rawValue);
+    const { currencyLocaliser } = useLocalisedNumber();
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {isNaN(value) || value === 0
-                ? '-'
-                : `${CURRENCY_SYMBOL}${value.toFixed(2)}`}
+            {isNaN(value) || value === 0 ? '-' : currencyLocaliser(value)}
         </Box>
     );
 };

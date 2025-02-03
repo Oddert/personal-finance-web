@@ -5,13 +5,10 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Autocomplete, Box, TextField } from '@mui/material';
 
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
-
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
-import { createReadableNumber } from '../../../../utils/commonUtils';
-
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import {
     IMonthSpendCategory,
@@ -40,6 +37,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
     const [value, setValue] = useState<IMonthSpendCategory[]>([]);
 
     const categories = useAppSelector(getCategoryOrderedDataById);
+
     useEffect(() => {
         const { series: nextSeries, allCategories } = generateMonthSpendData(
             categories,
@@ -63,6 +61,8 @@ const BudgetMonthSpendChart: FC<IProps> = ({
             (seriesItem) => seriesItem.categoryId in valuesLookup,
         );
     }, [fullSeries, value]);
+
+    const { currencyLocaliser } = useLocalisedNumber();
 
     return (
         <Box>
@@ -125,7 +125,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                             },
                             y: {
                                 formatter(val) {
-                                    return `${CURRENCY_SYMBOL}${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                    return currencyLocaliser(val);
                                 },
                             },
                             shared: true,
@@ -147,7 +147,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                                 formatter(val) {
-                                    return `${CURRENCY_SYMBOL}${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                    return currencyLocaliser(val);
                                 },
                             },
                         },

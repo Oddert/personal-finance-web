@@ -3,7 +3,7 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { Typography } from '@mui/material';
 
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import Table from '../../../../components/Table';
 
@@ -28,6 +28,8 @@ const BudgetTable: FC<IProps> = ({ data }) => {
         [data],
     );
 
+    const { currencyLocaliser } = useLocalisedNumber();
+
     const columns = useMemo<ColumnDef<IBudgetDatumTable>[]>(
         () => [
             {
@@ -43,15 +45,15 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                 accessorKey: 'spend',
             },
             {
-                header: `Difference (${CURRENCY_SYMBOL})`,
+                header: `Difference (val)`,
                 accessorKey: 'diffFloat',
                 cell: (cell) => {
                     const value = cell.renderValue<number>();
                     return value === 0
                         ? '-'
                         : value > 0
-                          ? `+ ${CURRENCY_SYMBOL}${value}`
-                          : `- ${CURRENCY_SYMBOL}${Math.abs(value)}`;
+                          ? `+ ${currencyLocaliser(value)}${value}`
+                          : `- ${currencyLocaliser(Math.abs(value))}`;
                 },
             },
             {
@@ -80,7 +82,7 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                 },
             },
         ],
-        [],
+        [currencyLocaliser],
     );
 
     return <Table columns={columns} data={dataParsed} />;

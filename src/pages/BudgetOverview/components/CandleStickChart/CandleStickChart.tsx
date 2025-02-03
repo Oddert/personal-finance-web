@@ -3,9 +3,10 @@ import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { IProps } from './CandleStickChart.types';
 import { Box, useTheme } from '@mui/material';
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+
+import { IProps } from './CandleStickChart.types';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 dayjs.extend(localizedFormat);
 
@@ -76,6 +77,8 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
     }, [transactions]);
 
     const theme = useTheme();
+
+    const { currencyLocaliser } = useLocalisedNumber();
 
     return (
         <Box
@@ -151,7 +154,7 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                                 colors: '#fff',
                             },
                             formatter: (val) =>
-                                `${CURRENCY_SYMBOL}${Math.floor(val)}`,
+                                currencyLocaliser(Math.floor(val)),
                         },
                     },
                 }}

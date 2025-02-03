@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 
 import type { IBudgetDatum } from '../../types/Budget.types';
 
-import { CURRENCY_SYMBOL } from '../../constants/appConstants';
+import useLocalisedNumber from '../../hooks/useLocalisedNumber';
 
 import type { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
 
@@ -57,6 +57,8 @@ const BudgetPercentageChart: FC<IProps> = ({
             },
         );
     }, [data, useFloat]);
+
+    const { currencyLocaliser } = useLocalisedNumber();
 
     return (
         <Box
@@ -125,9 +127,9 @@ const BudgetPercentageChart: FC<IProps> = ({
                                     seriesRef[opts.dataPointIndex];
                                 return `
 									<p>Discrepancy (%): ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
-									<p>Discrepancy (${CURRENCY_SYMBOL}): ${budgetDatum.diffFloat < 0 ? `-${CURRENCY_SYMBOL}${Math.abs(budgetDatum.diffFloat)}` : `+${CURRENCY_SYMBOL}${budgetDatum.diffFloat}`}</p>
-									<p>Expected: ${CURRENCY_SYMBOL}${budgetDatum.budget}</p>
-									<p>Actual: ${CURRENCY_SYMBOL}${budgetDatum.spend}</p>
+									<p>Discrepancy (val): ${budgetDatum.diffFloat < 0 ? `-${currencyLocaliser(Math.abs(budgetDatum.diffFloat))}` : `+${currencyLocaliser(budgetDatum.diffFloat)}`}</p>
+									<p>Expected: ${currencyLocaliser(budgetDatum.budget)}</p>
+									<p>Actual: ${currencyLocaliser(budgetDatum.spend)}</p>
 								`;
                             },
                         },

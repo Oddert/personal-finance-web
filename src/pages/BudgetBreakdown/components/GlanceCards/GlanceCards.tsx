@@ -10,7 +10,7 @@ import {
 
 import type { IBudgetDatum } from '../../../../types/Budget.types';
 
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import { normaliseNum } from '../../../../utils/mathsUtils';
 
@@ -95,6 +95,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
         [actualSpend, expectedSpend],
     );
 
+    const { currencyLocaliser } = useLocalisedNumber();
+
     return (
         <Box
             sx={{
@@ -125,8 +127,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {spendDiff < 0 ? '-' : '+'} {CURRENCY_SYMBOL}
-                    {spendDiff} {spendDiff < 0 ? 'bellow' : 'above'} budget
+                    {spendDiff < 0 ? '-' : '+'} {currencyLocaliser(spendDiff)}{' '}
+                    {spendDiff < 0 ? 'bellow' : 'above'} budget
                 </Typography>
             </Paper>
             <Paper
@@ -159,8 +161,10 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                                 sx={{ fontWeight: 'bold' }}
                             >
                                 {largestOverspendVal.categoryName} (+{' '}
-                                {CURRENCY_SYMBOL}
-                                {largestOverspendVal.diffFloat})
+                                {currencyLocaliser(
+                                    largestOverspendVal.diffFloat,
+                                )}
+                                )
                             </Typography>
                         </Typography>
                     </Fragment>
