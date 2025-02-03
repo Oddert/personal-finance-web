@@ -1,31 +1,33 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Paper, Typography } from '@mui/material';
 
 import type { ICategoryBreakdown } from '../../types/Category.d';
-import type { Transaction } from '../../types/Transaction.d';
 
 import {
     createBudgetChartData,
     createCategoryBreakdown,
-    toBeginningMonth,
-    toEndMonth,
+    DATE_FORMAT,
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
 } from '../../utils/budgetUtils';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import useTransactions from '../../hooks/useTransactions';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
-import { getTransactionsResponse } from '../../redux/selectors/transactionsSelectors';
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
 
+import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
 import PercentageChart from './components/PercentageChart';
@@ -53,13 +55,12 @@ dayjs.extend(localizedFormat);
 const BudgetBreakdown: FC = () => {
     const navigation = useSearchParams();
 
-    const [startDate, setStartDate] = useState(
-        toBeginningMonth(new Date('2024-11-01')),
+    const [startDate, setStartDate] = useState<Dayjs>(
+        toBeginningMonthDayjs(new Date('2024-11-01')),
     );
-    const [endDate, setEndDate] = useState(toEndMonth(new Date('2024-11-01')));
-    const [filteredTransactions, setFilteredTransactions] = useState<
-        Transaction[]
-    >([]);
+    const [endDate, setEndDate] = useState<Dayjs>(
+        toEndMonthDayjs(new Date('2024-11-01')),
+    );
 
     const [numMonths, setNumMonths] = useState(1);
     const [categoryBreakdown, setCategoryBreakdown] =
@@ -71,7 +72,7 @@ const BudgetBreakdown: FC = () => {
             },
         });
 
-    const transactions = useAppSelector(getTransactionsResponse);
+    const { transactions } = useTransactions(startDate, endDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
     const monthBudget = useAppSelector(getActiveBudget);
 
@@ -88,38 +89,27 @@ const BudgetBreakdown: FC = () => {
     }, [categoryBreakdown, monthBudget, numMonths]);
 
     useEffect(() => {
-        setNumMonths(dayjs(endDate).diff(dayjs(startDate), 'month') + 1);
-
-        const nextFilteredTransactions = transactions.filter((transaction) => {
-            const tDate = dayjs(transaction.date);
-            const sDate = dayjs(startDate);
-            const eDate = dayjs(endDate);
-            if (tDate.diff(sDate) >= 0 && tDate.diff(eDate) <= 0) {
-                return true;
-            }
-            return false;
-        });
+        setNumMonths(endDate.diff(startDate, 'month') + 1);
 
         const nextCategoryBreakdown = createCategoryBreakdown(
-            nextFilteredTransactions,
+            transactions,
             categories,
         );
         setCategoryBreakdown(nextCategoryBreakdown);
-        setFilteredTransactions(nextFilteredTransactions);
     }, [categories, endDate, startDate, transactions]);
 
     useEffect(() => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
-            setStartDate(start);
+            setStartDate(toBeginningMonthDayjs(start));
             if (end) {
-                setEndDate(end);
+                setEndDate(toEndMonthDayjs(end));
             } else {
-                setEndDate(toEndMonth(start));
+                setEndDate(toEndMonthDayjs(start));
             }
         }
-    }, [navigation]);
+    }, []);
 
     return (
         <ResponsiveContainer>
@@ -131,7 +121,11 @@ const BudgetBreakdown: FC = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budget from {formatReadableDate(startDate, endDate)}{' '}
+                    Budget from{' '}
+                    {formatReadableDate(
+                        startDate.format(DATE_FORMAT),
+                        endDate.format(DATE_FORMAT),
+                    )}{' '}
                     {formatNumMonths(numMonths)}
                 </Typography>
                 <DateRange
@@ -140,6 +134,7 @@ const BudgetBreakdown: FC = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
+                <ActiveCard />
                 <ActiveBudget />
                 <Paper
                     elevation={0}
@@ -161,16 +156,50 @@ const BudgetBreakdown: FC = () => {
                     monthBudget={monthBudget}
                     numMonths={numMonths}
                 />
-                <Paper elevation={0}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        padding: '16px',
+                    }}
+                >
                     <BudgetTable data={data} />
                 </Paper>
-                <Paper elevation={0}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>Aggregate spend chart</Typography>
                     <TimeChart
                         endDate={endDate}
-                        filteredTransactions={filteredTransactions}
+                        filteredTransactions={transactions}
                         startDate={startDate}
                     />
                 </Paper>
+                {numMonths > 1 ? (
+                    <Paper
+                        elevation={0}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                            justifyContent: 'space-around',
+                            padding: '16px',
+                        }}
+                    >
+                        <Typography>Category spend across period</Typography>
+                        <BudgetMonthSpendChart
+                            endDate={endDate}
+                            filteredTransactions={transactions}
+                            startDate={startDate}
+                        />
+                    </Paper>
+                ) : null}
                 <BudgetPageToggle
                     endDate={endDate}
                     mode='breakdown'

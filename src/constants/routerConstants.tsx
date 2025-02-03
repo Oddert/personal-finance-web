@@ -5,6 +5,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import BudgetBreakdownIcon from '@mui/icons-material/DonutSmall';
 import BudgetOverviewIcon from '@mui/icons-material/CandlestickChart';
 import ManageBudgetIcon from '@mui/icons-material/AutoAwesomeMotion';
+import ManageCardsIcon from '@mui/icons-material/Payments';
 // import ManageBudgetIcon from '@mui/icons-material/Tune';;
 // import ScenarioEditIcon from '.@mui/icons-material/DeveloperBoard/';
 import TransactionsIcon from '@mui/icons-material/ReceiptLong';
@@ -15,10 +16,12 @@ import AllData from '../pages/AllData';
 import BudgetBreakdown from '../pages/BudgetBreakdown';
 import BudgetOverview from '../pages/BudgetOverview';
 import Categories from '../pages/Categories/';
+import EditBudget from '../pages/EditBudget';
+import EditCard from '../pages/EditCard';
 import Home from '../pages/Home';
 import ManageBudgets from '../pages/ManageBudgets';
+import ManageCards from '../pages/ManageCards';
 import Transactions from '../pages/Transactions/';
-import EditBudget from '../pages/EditBudget';
 
 /**
  * Enum object to hold all route paths.
@@ -33,8 +36,11 @@ export const ROUTES = Object.freeze({
     BUDGET_OVERVIEW: '/budget-overview',
     CATEGORIES: '/categories',
     CREATE_BUDGET: '/create-budget',
+    CREATE_CARD: '/create-card',
     EDIT_BUDGET: '/edit-budget',
+    EDIT_CARD: '/edit-card',
     MANAGE_BUDGETS: '/manage-budgets',
+    MANAGE_CARDS: '/manage-cards',
     TRANSACTIONS: '/transactions',
 });
 
@@ -51,6 +57,7 @@ export const ROUTES_FACTORY = Object.freeze({
         `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
     EDIT_BUDGET: (budgetId: string | number) =>
         `${ROUTES.EDIT_BUDGET}/${budgetId}`,
+    EDIT_CARD: (cardId: string | number) => `${ROUTES.EDIT_CARD}/${cardId}`,
 });
 
 // export const GO = Object.freeze({
@@ -136,6 +143,30 @@ const router = createBrowserRouter([
             </Layout>
         ),
     },
+    {
+        path: ROUTES.MANAGE_CARDS,
+        element: (
+            <Layout>
+                <ManageCards />
+            </Layout>
+        ),
+    },
+    {
+        path: ROUTES.CREATE_CARD,
+        element: (
+            <Layout>
+                <EditCard />
+            </Layout>
+        ),
+    },
+    {
+        path: `${ROUTES.EDIT_CARD}/:cardId`,
+        element: (
+            <Layout>
+                <EditCard />
+            </Layout>
+        ),
+    },
 ]);
 
 /**
@@ -161,17 +192,22 @@ export const navigation = [
         location: ROUTES.BUDGET_OVERVIEW,
     },
     {
-        label: 'Manage Budgets',
+        label: 'My Budgets',
         Icon: ManageBudgetIcon,
         location: ROUTES.MANAGE_BUDGETS,
     },
     {
-        label: 'Manage Categories',
+        label: 'My Cards',
+        Icon: ManageCardsIcon,
+        location: ROUTES.MANAGE_CARDS,
+    },
+    {
+        label: 'Categories',
         Icon: CategoryIcon,
         location: ROUTES.CATEGORIES,
     },
     {
-        label: 'Upload & View Transactions',
+        label: 'Transactions',
         Icon: TransactionsIcon,
         location: ROUTES.TRANSACTIONS,
     },

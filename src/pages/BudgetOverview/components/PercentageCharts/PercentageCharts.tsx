@@ -31,6 +31,7 @@ dayjs.extend(localizedFormat);
  * @category Pages
  * @subcategory Budget Overview
  * @component
+ * @param props.chartList The list of pre-formatted Percentage Chart objects.
  */
 const PercentageCharts: FC<IProps> = ({ chartList }) => {
     const [zoomDim, setZoomDim] = useState<{ height: number; width: number }>(

@@ -12,6 +12,9 @@ export const chart1BaseOptions: ApexOptions = {
         id: 'existing-data-line-chart',
         // group: 'all-transactions',
         type: 'line',
+        zoom: {
+            allowMouseWheelZoom: false,
+        },
     },
     grid: {
         show: true,
@@ -63,6 +66,9 @@ export const chart2BaseOptions: ApexOptions = {
         id: 'credit-debit-chart',
         // group: 'all-transactions',
         type: 'bar',
+        zoom: {
+            allowMouseWheelZoom: false,
+        },
     },
     dataLabels: {
         enabled: false,

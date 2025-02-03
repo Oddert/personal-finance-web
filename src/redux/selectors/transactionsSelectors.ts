@@ -42,7 +42,7 @@ export const getTransactionsOrderedByDate = createSelector(
 );
 
 /**
- * Gets all Transactions as an object with Transaction.category_id as keys.
+ * Gets all Transactions as an object with Transaction.categoryId as keys.
  * @category Redux
  * @subcategory Selectors
  */
@@ -69,4 +69,14 @@ export const getTransactionsStartDate = createSelector(
 export const getTransactionsEndDate = createSelector(
     getTransactionsState,
     (transactionsState) => transactionsState.endDate,
+);
+
+/**
+ * True if the transactions are currently refreshing.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getTransactionsLoading = createSelector(
+    getTransactionsState,
+    (transactionsState) => transactionsState.loading,
 );

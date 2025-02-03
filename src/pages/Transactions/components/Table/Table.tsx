@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
@@ -9,12 +8,15 @@ import type { Transaction } from '../../../../types/Transaction.d';
 
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
-import { RootState } from '../../../../redux/constants/store';
-import { getTransactionsResponse } from '../../../../redux/selectors/transactionsSelectors';
+import { getTransactionsLoading } from '../../../../redux/selectors/transactionsSelectors';
+
+import useTransactions from '../../../../hooks/useTransactions';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import { transactionColumns } from '../../../../utils/transactionUtils';
 
 import TableWrapper from '../../../../components/Table/Table';
+import { Box, CircularProgress } from '@mui/material';
 
 dayjs.extend(customParseFormat);
 
@@ -33,9 +35,9 @@ const Table = () => {
         Transaction[]
     >([]);
 
-    const transactions = useSelector<RootState, Transaction[]>((state) =>
-        getTransactionsResponse(state),
-    );
+    const { transactions } = useTransactions();
+
+    const transactionsLoading = useAppSelector(getTransactionsLoading);
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
         () => transactionColumns,
@@ -53,6 +55,14 @@ const Table = () => {
             ),
         );
     }, [rangeValues, value, transactions]);
+
+    if (transactionsLoading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', p: 6 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <TableWrapper<Transaction>

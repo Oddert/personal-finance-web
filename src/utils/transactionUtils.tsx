@@ -2,7 +2,7 @@ import { CellContext, ColumnDef } from '@tanstack/react-table';
 
 import { Box } from '@mui/material';
 
-import { LOCALE } from '../constants/appConstants';
+import { CURRENCY_SYMBOL, LOCALE } from '../constants/appConstants';
 
 import type { Transaction } from '../types/Transaction.d';
 import type { Category } from '../types/Category.d';
@@ -23,12 +23,12 @@ export const mapCategoriesToTransactions = (
 ) => {
     const mappedTransactions = transactions.map((transaction) => {
         if (
-            transaction.category_id &&
-            transaction.category_id in orderedCategories
+            transaction.categoryId &&
+            transaction.categoryId in orderedCategories
         ) {
             return {
                 ...transaction,
-                assignedCategory: orderedCategories[transaction.category_id],
+                assignedCategory: orderedCategories[transaction.categoryId],
             };
         }
         return transaction;
@@ -53,7 +53,7 @@ export const orderTransactions = (transactions: Transaction[]) => {
         const date = new Date(transaction.date);
         const year = date.getFullYear();
         const month = date.getMonth();
-        const category = transaction.category_id || 'default';
+        const category = transaction.categoryId || 'default';
 
         if (!(year in orderedByDate)) {
             orderedByDate[year] = {};
@@ -86,7 +86,9 @@ export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
     const value = Number(rawValue);
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {isNaN(value) || value === 0 ? '-' : `£${value.toFixed(2)}`}
+            {isNaN(value) || value === 0
+                ? '-'
+                : `${CURRENCY_SYMBOL}${value.toFixed(2)}`}
         </Box>
     );
 };
@@ -138,7 +140,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     },
     {
         header: 'Cat Id',
-        accessorKey: 'category_id',
+        accessorKey: 'categoryId',
     },
 ];
 

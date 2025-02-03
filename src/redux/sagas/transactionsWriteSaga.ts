@@ -13,10 +13,15 @@ import type { Transaction } from '../../types/Transaction.d';
 import { CategoryState, requestCategories } from '../slices/categorySlice';
 import { writeTransactions } from '../slices/transactionsSlice';
 
+import { getActiveCardId } from '../selectors/cardSelectors';
 import {
     getCategoryOrderedDataById,
     getCategoryQueried,
 } from '../selectors/categorySelectors';
+import {
+    getTransactionsEndDate,
+    getTransactionsStartDate,
+} from '../selectors/transactionsSelectors';
 
 /**
  * Bulk creates transactions and re-loads part of the state.
@@ -28,9 +33,18 @@ export default function* transactionsWriteSaga() {
             yield put(requestCategories());
         }
 
+        const startDate: number = yield select(getTransactionsStartDate);
+        const endDate: number = yield select(getTransactionsEndDate);
+        const activeCardId: number | null = yield select(getActiveCardId);
+
         const transactionsResponse: IStandardResponse<{
             transactions: Transaction[];
-        }> = yield call(APIService.getAllTransactions);
+        }> = yield call(
+            APIService.getAllTransactionsWithinRange,
+            startDate,
+            endDate,
+            activeCardId,
+        );
 
         if (!transactionsResponse?.payload?.transactions) {
             return;

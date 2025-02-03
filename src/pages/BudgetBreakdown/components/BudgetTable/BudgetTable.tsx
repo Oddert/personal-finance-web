@@ -3,6 +3,8 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { Typography } from '@mui/material';
 
+import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+
 import Table from '../../../../components/Table';
 
 import type { IBudgetDatumTable, IProps } from './BudgetTable.types';
@@ -41,15 +43,15 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                 accessorKey: 'spend',
             },
             {
-                header: 'Difference (£)',
+                header: `Difference (${CURRENCY_SYMBOL})`,
                 accessorKey: 'diffFloat',
                 cell: (cell) => {
                     const value = cell.renderValue<number>();
                     return value === 0
                         ? '-'
                         : value > 0
-                          ? `+ £${value}`
-                          : `- £${Math.abs(value)}`;
+                          ? `+ ${CURRENCY_SYMBOL}${value}`
+                          : `- ${CURRENCY_SYMBOL}${Math.abs(value)}`;
                 },
             },
             {

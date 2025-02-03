@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useReducer, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { MuiFileInput } from 'mui-file-input';
+
+import { v4 as uuid } from 'uuid';
 
 import { PERSONAL_FINANCE_CSV_MAPPING } from '../../constants/appConstants';
 
@@ -19,7 +20,8 @@ import {
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
 
-import TransactionEdit from '../TransactionEdit/TransactionEdit';
+import TransactionEdit from '../TransactionEdit';
+import DropZone from '../DropZone';
 
 /**
  * Allows the user to upload new transactions.
@@ -59,8 +61,15 @@ const Upload = () => {
                                 transactions,
                                 categories,
                             );
+                            const withSelected = withCategories.map(
+                                (datum) => ({
+                                    ...datum,
+                                    selected: 1,
+                                    tecTempId: uuid(),
+                                }),
+                            );
                             dispatch(writeHeaders(headers));
-                            dispatch(writeTransactions(withCategories));
+                            dispatch(writeTransactions(withSelected));
                             dispatch(setLoading(false));
                         }
                     };
@@ -88,12 +97,7 @@ const Upload = () => {
 
     return (
         <Fragment>
-            <MuiFileInput
-                label='Upload'
-                multiple
-                onChange={handleChange}
-                sx={{ gridColumn: '1 / -1' }}
-            />
+            <DropZone onSuccess={handleChange} />
             <TransactionEditContext.Provider value={{ state, dispatch }}>
                 <TransactionEdit
                     open={modalOpen}

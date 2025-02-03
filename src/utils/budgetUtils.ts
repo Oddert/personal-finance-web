@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import type { IBudget, IBudgetDatum } from '../types/Budget.types';
+import type { IBudget, IBudgetDatum, IBudgetRow } from '../types/Budget.types';
 import type { ICategoryBreakdown } from '../types/Category.d';
 import type { Transaction } from '../types/Transaction.d';
 
@@ -20,8 +20,8 @@ export const DATE_FORMAT = 'YYYY-MM-DD';
  * @param rawDate The date to be flattened.
  * @returns The new date string in standard format.
  */
-export const toBeginningMonth = (rawDate: string | Date) => {
-    const date = dayjs(rawDate).date(1);
+export const toBeginningMonth = (rawDate: string | Date | Dayjs) => {
+    const date = dayjs(rawDate).startOf('month');
     return date.format(DATE_FORMAT);
 };
 
@@ -32,9 +32,29 @@ export const toBeginningMonth = (rawDate: string | Date) => {
  * @param rawDate The date to be ceilinged.
  * @returns The new date string in standard format.
  */
-export const toEndMonth = (rawDate: string | Date) => {
+export const toEndMonth = (rawDate: string | Date | Dayjs) => {
     const date = dayjs(rawDate).endOf('month');
     return date.format(DATE_FORMAT);
+};
+
+/**
+ * Given a DayJs instance, returns a new instance set to the beginning of the month.
+ * @param rawDate The date to be flattened.
+ * @returns The new date string in standard format.
+ */
+export const toBeginningMonthDayjs = (rawDate: string | Date | Dayjs) => {
+    const date = dayjs(rawDate).startOf('month');
+    return date;
+};
+
+/**
+ * Given a DayJs instance, returns a new instance set to the end date of the month.
+ * @param rawDate The date to be ceilinged.
+ * @returns The new date string in standard format.
+ */
+export const toEndMonthDayjs = (rawDate: string | Date | Dayjs) => {
+    const date = dayjs(rawDate).endOf('month');
+    return date;
 };
 
 /**
@@ -74,19 +94,19 @@ export const createCategoryBreakdown = (
     const categoryBreakdown = transactions.reduce(
         (acc: ICategoryBreakdown, transaction) => {
             if (
-                transaction.category_id &&
-                transaction.category_id in categoriesOrderedById
+                transaction.categoryId &&
+                transaction.categoryId in categoriesOrderedById
             ) {
-                if (!(transaction.category_id in acc)) {
-                    acc[transaction.category_id] = {
+                if (!(transaction.categoryId in acc)) {
+                    acc[transaction.categoryId] = {
                         value: 0,
-                        label: categoriesOrderedById[transaction.category_id]
+                        label: categoriesOrderedById[transaction.categoryId]
                             .label,
-                        colour: categoriesOrderedById[transaction.category_id]
+                        colour: categoriesOrderedById[transaction.categoryId]
                             .colour,
                     };
                 }
-                acc[transaction.category_id].value += transaction.debit;
+                acc[transaction.categoryId].value += transaction.debit;
             } else {
                 acc.uncategorised.value += transaction.debit;
             }
@@ -120,10 +140,17 @@ export const createBudgetChartData = (
     budget: IBudget,
     numMonths = 1,
 ) => {
+    const budgetRowsById = budget.budgetRows.reduce(
+        (acc: { [id: number]: IBudgetRow }, each) => {
+            acc[each.id] = each;
+            return acc;
+        },
+        {},
+    );
     const chart = Object.entries(categoryBreakdown).reduce(
-        (acc: IBudgetDatum[], [uid, each]) => {
-            const budgetDatum = budget.budgetRows[Number(uid)];
-            const normalisedValue = normaliseNum(each.value);
+        (acc: IBudgetDatum[], [uid, categoryBd]) => {
+            const budgetDatum = budgetRowsById[Number(uid)];
+            const normalisedValue = normaliseNum(categoryBd.value);
 
             if (budgetDatum?.value) {
                 const budgetValue = numMonths * budgetDatum.value;
@@ -132,19 +159,19 @@ export const createBudgetChartData = (
                 acc.push({
                     budget: normaliseNum(budgetDatum.value * numMonths),
                     categoryId: Number(uid),
-                    categoryName: each.label,
-                    colour: each.colour,
+                    categoryName: categoryBd.label,
+                    colour: categoryBd.colour,
                     diffFloat,
                     diffPc,
-                    spend: normaliseNum(each.value),
+                    spend: normalisedValue,
                     variance: [budgetDatum.varLowPc, budgetDatum.varHighPc],
                 });
             } else {
                 acc.push({
                     budget: 0,
                     categoryId: Number(uid),
-                    categoryName: each.label,
-                    colour: each.colour,
+                    categoryName: categoryBd.label,
+                    colour: categoryBd.colour,
                     diffFloat: 0,
                     diffPc: 0,
                     spend: normalisedValue,

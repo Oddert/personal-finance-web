@@ -4,6 +4,8 @@ import { Box, Button } from '@mui/material';
 
 import { ROUTES } from '../../constants/routerConstants';
 
+import { DATE_FORMAT } from '../../utils/budgetUtils';
+
 import type { IProps } from './BudgetPageToggle.types';
 
 /**
@@ -24,7 +26,7 @@ const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
                 mode === 'breakdown'
                     ? ROUTES.BUDGET_OVERVIEW
                     : ROUTES.BUDGET_BREAKDOWN
-            }?startDate=${startDate}&endDate=${endDate}`,
+            }?startDate=${startDate.format(DATE_FORMAT)}&endDate=${endDate.format(DATE_FORMAT)}`,
         [endDate, mode, startDate],
     );
 

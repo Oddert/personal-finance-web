@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
@@ -14,15 +14,16 @@ import {
 import {
     createBudgetChartData,
     createCategoryBreakdown,
-    toBeginningMonth,
-    toEndMonth,
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
 } from '../../utils/budgetUtils';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
+import { requestTransactions } from '../../redux/slices/transactionsSlice';
 
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
@@ -30,16 +31,21 @@ import ActiveBudget from '../../components/ActiveBudget';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 import AggregateTimeChart from './components/AggregateTimeChart';
+import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
+import CandleStickChart from './components/CandleStickChart';
 
 dayjs.extend(localizedFormat);
 
-const defaultStart = toBeginningMonth(String(dayjs().subtract(12, 'months')));
-const defaultEnd = toEndMonth(String(dayjs()));
+const defaultStart = toBeginningMonthDayjs(
+    String(dayjs().subtract(12, 'months')),
+);
+const defaultEnd = toEndMonthDayjs(String(dayjs()));
 
 /**
  * Page to provide overview insights into transactions, compared with the active budget, within a selected range.
@@ -55,10 +61,11 @@ const defaultEnd = toEndMonth(String(dayjs()));
  * @component
  */
 const BudgetOverview: FC<IProps> = () => {
+    const dispatch = useAppDispatch();
     const navigation = useSearchParams();
 
-    const [startDate, setStartDate] = useState(defaultStart);
-    const [endDate, setEndDate] = useState(defaultEnd);
+    const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
+    const [endDate, setEndDate] = useState<Dayjs>(defaultEnd);
     const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
@@ -68,11 +75,10 @@ const BudgetOverview: FC<IProps> = () => {
     const chartList = useMemo(() => {
         if (monthBudget) {
             let sDate = dayjs(startDate);
-            const eDate = dayjs(endDate);
 
             const charts: IBudgetOverviewChart[] = [];
 
-            while (sDate < eDate) {
+            while (sDate < endDate) {
                 const year = sDate.year();
                 const month = sDate.month();
                 if (year in transactions && month in transactions[year]) {
@@ -108,14 +114,23 @@ const BudgetOverview: FC<IProps> = () => {
     ]);
 
     useEffect(() => {
+        dispatch(
+            requestTransactions({
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+            }),
+        );
+    }, [endDate, startDate]);
+
+    useEffect(() => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
-            setStartDate(start);
+            setStartDate(dayjs(start));
             if (end) {
-                setEndDate(end);
+                setEndDate(dayjs(end));
             } else {
-                setEndDate(toEndMonth(start));
+                setEndDate(toEndMonthDayjs(start));
             }
         }
     }, [navigation]);
@@ -139,6 +154,7 @@ const BudgetOverview: FC<IProps> = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
+                <ActiveCard />
                 <ActiveBudget />
                 <FormControlLabel
                     control={
@@ -152,6 +168,23 @@ const BudgetOverview: FC<IProps> = () => {
                     label='Include empty categories'
                 />
                 <PercentageCharts chartList={chartList} />
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>Budget spend each month</Typography>
+                    <BudgetMonthSpendChart
+                        chartList={chartList}
+                        startDate={startDate}
+                        endDate={endDate}
+                    />
+                </Paper>
                 <Paper
                     elevation={0}
                     sx={{
@@ -184,6 +217,23 @@ const BudgetOverview: FC<IProps> = () => {
                         chartList={chartList}
                         endDate={endDate}
                         startDate={startDate}
+                    />
+                </Paper>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>Ballance min / max</Typography>
+                    <CandleStickChart
+                        endDate={endDate}
+                        startDate={startDate}
+                        transactions={transactions}
                     />
                 </Paper>
                 <BudgetPageToggle

@@ -14,6 +14,9 @@ import type { IProps } from './TimeChart.types';
  * @category Pages
  * @subcategory Budget Overview
  * @component
+ * @param props.chartList The list of pre-formatted Percentage Chart objects, used as a starting point for the data transform.
+ * @param props.endDate The start date for the date range.
+ * @param props.startDate The end date for the date range.
  */
 const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
     const series = useMemo(() => {
@@ -88,6 +91,9 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                         height: 500,
                         type: 'area',
                         stacked: true,
+                        zoom: {
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     dataLabels: {
                         enabled: false,
@@ -119,8 +125,8 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(startDate).getTime(),
-                        max: new Date(endDate).getTime(),
+                        min: new Date(String(startDate)).getTime(),
+                        max: new Date(String(endDate)).getTime(),
                     },
                     tooltip: {
                         x: {

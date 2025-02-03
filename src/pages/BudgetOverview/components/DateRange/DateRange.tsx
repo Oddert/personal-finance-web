@@ -1,10 +1,14 @@
-import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react';
+import { FC, Fragment, useCallback, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { toBeginningMonth, toEndMonth } from '../../../../utils/budgetUtils';
+import {
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
+} from '../../../../utils/budgetUtils';
 
 import type { IProps } from './DateRange.types';
 
@@ -15,6 +19,10 @@ dayjs.extend(localizedFormat);
  * @category Pages
  * @subcategory Budget Overview
  * @component
+ * @param props.endDate The start date for the date range.
+ * @param props.setEndDate Callback function to change the end date.
+ * @param props.setStartDate Callback function to change the start date.
+ * @param props.startDate The end date for the date range.
  */
 const DateRange: FC<IProps> = ({
     endDate,
@@ -25,30 +33,34 @@ const DateRange: FC<IProps> = ({
     const [dateError, setDateError] = useState<null | string>(null);
 
     const handleChangeStartDate = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setStartDate(toBeginningMonth(e.target.value));
-            setEndDate(toEndMonth(e.target.value));
-            setDateError(null);
+        (nextValue: Dayjs | null) => {
+            if (nextValue) {
+                setStartDate(toBeginningMonthDayjs(nextValue));
+                setEndDate(toEndMonthDayjs(nextValue));
+                setDateError(null);
+            }
         },
         [setEndDate, setStartDate],
     );
 
     const handleChangeEndDate = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const convertedEndDate = toEndMonth(e.target.value);
-            if (dayjs(convertedEndDate).diff(dayjs(startDate)) < 0) {
-                setDateError('End date may not be before start date');
-            } else {
-                setDateError(null);
-                setEndDate(toEndMonth(e.target.value));
+        (nextValue: Dayjs | null) => {
+            if (nextValue) {
+                const convertedEndDate = toEndMonthDayjs(nextValue);
+                if (convertedEndDate.diff(startDate) < 0) {
+                    setDateError('End date may not be before start date');
+                } else {
+                    setDateError(null);
+                    setEndDate(toEndMonthDayjs(nextValue));
+                }
             }
         },
         [setEndDate, startDate],
     );
 
     const handleClickTimeJump = (fromDate: Dayjs, toDate: Dayjs) => () => {
-        setStartDate(toBeginningMonth(String(fromDate)));
-        setEndDate(toEndMonth(String(toDate)));
+        setStartDate(toBeginningMonthDayjs(fromDate));
+        setEndDate(toEndMonthDayjs(toDate));
     };
 
     // const prevMonth = useMemo(() => {
@@ -82,21 +94,39 @@ const DateRange: FC<IProps> = ({
                     justifyContent: 'space-around',
                 }}
             >
-                <TextField
-                    InputLabelProps={{ shrink: true }}
-                    label='Start Date'
+                <DatePicker
+                    label='Start date'
                     name='startDate'
                     onChange={handleChangeStartDate}
-                    type='date'
+                    showDaysOutsideCurrentMonth
+                    slotProps={{
+                        toolbar: {
+                            toolbarFormat: 'ddd DD MMMM',
+                            hidden: false,
+                        },
+                    }}
+                    sx={{
+                        borderRadius: '4px',
+                    }}
                     value={startDate}
+                    views={['month', 'year']}
                 />
-                <TextField
-                    InputLabelProps={{ shrink: true }}
-                    label='End Date'
+                <DatePicker
+                    label='End date'
                     name='endDate'
                     onChange={handleChangeEndDate}
-                    type='date'
+                    showDaysOutsideCurrentMonth
+                    slotProps={{
+                        toolbar: {
+                            toolbarFormat: 'ddd DD MMMM',
+                            hidden: false,
+                        },
+                    }}
+                    sx={{
+                        borderRadius: '4px',
+                    }}
                     value={endDate}
+                    views={['month', 'year']}
                 />
             </Box>
             <Box

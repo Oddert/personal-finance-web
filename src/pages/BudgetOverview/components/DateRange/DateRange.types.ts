@@ -1,6 +1,8 @@
+import { Dayjs } from 'dayjs';
+
 export interface IProps {
-    endDate: string;
-    setEndDate: (value: string) => void;
-    setStartDate: (value: string) => void;
-    startDate: string;
+    endDate: Dayjs;
+    setEndDate: (value: Dayjs) => void;
+    setStartDate: (value: Dayjs) => void;
+    startDate: Dayjs;
 }

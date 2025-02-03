@@ -32,6 +32,9 @@ const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
             options={{
                 chart: {
                     type: 'donut',
+                    zoom: {
+                        allowMouseWheelZoom: false,
+                    },
                 },
                 responsive: [
                     {

@@ -5,6 +5,8 @@ import { Box } from '@mui/material';
 
 import type { IBudgetDatum } from '../../types/Budget.types';
 
+import { CURRENCY_SYMBOL } from '../../constants/appConstants';
+
 import type { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
 
 /**
@@ -84,6 +86,9 @@ const BudgetPercentageChart: FC<IProps> = ({
                                 }
                             },
                         },
+                        zoom: {
+                            allowMouseWheelZoom: false,
+                        },
                     },
                     legend: {
                         show: false,
@@ -120,9 +125,9 @@ const BudgetPercentageChart: FC<IProps> = ({
                                     seriesRef[opts.dataPointIndex];
                                 return `
 									<p>Discrepancy (%): ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
-									<p>Discrepancy (£): ${budgetDatum.diffFloat < 0 ? `-£${Math.abs(budgetDatum.diffFloat)}` : `+£${budgetDatum.diffFloat}`}</p>
-									<p>Expected: £${budgetDatum.budget}</p>
-									<p>Actual: £${budgetDatum.spend}</p>
+									<p>Discrepancy (${CURRENCY_SYMBOL}): ${budgetDatum.diffFloat < 0 ? `-${CURRENCY_SYMBOL}${Math.abs(budgetDatum.diffFloat)}` : `+${CURRENCY_SYMBOL}${budgetDatum.diffFloat}`}</p>
+									<p>Expected: ${CURRENCY_SYMBOL}${budgetDatum.budget}</p>
+									<p>Actual: ${CURRENCY_SYMBOL}${budgetDatum.spend}</p>
 								`;
                             },
                         },
