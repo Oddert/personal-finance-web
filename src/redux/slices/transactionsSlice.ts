@@ -3,8 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { LOCALE } from '../../constants/appConstants';
-
 import { Transaction } from '../../types/Transaction.d';
 
 dayjs.extend(localizedFormat);
@@ -85,9 +83,10 @@ export const transactionSlice = createSlice({
             action: PayloadAction<{
                 transactions: TransactionState['response'];
                 orderedTransactions: TransactionState['orderedData'];
+                timestamp: string;
             }>,
         ) => {
-            state.refreshed = new Date().toLocaleString(LOCALE);
+            state.refreshed = action.payload.timestamp;
             state.loaded = true;
             state.loading = false;
             state.orderedData = action.payload.orderedTransactions;
