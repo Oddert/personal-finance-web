@@ -85,6 +85,17 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
             sx={{
                 '& *': {
                     color: theme.palette.primary.contrastText,
+                    '& .apexcharts-tooltip-candlestick': {
+                        padding: '8px',
+                        '& div': {
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gridGap: '8px',
+                            '& span': {
+                                fontWeight: 'bold',
+                            },
+                        },
+                    },
                 },
             }}
         >
@@ -130,12 +141,45 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                         x: {
                             format: 'dd/MM/yy',
                         },
-                        y: {
-                            formatter(val) {
-                                return val?.toFixed(2) || '';
-                            },
-                        },
                         shared: true,
+                        custom: ({ seriesIndex, dataPointIndex, w }) => {
+                            const o = currencyLocaliser(
+                                w.globals.seriesCandleO[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            const h = currencyLocaliser(
+                                w.globals.seriesCandleH[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            const l = currencyLocaliser(
+                                w.globals.seriesCandleL[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            const c = currencyLocaliser(
+                                w.globals.seriesCandleC[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            return (
+                                '<div class="apexcharts-tooltip-candlestick">' +
+                                '<div>Open: <span class="value">' +
+                                o +
+                                '</span></div>' +
+                                '<div>High: <span class="value">' +
+                                h +
+                                '</span></div>' +
+                                '<div>Low: <span class="value">' +
+                                l +
+                                '</span></div>' +
+                                '<div>Close: <span class="value">' +
+                                c +
+                                '</span></div>' +
+                                '</div>'
+                            );
+                        },
                     },
                     xaxis: {
                         type: 'datetime',
@@ -153,8 +197,12 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                             style: {
                                 colors: '#fff',
                             },
-                            formatter: (val) =>
-                                currencyLocaliser(Math.floor(val)),
+                            formatter: (val) => {
+                                return currencyLocaliser(Math.floor(val));
+                            },
+                        },
+                        tooltip: {
+                            enabled: true,
                         },
                     },
                 }}
