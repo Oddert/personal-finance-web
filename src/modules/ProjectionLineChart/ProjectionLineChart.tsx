@@ -36,7 +36,7 @@ import {
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
-import { getActiveLanguage } from '../../redux/selectors/profileSelectors';
+import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
 import type { Transaction } from '../../types/Transaction.d';
@@ -91,7 +91,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
     const [showHistorical, setShowHistorical] = useState(false);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
-    const language = useAppSelector(getActiveLanguage);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const handleScenarioSelection = (
         event: SyntheticEvent<Element, Event>,

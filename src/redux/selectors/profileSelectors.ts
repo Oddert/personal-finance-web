@@ -12,6 +12,14 @@ export const getActiveLanguage = createSelector(
 );
 
 /**
+ * Gets the currently selected language code.
+ */
+export const getActiveLanguageCode = createSelector(
+    getActiveLanguage,
+    (activeLanguage) => activeLanguage.code,
+);
+
+/**
  * A list of the user's preferred languages (minimum of one item guaranteed).
  */
 export const getUserLanguages = createSelector(

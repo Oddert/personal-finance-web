@@ -6,6 +6,7 @@ import BudgetBreakdownIcon from '@mui/icons-material/DonutSmall';
 import BudgetOverviewIcon from '@mui/icons-material/CandlestickChart';
 import ManageBudgetIcon from '@mui/icons-material/AutoAwesomeMotion';
 import ManageCardsIcon from '@mui/icons-material/Payments';
+import ProfileIcon from '@mui/icons-material/ManageAccounts';
 // import ManageBudgetIcon from '@mui/icons-material/Tune';;
 // import ScenarioEditIcon from '.@mui/icons-material/DeveloperBoard/';
 import TransactionsIcon from '@mui/icons-material/ReceiptLong';
@@ -21,6 +22,7 @@ import EditCard from '../pages/EditCard';
 import Home from '../pages/Home';
 import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
+import Profile from '../pages/Profile';
 import Transactions from '../pages/Transactions/';
 
 /**
@@ -40,7 +42,8 @@ export const ROUTES = Object.freeze({
     EDIT_BUDGET: '/edit-budget',
     EDIT_CARD: '/edit-card',
     MANAGE_BUDGETS: '/manage-budgets',
-    MANAGE_CARDS: '/manage-cards',
+    MANAGE_CARDS: '/profile',
+    PROFILE: '/user-settings',
     TRANSACTIONS: '/transactions',
 });
 
@@ -167,6 +170,14 @@ const router = createBrowserRouter([
             </Layout>
         ),
     },
+    {
+        path: `${ROUTES.PROFILE}`,
+        element: (
+            <Layout>
+                <Profile />
+            </Layout>
+        ),
+    },
 ]);
 
 /**
@@ -210,6 +221,11 @@ export const navigation = [
         label: 'Transactions',
         Icon: TransactionsIcon,
         location: ROUTES.TRANSACTIONS,
+    },
+    {
+        label: 'Profile',
+        Icon: ProfileIcon,
+        location: ROUTES.PROFILE,
     },
 ];
 

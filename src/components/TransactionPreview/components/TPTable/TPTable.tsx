@@ -3,7 +3,7 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 
 import { meanValue, standardDeviation } from '../../../../utils/mathsUtils';
 
@@ -30,7 +30,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
         TransactionExtended[]
     >([]);
 
-    const language = useAppSelector(getActiveLanguage);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const { transactions } = useTransactions(startDate, endDate);
 

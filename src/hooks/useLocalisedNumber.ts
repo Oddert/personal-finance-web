@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { getActiveLanguage } from '../redux/selectors/profileSelectors';
+import { getActiveLanguageCode } from '../redux/selectors/profileSelectors';
 
 import { useAppSelector } from './ReduxHookWrappers';
 
@@ -10,7 +10,7 @@ import { useAppSelector } from './ReduxHookWrappers';
  * @returns A formatting function to localise numbers, and a formatter for currency values.
  */
 const useLocalisedNumber = () => {
-    const language = useAppSelector(getActiveLanguage);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const { currencyLocaliser, numberLocaliser } = useMemo(() => {
         /**

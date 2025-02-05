@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { ILanguage } from '../../types/Intl.types';
+
 export interface IProfileState {
-    activeLanguage: string;
-    languages: string[];
+    activeLanguage: ILanguage;
+    languages: ILanguage[];
     currencies: string[];
 }
 
 export const initialState: IProfileState = {
-    activeLanguage: 'en-GB',
-    languages: ['en-GB'],
+    activeLanguage: { code: 'en-GB', displayName: 'English (standard)' },
+    languages: [{ code: 'en-GB', displayName: 'English (standard)' }],
     currencies: ['GPB', 'USD', 'EUR'],
 };
 
@@ -18,7 +20,7 @@ export const profileSlice = createSlice({
     reducers: {
         setActiveLanguage: (
             state,
-            { payload }: { payload: { language: string } },
+            { payload }: { payload: { language: ILanguage } },
         ) => {
             state.activeLanguage = payload.language;
         },
@@ -30,11 +32,14 @@ export const profileSlice = createSlice({
         },
         updateLanguages: (
             state,
-            { payload }: { payload: { languages: string[] } },
+            { payload }: { payload: { languages: ILanguage[] } },
         ) => {
             state.languages = payload.languages;
         },
     },
 });
+
+export const { setActiveLanguage, updateCurrencies, updateLanguages } =
+    profileSlice.actions;
 
 export default profileSlice.reducer;

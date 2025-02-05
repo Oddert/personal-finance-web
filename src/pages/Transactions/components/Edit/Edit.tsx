@@ -21,7 +21,7 @@ import {
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
-import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 
 import useTransactions from '../../../../hooks/useTransactions';
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
@@ -51,7 +51,7 @@ const Edit: FC<IProps> = () => {
         rangeValues[value[1]]?.top,
     );
 
-    const language = useAppSelector(getActiveLanguage);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const [open, setOpen] = useState(false);
 

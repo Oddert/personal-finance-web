@@ -13,7 +13,7 @@ import {
 } from '../../../../hooks/ReduxHookWrappers';
 
 import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
-import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 
@@ -31,7 +31,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
     const dispatch = useAppDispatch();
 
     const activeBudgetId = useAppSelector(getActiveBudgetId);
-    const language = useAppSelector(getActiveLanguage);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const handleClickActivate = () => {
         try {

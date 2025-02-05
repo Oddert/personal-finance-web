@@ -19,6 +19,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import type { Transaction } from '../../types/Transaction.d';
 
+import useTransactions from '../../hooks/useTransactions';
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+
+import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
+
 import {
     chart1BaseOptions,
     chart2BaseOptions,
@@ -26,9 +31,6 @@ import {
     defaultStart,
     title,
 } from './ExistingDataLineChartUtils';
-import useTransactions from '../../hooks/useTransactions';
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-import { getActiveLanguage } from '../../redux/selectors/profileSelectors';
 
 dayjs.extend(localizedFormat);
 
@@ -67,7 +69,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [chart2Options, setChart2Options] = useState<ApexOptions>({});
 
     const { transactions } = useTransactions(startDate, endDate);
-    const language = useAppSelector(getActiveLanguage);
+    const language = useAppSelector(getActiveLanguageCode);
 
     useEffect(() => {
         const sorted = transactions.reduce(
