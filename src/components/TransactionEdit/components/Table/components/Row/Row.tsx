@@ -5,6 +5,7 @@ import { TableCell, TableRow } from '@mui/material';
 import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
 
 import CategorySelector from '../CategorySelector';
+import CurrencySelector from '../CurrencySelector';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
 
@@ -49,6 +50,13 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
             case 'assignedCategory':
                 return (
                     <CategorySelector
+                        key={idx + '_' + columnIdx}
+                        transaction={transaction}
+                    />
+                );
+            case 'currency':
+                return (
+                    <CurrencySelector
                         key={idx + '_' + columnIdx}
                         transaction={transaction}
                     />

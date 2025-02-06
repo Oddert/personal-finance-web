@@ -40,9 +40,11 @@ const Table = () => {
         return defaultColumns.map((header) => {
             return {
                 ...header,
-                accessorKey: ['assignedCategory', 'selected'].includes(
-                    header.accessorKey,
-                )
+                accessorKey: [
+                    'assignedCategory',
+                    'selected',
+                    'currency',
+                ].includes(header.accessorKey)
                     ? header.accessorKey
                     : columnMap[header.accessorKey],
             };
@@ -97,6 +99,9 @@ const Table = () => {
             <MuiTable
                 sx={{
                     width: '100%',
+                    '& .MuiTableCell-root': {
+                        padding: 0,
+                    },
                 }}
             >
                 <TableHead
