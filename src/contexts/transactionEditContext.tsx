@@ -25,6 +25,7 @@ const TransactionEditActionTypes = {
     uncheckAll: 'uncheckAll',
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
+    updateNumericValue: 'updateNumericValue',
     writeHeaders: 'writeHeaders',
     tecWriteTransactions: 'tecWriteTransactions',
 };
@@ -55,6 +56,8 @@ export type TAccessorKey =
     | 'ballance'
     | 'assignedCategory'
     | 'currency';
+
+export type TAccessorKeyNumbers = 'debit' | 'credit' | 'ballance';
 
 export interface IColumnDef {
     header: string;
@@ -238,14 +241,23 @@ export const uncheckAll = () => ({
     payload: {},
 });
 
+export const updateCategory = (uid: string, assignedCategory: number) => ({
+    type: TransactionEditActionTypes.updateCategory,
+    payload: { uid, assignedCategory },
+});
+
 export const updateDescription = (uid: string, description: string) => ({
     type: TransactionEditActionTypes.updateDescription,
     payload: { uid, description },
 });
 
-export const updateCategory = (uid: string, assignedCategory: number) => ({
-    type: TransactionEditActionTypes.updateCategory,
-    payload: { uid, assignedCategory },
+export const updateNumericValue = (
+    uid: string,
+    field: TAccessorKeyNumbers,
+    value: string,
+) => ({
+    type: TransactionEditActionTypes.updateNumericValue,
+    payload: { uid, field, value },
 });
 
 export const writeHeaders = (headers: TransactionEditState['headers']) => ({

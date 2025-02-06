@@ -12,6 +12,12 @@ import { IProps } from './CurrencySelector.types';
 
 const marginTopBottom = '4px';
 
+/**
+ * Renders the currency editor.
+ * @component
+ * @category Components
+ * @subcategory Transaction Edit
+ */
 const CurrencySelector: FC<IProps> = ({ transaction }) => {
     const {
         state: { columnMap },

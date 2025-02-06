@@ -6,6 +6,7 @@ import { TransactionEditContext } from '../../../../../../contexts/transactionEd
 
 import CategorySelector from '../CategorySelector';
 import CurrencySelector from '../CurrencySelector';
+import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
 
@@ -32,38 +33,48 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
         },
         columnIdx: number,
     ) => {
+        const key = idx + '_' + columnIdx;
         switch (column.accessorKey) {
             case columnMap.description:
                 return (
                     <TransactionDescription
-                        key={idx + '_' + columnIdx}
+                        key={key}
+                        transaction={transaction}
+                    />
+                );
+            case columnMap.debit:
+                return (
+                    <EditableNumber
+                        key={key}
+                        colMapKey={'debit'}
+                        transaction={transaction}
+                    />
+                );
+            case columnMap.credit:
+                return (
+                    <EditableNumber
+                        key={key}
+                        colMapKey={'credit'}
+                        transaction={transaction}
+                    />
+                );
+            case columnMap.ballance:
+                return (
+                    <EditableNumber
+                        key={key}
+                        colMapKey={'ballance'}
                         transaction={transaction}
                     />
                 );
             case 'selected':
-                return (
-                    <SelectOption
-                        key={idx + '_' + columnIdx}
-                        transaction={transaction}
-                    />
-                );
+                return <SelectOption key={key} transaction={transaction} />;
             case 'assignedCategory':
-                return (
-                    <CategorySelector
-                        key={idx + '_' + columnIdx}
-                        transaction={transaction}
-                    />
-                );
+                return <CategorySelector key={key} transaction={transaction} />;
             case 'currency':
-                return (
-                    <CurrencySelector
-                        key={idx + '_' + columnIdx}
-                        transaction={transaction}
-                    />
-                );
+                return <CurrencySelector key={key} transaction={transaction} />;
             default:
                 return (
-                    <TableCell key={idx + '_' + columnIdx}>
+                    <TableCell key={key}>
                         {transaction[column.accessorKey]}
                     </TableCell>
                 );
