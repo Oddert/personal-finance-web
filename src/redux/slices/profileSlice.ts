@@ -11,7 +11,7 @@ export interface IProfileState {
 export const initialState: IProfileState = {
     activeLanguage: { code: 'en-GB', displayName: 'English (standard)' },
     languages: [{ code: 'en-GB', displayName: 'English (standard)' }],
-    currencies: ['GPB', 'USD', 'EUR'],
+    currencies: ['GBP', 'USD', 'EUR'],
 };
 
 export const profileSlice = createSlice({
