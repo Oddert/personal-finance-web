@@ -26,7 +26,7 @@ const TransactionEditActionTypes = {
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     writeHeaders: 'writeHeaders',
-    writeTransactions: 'writeTransactions',
+    tecWriteTransactions: 'tecWriteTransactions',
 };
 
 export const transactionEditInitialState: TransactionEditState = {
@@ -52,7 +52,8 @@ export type TAccessorKey =
     | 'debit'
     | 'credit'
     | 'ballance'
-    | 'assignedCategory';
+    | 'assignedCategory'
+    | 'currency';
 
 export interface IColumnDef {
     header: string;
@@ -84,6 +85,10 @@ export const defaultColumns: IColumnDef[] = [
     {
         header: 'Ballance',
         accessorKey: 'ballance',
+    },
+    {
+        header: 'Currency',
+        accessorKey: 'currency',
     },
     {
         header: 'Category',
@@ -184,7 +189,7 @@ export const transactionEditReducer = (
                 ...state,
                 headers: action?.payload?.headers,
             };
-        case TransactionEditActionTypes.writeTransactions:
+        case TransactionEditActionTypes.tecWriteTransactions:
             return {
                 ...state,
                 transactions: action?.payload?.transactions,
@@ -247,10 +252,10 @@ export const writeHeaders = (headers: TransactionEditState['headers']) => ({
     payload: { headers },
 });
 
-export const writeTransactions = (
+export const tecWriteTransactions = (
     transactions: TransactionEditState['transactions'],
 ) => ({
-    type: TransactionEditActionTypes.writeTransactions,
+    type: TransactionEditActionTypes.tecWriteTransactions,
     payload: { transactions },
 });
 

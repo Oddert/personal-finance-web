@@ -14,14 +14,17 @@ import { Edit as EditIcon } from '@mui/icons-material';
 import {
     setColumnMap,
     setMode,
+    tecWriteTransactions,
     TransactionEditContext,
     transactionEditInitialState,
     transactionEditReducer,
-    writeTransactions,
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
-import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
+import {
+    getActiveLanguageCode,
+    getUserCurrencies,
+} from '../../../../redux/selectors/profileSelectors';
 
 import useTransactions from '../../../../hooks/useTransactions';
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
@@ -52,6 +55,7 @@ const Edit: FC<IProps> = () => {
     );
 
     const language = useAppSelector(getActiveLanguageCode);
+    const currencies = useAppSelector(getUserCurrencies);
 
     const [open, setOpen] = useState(false);
 
@@ -65,6 +69,7 @@ const Edit: FC<IProps> = () => {
             assignedCategory: transaction.categoryId || 0,
             selected: 1,
             tecTempId: uuid(),
+            currency: currencies[0],
         }));
         dispatch(
             setColumnMap({
@@ -77,9 +82,9 @@ const Edit: FC<IProps> = () => {
                 id: 'id',
             }),
         );
-        dispatch(writeTransactions(filteredTransactions));
+        dispatch(tecWriteTransactions(filteredTransactions));
         dispatch(setMode('edit'));
-    }, [language, rangeValues, transactions, value]);
+    }, [currencies, language, rangeValues, transactions, value]);
 
     return (
         <Fragment>
