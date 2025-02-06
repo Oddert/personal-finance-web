@@ -37,6 +37,7 @@ export const transactionEditInitialState: TransactionEditState = {
         debit: 'Debit Amount',
         credit: 'Credit Amount',
         ballance: 'Balance',
+        currency: '',
     },
     loading: false,
     headers: [],

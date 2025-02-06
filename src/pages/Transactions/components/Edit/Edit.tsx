@@ -79,6 +79,7 @@ const Edit: FC<IProps> = () => {
                 debit: 'debit',
                 credit: 'credit',
                 ballance: 'ballance',
+                currency: 'currency',
                 id: 'id',
             }),
         );

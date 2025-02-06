@@ -70,22 +70,7 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
         }
     };
 
-    return (
-        <TableRow
-            key={idx}
-            sx={{
-                '& .transaction_description_edit': {
-                    opacity: 0,
-                    transition: '.1s linear',
-                },
-                '&:hover .transaction_description_edit': {
-                    opacity: 1,
-                },
-            }}
-        >
-            {columns.map(switchComponents)}
-        </TableRow>
-    );
+    return <TableRow key={idx}>{columns.map(switchComponents)}</TableRow>;
 };
 
 export default Row;

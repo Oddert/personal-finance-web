@@ -1,6 +1,8 @@
-import { FC, useMemo } from 'react';
+import { FC, useContext, useMemo } from 'react';
 
 import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
+
+import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
 
 import { getUserCurrencies } from '../../../../../../redux/selectors/profileSelectors';
 
@@ -11,7 +13,12 @@ import { IProps } from './CurrencySelector.types';
 const marginTopBottom = '4px';
 
 const CurrencySelector: FC<IProps> = ({ transaction }) => {
+    const {
+        state: { columnMap },
+    } = useContext(TransactionEditContext);
+
     const currencies = useAppSelector(getUserCurrencies);
+
     const allOptionsOrdered = useMemo(
         () => [
             ...currencies,
@@ -22,11 +29,6 @@ const CurrencySelector: FC<IProps> = ({ transaction }) => {
         ],
         [currencies],
     );
-    console.log({
-        allOptionsOrdered,
-        currencies,
-        t: !currencies.includes('GBP'),
-    });
 
     return (
         <TableCell>
@@ -39,6 +41,7 @@ const CurrencySelector: FC<IProps> = ({ transaction }) => {
                 <Autocomplete
                     autoHighlight
                     disablePortal
+                    freeSolo
                     options={allOptionsOrdered}
                     groupBy={(item) =>
                         currencies.includes(item) ? 'Favourites' : 'Other'
@@ -53,14 +56,16 @@ const CurrencySelector: FC<IProps> = ({ transaction }) => {
                         />
                     )}
                     sx={{
-                        // borderWidth:
-                        //     transaction.assignedCategory === 'unset' ? 4 : 1,
-                        // width: '100%',
+                        width: '90%',
                         '& .MuiInputBase-root': {
                             padding: '2px',
                         },
                     }}
-                    value={(transaction.currency as string) || currencies[0]}
+                    value={
+                        (transaction[columnMap.currency] as string) ||
+                        (transaction?.currency as string) ||
+                        currencies[0]
+                    }
                 />
             </Box>
         </TableCell>

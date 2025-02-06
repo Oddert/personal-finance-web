@@ -8,6 +8,7 @@ import {
 } from 'react';
 
 import { Button, TableCell, TextField } from '@mui/material';
+import { Edit as IconEdit } from '@mui/icons-material';
 
 import {
     toggleSideBar,
@@ -46,11 +47,22 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
     const title = transaction[columnMap.description] as string;
 
     return (
-        <TableCell>
+        <TableCell
+            sx={{
+                '& .transaction_description_edit': {
+                    opacity: 0,
+                    transition: '.1s linear',
+                },
+                '&:hover .transaction_description_edit': {
+                    opacity: 1,
+                },
+            }}
+        >
             {editOpen ? (
                 <Fragment>
                     <TextField
                         label='Transaction description'
+                        name='description'
                         onChange={(event) =>
                             setInternalValue(event.target.value)
                         }
@@ -92,9 +104,9 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                     <Button
                         className='transaction_description_edit'
                         onClick={() => setEditOpen(true)}
-                        title='Click to edit the description'
+                        title='Click to make the description field editable'
                     >
-                        Edit
+                        <IconEdit />
                     </Button>
                 </Fragment>
             )}

@@ -101,12 +101,14 @@ const ColumnMapping = () => {
                                 {column.header}
                             </Typography>
                             <Select
+                                defaultValue=''
                                 id={`col-${column.header}`}
                                 name={column.accessorKey}
                                 onChange={handleChange}
-                                value={localColumnMap[column.accessorKey]}
+                                value={localColumnMap[column.accessorKey] || ''}
                             >
-                                {headers.map((header, idx) => (
+                                <MenuItem value={''}>- Unset -</MenuItem>
+                                {[...headers].map((header, idx) => (
                                     <MenuItem key={idx} value={header}>
                                         {header}
                                     </MenuItem>
