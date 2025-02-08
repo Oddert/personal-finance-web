@@ -12,11 +12,11 @@ import {
 import { Error as ErrorIcon } from '@mui/icons-material';
 
 import { getErrorState } from '../../redux/selectors/errorSelectors';
+import { clearError } from '../../redux/slices/errorSlice';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import { IProps } from './ErrorMessage.types';
-import { clearError } from '../../redux/slices/errorSlice';
 
 /**
  * Error modal to display caught error messages.

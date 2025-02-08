@@ -70,7 +70,7 @@ const CurrencySelector: FC<IProps> = ({ transaction }) => {
                     value={
                         (transaction[columnMap.currency] as string) ||
                         (transaction?.currency as string) ||
-                        currencies[0]
+                        null
                     }
                 />
             </Box>

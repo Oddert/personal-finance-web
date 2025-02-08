@@ -49,16 +49,20 @@ const Submit: FC<IProps> = ({ onClose }) => {
         // I.e. have the transactions stored in context with the 'correct' keys and convert to the custom values for display.
         const invertMapping = Object.entries(columnMap).reduce(
             (acc: { [key: string]: string }, pair) => {
-                acc[pair[1]] = pair[0];
+                if (acc[pair[1]] !== '') {
+                    acc[pair[1]] = pair[0];
+                }
                 return acc;
             },
-            { assignedCategory: 'categoryId' },
+            { assignedCategory: 'categoryId', currency: 'currency' },
         );
 
+        console.log({ invertMapping });
         // Filter only for items which are checked.
         const filteredTransactions = transactions.filter(
             (transaction) => transaction.selected,
         );
+        console.log({ filteredTransactions });
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const transactionsWithValidKeys = filteredTransactions.map(
@@ -71,13 +75,17 @@ const Submit: FC<IProps> = ({ onClose }) => {
                         pair,
                     ) => {
                         const key = invertMapping[pair[0]];
-                        const whitelistKeys = ['debit', 'credit', 'ballance'];
+                        const numberFormatKeys = [
+                            'debit',
+                            'credit',
+                            'ballance',
+                        ];
 
                         if (!key) {
                             return acc;
                         }
 
-                        if (whitelistKeys.includes(key)) {
+                        if (numberFormatKeys.includes(key)) {
                             if (pair[1] === '-') {
                                 acc[key] = 0;
                             } else {
@@ -91,13 +99,15 @@ const Submit: FC<IProps> = ({ onClose }) => {
                     {},
                 ),
         );
+        console.log({ transactionsWithValidKeys });
 
         const transactionsWithCardId = transactionsWithValidKeys.map(
             (transaction: Partial<Transaction>) => ({
                 ...transaction,
-                card_id: activeCardId,
+                cardId: activeCardId,
             }),
         );
+        console.log({ transactionsWithCardId });
 
         try {
             const request = async () => {
