@@ -10,6 +10,7 @@ export declare interface Transaction {
     categoryId: number | null;
     createdOn: string;
     credit: number;
+    currency: string | null;
     date: number;
     debit: number;
     description: string;
@@ -18,3 +19,15 @@ export declare interface Transaction {
     updatedOn: string;
     assignedCategory?: Category;
 }
+
+export type TTransactionKeys =
+    | 'assignedCategory'
+    | 'ballance'
+    | 'cardId'
+    | 'categoryId'
+    | 'credit'
+    | 'currency'
+    | 'date'
+    | 'debit'
+    | 'description'
+    | 'transactionType';

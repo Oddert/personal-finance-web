@@ -1,10 +1,11 @@
-import { FC, useCallback, useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button, CircularProgress } from '@mui/material';
 
+import { Category } from '../../../../types/Category.d';
 import { Transaction } from '../../../../types/Transaction.d';
 
 import { TransactionEditContext } from '../../../../contexts/transactionEditContext';
@@ -19,6 +20,7 @@ import {
 import { requestTransactions } from '../../../../redux/slices/transactionsSlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
+import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
 
 import type { IProps } from './Submit.types';
 
@@ -40,85 +42,86 @@ const Submit: FC<IProps> = ({ onClose }) => {
     } = useContext(TransactionEditContext);
 
     const activeCardId = useAppSelector(getActiveCardId);
+    const userCurrencies = useAppSelector(getUserCurrencies);
 
     const [loading, setLoading] = useState(false);
 
-    const handleClick = useCallback(() => {
-        // Create an 'opposite' of the category map.
-        // In future we may completely reverse the way the category map works
-        // I.e. have the transactions stored in context with the 'correct' keys and convert to the custom values for display.
-        const invertMapping = Object.entries(columnMap).reduce(
-            (acc: { [key: string]: string }, pair) => {
-                if (acc[pair[1]] !== '') {
-                    acc[pair[1]] = pair[0];
-                }
-                return acc;
-            },
-            { assignedCategory: 'categoryId', currency: 'currency' },
-        );
-
-        console.log({ invertMapping });
+    const handleClick = () => {
         // Filter only for items which are checked.
         const filteredTransactions = transactions.filter(
             (transaction) => transaction.selected,
         );
-        console.log({ filteredTransactions });
+        // console.log({ filteredTransactions });
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
-        const transactionsWithValidKeys = filteredTransactions.map(
-            (transaction) =>
-                Object.entries(transaction).reduce(
-                    (
-                        acc: {
-                            [key: string]: string | number | boolean | null;
-                        },
-                        pair,
-                    ) => {
-                        const key = invertMapping[pair[0]];
-                        const numberFormatKeys = [
-                            'debit',
-                            'credit',
-                            'ballance',
-                        ];
+        const stagedTemp = filteredTransactions.map((transaction) => {
+            const formattedTransaction: Partial<Transaction> = {
+                assignedCategory:
+                    (transaction[
+                        columnMap.assignedCategory
+                    ] as Category | null) ||
+                    (transaction.assignedCategory as Category | null) ||
+                    undefined,
+                ballance:
+                    (transaction[columnMap.ballance] as number) ||
+                    (transaction.ballance as number) ||
+                    0,
+                cardId:
+                    (transaction[columnMap.cardId] as number | null) ||
+                    (transaction.cardId as number | null) ||
+                    activeCardId,
+                categoryId:
+                    (transaction[columnMap.categoryId] as number | null) ||
+                    (transaction.categoryId as number | null) ||
+                    null,
+                currency:
+                    (transaction[columnMap.currency] as string | null) ||
+                    (transaction.currency as string | null) ||
+                    userCurrencies.length
+                        ? userCurrencies[0]
+                        : null,
+                date:
+                    (transaction[columnMap.date] as number) ||
+                    (transaction.date as number) ||
+                    0,
+                description:
+                    (transaction[columnMap.description] as string) ||
+                    (transaction.description as string) ||
+                    '',
+                transactionType:
+                    (transaction[columnMap.transactionType] as string) ||
+                    (transaction.transactionType as string) ||
+                    'DEB',
+            };
 
-                        if (!key) {
-                            return acc;
-                        }
-
-                        if (numberFormatKeys.includes(key)) {
-                            if (pair[1] === '-') {
-                                acc[key] = 0;
-                            } else {
-                                acc[key] = Number(pair[1]);
-                            }
-                        } else {
-                            acc[key] = pair[1];
-                        }
-                        return acc;
-                    },
-                    {},
-                ),
-        );
-        console.log({ transactionsWithValidKeys });
-
-        const transactionsWithCardId = transactionsWithValidKeys.map(
-            (transaction: Partial<Transaction>) => ({
-                ...transaction,
-                cardId: activeCardId,
-            }),
-        );
-        console.log({ transactionsWithCardId });
+            // Handle number values separately as they are expected to be string (though not limited to).
+            // Numbers may also be represented by dashes which must be converted.
+            const numKeys: ('credit' | 'debit' | 'ballance')[] = [
+                'credit',
+                'debit',
+                'ballance',
+            ];
+            numKeys.forEach((column: 'credit' | 'debit' | 'ballance') => {
+                const tecValue: string | number | boolean | null =
+                    transaction[columnMap[column]] || transaction[column] || 0;
+                if (
+                    typeof tecValue === 'boolean' ||
+                    (typeof tecValue === 'string' && tecValue === '-')
+                ) {
+                    formattedTransaction[column] = 0;
+                } else {
+                    formattedTransaction[column] = Number(tecValue);
+                }
+            });
+            return formattedTransaction;
+        });
 
         try {
             const request = async () => {
                 const response =
                     mode === 'upload'
-                        ? await APIService.createManyTransactions(
-                              transactionsWithCardId,
-                          )
-                        : await APIService.updateManyTransactions(
-                              transactionsWithCardId,
-                          );
+                        ? await APIService.createManyTransactions(stagedTemp)
+                        : await APIService.updateManyTransactions(stagedTemp);
                 setLoading(false);
                 if (response.status === 201) {
                     onClose();
@@ -133,7 +136,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
         } catch (error) {
             appDispatch(intakeError(error));
         }
-    }, [activeCardId, appDispatch, columnMap, mode, onClose, transactions]);
+    };
 
     return (
         <Button
