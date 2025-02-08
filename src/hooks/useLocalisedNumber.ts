@@ -23,11 +23,15 @@ const useLocalisedNumber = () => {
             value: number | bigint | typeof Infinity,
             currency: string = 'GBP',
         ) => {
-            // TODO: Swap with currency preferences once ready.
-            return Intl.NumberFormat(language, {
-                currency,
-                style: 'currency',
-            }).format(value);
+            try {
+                return Intl.NumberFormat(language, {
+                    currency,
+                    style: 'currency',
+                }).format(value);
+            } catch (error) {
+                console.error(error);
+                return String(value);
+            }
         };
 
         /**
@@ -40,8 +44,12 @@ const useLocalisedNumber = () => {
         const numberLocaliserFunc = (
             value: number | bigint | typeof Infinity,
         ) => {
-            // TODO: Swap with currency preferences once ready.
-            return Intl.NumberFormat(language).format(value);
+            try {
+                return Intl.NumberFormat(language).format(value);
+            } catch (error) {
+                console.error(error);
+                return String(value);
+            }
         };
 
         return {
