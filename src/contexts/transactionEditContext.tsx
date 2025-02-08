@@ -32,13 +32,13 @@ const TransactionEditActionTypes = {
 
 export const transactionEditInitialState: TransactionEditState = {
     columnMap: {
-        date: 'Transaction Date',
-        transactionType: 'Transaction Type',
-        description: 'Transaction Description',
-        debit: 'Debit Amount',
-        credit: 'Credit Amount',
-        ballance: 'Balance',
-        currency: '',
+        date: 'date',
+        transactionType: 'transactionType',
+        description: 'description',
+        debit: 'debit',
+        credit: 'credit',
+        ballance: 'ballance',
+        currency: 'currency',
     },
     loading: false,
     headers: [],
