@@ -37,20 +37,24 @@ export const categorySlice = createSlice({
         },
         writeCategories: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 categories: Category[];
                 orderedData: CategoryState['orderedData'];
             }>,
         ) => {
-            state.response = action.payload.categories;
-            state.orderedData = action.payload.orderedData;
+            state.response = payload.categories;
+            state.orderedData = payload.orderedData;
             state.loading = false;
             state.queried = true;
         },
         initCreateCategory: (
             state,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            action: PayloadAction<{
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
                 category: Partial<Category>;
             }>,
         ) => {
@@ -58,11 +62,13 @@ export const categorySlice = createSlice({
         },
         createCategory: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 category: Category;
             }>,
         ) => {
-            const category = action.payload.category;
+            const category = payload.category;
             state.response.push(category);
             state.orderedData.byId[category.id] = category;
             state.orderedData.byLabel[category.label] = category;
@@ -70,8 +76,10 @@ export const categorySlice = createSlice({
         },
         initUpdateSingleCategory: (
             state,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            action: PayloadAction<{
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
                 category: Partial<Category>;
             }>,
         ) => {
@@ -79,20 +87,22 @@ export const categorySlice = createSlice({
         },
         updateSingleCategory: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 category: Category;
             }>,
         ) => {
-            state.orderedData.byId[action.payload.category.id] = {
-                ...state.orderedData.byId[action.payload.category.id],
-                ...action.payload.category,
+            state.orderedData.byId[payload.category.id] = {
+                ...state.orderedData.byId[payload.category.id],
+                ...payload.category,
             };
-            state.orderedData.byLabel[action.payload.category.label] =
-                action.payload.category;
+            state.orderedData.byLabel[payload.category.label] =
+                payload.category;
 
             state.response = state.response.map((category) => {
-                if (category.id === action.payload?.category.id) {
-                    return action.payload.category;
+                if (category.id === payload?.category.id) {
+                    return payload.category;
                 }
                 return category;
             });
@@ -102,8 +112,10 @@ export const categorySlice = createSlice({
         },
         initDeleteSingleCategory: (
             state,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            action: PayloadAction<{
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
             }>,
         ) => {
@@ -111,11 +123,13 @@ export const categorySlice = createSlice({
         },
         deleteSingleCategory: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
             }>,
         ) => {
-            const categoryId = action.payload.categoryId;
+            const categoryId = payload.categoryId;
             state.response = state.response.filter(
                 (category) => category.id !== categoryId,
             );
@@ -127,8 +141,10 @@ export const categorySlice = createSlice({
         },
         initCreateSingleMatcher: (
             state,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            action: PayloadAction<{
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
                 matcher: Partial<Matcher>;
             }>,
@@ -137,35 +153,38 @@ export const categorySlice = createSlice({
         },
         createSingleMatcher: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
                 matcher: Matcher;
             }>,
         ) => {
             const updatedCategory = {
-                ...state.orderedData.byId[action.payload.categoryId],
+                ...state.orderedData.byId[payload.categoryId],
                 matchers: [
-                    ...state.orderedData.byId[action.payload.categoryId]
-                        .matchers,
-                    action.payload.matcher,
+                    ...state.orderedData.byId[payload.categoryId].matchers,
+                    payload.matcher,
                 ],
             };
 
             state.response = state.response.map((category) => {
-                if (category.id === action.payload.categoryId) {
+                if (category.id === payload.categoryId) {
                     return updatedCategory;
                 }
                 return category;
             });
-            state.orderedData.byId[action.payload.categoryId] = updatedCategory;
+            state.orderedData.byId[payload.categoryId] = updatedCategory;
             state.orderedData.byLabel[updatedCategory.label] = updatedCategory;
 
             state.loading = false;
         },
         initUpdateSingleMatcher: (
             state,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            action: PayloadAction<{
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
                 matcher: Partial<Matcher>;
             }>,
@@ -174,44 +193,48 @@ export const categorySlice = createSlice({
         },
         updateSingleMatcher: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
                 matcher: Matcher;
             }>,
         ) => {
             const updatedMatchers = state.orderedData.byId[
-                action.payload.categoryId
+                payload.categoryId
             ].matchers.map((matcher) => {
                 console.log(
                     matcher.id,
-                    action.payload.matcher.id,
-                    matcher.id === action.payload.matcher.id,
+                    payload.matcher.id,
+                    matcher.id === payload.matcher.id,
                 );
-                if (matcher.id === action.payload.matcher.id) {
-                    return action.payload.matcher;
+                if (matcher.id === payload.matcher.id) {
+                    return payload.matcher;
                 }
                 return matcher;
             });
             const updatedCategory = {
-                ...state.orderedData.byId[action.payload.categoryId],
+                ...state.orderedData.byId[payload.categoryId],
                 matchers: updatedMatchers,
             };
 
             state.response = state.response.map((category) => {
-                if (category.id === action.payload.categoryId) {
+                if (category.id === payload.categoryId) {
                     return updatedCategory;
                 }
                 return category;
             });
-            state.orderedData.byId[action.payload.categoryId] = updatedCategory;
+            state.orderedData.byId[payload.categoryId] = updatedCategory;
             state.orderedData.byLabel[updatedCategory.label] = updatedCategory;
 
             state.loading = false;
         },
         initDeleteSingleMatcher: (
             state,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            action: PayloadAction<{
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
                 matcherId: Matcher['id'];
                 categoryId: Category['id'];
             }>,
@@ -220,28 +243,28 @@ export const categorySlice = createSlice({
         },
         deleteSingleMatcher: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 categoryId: Category['id'];
                 matcherId: Matcher['id'];
             }>,
         ) => {
             const updatedMatchers = state.orderedData.byId[
-                action.payload.categoryId
-            ].matchers.filter(
-                (matcher) => matcher.id !== action.payload.matcherId,
-            );
+                payload.categoryId
+            ].matchers.filter((matcher) => matcher.id !== payload.matcherId);
             const updatedCategory = {
-                ...state.orderedData.byId[action.payload.categoryId],
+                ...state.orderedData.byId[payload.categoryId],
                 matchers: updatedMatchers,
             };
 
             state.response = state.response.map((category) => {
-                if (category.id === action.payload.categoryId) {
+                if (category.id === payload.categoryId) {
                     return updatedCategory;
                 }
                 return category;
             });
-            state.orderedData.byId[action.payload.categoryId] = updatedCategory;
+            state.orderedData.byId[payload.categoryId] = updatedCategory;
             state.orderedData.byLabel[updatedCategory.label] = updatedCategory;
 
             state.loading = false;

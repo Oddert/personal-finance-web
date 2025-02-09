@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IBudget } from '../../types/Budget.types';
 
@@ -27,7 +27,7 @@ export const budgetSlice = createSlice({
     name: 'budget',
     initialState,
     reducers: {
-        addBudget: (state, { payload }: { payload: { budget: IBudget } }) => {
+        addBudget: (state, { payload }: PayloadAction<{ budget: IBudget }>) => {
             state.loaded = true;
             state.loading = false;
             state.response.push(payload.budget);
@@ -38,7 +38,7 @@ export const budgetSlice = createSlice({
         },
         deleteBudget: (
             state,
-            { payload }: { payload: { budgetId: number } },
+            { payload }: PayloadAction<{ budgetId: number }>,
         ) => {
             state.loaded = true;
             state.loading = false;
@@ -51,13 +51,13 @@ export const budgetSlice = createSlice({
         },
         setActiveBudget: (
             state,
-            { payload }: { payload: { budget: IBudget } },
+            { payload }: PayloadAction<{ budget: IBudget }>,
         ) => {
             state.activeBudget = payload.budget;
         },
         updateBudget: (
             state,
-            { payload }: { payload: { budget: IBudget } },
+            { payload }: PayloadAction<{ budget: IBudget }>,
         ) => {
             state.response = state.response.map((budget) =>
                 budget.id === payload.budget.id ? payload.budget : budget,
@@ -67,7 +67,7 @@ export const budgetSlice = createSlice({
         },
         writeBudgets: (
             state,
-            { payload }: { payload: { budgets: IBudget[] } },
+            { payload }: PayloadAction<{ budgets: IBudget[] }>,
         ) => {
             state.loaded = true;
             state.loading = false;

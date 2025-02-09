@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 /**
  * Redux state key for 'error'
@@ -41,7 +41,7 @@ export const errorSlice = createSlice({
             state.error = '';
             state.stackTrace = '';
         },
-        writeError(state, { payload }: { payload: IPayloadWriteError }) {
+        writeError(state, { payload }: PayloadAction<IPayloadWriteError>) {
             state.dialogOpen = true;
             state.title = payload?.title || 'Something went wrong';
             state.message =
