@@ -18,6 +18,22 @@ export const profileSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
+        reorderCurrencies: (
+            state,
+            { payload }: PayloadAction<{ from: number; to: number }>,
+        ) => {
+            const temp = state.currencies[payload.to];
+            state.currencies[payload.to] = state.currencies[payload.from];
+            state.currencies[payload.from] = temp;
+        },
+        reorderLanguages: (
+            state,
+            { payload }: PayloadAction<{ from: number; to: number }>,
+        ) => {
+            const temp = state.languages[payload.to];
+            state.languages[payload.to] = state.languages[payload.from];
+            state.languages[payload.from] = temp;
+        },
         setActiveLanguage: (
             state,
             { payload }: PayloadAction<{ language: ILanguage }>,
@@ -39,7 +55,12 @@ export const profileSlice = createSlice({
     },
 });
 
-export const { setActiveLanguage, updateCurrencies, updateLanguages } =
-    profileSlice.actions;
+export const {
+    reorderCurrencies,
+    reorderLanguages,
+    setActiveLanguage,
+    updateCurrencies,
+    updateLanguages,
+} = profileSlice.actions;
 
 export default profileSlice.reducer;

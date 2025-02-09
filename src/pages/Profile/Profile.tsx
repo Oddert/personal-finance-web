@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import locale from 'locale-codes';
 
 import { Autocomplete, Box, TextField, Typography } from '@mui/material';
@@ -8,18 +8,17 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 import {
     getActiveLanguage,
     getUserCurrencies,
-    getUserLanguages,
 } from '../../redux/selectors/profileSelectors';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 import useLocalisedNumber from '../../hooks/useLocalisedNumber';
 
+import { setActiveLanguage } from '../../redux/slices/profileSlice';
+
+import CurrencySelector from './components/CurrencySelector';
+import LanguageSelector from './components/LanguageSelector';
+
 import { IProps } from './Profile.types';
-import {
-    setActiveLanguage,
-    updateCurrencies,
-    updateLanguages,
-} from '../../redux/slices/profileSlice';
 
 /**
  * A user profile and settings page.
@@ -32,19 +31,8 @@ const Profile: FC<IProps> = () => {
 
     const language = useAppSelector(getActiveLanguage);
     const usersCurrencies = useAppSelector(getUserCurrencies);
-    const usersLanguages = useAppSelector(getUserLanguages);
 
-    const { currencyLocaliser } = useLocalisedNumber();
-
-    const currencies = useMemo(
-        () =>
-            // @ts-ignore
-            Intl.supportedValuesOf('currency').map((currencyCode) => [
-                currencyCode,
-                currencyLocaliser(3.14, currencyCode),
-            ]),
-        [currencyLocaliser],
-    );
+    const { currencyLocaliser, numberLocaliser } = useLocalisedNumber();
 
     return (
         <ResponsiveContainer>
@@ -59,87 +47,72 @@ const Profile: FC<IProps> = () => {
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
                     Profile and settings
                 </Typography>
-                <Autocomplete
-                    getOptionLabel={(option) =>
-                        `${option.name} (${option.tag})`
-                    }
-                    getOptionKey={(option) => option.tag}
-                    onChange={(event, nextValue) => {
-                        if (nextValue) {
-                            dispatch(
-                                setActiveLanguage({
-                                    language: {
-                                        displayName: nextValue.name,
-                                        code: nextValue.tag,
-                                    },
-                                }),
-                            );
-                        }
-                    }}
-                    options={locale.all}
-                    renderInput={(props) => (
-                        <TextField {...props} label='Language selected' />
-                    )}
-                    value={{
-                        name: language.displayName,
-                        tag: language.code,
-                        lcid: 0,
-                    }}
-                />
-                <Autocomplete
-                    getOptionLabel={(option) =>
-                        `${option.name} (${option.tag})`
-                    }
-                    getOptionKey={(option) => option.tag}
-                    multiple
-                    onChange={(event, nextValue) => {
-                        if (nextValue) {
-                            dispatch(
-                                updateLanguages({
-                                    languages: nextValue.map((lang) => ({
-                                        displayName: lang.name,
-                                        code: lang.tag,
-                                    })),
-                                }),
-                            );
-                        }
-                    }}
-                    options={locale.all}
-                    renderInput={(props) => (
-                        <TextField {...props} label='Favourite languages' />
-                    )}
-                    value={usersLanguages.map((lang) => ({
-                        name: lang.displayName,
-                        tag: lang.code,
-                        lcid: 0,
-                    }))}
-                />
-                <Autocomplete
-                    getOptionLabel={(option) =>
-                        `${option[0]} (example: ${option[1]})`
-                    }
-                    getOptionKey={(option) => option[0]}
-                    multiple
-                    onChange={(event, nextValue) => {
-                        if (nextValue) {
-                            dispatch(
-                                updateCurrencies({
-                                    currencies: nextValue.map(
-                                        (curr) => curr[1],
-                                    ),
-                                }),
-                            );
-                        }
-                    }}
-                    options={currencies}
-                    renderInput={(props) => (
-                        <TextField {...props} label='Favourite currencies' />
-                    )}
-                    value={usersCurrencies.map((userCurrency) => [
-                        userCurrency,
-                        currencyLocaliser(3.14, userCurrency),
-                    ])}
-                />
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 2fr' }}>
+                    <Box>
+                        <Typography>
+                            Example currency display (using {usersCurrencies[0]}
+                            ): &ldquo;
+                            <Typography
+                                component='span'
+                                sx={{ fontWeight: 'bold' }}
+                            >
+                                {currencyLocaliser(27.93, usersCurrencies[0])}
+                            </Typography>
+                            &rdquo;
+                        </Typography>
+                        <Typography>
+                            Example number formatting: &ldquo;
+                            <Typography
+                                component='span'
+                                sx={{ fontWeight: 'bold' }}
+                            >
+                                {numberLocaliser(19482.25)}
+                            </Typography>
+                            &rdquo;
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gridGap: '16px',
+                            padding: '0 0 64px 0',
+                        }}
+                    >
+                        <Autocomplete
+                            getOptionLabel={(option) =>
+                                `${option.name} (${option.tag})`
+                            }
+                            getOptionKey={(option) => option.tag}
+                            onChange={(event, nextValue) => {
+                                if (nextValue) {
+                                    dispatch(
+                                        setActiveLanguage({
+                                            language: {
+                                                displayName: nextValue.name,
+                                                code: nextValue.tag,
+                                            },
+                                        }),
+                                    );
+                                }
+                            }}
+                            options={locale.all}
+                            renderInput={(props) => (
+                                <TextField
+                                    {...props}
+                                    label='Language selected'
+                                />
+                            )}
+                            value={{
+                                name: language.displayName,
+                                tag: language.code,
+                                lcid: 0,
+                            }}
+                        />
+                        <LanguageSelector />
+                        <CurrencySelector />
+                    </Box>
+                </Box>
             </Box>
         </ResponsiveContainer>
     );
