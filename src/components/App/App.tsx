@@ -6,6 +6,7 @@ import { Box, CssBaseline } from '@mui/material';
 import router from '../../constants/routerConstants';
 
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
+import { refreshCategories } from '../../redux/thunks/categoryThunks';
 import { refreshCards } from '../../redux/thunks/cardThunks';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
@@ -22,6 +23,7 @@ const App = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(refreshCategories());
         dispatch(refreshBudgets());
         dispatch(refreshCards());
     }, []);

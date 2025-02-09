@@ -34,6 +34,7 @@ export const categorySlice = createSlice({
     reducers: {
         requestCategories: (state) => {
             state.loading = true;
+            state.queried = true;
         },
         writeCategories: (
             state,
