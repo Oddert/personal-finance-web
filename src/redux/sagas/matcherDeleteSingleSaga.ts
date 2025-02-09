@@ -9,6 +9,8 @@ import type { IStandardResponse } from '../../types/Request.d';
 
 import { deleteSingleMatcher } from '../slices/categorySlice';
 
+import { intakeError } from '../thunks/errorThunks';
+
 /**
  * Deletes a matcher and updates the Category in state.
  */
@@ -24,10 +26,12 @@ export default function* matcherDeleteSingleSaga({
 
         if (response.error) {
             console.error(response?.payload?.error);
+            yield put(intakeError(response.error));
         } else {
             yield put(deleteSingleMatcher(payload));
         }
     } catch (error) {
         console.error(error);
+        yield put(intakeError(error));
     }
 }

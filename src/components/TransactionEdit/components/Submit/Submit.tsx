@@ -125,7 +125,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
                 setLoading(false);
                 if (response.status === 201) {
                     onClose();
-                    const date = dayjs().set('month', 0).set('date', 1);
+                    const date = dayjs().startOf('month').startOf('date');
                     const startDate = date.format('YYYY-MM-DD');
                     const endDate = dayjs().format('YYYY-MM-DD');
                     appDispatch(requestTransactions({ startDate, endDate }));

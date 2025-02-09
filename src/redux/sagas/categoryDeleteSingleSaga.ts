@@ -8,6 +8,7 @@ import type { IStandardResponse } from '../../types/Request.d';
 import APIService from '../../services/APIService';
 
 import { deleteSingleCategory } from '../slices/categorySlice';
+import { intakeError } from '../thunks/errorThunks';
 
 /**
  * Deletes a category and updates the state.
@@ -23,10 +24,12 @@ export default function* categoryDeleteSingleSaga({
 
         if (response.error) {
             console.error(response?.payload?.error);
+            yield put(intakeError(response.error));
         } else {
             yield put(deleteSingleCategory(payload));
         }
     } catch (error) {
         console.error(error);
+        yield put(intakeError(error));
     }
 }
