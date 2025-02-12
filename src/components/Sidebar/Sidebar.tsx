@@ -48,18 +48,18 @@ const Sidebar: FC<IProps> = ({
             <List>
                 {navigation.map(({ label, Icon, location }, index) => (
                     <ListItem
-                        key={index}
                         disablePadding
+                        key={index}
                         sx={{ display: 'block' }}
                     >
                         <Link to={location}>
                             <ListItemButton
+                                onClick={handleDrawerClose}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.5,
                                 }}
-                                onClick={handleDrawerClose}
                             >
                                 <ListItemIcon
                                     sx={{

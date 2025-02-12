@@ -1,4 +1,5 @@
 import { FC, Fragment, MouseEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Button,
@@ -25,6 +26,7 @@ import type { IProps } from './HamburgerMenu.types';
  * @param props.category The Category to display.
  */
 const HamburgerMenu: FC<IProps> = ({ category }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -77,13 +79,15 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
             <Menu
                 id='hamburger-menu'
                 anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
+                onClose={handleClose}
+                open={open}
             >
-                <MenuItem onClick={handleDeleteOptionClick}>Delete</MenuItem>
+                <MenuItem onClick={handleDeleteOptionClick}>
+                    {t('Delete')}
+                </MenuItem>
             </Menu>
             <Dialog
                 open={deleteModalOpen}
@@ -97,23 +101,24 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                         minWidth: '50vw',
                     }}
                 >
-                    Are you sure you want to delete Category "{category.label}"?
+                    {t('modalMessages.sureYouWantToDeleteCategory')} "
+                    {category.label}"?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
-                        This action cannot be undone.
+                        {t('modalMessages.cannotBeUndone')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button color='error' onClick={handleDelete}>
-                        Delete Category
+                        {t('Category.deleteCategory')}
                     </Button>
                     <Button
                         autoFocus
                         onClick={handleDeleteModalClose}
                         variant='contained'
                     >
-                        Cancel
+                        {t('Cancel')}
                     </Button>
                 </DialogActions>
             </Dialog>

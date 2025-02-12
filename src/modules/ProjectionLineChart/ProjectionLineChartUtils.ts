@@ -15,8 +15,6 @@ import { largeValueFormatter } from '../../utils/chartUtils';
 export const MODULE_PROJECTION_PAST_BALLANCE =
     'MODULE_PROJECTION_PAST_BALLANCE';
 
-export const title = 'Future Scenario Projection';
-
 export const defaultStart = new Date();
 const defaultEndConstructor = new Date();
 defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3);

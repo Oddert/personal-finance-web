@@ -18,6 +18,7 @@ import Submit from './components/Submit';
 import Table from './components/Table';
 
 import type { IProps } from './TransactionEdit.types';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Allows the user to edit and submit / save transactions.
@@ -37,6 +38,8 @@ const TransactionEdit: FC<IProps> = ({
         state: { loading },
     } = useContext(TransactionEditContext);
 
+    const { t } = useTranslation();
+
     return (
         <Modal open={open} onClose={onClose} sx={{ overflowY: 'auto' }}>
             <Container>
@@ -47,10 +50,12 @@ const TransactionEdit: FC<IProps> = ({
                         marginBottom: '24px',
                     }}
                 >
-                    <Typography variant='h2'>Bulk edit transactions</Typography>
+                    <Typography variant='h2'>
+                        {t('Transaction.bulkEditTransactions')}
+                    </Typography>
                     {loading ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Typography>Uploading </Typography>
+                            <Typography>{t('literals.Uploading')}</Typography>
                             <CircularProgress />
                         </Box>
                     ) : (

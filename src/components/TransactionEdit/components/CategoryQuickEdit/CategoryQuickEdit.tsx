@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Box, Drawer, Typography } from '@mui/material';
 
 import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
@@ -23,6 +24,8 @@ const CategoryQuickEdit = () => {
         dispatch,
         state: { sideBarOpen },
     } = useContext(TransactionEditContext);
+
+    const { t } = useTranslation();
 
     const categories = useSelector(getCategoryResponse);
 
@@ -75,7 +78,7 @@ const CategoryQuickEdit = () => {
                     <Typography
                         sx={{ width: '100%', textAlign: 'center', p: 2 }}
                     >
-                        You have no Categories yet.
+                        {t('Category.noCategoriesYet')}
                     </Typography>
                 )}
             </Box>

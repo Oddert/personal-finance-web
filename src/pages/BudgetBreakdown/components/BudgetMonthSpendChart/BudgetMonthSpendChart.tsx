@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -32,6 +33,8 @@ const BudgetMonthSpendChart: FC<IProps> = ({
     filteredTransactions,
     startDate,
 }) => {
+    const { t } = useTranslation();
+
     const [fullSeries, setSeries] = useState<ISeries[]>([]);
     const [options, setOptions] = useState<IMonthSpendCategory[]>([]);
     const [value, setValue] = useState<IMonthSpendCategory[]>([]);
@@ -73,7 +76,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                 options={options}
                 onChange={(e, nextValue) => setValue(nextValue)}
                 renderInput={(params) => (
-                    <TextField {...params} label='Categories' />
+                    <TextField {...params} label={t('Categories')} />
                 )}
                 value={value}
             />

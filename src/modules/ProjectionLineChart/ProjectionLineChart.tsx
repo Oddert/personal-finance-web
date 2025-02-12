@@ -6,6 +6,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -48,7 +49,6 @@ import {
     MODULE_PROJECTION_PAST_BALLANCE,
     scenarioOptions,
     scenarios,
-    title,
 } from './ProjectionLineChartUtils';
 
 dayjs.extend(localizedFormat);
@@ -65,6 +65,8 @@ interface Props {
  * @param props.compact If true, displays as a card module for composition with other modules.
  */
 const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
+    const { t } = useTranslation();
+
     /**
      * Holds value for the currently selected option(s) for the scenario selector.
      */
@@ -237,7 +239,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                     onChange={handleScenarioSelection}
                     options={scenarioOptions}
                     renderInput={(params) => (
-                        <TextField {...params} label='Active Scenarios' />
+                        <TextField {...params} label={t('Active Scenarios')} />
                     )}
                     sx={{
                         flex: 1,
@@ -254,7 +256,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                             value={showHistorical}
                         />
                     }
-                    label='Show Past Data'
+                    label={t('Show Past Data')}
                     labelPlacement='top'
                     sx={(theme) => ({
                         alignItems: 'flex-start',
@@ -267,12 +269,12 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                     <Input
                         name='start-ballance'
                         onChange={handleChangeStartBallance}
-                        placeholder='Start Ballance'
+                        placeholder={t('Start Ballance')}
                         type='number'
                         value={startingBallance}
                     />
                 }
-                label='Starting Ballance'
+                label={t('Starting Ballance')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -282,7 +284,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label='Start date'
+                        label={t('Start date')}
                         name='startDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -302,7 +304,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                         value={startDate}
                     />
                 }
-                label='Start Date'
+                label={t('Start date')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -312,7 +314,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label='End date'
+                        label={t('End date')}
                         name='endDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -332,7 +334,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                         value={endDate}
                     />
                 }
-                label='End Date'
+                label={t('End Date')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -362,7 +364,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                         expandIcon={<ExpandIcon />}
                         id='projection-controls-header'
                     >
-                        {title}
+                        {t('Future Scenario Projection')}
                     </AccordionSummary>
                     <AccordionActions>{Controls}</AccordionActions>
                 </Accordion>
@@ -375,18 +377,19 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                         })}
                         variant='h3'
                     >
-                        {title}
+                        {t('Future Scenario Projection')}
                     </Typography>
                     {Controls}
                 </Box>
             )}
             <Chart
+                height='400px'
                 options={chart1BaseOptions(compact, language)}
                 series={
                     showHistorical
                         ? [
                               {
-                                  name: 'Ballance',
+                                  name: t('Ballance'),
                                   data: pastBallance,
                               },
                               ...futureBallance.map((projection, idx) => ({
@@ -401,7 +404,6 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
                 }
                 type='line'
                 width={compact ? '100%' : '80%'}
-                height='400px'
             />
         </Paper>
     );

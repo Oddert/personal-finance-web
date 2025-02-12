@@ -1,4 +1,5 @@
 import { FC, Fragment, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
@@ -30,6 +31,8 @@ const DateRange: FC<IProps> = ({
     setStartDate,
     startDate,
 }) => {
+    const { t } = useTranslation();
+
     const [dateError, setDateError] = useState<null | string>(null);
 
     const handleChangeStartDate = useCallback(
@@ -48,14 +51,14 @@ const DateRange: FC<IProps> = ({
             if (nextValue) {
                 const convertedEndDate = toEndMonthDayjs(nextValue);
                 if (convertedEndDate.diff(startDate) < 0) {
-                    setDateError('End date may not be before start date');
+                    setDateError(t('modalMessages.endDateNotBeforeStart'));
                 } else {
                     setDateError(null);
                     setEndDate(toEndMonthDayjs(nextValue));
                 }
             }
         },
-        [setEndDate, startDate],
+        [setEndDate, startDate, t],
     );
 
     const handleClickTimeJump = (fromDate: Dayjs, toDate: Dayjs) => () => {
@@ -95,7 +98,7 @@ const DateRange: FC<IProps> = ({
                 }}
             >
                 <DatePicker
-                    label='Start date'
+                    label={t('Start date')}
                     name='startDate'
                     onChange={handleChangeStartDate}
                     showDaysOutsideCurrentMonth
@@ -112,7 +115,7 @@ const DateRange: FC<IProps> = ({
                     views={['month', 'year']}
                 />
                 <DatePicker
-                    label='End date'
+                    label={t('End date')}
                     name='endDate'
                     onChange={handleChangeEndDate}
                     showDaysOutsideCurrentMonth
@@ -144,7 +147,7 @@ const DateRange: FC<IProps> = ({
                     )}
                     variant='contained'
                 >
-                    Past 6 Months
+                    {t('Budget.timeButtons.pastSixMonths')}
                 </Button>
                 <Button
                     onClick={handleClickTimeJump(
@@ -153,7 +156,7 @@ const DateRange: FC<IProps> = ({
                     )}
                     variant='contained'
                 >
-                    Past 3 Months
+                    {t('Budget.timeButtons.pastThreeMonths')}
                 </Button>
                 <Button
                     onClick={handleClickTimeJump(
@@ -162,7 +165,7 @@ const DateRange: FC<IProps> = ({
                     )}
                     variant='contained'
                 >
-                    Past 12 Months
+                    {t('Budget.timeButtons.pastTwelveMonths')}
                 </Button>
                 <Button
                     onClick={handleClickTimeJump(
@@ -171,7 +174,7 @@ const DateRange: FC<IProps> = ({
                     )}
                     variant='contained'
                 >
-                    Previous Year
+                    {t('Budget.timeButtons.pastYear')}
                 </Button>
                 <Button
                     onClick={handleClickTimeJump(
@@ -180,7 +183,7 @@ const DateRange: FC<IProps> = ({
                     )}
                     variant='contained'
                 >
-                    Current Year
+                    {t('Budget.timeButtons.currentYear')}
                 </Button>
             </Box>
             <Typography color='error'>{dateError || ''}</Typography>

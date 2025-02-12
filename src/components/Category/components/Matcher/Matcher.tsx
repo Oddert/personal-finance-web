@@ -1,4 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, ListItem, Typography } from '@mui/material';
 import {
@@ -35,6 +36,7 @@ const iconWidth = 50;
  * @param props.categoryId The ID of the category the matcher belongs to.
  */
 const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState<boolean>(false);
@@ -78,13 +80,13 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     const matchTypeTitle = useMemo(() => {
         switch (matcher?.match_type) {
             case 'any':
-                return 'Matches this text anywhere in the description';
+                return 'Category.matchMessages.any';
             case 'exact':
-                return 'Only matches this exact string (may not have anything before or after)';
+                return 'Category.matchMessages.exact';
             case 'end':
-                return 'Matches only if this text is at the end of a description';
+                return 'Category.matchMessages.end';
             case 'start':
-                return 'Matches only if this text is at the beginning of a description';
+                return 'Category.matchMessages.start';
         }
     }, [matcher?.match_type]);
 
@@ -174,12 +176,13 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                     <MatchNegativeIcon />
                 )}
             </Box>
-            <Typography title={matchTypeTitle} variant='body1'>
+            <Typography title={t(matchTypeTitle)} variant='body1'>
                 {matcher.match_type}
             </Typography>
             <Button
                 className='Matcher_delete'
                 onClick={handleDelete}
+                title={t('Category.deleteMatcher')}
                 size='small'
             >
                 <DeleteIcon />

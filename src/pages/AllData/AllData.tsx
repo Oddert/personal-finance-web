@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Container, Typography } from '@mui/material';
 
 import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart';
@@ -13,6 +14,7 @@ import ActiveBudget from '../../components/ActiveBudget';
  * @component
  */
 const AllData = () => {
+    const { t } = useTranslation();
     return (
         <Container
             sx={{
@@ -24,7 +26,7 @@ const AllData = () => {
             }}
         >
             <Typography sx={{ mt: '16px' }} variant='h2'>
-                All historic data
+                {t('pageTitles.allData')}
             </Typography>
             <ActiveCard />
             <ActiveBudget />

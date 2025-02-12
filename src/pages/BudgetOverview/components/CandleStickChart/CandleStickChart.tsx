@@ -1,12 +1,14 @@
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, useTheme } from '@mui/material';
 
-import { IProps } from './CandleStickChart.types';
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+
+import { IProps } from './CandleStickChart.types';
 
 dayjs.extend(localizedFormat);
 
@@ -20,6 +22,8 @@ dayjs.extend(localizedFormat);
  * @param props.transactions The list of transactions ordered by date.
  */
 const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
+    const { t } = useTranslation();
+
     const data = useMemo(() => {
         let sDate = dayjs(startDate);
         const seriesData: {
@@ -165,16 +169,16 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                             );
                             return (
                                 '<div class="apexcharts-tooltip-candlestick">' +
-                                '<div>Open: <span class="value">' +
+                                `<div>${t('literals.Open')}: <span class="value">` +
                                 o +
                                 '</span></div>' +
-                                '<div>High: <span class="value">' +
+                                `<div>${t('literals.High')}: <span class="value">` +
                                 h +
                                 '</span></div>' +
-                                '<div>Low: <span class="value">' +
+                                `<div>${t('literals.Low')}: <span class="value">` +
                                 l +
                                 '</span></div>' +
-                                '<div>Close: <span class="value">' +
+                                `<div>${t('literals.Close')}: <span class="value">` +
                                 c +
                                 '</span></div>' +
                                 '</div>'

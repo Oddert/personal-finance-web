@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Autocomplete, Box, FormControlLabel, TextField } from '@mui/material';
 
@@ -18,6 +19,7 @@ import {
 import { IProps } from './CardSelection.types';
 
 const CardSelection: FC<IProps> = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const cards = useAppSelector(getCardResponse);
@@ -47,7 +49,7 @@ const CardSelection: FC<IProps> = () => {
                         value={activeCard}
                     />
                 }
-                label='Card / Account'
+                label={t('Transaction.cardSlashAccount')}
                 labelPlacement='top'
                 sx={{
                     m: '16px 0',

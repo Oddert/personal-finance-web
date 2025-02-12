@@ -1,4 +1,5 @@
 import { FC, Fragment, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -30,6 +31,7 @@ import { IProps } from './ErrorMessage.types';
  * @param props.children Application content to be displayed under the dialog.
  */
 const ErrorMessage: FC<IProps> = ({ children }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const errorState = useAppSelector(getErrorState);
 
@@ -66,14 +68,14 @@ const ErrorMessage: FC<IProps> = ({ children }) => {
                         sx={{ fontWeight: 'bold' }}
                         variant='subtitle2'
                     >
-                        Message
+                        {t('literals.Message')}
                     </DialogContentText>
                     <DialogContentText>{errorState.message}</DialogContentText>
                     <DialogContentText
                         sx={{ fontWeight: 'bold', mt: '16px' }}
                         variant='subtitle2'
                     >
-                        Error
+                        {t('literals.Error')}
                     </DialogContentText>
                     <DialogContentText>{errorState.error}</DialogContentText>
                 </DialogContent>
@@ -85,7 +87,7 @@ const ErrorMessage: FC<IProps> = ({ children }) => {
                             color: theme.palette.error.contrastText,
                         })}
                     >
-                        Close
+                        {t('commonButtons.Close')}
                     </Button>
                 </DialogActions>
             </Dialog>

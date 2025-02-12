@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Accordion,
     AccordionDetails,
@@ -39,6 +40,8 @@ const Category: FC<IProps> = ({
     onAddNewSubmit,
     layout = 'standard',
 }) => {
+    const { t } = useTranslation();
+
     const CategoryList = (
         <List>
             {category.matchers.map((matcher: IMatcher) => (
@@ -63,7 +66,7 @@ const Category: FC<IProps> = ({
             align='left'
             sx={{ fontSize: '16px', fontWeight: 'bold' }}
         >
-            Matchers
+            {t('literals.Matchers')}
             {category.matchers?.length ? ` (${category.matchers.length})` : ''}
         </Typography>
     );

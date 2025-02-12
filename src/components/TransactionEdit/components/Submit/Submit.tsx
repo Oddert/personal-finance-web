@@ -1,4 +1,5 @@
 import { FC, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -36,6 +37,7 @@ dayjs.extend(localizedFormat);
  * @param props.onClose Callback function invoked when the submit succeeds.
  */
 const Submit: FC<IProps> = ({ onClose }) => {
+    const { t } = useTranslation();
     const appDispatch = useAppDispatch();
     const {
         state: { columnMap, mode, transactions },
@@ -143,18 +145,18 @@ const Submit: FC<IProps> = ({ onClose }) => {
             color='primary'
             disabled={loading}
             onClick={handleClick}
-            variant='contained'
             sx={{
                 margin: '12px 0 12px auto',
                 display: 'block',
             }}
+            variant='contained'
         >
             {loading ? (
                 <CircularProgress />
             ) : mode === 'upload' ? (
-                'Submit'
+                t('commonButtons.Submit')
             ) : (
-                'Save'
+                t('commonButtons.Save')
             )}
         </Button>
     );

@@ -89,7 +89,7 @@ const Header = () => {
                         })}
                         variant='h1'
                     >
-                        {t('title')}
+                        {t('applicationTitle')}
                     </Typography>
                 </Toolbar>
             </AppBar>

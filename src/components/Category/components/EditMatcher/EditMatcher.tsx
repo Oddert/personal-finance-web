@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -46,6 +47,8 @@ const EditMatcher: FC<IProps> = ({
     onCancel = () => {},
     onSubmit = () => {},
 }) => {
+    const { t } = useTranslation();
+
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false);
     const [match, setMatch] = useState<string>('');
     const [matchType, setMatchType] = useState<MatchType>('any');
@@ -108,7 +111,7 @@ const EditMatcher: FC<IProps> = ({
         >
             <TextField
                 autoFocus
-                label='Match'
+                label={t('Category.matcherLabel')}
                 onChange={(event) => {
                     setMatch(event?.target?.value);
                 }}
@@ -136,12 +139,12 @@ const EditMatcher: FC<IProps> = ({
                             onChange={() => setCaseSensitive(!caseSensitive)}
                             title={
                                 matcher?.case_sensitive
-                                    ? 'match exact case'
-                                    : 'match any case'
+                                    ? t('Category.caseSensitiveOn')
+                                    : t('Category.caseSensitiveOff')
                             }
                         />
                     }
-                    label={`Case Sensitive`}
+                    label={t('Category.caseSensitiveLabel')}
                     componentsProps={{
                         typography: {
                             sx: {
@@ -171,27 +174,27 @@ const EditMatcher: FC<IProps> = ({
                     <Select
                         aria-labelledby='EditMatcher_match_type'
                         defaultValue={matchTypesOptions[0].value}
+                        MenuProps={{
+                            sx: (theme) => ({
+                                zIndex: theme.zIndex.appBar * 3,
+                            }),
+                        }}
                         name='match_type_options'
                         onChange={(e) =>
                             setMatchType(e?.target?.value as MatchType)
                         }
                         size='small'
                         value={matchType}
-                        MenuProps={{
-                            sx: (theme) => ({
-                                zIndex: theme.zIndex.appBar * 3,
-                            }),
-                        }}
                     >
                         {matchTypesOptions.map(({ label, value }) => (
                             <MenuItem key={value} value={value}>
-                                {label}
+                                {t(label)}
                             </MenuItem>
                         ))}
                     </Select>
                 }
                 id='EditMatcher_match_type'
-                label={'Match Type'}
+                label={t('Category.matchTypeLabel')}
                 sx={{
                     fontSize: '12px',
                     display: 'flex',
@@ -209,9 +212,11 @@ const EditMatcher: FC<IProps> = ({
                     marginTop: '16px',
                 }}
             >
-                <Button onClick={handleCancel}>Cancel</Button>
+                <Button onClick={handleCancel}>
+                    {t('commonButtons.Cancel')}
+                </Button>
                 <Button onClick={handleSave} variant='contained'>
-                    Save
+                    {t('commonButtons.Save')}
                 </Button>
             </Box>
         </Box>

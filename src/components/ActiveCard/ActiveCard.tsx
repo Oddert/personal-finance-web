@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, FormLabel } from '@mui/material';
 
@@ -15,6 +16,7 @@ import { IProps } from './ActiveCard.types';
  * @subcategory Active Card
  */
 const ActiveCard: FC<IProps> = () => {
+    const { t } = useTranslation();
     return (
         <Box
             sx={{
@@ -24,7 +26,7 @@ const ActiveCard: FC<IProps> = () => {
             }}
         >
             <FormLabel sx={{ minWidth: '75px', textAlign: 'left' }}>
-                Card:
+                {t('literals.Card')}:
             </FormLabel>
             <CardSelector refreshTransactions sx={{ width: '100%' }} />
         </Box>

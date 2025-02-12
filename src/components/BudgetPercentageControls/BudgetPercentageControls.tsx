@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -15,7 +16,6 @@ import {
 
 import type { IProps, IZoomLevel } from './BudgetPercentageControls.types';
 
-const zoomLabelLookup = ['xs', 'sm', 'md', 'lg', 'xl'];
 const defaultZoomLevel = 1;
 
 /**
@@ -34,6 +34,19 @@ const BudgetPercentageControls: FC<IProps> = ({
     useFloat,
     zoomDimensionsLookup,
 }) => {
+    const { t } = useTranslation();
+
+    const zoomLabelLookup = useMemo(
+        () => [
+            t('zoom.xs'),
+            t('zoom.sm'),
+            t('zoom.md'),
+            t('zoom.lg'),
+            t('zoom.xl'),
+        ],
+        [t],
+    );
+
     const [zoomLevel, setZoomLevel] = useState<IZoomLevel>(defaultZoomLevel);
     const [zoomLabel, setZoomLabel] = useState(
         zoomLabelLookup[defaultZoomLevel],
@@ -64,19 +77,19 @@ const BudgetPercentageControls: FC<IProps> = ({
             }}
         >
             <Typography component='label' htmlFor='zoom-control'>
-                Zoom level: {zoomLabel}
+                {t('Zoom level')}: {zoomLabel}
             </Typography>
             <Box id='zoom-control'>
                 <IconButton
                     disabled={zoomLevel <= 0}
-                    title='decrease chart size'
+                    title={t('budgetPercentageControls.zoomTitles.decrease')}
                     onClick={decrementZoom}
                 >
                     <ZoomMinusIcon />
                 </IconButton>
                 <IconButton
                     disabled={zoomLevel >= 4}
-                    title='increase chart size'
+                    title={t('budgetPercentageControls.zoomTitles.increase')}
                     onClick={incrementZoom}
                 >
                     <ZoomPlusIcon />
@@ -90,8 +103,8 @@ const BudgetPercentageControls: FC<IProps> = ({
                         onClick={() => setUseFloat(!useFloat)}
                     />
                 }
-                label='Raw currency value'
-                title='By default, the percentage breakdown charts show percentage discrepancies. Check to switch to raw currency value.'
+                label={t('budgetPercentageControls.useFloatLabel')}
+                title={t('budgetPercentageControls.useFloatTitle')}
             />
         </Box>
     );

@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -25,16 +26,17 @@ import {
  * @component
  */
 const ColumnMapping = () => {
-    const [open, setOpen] = useState(false);
-
-    const [localColumnMap, setLocalColumnMap] = useState<{
-        [key: string]: string;
-    }>({});
+    const { t } = useTranslation();
 
     const {
         dispatch,
         state: { columnMap, headers },
     } = useContext(TransactionEditContext);
+
+    const [open, setOpen] = useState(false);
+    const [localColumnMap, setLocalColumnMap] = useState<{
+        [key: string]: string;
+    }>({});
 
     useEffect(() => {
         setLocalColumnMap(columnMap);
@@ -77,20 +79,19 @@ const ColumnMapping = () => {
                     }}
                 >
                     <Typography
-                        variant='h4'
                         sx={{ gridColumn: '1 / span 2', marginBottom: '24px' }}
+                        variant='h4'
                     >
-                        Map CSV Headers to Columns
+                        {t('Transaction.mapCSVHeadersTitle')}
                     </Typography>
                     <Typography
-                        variant='subtitle1'
                         sx={{
                             gridColumn: '1 / span 2',
                             marginBottom: '24px',
                         }}
+                        variant='subtitle1'
                     >
-                        Choose which columns from the uploaded file map onto
-                        which headers used by the application.
+                        {t('Transaction.mapCSVHeadersDesc')}
                     </Typography>
                     {defaultColumns.map((column) => (
                         <Fragment key={column.accessorKey}>
@@ -107,7 +108,9 @@ const ColumnMapping = () => {
                                 onChange={handleChange}
                                 value={localColumnMap[column.accessorKey] || ''}
                             >
-                                <MenuItem value={''}>- Unset -</MenuItem>
+                                <MenuItem value={''}>
+                                    - {t('literals.Unset')} -
+                                </MenuItem>
                                 {[...headers].map((header, idx) => (
                                     <MenuItem key={idx} value={header}>
                                         {header}
@@ -123,18 +126,22 @@ const ColumnMapping = () => {
                             justifyContent: 'flex-end',
                         }}
                     >
-                        <Button onClick={handleClickCancel}>Cancel</Button>
+                        <Button onClick={handleClickCancel}>
+                            {t('Cancel')}
+                        </Button>
                         <Button
                             onClick={handleClickSave}
                             sx={{ marginLeft: '4px' }}
                             variant='contained'
                         >
-                            Save Changes
+                            {t('commonButtons.saveChanges')}
                         </Button>
                     </Box>
                 </Paper>
             </Dialog>
-            <Button onClick={handleClickOpen}>Change column mapping</Button>
+            <Button onClick={handleClickOpen}>
+                {t('Transaction.changeColumnMapping')}
+            </Button>
         </Fragment>
     );
 };

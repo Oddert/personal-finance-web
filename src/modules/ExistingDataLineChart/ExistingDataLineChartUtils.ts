@@ -1,10 +1,5 @@
 import { ApexOptions } from 'apexcharts';
 
-/**
- * The chart title for Existing Data Line Chart.
- */
-export const title = 'Past Data';
-
 export const chart1BaseOptions = (language: string): ApexOptions => ({
     chart: {
         id: 'existing-data-line-chart',

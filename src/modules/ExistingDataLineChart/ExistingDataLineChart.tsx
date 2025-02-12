@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
@@ -29,7 +30,6 @@ import {
     chart2BaseOptions,
     defaultEnd,
     defaultStart,
-    title,
 } from './ExistingDataLineChartUtils';
 
 dayjs.extend(localizedFormat);
@@ -46,6 +46,8 @@ interface Props {
  * @param props.compact If true, displays as a card module for composition with other modules.
  */
 const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
+    const { t } = useTranslation();
+
     const [ballanceData, setBallanceData] = useState<
         { x: number | string; y: number }[]
     >([]);
@@ -151,7 +153,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label='Start date'
+                        label={t('Start date')}
                         name='startDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -171,7 +173,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         value={startDate}
                     />
                 }
-                label='Start Date'
+                label={t('Start date')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -181,7 +183,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label='End date'
+                        label={t('End date')}
                         name='endDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -201,7 +203,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         value={endDate}
                     />
                 }
-                label='End Date'
+                label={t('End date')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -231,7 +233,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         expandIcon={<ExpandIcon />}
                         id='projection-controls-header'
                     >
-                        {title}
+                        {t('Past Data')}
                     </AccordionSummary>
                     <AccordionActions>{Controls}</AccordionActions>
                 </Accordion>
@@ -245,7 +247,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         })}
                         variant='h3'
                     >
-                        {title}
+                        {t('Past Data')}
                     </Typography>
                     {Controls}
                 </Box>
@@ -288,11 +290,11 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                     options={chart2Options}
                     series={[
                         {
-                            name: 'Debit',
+                            name: t('Debit'),
                             data: debitData,
                         },
                         {
-                            name: 'Credit',
+                            name: t('Credit'),
                             data: creditData,
                         },
                     ]}

@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { Box } from '@mui/material';
 
@@ -29,6 +30,8 @@ const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
  * @deprecated {@link BudgetPercentageChart} serves the same purpose.
  */
 const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
+    const { t } = useTranslation();
+
     const data = useMemo(
         () => Object.values(categoryBreakdown),
         [categoryBreakdown],
@@ -37,16 +40,16 @@ const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
     const columns = useMemo<ColumnDef<ICategoryBDValue>[]>(
         () => [
             {
-                header: 'Category',
+                header: t('literals.Category'),
                 accessorKey: 'label',
             },
             {
-                header: 'Amount',
+                header: t('literals.Amount'),
                 accessorKey: 'value',
                 cell: addCurrencySymbol,
             },
         ],
-        [],
+        [t],
     );
 
     return <Table columns={columns} data={data} />;

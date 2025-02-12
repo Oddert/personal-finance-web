@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     FormControl,
@@ -25,10 +26,11 @@ import type { IProps } from './LayoutControls.types';
  * @param props.setLayout Callback function to change the layout mode.
  */
 const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
+    const { t } = useTranslation();
     return (
         <FormControl>
             <RadioGroup
-                aria-label='Layout'
+                aria-label={t('Layout')}
                 defaultValue='standard'
                 name='radio-buttons-group'
                 onChange={(event) =>
@@ -41,37 +43,37 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 value={layout}
             >
                 <FormControlLabel
-                    value='standard'
+                    label=''
                     control={
                         <Radio
                             checkedIcon={<LayoutStandardIcon />}
                             icon={<LayoutStandardIcon />}
-                            inputProps={{ 'aria-label': 'Standard layout' }}
+                            inputProps={{ 'aria-label': t('Standard layout') }}
                         />
                     }
-                    label=''
+                    value='standard'
                 />
                 <FormControlLabel
-                    value='compact'
                     control={
                         <Radio
                             checkedIcon={<LayoutCompactIcon />}
                             icon={<LayoutCompactIcon />}
-                            inputProps={{ 'aria-label': 'Compact layout' }}
+                            inputProps={{ 'aria-label': t('Compact layout') }}
                         />
                     }
                     label=''
+                    value='compact'
                 />
                 <FormControlLabel
-                    value='list'
                     control={
                         <Radio
                             checkedIcon={<LayoutListIcon />}
                             icon={<LayoutListIcon />}
-                            inputProps={{ 'aria-label': 'List layout' }}
+                            inputProps={{ 'aria-label': t('List layout') }}
                         />
                     }
                     label=''
+                    value='list'
                 />
             </RadioGroup>
         </FormControl>
