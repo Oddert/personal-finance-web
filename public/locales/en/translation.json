@@ -1,0 +1,162 @@
+{
+    "applicationTitle": "Personal Finance",
+    "Active Scenarios": "Active Scenarios",
+    "All historic data": "All historic data",
+    "Case Sensitive": "Case Sensitive",
+    "Compact layout": "Compact layout",
+    "Discrepancy pc": "Discrepancy (%)",
+    "Discrepancy val": "Discrepancy (val)",
+    "End date": "End date",
+    "Future Scenario Projection": "Future Scenario Projection",
+    "List layout": "List layout",
+    "Past Data": "Past Data",
+    "Show Past Data": "Show Past Data",
+    "Standard layout": "Standard layout",
+    "Starting Ballance": "Starting Ballance",
+    "Start date": "Start date",
+    "View budget breakdown": "View budget breakdown",
+    "View budget overview": "View budget overview",
+    "Zoom level": "Zoom level",
+    "literals": {
+        "above": "above",
+        "Actual": "Actual",
+        "Amount": "Amount",
+        "bellow": "bellow",
+        "Ballance": "Ballance",
+        "budget": "budget",
+        "Budget": "Budget",
+        "Categories": "Categories",
+        "Category": "Category",
+        "Card": "Card",
+        "Colour": "Colour",
+        "Close": "Close",
+        "Credit": "Credit",
+        "Debit": "Debit",
+        "Description": "Description",
+        "Error": "Error",
+        "Expected": "Expected",
+        "from": "from",
+        "High": "High",
+        "Layout": "Layout",
+        "Low": "Low",
+        "Matchers": "Matchers",
+        "Message": "Message",
+        "Open": "Open",
+        "Title": "Title",
+        "to": "to",
+        "Unset": "Unset",
+        "Uncategorised": "Uncategorised",
+        "Uploading": "Uploading"
+    },
+    "pageTitles": {
+        "allData": "All historic data",
+        "budgetBreakdown": "Budget breakdown",
+        "budgetOverview": "Budget Overview"
+    },
+    "dragDrop": {
+        "onDrag": "Drop the files here...",
+        "idleMessage": "Click to upload or drag and drop CSV files here"
+    },
+    "fallbackError": {
+        "title": "Something has failed with the application.",
+        "description": "The application encountered an unhandled error which it could not recover from."
+    },
+    "commonButtons": {
+        "Cancel": "Cancel",
+        "clickToEdit": "Click to edit",
+        "closeWithoutSaving": "Close without saving changes",
+        "Delete": "Delete",
+        "keepEditing": "Keep editing",
+        "nextMonth": "Next Month",
+        "prevMonth": "Previous Month",
+        "returnHome": "Return home",
+        "saveChanges": "Save Changes",
+        "Save": "Save",
+        "Submit": "Submit"
+    },
+    "modalMessages": {
+        "cannotBeUndone": "This action cannot be undone.",
+        "closeWithoutSaving": "Close without saving?",
+        "endDateNotBeforeStart": "End date may not be before start date",
+        "sureYouWantToDeleteCategory": "Are you sure you want to delete the Category",
+        "unsavedChangesWillBeLost": "You have unsaved changes that will be lost."
+    },
+    "zoom": {
+        "xs": "xs",
+        "sm": "sm",
+        "md": "md",
+        "lg": "lg",
+        "xl": "xl"
+    },
+    "budgetPercentageControls": {
+        "zoomTitles": {
+            "decrease": "decrease chart size",
+            "increase": "increase chart size"
+        },
+        "useFloatLabel": "Raw currency value",
+        "useFloatTitle": "By default, the percentage breakdown charts show percentage discrepancies. Check to switch to raw currency value."
+    },
+    "Budget": {
+        "aggregateSpendChart": "Aggregate spend chart",
+        "aggregateSpendTitle": "Aggregate % Spend Discrepancy",
+        "budgetTable": {
+            "diffVal": "Difference (val)",
+            "diffPc": "Difference (%)",
+            "variance": "Variance low / high (%)"
+        },
+        "byPercent": "By percent",
+        "categorySpend": "Category spend across period",
+        "candleStickTitle": "Ballance min / max",
+        "includeCreditLabel": "Include credit values",
+        "includeCreditTitle": "If checked, incoming (negative) values.",
+        "includeEmptyCategories": "'Include empty categories'",
+        "largestOverspend": "Largest overspend",
+        "monthSpendTitle": "Budget spend each month",
+        "numCategoriesOverBudget": "Number of categories over budget",
+        "numCategoriesUnderBudget": "Number of categories under budget",
+        "timeChartTitle": "Spend Discrepancy & Trend Per Month",
+        "timeButtons": {
+            "pastSixMonths": "Past 6 Months",
+            "pastThreeMonths": "Past 3 Months",
+            "pastTwelveMonths": "Past 12 Months",
+            "pastYear": "Past Year",
+            "currentYear": "Current Year"
+        },
+        "totalExpectedSpend": "Total expected spend",
+        "totalActualSpend": "Total actual spend"
+    },
+    "Category": {
+        "addCategory": "Add Category",
+        "addCategoryDesc": "Add a new category of Transaction.",
+        "addMatcher": "Add matcher",
+        "caseSensitiveLabel": "Case Sensitive",
+        "caseSensitiveOn": "match exact case",
+        "caseSensitiveOff": "match any case",
+        "createCategory": "Create Category",
+        "deleteCategory": "Delete Category",
+        "deleteMatcher": "delete this matcher",
+        "descriptionPlaceholder": "Click to add a description.",
+        "matcherLabel": "Match",
+        "matchTypeLabel": "Match Type",
+        "noCategoriesYet": "You have no Categories yet.",
+        "matchTypes": {
+            "Any": "Any",
+            "Exact": "Exact",
+            "Start": "Start",
+            "End": "End"
+        },
+        "matchMessages": {
+            "any": "Matches this text anywhere in the description",
+            "exact": "Only matches this exact string (may not have anything before or after)",
+            "start": "Matches only if this text is at the end of a description",
+            "end": "Matches only if this text is at the beginning of a description"
+        }
+    },
+    "Transaction": {
+        "bulkEditTransactions": "Bulk edit transactions",
+        "cardSlashAccount": "Card / Account",
+        "changeColumnMapping": "Change column mapping",
+        "mapCSVHeadersTitle": "Map CSV headers to columns",
+        "mapCSVHeadersDesc": "Map CSV headers to columns"
+    }
+}
