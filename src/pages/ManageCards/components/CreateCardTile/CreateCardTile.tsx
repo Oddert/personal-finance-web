@@ -30,7 +30,7 @@ const CreateCardTile: FC<IProps> = () => {
                         width: '100%',
                         height: '100%',
                     }}
-                    title={t('commonButtons.createANewCard')}
+                    title={t('buttons.createANewCard')}
                     variant='outlined'
                 >
                     <PlusIcon fontSize='large' />

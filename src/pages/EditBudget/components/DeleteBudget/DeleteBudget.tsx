@@ -77,7 +77,7 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)} variant='contained'>
-                        {t('commonButtons.Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button color='error' onClick={handleClickDelete}>
                         {t('Budget.deleteBudget')}

@@ -198,7 +198,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleConditionalClose}>
-                        {t('commonButtons.Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button autoFocus onClick={handleSaveAndClose}>
                         {t('Category.createCategory')}
@@ -226,10 +226,10 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setSaveModalOpen(false)}>
-                        {t('commonButtons.keepEditing')}
+                        {t('buttons.keepEditing')}
                     </Button>
                     <Button autoFocus onClick={handleReset}>
-                        {t('commonButtons.closeWithoutSaving')}
+                        {t('buttons.closeWithoutSaving')}
                     </Button>
                 </DialogActions>
             </Dialog>

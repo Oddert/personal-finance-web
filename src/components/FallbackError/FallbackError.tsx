@@ -14,7 +14,7 @@ const FallbackError: FC<IProps> = () => {
             <Typography variant='h2'>
                 {t('fallbackError.description')}
             </Typography>
-            <Link to='/'>{t('commonButtons.returnHome')}</Link>
+            <Link to='/'>{t('buttons.returnHome')}</Link>
         </Box>
     );
 };

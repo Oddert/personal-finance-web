@@ -92,13 +92,13 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 <ListItemIcon>
                     <CreateFreshIcon fontSize='small' />
                 </ListItemIcon>
-                {t('commonButtons.newBlankBudget')}
+                {t('buttons.newBlankBudget')}
             </MenuItem>
             <MenuItem onClick={() => setDialogOpen(true)}>
                 <ListItemIcon>
                     <FromCopyIcon fontSize='small' />
                 </ListItemIcon>
-                {t('commonButtons.createFromTemplate')}
+                {t('buttons.createFromTemplate')}
             </MenuItem>
             <Dialog
                 open={dialogOpen}
@@ -137,10 +137,10 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClickCancel}>
-                        {t('commonButtons.Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button onClick={handleClickTemplate} variant='contained'>
-                        {t('commonButtons.createNewBudget')}
+                        {t('buttons.createNewBudget')}
                     </Button>
                 </DialogActions>
             </Dialog>

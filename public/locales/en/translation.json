@@ -107,7 +107,7 @@
         "Nov": "Nov",
         "Dec": "Dec"
     },
-    "commonButtons": {
+    "buttons": {
         "Activate": "Activate",
         "addNewCard": "Add new card",
         "Cancel": "Cancel",

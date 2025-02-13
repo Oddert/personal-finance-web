@@ -76,7 +76,7 @@ const EditableText: FC<IProps> = ({
                     position: 'absolute',
                     left: iconPosition === 'end' ? '-100%' : '100%',
                 }}
-                title={t('commonButtons.clickToEdit')}
+                title={t('buttons.clickToEdit')}
             >
                 <EditIcon />
             </Button>

@@ -59,7 +59,7 @@ const TransactionPreview: FC<IProps> = ({
                 },
             }}
         >
-            <Button onClick={handleClose}>{t('commonButtons.Close')}</Button>
+            <Button onClick={handleClose}>{t('buttons.Close')}</Button>
             <TPTable
                 categoryId={categoryId}
                 endDate={endDate}

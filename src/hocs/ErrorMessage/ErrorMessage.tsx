@@ -87,7 +87,7 @@ const ErrorMessage: FC<IProps> = ({ children }) => {
                             color: theme.palette.error.contrastText,
                         })}
                     >
-                        {t('commonButtons.Close')}
+                        {t('buttons.Close')}
                     </Button>
                 </DialogActions>
             </Dialog>

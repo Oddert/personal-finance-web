@@ -78,7 +78,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                         <Chip color='success' label={t('literals.Enabled')} />
                     ) : (
                         <Button onClick={handleClickActivate} variant='text'>
-                            {t('commonButtons.Activate')}
+                            {t('buttons.Activate')}
                         </Button>
                     )}
                 </Box>
@@ -94,7 +94,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                 </Typography>
                 <Button onClick={handleClickEdit}>
                     <Typography component='span'>
-                        {t('commonButtons.viewAndEdit')}
+                        {t('buttons.viewAndEdit')}
                     </Typography>{' '}
                     <RightArrowIcon />
                 </Button>

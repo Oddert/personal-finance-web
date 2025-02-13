@@ -83,10 +83,10 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClickCancel}>
-                        {t('commonButtons.Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button onClick={handleClickSubmit} variant='contained'>
-                        {t('commonButtons.Submit')}
+                        {t('buttons.Submit')}
                     </Button>
                 </DialogActions>
             </Dialog>

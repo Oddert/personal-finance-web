@@ -30,7 +30,7 @@ const CreateBudgetButton: FC<IProps> = () => {
     return (
         <Fragment>
             <Button onClick={handleClick} variant='contained'>
-                <PlusIcon /> {t('commonButtons.createNewBudget')}
+                <PlusIcon /> {t('buttons.createNewBudget')}
             </Button>
             <CreateBudgetMenu anchorEl={anchorEl} handleClose={handleClose} />
         </Fragment>

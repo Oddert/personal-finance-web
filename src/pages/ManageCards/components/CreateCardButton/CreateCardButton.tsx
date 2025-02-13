@@ -24,7 +24,7 @@ const CreateCardButton: FC<IProps> = () => {
     return (
         <Fragment>
             <Button onClick={handleClick} variant='contained'>
-                <PlusIcon /> {t('commonButtons.addNewCard')}
+                <PlusIcon /> {t('buttons.addNewCard')}
             </Button>
         </Fragment>
     );

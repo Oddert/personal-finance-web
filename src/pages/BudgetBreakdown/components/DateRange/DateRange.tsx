@@ -94,7 +94,7 @@ const DateRange: FC<IProps> = ({
                 }}
             >
                 <Button onClick={handleClickPrevMonth} variant='contained'>
-                    <BackButtonIcon /> {t('commonButtons.prevMonth')} (
+                    <BackButtonIcon /> {t('buttons.prevMonth')} (
                     {prevMonth.format('MMM')} {prevMonth.format('YYYY')})
                 </Button>
                 <Box>
@@ -134,7 +134,7 @@ const DateRange: FC<IProps> = ({
                     />
                 </Box>
                 <Button onClick={handleClickNextMonth} variant='contained'>
-                    {t('commonButtons.nextMonth')} ({nextMonth.format('MMM')}{' '}
+                    {t('buttons.nextMonth')} ({nextMonth.format('MMM')}{' '}
                     {nextMonth.format('YYYY')}) <ForwardButtonIcon />
                 </Button>
             </Box>

@@ -237,7 +237,7 @@ const EditBudget: FC<IProps> = () => {
                             value={card.cardType}
                         >
                             <MenuItem value={'OTHER'}>
-                                {t('commonButtons.otherUnset')}
+                                {t('buttons.otherUnset')}
                             </MenuItem>
                             <MenuItem value={'DEBIT'}>
                                 {t('literals.Debit')}
@@ -345,8 +345,8 @@ const EditBudget: FC<IProps> = () => {
                 >
                     <SaveIcon />{' '}
                     {isEdit
-                        ? t('commonButtons.saveChanges')
-                        : t('commonButtons.createCard')}
+                        ? t('buttons.saveChanges')
+                        : t('buttons.createCard')}
                 </Button>
                 {isEdit && <DeleteCard card={card} />}
             </Box>

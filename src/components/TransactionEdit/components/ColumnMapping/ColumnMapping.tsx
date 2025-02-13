@@ -134,7 +134,7 @@ const ColumnMapping = () => {
                             sx={{ marginLeft: '4px' }}
                             variant='contained'
                         >
-                            {t('commonButtons.saveChanges')}
+                            {t('buttons.saveChanges')}
                         </Button>
                     </Box>
                 </Paper>

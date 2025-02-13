@@ -154,9 +154,9 @@ const Submit: FC<IProps> = ({ onClose }) => {
             {loading ? (
                 <CircularProgress />
             ) : mode === 'upload' ? (
-                t('commonButtons.Submit')
+                t('buttons.Submit')
             ) : (
-                t('commonButtons.Save')
+                t('buttons.Save')
             )}
         </Button>
     );

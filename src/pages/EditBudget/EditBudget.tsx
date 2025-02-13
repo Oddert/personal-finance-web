@@ -258,8 +258,8 @@ const EditBudget: FC<IProps> = () => {
                 >
                     <SaveIcon />{' '}
                     {isEdit
-                        ? t('commonButtons.saveChanges')
-                        : t('commonButtons.createBudget')}
+                        ? t('buttons.saveChanges')
+                        : t('buttons.createBudget')}
                 </Button>
                 {isEdit && <DeleteBudget budget={budget} />}
             </Box>

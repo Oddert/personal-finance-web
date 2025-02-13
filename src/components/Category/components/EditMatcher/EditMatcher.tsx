@@ -213,10 +213,10 @@ const EditMatcher: FC<IProps> = ({
                 }}
             >
                 <Button onClick={handleCancel}>
-                    {t('commonButtons.Cancel')}
+                    {t('buttons.Cancel')}
                 </Button>
                 <Button onClick={handleSave} variant='contained'>
-                    {t('commonButtons.Save')}
+                    {t('buttons.Save')}
                 </Button>
             </Box>
         </Box>

@@ -61,7 +61,7 @@ const DeleteBudget: FC<IProps> = ({ card }) => {
                     }}
                     variant='outlined'
                 >
-                    <DeleteIcon /> {t('commonButtons.deleteCard')}
+                    <DeleteIcon /> {t('buttons.deleteCard')}
                 </Button>
             </Box>
             <Dialog open={open}>
@@ -77,10 +77,10 @@ const DeleteBudget: FC<IProps> = ({ card }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)} variant='contained'>
-                        {t('commonButtons.Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button color='error' onClick={handleClickDelete}>
-                        {t('commonButtons.deleteCard')}
+                        {t('buttons.deleteCard')}
                     </Button>
                 </DialogActions>
             </Dialog>

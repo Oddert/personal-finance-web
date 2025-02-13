@@ -96,7 +96,7 @@ const LanguageSelector: FC<IProps> = () => {
             />
             <Accordion>
                 <AccordionSummary>
-                    {t('commonButtons.changeOrder')}
+                    {t('buttons.changeOrder')}
                 </AccordionSummary>
                 <AccordionDetails>
                     <List>
