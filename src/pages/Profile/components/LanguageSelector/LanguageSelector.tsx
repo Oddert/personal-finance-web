@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import locale from 'locale-codes';
 
 import {
@@ -39,6 +40,8 @@ import { IProps } from './LanguageSelector.types';
  * @subcategory Profile
  */
 const LanguageSelector: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const usersLanguages = useAppSelector(getUserLanguages);
@@ -72,7 +75,7 @@ const LanguageSelector: FC<IProps> = () => {
                 }}
                 options={locale.all}
                 renderInput={(props) => (
-                    <TextField {...props} label='Favourite languages' />
+                    <TextField {...props} label={t('Favourite languages')} />
                 )}
                 sx={{
                     mt: '24px',
@@ -84,7 +87,9 @@ const LanguageSelector: FC<IProps> = () => {
                 }))}
             />
             <Accordion>
-                <AccordionSummary>Change order</AccordionSummary>
+                <AccordionSummary>
+                    {t('commonButtons.changeOrder')}
+                </AccordionSummary>
                 <AccordionDetails>
                     <List>
                         {usersLanguages.map((language, idx) => (
@@ -100,7 +105,7 @@ const LanguageSelector: FC<IProps> = () => {
                                                 }),
                                             )
                                         }
-                                        title='move up in sort order'
+                                        title={t('Move up in sort order')}
                                     >
                                         <IconUp />
                                     </Button>
@@ -116,7 +121,7 @@ const LanguageSelector: FC<IProps> = () => {
                                                 }),
                                             )
                                         }
-                                        title='move down in sort order'
+                                        title={t('Move down in sort order')}
                                     >
                                         <IconDown />
                                     </Button>

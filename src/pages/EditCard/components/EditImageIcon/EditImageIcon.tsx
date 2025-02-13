@@ -1,4 +1,5 @@
 import { FC, Fragment, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Button,
@@ -14,6 +15,8 @@ import { Edit as EditIcon } from '@mui/icons-material';
 import { IProps } from './EditImageIcon.types';
 
 const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
+    const { t } = useTranslation();
+
     const [open, setOpen] = useState(false);
     const [updatedUrl, setUpdatedUrl] = useState<string | null>(null);
 
@@ -54,7 +57,7 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
                                 '& .edit_icon': { opacity: 1 },
                             },
                         }}
-                        title='edit background image'
+                        title={t('Card.editBackgroundImageTitle')}
                         variant='outlined'
                     >
                         <EditIcon className='edit_icon' />
@@ -70,7 +73,7 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
                 }}
             />
             <Dialog onClose={handleClickCancel} open={open}>
-                <DialogTitle>Enter URL of new image:</DialogTitle>
+                <DialogTitle>{t('Card.enterUrlOfNewImage')}</DialogTitle>
                 <DialogContent>
                     <TextField
                         onChange={(e) => setUpdatedUrl(e.target.value)}
@@ -79,9 +82,11 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClickCancel}>Cancel</Button>
+                    <Button onClick={handleClickCancel}>
+                        {t('commonButtons.Cancel')}
+                    </Button>
                     <Button onClick={handleClickSubmit} variant='contained'>
-                        Submit
+                        {t('commonButtons.Submit')}
                     </Button>
                 </DialogActions>
             </Dialog>

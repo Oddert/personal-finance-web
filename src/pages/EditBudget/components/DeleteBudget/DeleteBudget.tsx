@@ -1,4 +1,5 @@
 import { FC, Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -29,6 +30,8 @@ import type { IProps } from './DeleteBudget.types';
  * @subcategory Home
  */
 const DeleteBudget: FC<IProps> = ({ budget }) => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
@@ -58,25 +61,26 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
                     }}
                     variant='outlined'
                 >
-                    <DeleteIcon /> Delete budget
+                    <DeleteIcon />{' '}
+                    {t('modelMessages.sureYouWantToDeleteBudget')}
                 </Button>
             </Box>
             <Dialog open={open}>
                 <DialogTitle>
-                    Are you sure you want to delete budget &ldquo;{budget.name}
+                    {t('Budget.areYouSureDeleteDesc')} &ldquo;{budget.name}
                     &rdquo;?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        This action cannot be undone.
+                        {t('modalMessages.cannotBeUndone')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)} variant='contained'>
-                        Cancel
+                        {t('commonButtons.Cancel')}
                     </Button>
                     <Button color='error' onClick={handleClickDelete}>
-                        Delete budget
+                        {t('Budget.deleteBudget')}
                     </Button>
                 </DialogActions>
             </Dialog>

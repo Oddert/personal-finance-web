@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 
@@ -26,6 +27,8 @@ import type { IProps } from './ManageBudgets.types';
  * @subcategory Manage Budgets
  */
 const ManageBudgets: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
@@ -48,7 +51,7 @@ const ManageBudgets: FC<IProps> = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Manage Budgets
+                    {t('pageTitles.manageBudgets')}
                 </Typography>
                 <Box
                     sx={{

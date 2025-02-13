@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 import {
@@ -61,6 +62,7 @@ const createEmptyBudget = (id: number): IBudget => ({
  * @component
  */
 const EditBudget: FC<IProps> = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(true);
@@ -84,9 +86,7 @@ const EditBudget: FC<IProps> = () => {
                     );
 
                     if (!response || !response.payload) {
-                        throw new Error(
-                            'No response received from the server.',
-                        );
+                        throw new Error(t('modalMessages.noServerResponse'));
                     }
                     dispatch(addBudget({ budget: response.payload.budget }));
                 } else {
@@ -96,9 +96,7 @@ const EditBudget: FC<IProps> = () => {
                     });
 
                     if (!response || !response.payload) {
-                        throw new Error(
-                            'No response received from the server.',
-                        );
+                        throw new Error(t('modalMessages.noServerResponse'));
                     }
                     dispatch(addBudget({ budget: response.payload.budget }));
                 }
@@ -117,7 +115,7 @@ const EditBudget: FC<IProps> = () => {
             const fetchBudget = async (budgetId: number) => {
                 const response = await APIService.getSingleBudget(budgetId);
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setBudget({
                     ...(response.payload.budget as IBudget),
@@ -143,9 +141,9 @@ const EditBudget: FC<IProps> = () => {
                 ) {
                     dispatch(
                         writeErrorBoundary({
-                            title: 'Budget not Found',
-                            message: `No budget with ID "${budget.id}" found.`,
-                            error: 'Not found error',
+                            title: t('Budget.notFound'),
+                            message: `${t('Budget.notFoundWithId')} "${budget.id}".`,
+                            error: t('errors.notFound'),
                         }),
                     );
                 }
@@ -161,7 +159,7 @@ const EditBudget: FC<IProps> = () => {
             console.error(error);
             dispatch(intakeError(error));
         }
-    }, []);
+    }, [t]);
 
     if (loading) {
         return (
@@ -186,20 +184,21 @@ const EditBudget: FC<IProps> = () => {
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='text'
                 >
-                    <ArrowLeftIcon /> Return to all budgets
+                    <ArrowLeftIcon /> {t('Budget.returnToAllBudgets')}
                 </Button>
                 <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
-                    {isEdit ? 'Edit ' : 'Create '}Budget
+                    {isEdit ? t('literals.Edit') : t('literals.Create')}{' '}
+                    {t('literals.Budget')}
                 </Typography>
                 <TextField
-                    label='Title'
+                    label={t('literals.Title')}
                     onChange={(event) =>
                         setBudget({ ...budget, name: event.target.value })
                     }
                     value={budget.name}
                 />
                 <TextField
-                    label='Tag line'
+                    label={t('Budget.tagLine')}
                     onChange={(event) =>
                         setBudget({
                             ...budget,
@@ -209,7 +208,7 @@ const EditBudget: FC<IProps> = () => {
                     value={budget.shortDescription}
                 />
                 <TextField
-                    label='Description'
+                    label={t('literals.Description')}
                     onChange={(event) =>
                         setBudget({
                             ...budget,
@@ -245,7 +244,7 @@ const EditBudget: FC<IProps> = () => {
                             ])
                         }
                     >
-                        <PlusIcon /> Add budget row
+                        <PlusIcon /> {t('Budget.addBudgetRow')}
                     </Button>
                 </DynamicCardList>
                 <Button
@@ -257,7 +256,10 @@ const EditBudget: FC<IProps> = () => {
                     }}
                     variant='contained'
                 >
-                    <SaveIcon /> {isEdit ? 'Save changes' : 'Create budget'}
+                    <SaveIcon />{' '}
+                    {isEdit
+                        ? t('commonButtons.saveChanges')
+                        : t('commonButtons.createBudget')}
                 </Button>
                 {isEdit && <DeleteBudget budget={budget} />}
             </Box>

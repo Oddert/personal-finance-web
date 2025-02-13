@@ -6,6 +6,7 @@ import {
     useReducer,
     useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
 import { Box, Button } from '@mui/material';
@@ -40,6 +41,8 @@ import type { IProps } from './Edit.types';
  * @subcategory Transactions
  */
 const Edit: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const {
         state: { rangeValues, value },
     } = useContext(TransactionRange);
@@ -103,7 +106,7 @@ const Edit: FC<IProps> = () => {
                         gridGap: '16px',
                     }}
                 >
-                    Edit transactions in range <EditIcon />
+                    {t('Transaction.editInRange')} <EditIcon />
                 </Button>
             </Box>
             {open ? (

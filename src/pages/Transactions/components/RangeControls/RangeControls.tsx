@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -35,6 +36,8 @@ dayjs.extend(localizedFormat);
  * @subcategory Transactions
  */
 const RangeControls = () => {
+    const { t } = useTranslation();
+
     const {
         dispatch,
         state: { marks, rangeKeys, rangeLength, value },
@@ -97,6 +100,7 @@ const RangeControls = () => {
 
         const customMarks = generateMarks(
             Object.values(filteredRangeKeys.keyList),
+            t,
         );
 
         dispatch(setRangeValues(rangeValues));
@@ -108,7 +112,7 @@ const RangeControls = () => {
             ),
         );
         dispatch(updateValue([0, filteredRangeKeys.length]));
-    }, [orderedTransactions, dispatch]);
+    }, [orderedTransactions, dispatch, t]);
 
     const handleChange = (
         event: Event | SyntheticEvent<Element, Event>,
@@ -146,9 +150,9 @@ const RangeControls = () => {
 
     return (
         <Box sx={{ padding: '16px 64px' }}>
-            <Typography gutterBottom>Filter view by month:</Typography>
+            <Typography gutterBottom>{t('Filter view by month:')}</Typography>
             <Slider
-                getAriaLabel={() => 'Transaction range'}
+                getAriaLabel={() => t('Transaction.transactionRangeLabel')}
                 value={localValue}
                 onChange={handleChange}
                 onChangeCommitted={onChangeCommitted}

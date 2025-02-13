@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, SyntheticEvent, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Autocomplete,
@@ -39,6 +40,8 @@ const inputProps = {
  * @subcategory Home
  */
 const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
+    const { t } = useTranslation();
+
     const categories = useAppSelector(getCategoryResponse);
 
     const categoryOptions = useMemo(
@@ -154,7 +157,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     alignItems: 'center',
                     gridGap: '16px',
                 }}
-                title={budgetRow.deleted ? 'row deleted' : undefined}
+                title={budgetRow.deleted ? t('row deleted') : undefined}
             >
                 <ColourBase asButton={false} colour={budgetRow.colour} />
                 <Autocomplete
@@ -167,7 +170,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     renderInput={(params) => (
                         <TextFieldStyled
                             {...params}
-                            label='Category'
+                            label={t('literals.Category')}
                             placeholder='unset'
                             sx={{
                                 '& * ': {
@@ -187,7 +190,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 <TextFieldStyled
                     disabled={budgetRow.deleted}
                     InputProps={inputProps}
-                    label='Target spend'
+                    label={t('Target spend')}
                     onChange={handleChangeTargetValue}
                     sx={{
                         '& * ': {
@@ -211,7 +214,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     <TextFieldStyled
                         disabled={budgetRow.deleted}
                         InputProps={inputProps}
-                        label='Overspend limit (%)'
+                        label={t('Budget.overspendLimitPc')}
                         onChange={handleChangeOverspend}
                         sx={{
                             '& * ': {
@@ -226,7 +229,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     <TextFieldStyled
                         disabled={budgetRow.deleted}
                         InputProps={inputProps}
-                        label='Underspend limit (%)'
+                        label={t('Budget.underspendLimitPc')}
                         onChange={handleChangeUnderspend}
                         sx={{
                             '& * ': {
@@ -242,14 +245,14 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 {budgetRow.deleted ? (
                     <Button
                         onClick={handleClickUndelete}
-                        title='row deleted. click to restore'
+                        title={t('Budget.rowDeletedCLickToRestore')}
                     >
                         <UnDeleteIcon />
                     </Button>
                 ) : (
                     <Button
                         onClick={handleClickDelete}
-                        title='delete budget row'
+                        title={t('Budget.deleteRow')}
                     >
                         <DeleteIcon />
                     </Button>

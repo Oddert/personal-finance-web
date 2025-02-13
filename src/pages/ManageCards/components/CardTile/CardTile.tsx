@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -64,6 +65,8 @@ const formatSortCode = (sortCode: number | string) => {
  * @subcategory Manage Cards
  */
 const BudgetCard: FC<IProps> = ({ card }) => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const activeCardId = useAppSelector(getActiveCardId);
@@ -109,21 +112,24 @@ const BudgetCard: FC<IProps> = ({ card }) => {
                         <Typography variant='h3'>{card.cardName}</Typography>
                     </Tooltip>
                     {activeCardId === card.id ? (
-                        <Chip color='success' label='Default' />
+                        <Chip color='success' label={t('literals.Default')} />
                     ) : (
                         <Button onClick={handleClickActivate} variant='text'>
-                            Activate
+                            {t('commonButtons.Activate')}
                         </Button>
                     )}
                 </Box>
                 <Typography variant='subtitle1'>
-                    Sort code: {formatSortCode(card.sortCode)}
+                    {t('Card.sortCodeColon')} {formatSortCode(card.sortCode)}
                 </Typography>
                 <Typography variant='subtitle1'>
-                    Card number: {blurCardNumber(card.cardNumber)}
+                    {t('Card.cardNUmberColon')}{' '}
+                    {blurCardNumber(card.cardNumber)}
                 </Typography>
                 <Button onClick={handleClickEdit}>
-                    <Typography component='span'>View and edit</Typography>{' '}
+                    <Typography component='span'>
+                        {t('commonButtons.viewAndEdit')}
+                    </Typography>{' '}
                     <RightArrowIcon />
                 </Button>
             </Paper>

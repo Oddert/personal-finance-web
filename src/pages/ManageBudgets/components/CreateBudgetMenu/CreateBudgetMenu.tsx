@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Autocomplete,
@@ -39,6 +40,8 @@ import type { IProps } from './CreateBudgetMenu.types';
  * @subcategory Manage Budgets
  */
 const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
+    const { t } = useTranslation();
+
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogValue, setDialogValue] = useState<IBudget | null>(null);
     const [error, setError] = useState(false);
@@ -77,25 +80,25 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
 
     return (
         <Menu
-            id='basic-menu'
             anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
+            id='basic-menu'
             MenuListProps={{
                 'aria-labelledby': 'basic-button',
             }}
+            onClose={handleClose}
+            open={open}
         >
             <MenuItem onClick={handleClickNew}>
                 <ListItemIcon>
                     <CreateFreshIcon fontSize='small' />
                 </ListItemIcon>
-                New blank budget
+                {t('commonButtons.newBlankBudget')}
             </MenuItem>
             <MenuItem onClick={() => setDialogOpen(true)}>
                 <ListItemIcon>
                     <FromCopyIcon fontSize='small' />
                 </ListItemIcon>
-                Create from template
+                {t('commonButtons.createFromTemplate')}
             </MenuItem>
             <Dialog
                 open={dialogOpen}
@@ -106,11 +109,12 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                     },
                 }}
             >
-                <DialogTitle>Create new budget from template.</DialogTitle>
+                <DialogTitle>
+                    {t('modalTitles.createBudgetFromTemplateTitle')}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Select a budget to use as a starting point for your new
-                        budget.
+                        {t('modalMessages.createBudgetFromTemplateTitle')}
                     </DialogContentText>
                     <Autocomplete
                         getOptionLabel={(option) => option.name}
@@ -118,20 +122,25 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                         onChange={handleChangeDialog}
                         options={budgets}
                         renderInput={(params) => (
-                            <TextField {...params} label='Template budget' />
+                            <TextField
+                                {...params}
+                                label={t('Budget.templateBudgetLabel')}
+                            />
                         )}
                         value={dialogValue}
                     />
                     {error && (
                         <Typography color='error'>
-                            Please select a budget.
+                            {t('Budget.pleaseSelectABudget')}
                         </Typography>
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClickCancel}>Cancel</Button>
+                    <Button onClick={handleClickCancel}>
+                        {t('commonButtons.Cancel')}
+                    </Button>
                     <Button onClick={handleClickTemplate} variant='contained'>
-                        Create new budget
+                        {t('commonButtons.createNewBudget')}
                     </Button>
                 </DialogActions>
             </Dialog>

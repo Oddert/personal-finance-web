@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Accordion,
@@ -40,6 +41,8 @@ import { IProps } from './CurrencySelector.types';
  * @subcategory Profile
  */
 const LanguageSelector: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const usersCurrencies = useAppSelector(getUserCurrencies);
@@ -69,7 +72,7 @@ const LanguageSelector: FC<IProps> = () => {
         >
             <Autocomplete
                 getOptionLabel={(option) =>
-                    `${option[0]} (example: ${option[1]})`
+                    `${option[0]} (${t('literals.example')}: ${option[1]})`
                 }
                 getOptionKey={(option) => option[0]}
                 multiple
@@ -84,7 +87,7 @@ const LanguageSelector: FC<IProps> = () => {
                 }}
                 options={currencies}
                 renderInput={(props) => (
-                    <TextField {...props} label='Favourite currencies' />
+                    <TextField {...props} label={t('Favourite currencies')} />
                 )}
                 value={usersCurrencies.map((userCurrency) => [
                     userCurrency,
@@ -92,7 +95,9 @@ const LanguageSelector: FC<IProps> = () => {
                 ])}
             />
             <Accordion>
-                <AccordionSummary>Change order</AccordionSummary>
+                <AccordionSummary>
+                    {t('commonButtons.changeOrder')}
+                </AccordionSummary>
                 <AccordionDetails>
                     <List>
                         {usersCurrencies.map((currency, idx) => (
@@ -108,7 +113,7 @@ const LanguageSelector: FC<IProps> = () => {
                                                 }),
                                             )
                                         }
-                                        title='move up in sort order'
+                                        title={t('Move up in sort order')}
                                     >
                                         <IconUp />
                                     </Button>
@@ -122,7 +127,7 @@ const LanguageSelector: FC<IProps> = () => {
                                                 }),
                                             )
                                         }
-                                        title='move down in sort order'
+                                        title={t('Move down in sort order')}
                                     >
                                         <IconDown />
                                     </Button>

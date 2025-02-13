@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
 import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
@@ -28,6 +29,8 @@ import type { IProps } from './BudgetCard.types';
  * @subcategory Manage Budgets
  */
 const BudgetCard: FC<IProps> = ({ budget }) => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const activeBudgetId = useAppSelector(getActiveBudgetId);
@@ -72,10 +75,10 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                 >
                     <Typography variant='h3'>{budget.name}</Typography>
                     {activeBudgetId === budget.id ? (
-                        <Chip color='success' label='Enabled' />
+                        <Chip color='success' label={t('literals.Enabled')} />
                     ) : (
                         <Button onClick={handleClickActivate} variant='text'>
-                            Activate
+                            {t('commonButtons.Activate')}
                         </Button>
                     )}
                 </Box>
@@ -86,11 +89,13 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     sx={(theme) => ({ color: theme.palette.text.disabled })}
                     variant='body2'
                 >
-                    Last updated:{' '}
+                    {t('Last updated:')}{' '}
                     {new Date(budget.updatedOn).toLocaleString(language)}
                 </Typography>
                 <Button onClick={handleClickEdit}>
-                    <Typography component='span'>View and edit</Typography>{' '}
+                    <Typography component='span'>
+                        {t('commonButtons.viewAndEdit')}
+                    </Typography>{' '}
                     <RightArrowIcon />
                 </Button>
             </Paper>

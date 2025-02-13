@@ -1,4 +1,5 @@
 import { useReducer } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Container, Paper, Typography } from '@mui/material';
 
 import {
@@ -21,13 +22,15 @@ import Edit from './components/Edit';
  * @subcategory Transactions
  */
 const Transactions = () => {
+    const { t } = useTranslation();
+
     const [state, dispatch] = useReducer(transactionRangeReducer, initialState);
 
     return (
         <TransactionRange.Provider value={{ state, dispatch }}>
             <Container>
                 <Typography sx={{ margin: '24px 0' }} variant='h2'>
-                    Upload & Edit Transactions
+                    {t('pageTitles.transactions')}
                 </Typography>
                 <Box
                     sx={{

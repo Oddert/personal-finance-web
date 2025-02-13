@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
@@ -28,6 +29,8 @@ dayjs.extend(customParseFormat);
  * @subcategory Transactions
  */
 const Table = () => {
+    const { t } = useTranslation();
+
     const {
         state: { rangeValues, value },
     } = useContext(TransactionRange);
@@ -42,8 +45,8 @@ const Table = () => {
     const language = useAppSelector(getActiveLanguageCode);
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
-        () => transactionColumns(language),
-        [language],
+        () => transactionColumns(language, t),
+        [language, t],
     );
 
     useEffect(() => {

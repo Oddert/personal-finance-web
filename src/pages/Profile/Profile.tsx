@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import locale from 'locale-codes';
 
 import { Autocomplete, Box, TextField, Typography } from '@mui/material';
@@ -27,6 +28,8 @@ import { IProps } from './Profile.types';
  * @subcategory Profile
  */
 const Profile: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const language = useAppSelector(getActiveLanguage);
@@ -45,12 +48,13 @@ const Profile: FC<IProps> = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Profile and settings
+                    {t('pageTitles.profile')}
                 </Typography>
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 2fr' }}>
                     <Box>
                         <Typography>
-                            Example currency display (using {usersCurrencies[0]}
+                            {t('Example currency display')} (
+                            {t('literals.using')} {usersCurrencies[0]}
                             ): &ldquo;
                             <Typography
                                 component='span'
@@ -61,7 +65,7 @@ const Profile: FC<IProps> = () => {
                             &rdquo;
                         </Typography>
                         <Typography>
-                            Example number formatting: &ldquo;
+                            {t('Example number formatting:')} &ldquo;
                             <Typography
                                 component='span'
                                 sx={{ fontWeight: 'bold' }}
@@ -100,7 +104,7 @@ const Profile: FC<IProps> = () => {
                             renderInput={(props) => (
                                 <TextField
                                     {...props}
-                                    label='Language selected'
+                                    label={t('Language selected')}
                                 />
                             )}
                             value={{

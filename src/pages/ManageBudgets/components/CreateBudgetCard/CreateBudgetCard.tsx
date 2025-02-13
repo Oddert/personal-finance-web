@@ -1,4 +1,5 @@
 import { FC, Fragment, MouseEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button, ListItem } from '@mui/material';
 import { Add as PlusIcon } from '@mui/icons-material';
@@ -14,6 +15,8 @@ import type { IProps } from './CreateBudgetCard.types';
  * @subcategory Manage Budgets
  */
 const CreateBudgetCard: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -33,7 +36,7 @@ const CreateBudgetCard: FC<IProps> = () => {
                         width: '100%',
                         height: '100%',
                     }}
-                    title='Create a new budget'
+                    title={t('Budget.createANewBudget')}
                     variant='outlined'
                 >
                     <PlusIcon fontSize='large' />

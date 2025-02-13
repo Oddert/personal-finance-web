@@ -1,4 +1,5 @@
 import { FC, Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -29,6 +30,8 @@ import type { IProps } from './DeleteCard.types';
  * @subcategory Card
  */
 const DeleteBudget: FC<IProps> = ({ card }) => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
@@ -58,25 +61,26 @@ const DeleteBudget: FC<IProps> = ({ card }) => {
                     }}
                     variant='outlined'
                 >
-                    <DeleteIcon /> Delete card
+                    <DeleteIcon /> {t('commonButtons.deleteCard')}
                 </Button>
             </Box>
             <Dialog open={open}>
                 <DialogTitle>
-                    Are you sure you want to delete card &ldquo;{card.cardName}
+                    {t('modalMessages.sureYouWantToDeleteCard')} &ldquo;
+                    {card.cardName}
                     &rdquo;?
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        This action cannot be undone.
+                        {t('modalMessages.cannotBeUndone')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)} variant='contained'>
-                        Cancel
+                        {t('commonButtons.Cancel')}
                     </Button>
                     <Button color='error' onClick={handleClickDelete}>
-                        Delete card
+                        {t('commonButtons.deleteCard')}
                     </Button>
                 </DialogActions>
             </Dialog>
