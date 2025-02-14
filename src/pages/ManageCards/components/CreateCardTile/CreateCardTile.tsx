@@ -2,7 +2,7 @@ import { FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, ListItem } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 
 import router, { ROUTES } from '../../../../constants/routerConstants';
 
@@ -33,7 +33,7 @@ const CreateCardTile: FC<IProps> = () => {
                     title={t('buttons.createANewCard')}
                     variant='outlined'
                 >
-                    <PlusIcon fontSize='large' />
+                    <IconPlus fontSize='large' />
                 </Button>
             </ListItem>
         </Fragment>

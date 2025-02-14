@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, FormControlLabel, Typography } from '@mui/material';
-import { Refresh as RefreshIcon } from '@mui/icons-material';
+import { Refresh as IconRefresh } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
@@ -153,7 +153,7 @@ const RequestControls = () => {
                     size='large'
                     sx={{ px: 2, alignSelf: 'flex-end' }}
                 >
-                    {t('buttons.Refresh')} <RefreshIcon />
+                    {t('buttons.Refresh')} <IconRefresh />
                 </Button>
             </Box>
         </Box>

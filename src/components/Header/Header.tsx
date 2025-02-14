@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 
-import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/AutoGraph';
+import { Menu as IconMenu, AutoGraph as IconHome } from '@mui/icons-material';
 
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -54,7 +53,7 @@ const Header = () => {
                             marginRight: 5,
                         }}
                     >
-                        <MenuIcon />
+                        <IconMenu />
                     </IconButton>
                     <Link to='/'>
                         <IconButton
@@ -66,7 +65,7 @@ const Header = () => {
                                 color: theme.palette.common.white,
                             })}
                         >
-                            <HomeIcon />
+                            <IconHome />
                         </IconButton>
                     </Link>
                     <Typography

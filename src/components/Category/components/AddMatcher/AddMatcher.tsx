@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, ListItem, Tooltip } from '@mui/material';
-import { AddCircle as AddIcon } from '@mui/icons-material';
+import { AddCircle as IconAdd } from '@mui/icons-material';
 
 import type { Matcher } from '../../../../types/Matcher.d';
 
@@ -102,7 +102,7 @@ const AddMatcher: FC<IProps> = ({
                     }}
                     variant='outlined'
                 >
-                    <AddIcon />
+                    <IconAdd />
                 </Button>
             </Tooltip>
         </ListItem>

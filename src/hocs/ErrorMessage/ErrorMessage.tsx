@@ -10,7 +10,7 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import { Error as ErrorIcon } from '@mui/icons-material';
+import { Error as IconError } from '@mui/icons-material';
 
 import { getErrorState } from '../../redux/selectors/errorSelectors';
 import { clearError } from '../../redux/slices/errorSlice';
@@ -60,7 +60,7 @@ const ErrorMessage: FC<IProps> = ({ children }) => {
                 })}
             >
                 <Box sx={{ padding: '16px 24px' }}>
-                    <ErrorIcon sx={{ width: '40px', height: '40px' }} />
+                    <IconError sx={{ width: '40px', height: '40px' }} />
                 </Box>
                 <DialogTitle variant='h2'>{errorState.title}</DialogTitle>
                 <DialogContent sx={{ gridColumn: 2 }}>
@@ -87,7 +87,7 @@ const ErrorMessage: FC<IProps> = ({ children }) => {
                             color: theme.palette.error.contrastText,
                         })}
                     >
-                        {t('buttons.Close')}
+                        {t('commonButtons.Close')}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Button, ListItem, Typography } from '@mui/material';
 import {
-    Close as DeleteIcon,
-    Edit as EditIcon,
-    FontDownload as MatchPositiveIcon,
-    FontDownloadOutlined as MatchNegativeIcon,
+    Close as IconDelete,
+    Edit as IconEdit,
+    FontDownload as IconMatchPositive,
+    FontDownloadOutlined as IconMatchNegative,
 } from '@mui/icons-material';
 
 import {
@@ -157,7 +157,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 >
                     {matcher.match}
                 </Typography>
-                <EditIcon />
+                <IconEdit />
             </Button>
             <Box
                 sx={{
@@ -171,9 +171,9 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 }
             >
                 {matcher.case_sensitive ? (
-                    <MatchPositiveIcon />
+                    <IconMatchPositive />
                 ) : (
-                    <MatchNegativeIcon />
+                    <IconMatchNegative />
                 )}
             </Box>
             <Typography title={t(matchTypeTitle)} variant='body1'>
@@ -185,7 +185,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 title={t('Category.deleteMatcher')}
                 size='small'
             >
-                <DeleteIcon />
+                <IconDelete />
             </Button>
         </ListItem>
     );

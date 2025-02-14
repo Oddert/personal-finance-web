@@ -2,7 +2,7 @@ import { FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 
 import router, { ROUTES } from '../../../../constants/routerConstants';
 
@@ -24,7 +24,7 @@ const CreateCardButton: FC<IProps> = () => {
     return (
         <Fragment>
             <Button onClick={handleClick} variant='contained'>
-                <PlusIcon /> {t('buttons.addNewCard')}
+                <IconPlus /> {t('buttons.addNewCard')}
             </Button>
         </Fragment>
     );

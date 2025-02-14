@@ -10,8 +10,8 @@ import {
     Typography,
 } from '@mui/material';
 import {
-    ZoomIn as ZoomPlusIcon,
-    ZoomOut as ZoomMinusIcon,
+    ZoomIn as IconZoomPlus,
+    ZoomOut as IconZoomMinus,
 } from '@mui/icons-material';
 
 import type { IProps, IZoomLevel } from './BudgetPercentageControls.types';
@@ -85,14 +85,14 @@ const BudgetPercentageControls: FC<IProps> = ({
                     title={t('budgetPercentageControls.zoomTitles.decrease')}
                     onClick={decrementZoom}
                 >
-                    <ZoomMinusIcon />
+                    <IconZoomMinus />
                 </IconButton>
                 <IconButton
                     disabled={zoomLevel >= 4}
                     title={t('budgetPercentageControls.zoomTitles.increase')}
                     onClick={incrementZoom}
                 >
-                    <ZoomPlusIcon />
+                    <IconZoomPlus />
                 </IconButton>
             </Box>
             <Divider orientation='vertical' flexItem />

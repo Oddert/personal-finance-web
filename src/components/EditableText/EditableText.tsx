@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, TextField, Typography } from '@mui/material';
 
-import { Edit as EditIcon } from '@mui/icons-material';
+import { Edit as IconEdit } from '@mui/icons-material';
 
 import type { IProps } from './EditableText.types';
 
@@ -78,7 +78,7 @@ const EditableText: FC<IProps> = ({
                 }}
                 title={t('buttons.clickToEdit')}
             >
-                <EditIcon />
+                <IconEdit />
             </Button>
             {open ? (
                 <TextField

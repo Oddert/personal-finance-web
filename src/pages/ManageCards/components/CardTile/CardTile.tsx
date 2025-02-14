@@ -10,7 +10,7 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
+import { ArrowForward as IconRightArrow } from '@mui/icons-material';
 
 import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
@@ -130,7 +130,7 @@ const BudgetCard: FC<IProps> = ({ card }) => {
                     <Typography component='span'>
                         {t('buttons.viewAndEdit')}
                     </Typography>{' '}
-                    <RightArrowIcon />
+                    <IconRightArrow />
                 </Button>
             </Paper>
         </ListItem>

@@ -2,7 +2,7 @@ import { FC, Fragment, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 
 import CreateBudgetMenu from '../CreateBudgetMenu';
 
@@ -30,7 +30,7 @@ const CreateBudgetButton: FC<IProps> = () => {
     return (
         <Fragment>
             <Button onClick={handleClick} variant='contained'>
-                <PlusIcon /> {t('buttons.createNewBudget')}
+                <IconPlus /> {t('buttons.createNewBudget')}
             </Button>
             <CreateBudgetMenu anchorEl={anchorEl} handleClose={handleClose} />
         </Fragment>

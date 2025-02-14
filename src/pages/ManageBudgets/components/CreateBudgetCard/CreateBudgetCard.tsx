@@ -2,7 +2,7 @@ import { FC, Fragment, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, ListItem } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 
 import CreateBudgetMenu from '../CreateBudgetMenu';
 
@@ -39,7 +39,7 @@ const CreateBudgetCard: FC<IProps> = () => {
                     title={t('Budget.createANewBudget')}
                     variant='outlined'
                 >
-                    <PlusIcon fontSize='large' />
+                    <IconPlus fontSize='large' />
                 </Button>
             </ListItem>
             <CreateBudgetMenu anchorEl={anchorEl} handleClose={handleClose} />

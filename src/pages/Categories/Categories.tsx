@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { Box, Button, Container, ListItem, Typography } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 
 import type { Category as CategoryT } from '../../types/Category.d';
 import type { IDynamicCardLayoutModes } from '../../types/Common.types';
@@ -52,7 +52,7 @@ const Categories = () => {
             >
                 <LayoutControls layout={layout} setLayout={setLayout} />
                 <Button onClick={handleDialogOpen} variant='contained'>
-                    <PlusIcon /> {t('buttons.addCategory')}
+                    <IconPlus /> {t('buttons.addCategory')}
                 </Button>
             </Box>
             <DynamicCardList layout={layout}>
@@ -73,7 +73,7 @@ const Categories = () => {
                         title={t('Category.addCategoryShortDesc')}
                         variant='outlined'
                     >
-                        <PlusIcon fontSize='large' />
+                        <IconPlus fontSize='large' />
                     </Button>
                 </ListItem>
             </DynamicCardList>

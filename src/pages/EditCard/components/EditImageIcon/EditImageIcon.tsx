@@ -10,7 +10,7 @@ import {
     FormControlLabel,
     TextField,
 } from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
+import { Edit as IconEdit } from '@mui/icons-material';
 
 import { IProps } from './EditImageIcon.types';
 
@@ -60,7 +60,7 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
                         title={t('Card.editBackgroundImageTitle')}
                         variant='outlined'
                     >
-                        <EditIcon className='edit_icon' />
+                        <IconEdit className='edit_icon' />
                     </Button>
                 }
                 label={label}

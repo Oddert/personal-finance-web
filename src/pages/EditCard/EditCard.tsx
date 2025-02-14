@@ -14,8 +14,8 @@ import {
     useTheme,
 } from '@mui/material';
 import {
-    ArrowBack as ArrowLeftIcon,
-    Save as SaveIcon,
+    ArrowBack as IconArrowLeft,
+    Save as IconSave,
 } from '@mui/icons-material';
 
 import { ICard, ICardTypes } from '../../types/Card.types';
@@ -177,7 +177,7 @@ const EditBudget: FC<IProps> = () => {
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='text'
                 >
-                    <ArrowLeftIcon /> {t('Card.returnToAllCards')}
+                    <IconArrowLeft /> {t('Card.returnToAllCards')}
                 </Button>
                 <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
                     {isEdit ? t('literals.Edit') : t('literals.Create')}{' '}
@@ -343,7 +343,7 @@ const EditBudget: FC<IProps> = () => {
                     }}
                     variant='contained'
                 >
-                    <SaveIcon />{' '}
+                    <IconSave />{' '}
                     {isEdit
                         ? t('buttons.saveChanges')
                         : t('buttons.createCard')}

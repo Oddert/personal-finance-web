@@ -15,7 +15,7 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import { ExpandMore as ExpandIcon } from '@mui/icons-material';
+import { ExpandMore as IconExpand } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import type { Transaction } from '../../types/Transaction.d';
@@ -230,7 +230,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 <Accordion>
                     <AccordionSummary
                         aria-controls='projection-line-controls'
-                        expandIcon={<ExpandIcon />}
+                        expandIcon={<IconExpand />}
                         id='projection-controls-header'
                     >
                         {t('Past Data')}

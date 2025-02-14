@@ -11,8 +11,8 @@ import {
     TextField,
 } from '@mui/material';
 import {
-    FontDownloadOutlined as MatchNegativeIcon,
-    FontDownload as MatchPositiveIcon,
+    FontDownloadOutlined as IconMatchNegative,
+    FontDownload as IconMatchPositive,
 } from '@mui/icons-material';
 
 import type { MatchType } from '../../../../types/Matcher.d';
@@ -134,8 +134,8 @@ const EditMatcher: FC<IProps> = ({
                     control={
                         <Checkbox
                             checked={caseSensitive}
-                            checkedIcon={<MatchPositiveIcon />}
-                            icon={<MatchNegativeIcon />}
+                            checkedIcon={<IconMatchPositive />}
+                            icon={<IconMatchNegative />}
                             onChange={() => setCaseSensitive(!caseSensitive)}
                             title={
                                 matcher?.case_sensitive

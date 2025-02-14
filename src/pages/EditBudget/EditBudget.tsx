@@ -10,9 +10,9 @@ import {
     Typography,
 } from '@mui/material';
 import {
-    Add as PlusIcon,
-    ArrowBack as ArrowLeftIcon,
-    Save as SaveIcon,
+    Add as IconPlus,
+    ArrowBack as IconArrowLeft,
+    Save as IconSave,
 } from '@mui/icons-material';
 
 import { IBudget, IBudgetRow } from '../../types/Budget.types';
@@ -184,7 +184,7 @@ const EditBudget: FC<IProps> = () => {
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='text'
                 >
-                    <ArrowLeftIcon /> {t('Budget.returnToAllBudgets')}
+                    <IconArrowLeft /> {t('Budget.returnToAllBudgets')}
                 </Button>
                 <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
                     {isEdit ? t('literals.Edit') : t('literals.Create')}{' '}
@@ -244,7 +244,7 @@ const EditBudget: FC<IProps> = () => {
                             ])
                         }
                     >
-                        <PlusIcon /> {t('buttons.addBudgetRow')}
+                        <IconPlus /> {t('buttons.addBudgetRow')}
                     </Button>
                 </DynamicCardList>
                 <Button
@@ -256,7 +256,7 @@ const EditBudget: FC<IProps> = () => {
                     }}
                     variant='contained'
                 >
-                    <SaveIcon />{' '}
+                    <IconSave />{' '}
                     {isEdit
                         ? t('buttons.saveChanges')
                         : t('buttons.createBudget')}

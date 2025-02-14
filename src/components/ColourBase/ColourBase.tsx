@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Box, Button, Theme } from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
+import { Edit as IconEdit } from '@mui/icons-material';
 
 import { categoryBoxSizes } from '../../constants/categoryConstants';
 
@@ -61,7 +61,7 @@ const ColourBase: FC<IProps> = ({
     if (asButton) {
         return (
             <Button aria-describedby={id} onClick={handleClick} sx={sx}>
-                <EditIcon className='Category_Colour__icon' />
+                <IconEdit className='Category_Colour__icon' />
             </Button>
         );
     }

@@ -11,8 +11,8 @@ import {
     TextField,
 } from '@mui/material';
 import {
-    Delete as DeleteIcon,
-    DeleteForever as UnDeleteIcon,
+    Delete as IconDelete,
+    DeleteForever as IconUnDelete,
 } from '@mui/icons-material';
 
 import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
@@ -247,14 +247,14 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                         onClick={handleClickUndelete}
                         title={t('Budget.rowDeletedCLickToRestore')}
                     >
-                        <UnDeleteIcon />
+                        <IconUnDelete />
                     </Button>
                 ) : (
                     <Button
                         onClick={handleClickDelete}
                         title={t('Budget.deleteRow')}
                     >
-                        <DeleteIcon />
+                        <IconDelete />
                     </Button>
                 )}
             </Paper>

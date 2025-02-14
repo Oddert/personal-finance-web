@@ -8,9 +8,9 @@ import {
     RadioGroup,
 } from '@mui/material';
 import {
-    Window as LayoutStandardIcon,
-    Apps as LayoutCompactIcon,
-    TableRows as LayoutListIcon,
+    Window as IconLayoutStandard,
+    Apps as IconLayoutCompact,
+    TableRows as IconLayoutList,
 } from '@mui/icons-material';
 
 import type { IDynamicCardLayoutModes } from '../../types/Common.types';
@@ -46,8 +46,8 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                     label=''
                     control={
                         <Radio
-                            checkedIcon={<LayoutStandardIcon />}
-                            icon={<LayoutStandardIcon />}
+                            checkedIcon={<IconLayoutStandard />}
+                            icon={<IconLayoutStandard />}
                             inputProps={{ 'aria-label': t('Standard layout') }}
                         />
                     }
@@ -56,8 +56,8 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 <FormControlLabel
                     control={
                         <Radio
-                            checkedIcon={<LayoutCompactIcon />}
-                            icon={<LayoutCompactIcon />}
+                            checkedIcon={<IconLayoutCompact />}
+                            icon={<IconLayoutCompact />}
                             inputProps={{ 'aria-label': t('Compact layout') }}
                         />
                     }
@@ -67,8 +67,8 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 <FormControlLabel
                     control={
                         <Radio
-                            checkedIcon={<LayoutListIcon />}
-                            icon={<LayoutListIcon />}
+                            checkedIcon={<IconLayoutList />}
+                            icon={<IconLayoutList />}
                             inputProps={{ 'aria-label': t('List layout') }}
                         />
                     }

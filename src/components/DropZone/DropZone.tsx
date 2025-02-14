@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDropzone, DropEvent, FileRejection } from 'react-dropzone';
 
 import { Box, Typography } from '@mui/material';
-import { Upload as UploadIcon } from '@mui/icons-material';
+import { Upload as IconUpload } from '@mui/icons-material';
 
 import { IProps } from './DropZone.types';
 
@@ -55,7 +55,7 @@ const DropZone: FC<IProps> = ({ onSuccess }) => {
                         height: '100%',
                     }}
                 >
-                    <UploadIcon />{' '}
+                    <IconUpload />{' '}
                     <Typography>{t('dragDrop.idleMessage')}</Typography>
                 </Box>
             )}

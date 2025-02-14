@@ -2,7 +2,7 @@ import { FC, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
-import { Circle as DotIcon } from '@mui/icons-material';
+import { Circle as IconDot } from '@mui/icons-material';
 
 import { Category } from '../../../../../../types/Category.d';
 
@@ -93,7 +93,7 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
                     value={value}
                 />
                 {value ? null : (
-                    <DotIcon
+                    <IconDot
                         fontSize='small'
                         sx={(theme) => ({
                             color: theme.palette.warning.light,

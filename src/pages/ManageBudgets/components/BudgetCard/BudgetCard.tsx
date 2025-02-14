@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
-import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
+import { ArrowForward as IconRightArrow } from '@mui/icons-material';
 
 import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
@@ -96,7 +96,7 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     <Typography component='span'>
                         {t('buttons.viewAndEdit')}
                     </Typography>{' '}
-                    <RightArrowIcon />
+                    <IconRightArrow />
                 </Button>
             </Paper>
         </ListItem>

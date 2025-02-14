@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -126,7 +126,7 @@ const AddCategory: FC = () => {
 
     return (
         <Button onClick={() => setOpen(true)} sx={{ mt: 2 }}>
-            <PlusIcon /> {t('buttons.addCategory')}
+            <IconPlus /> {t('buttons.addCategory')}
         </Button>
     );
 };

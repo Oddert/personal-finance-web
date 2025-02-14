@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
 import { Box, Button } from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
+import { Edit as IconEdit } from '@mui/icons-material';
 
 import {
     setColumnMap,
@@ -106,7 +106,7 @@ const Edit: FC<IProps> = () => {
                         gridGap: '16px',
                     }}
                 >
-                    {t('Transaction.editInRange')} <EditIcon />
+                    {t('Transaction.editInRange')} <IconEdit />
                 </Button>
             </Box>
             {open ? (

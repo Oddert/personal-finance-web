@@ -11,7 +11,7 @@ import {
     Menu,
     MenuItem,
 } from '@mui/material';
-import { MoreVert as DotsIcon } from '@mui/icons-material';
+import { MoreVert as IconDots } from '@mui/icons-material';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 import { initDeleteSingleCategory } from '../../../../redux/slices/categorySlice';
@@ -67,7 +67,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                 }}
                 title={t('literals.options')}
             >
-                <DotsIcon
+                <IconDots
                     sx={(theme) => ({
                         transition: '.1s linear',
                         color: theme.palette.common.white,

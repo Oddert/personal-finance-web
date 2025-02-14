@@ -1,15 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import AllDataIcon from '@mui/icons-material/WaterfallChart';
-import CategoryIcon from '@mui/icons-material/Category';
-import BudgetBreakdownIcon from '@mui/icons-material/DonutSmall';
-import BudgetOverviewIcon from '@mui/icons-material/CandlestickChart';
-import ManageBudgetIcon from '@mui/icons-material/AutoAwesomeMotion';
-import ManageCardsIcon from '@mui/icons-material/Payments';
-import ProfileIcon from '@mui/icons-material/ManageAccounts';
-// import ManageBudgetIcon from '@mui/icons-material/Tune';;
-// import ScenarioEditIcon from '.@mui/icons-material/DeveloperBoard/';
-import TransactionsIcon from '@mui/icons-material/ReceiptLong';
+import {
+    WaterfallChart as IconAllData,
+    Category as IconCategory,
+    DonutSmall as IconBudgetBreakdown,
+    CandlestickChart as IconBudgetOverview,
+    AutoAwesomeMotion as IconManageBudget,
+    Payments as IconManageCards,
+    ManageAccounts as IconProfile,
+    //  Tune as IconManageBudget,
+    //  DeveloperBoard as IconScenarioEdit,
+    ReceiptLong as IconTransactions,
+} from '@mui/icons-material';
 
 import Layout from '../components/Layout';
 
@@ -189,42 +191,42 @@ const router = createBrowserRouter([
 export const navigation = [
     {
         label: 'All Historical Data',
-        Icon: AllDataIcon,
+        Icon: IconAllData,
         location: ROUTES.ALL_DATA,
     },
     {
         label: 'Budget Breakdown',
-        Icon: BudgetBreakdownIcon,
+        Icon: IconBudgetBreakdown,
         location: ROUTES.BUDGET_BREAKDOWN,
     },
     {
         label: 'Budget Overview',
-        Icon: BudgetOverviewIcon,
+        Icon: IconBudgetOverview,
         location: ROUTES.BUDGET_OVERVIEW,
     },
     {
         label: 'My Budgets',
-        Icon: ManageBudgetIcon,
+        Icon: IconManageBudget,
         location: ROUTES.MANAGE_BUDGETS,
     },
     {
         label: 'My Cards',
-        Icon: ManageCardsIcon,
+        Icon: IconManageCards,
         location: ROUTES.MANAGE_CARDS,
     },
     {
         label: 'Categories',
-        Icon: CategoryIcon,
+        Icon: IconCategory,
         location: ROUTES.CATEGORIES,
     },
     {
         label: 'Transactions',
-        Icon: TransactionsIcon,
+        Icon: IconTransactions,
         location: ROUTES.TRANSACTIONS,
     },
     {
         label: 'Profile',
-        Icon: ProfileIcon,
+        Icon: IconProfile,
         location: ROUTES.PROFILE,
     },
 ];

@@ -5,8 +5,8 @@ import { Box, Button, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
-    ArrowLeft as BackButtonIcon,
-    ArrowRight as ForwardButtonIcon,
+    ArrowLeft as IconBackButton,
+    ArrowRight as IconForwardButton,
 } from '@mui/icons-material';
 
 import {
@@ -94,7 +94,7 @@ const DateRange: FC<IProps> = ({
                 }}
             >
                 <Button onClick={handleClickPrevMonth} variant='contained'>
-                    <BackButtonIcon /> {t('buttons.prevMonth')} (
+                    <IconBackButton /> {t('buttons.prevMonth')} (
                     {prevMonth.format('MMM')} {prevMonth.format('YYYY')})
                 </Button>
                 <Box>
@@ -135,7 +135,7 @@ const DateRange: FC<IProps> = ({
                 </Box>
                 <Button onClick={handleClickNextMonth} variant='contained'>
                     {t('buttons.nextMonth')} ({nextMonth.format('MMM')}{' '}
-                    {nextMonth.format('YYYY')}) <ForwardButtonIcon />
+                    {nextMonth.format('YYYY')}) <IconForwardButton />
                 </Button>
             </Box>
             <Typography color='error'>{dateError || ''}</Typography>

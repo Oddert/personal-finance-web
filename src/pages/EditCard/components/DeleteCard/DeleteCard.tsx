@@ -10,7 +10,7 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Delete as IconDelete } from '@mui/icons-material';
 
 import router, { ROUTES } from '../../../../constants/routerConstants';
 
@@ -61,7 +61,7 @@ const DeleteBudget: FC<IProps> = ({ card }) => {
                     }}
                     variant='outlined'
                 >
-                    <DeleteIcon /> {t('buttons.deleteCard')}
+                    <IconDelete /> {t('buttons.deleteCard')}
                 </Button>
             </Box>
             <Dialog open={open}>
