@@ -1,46 +1,83 @@
-# Getting Started with Create React App
+# Personal Finance
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A finance and spending tracker for an individual to use.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+script | description | value
+-|-|-
+start | Launches the development server. | `node scripts/start.js`
+build | Creates a production-ready build. | `node scripts/build.js`
+test | Runs a single-pass of the testing suite. | `node scripts/test.js --verbose`
+test:watch | Runs the test-runner in watch mode. | `node scripts/test.js --verbose --watch`
+docs | Generates documentation using JSDoc. | `jsdoc -c jsdoc.conf.json -R README.md -r`
+lint | Runs the linter suite in review mode. | `eslint . --config .eslintrc.json`
+lint:fix | Runs the linter suite and fixes common problems. | `eslint . --config .eslintrc.json --fix`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Contribution Guide
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Linting & code style
 
-### `npm test`
+This project makes use of linting to enforce a consistent code style and catch simple errors.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Any code checked-in must conform to these standards.
 
-### `npm run build`
+UK standard english is required for developer-facing text. See Internationalisation bellow for a guide on user-facing text.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Markdown files must conform to the [markdownlint-cli2 engine](https://github.com/DavidAnson/markdownlint-cli2) standard, though please note that this is not auto-enforced.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### VSCode users
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To aid the development experience, it is recommended to install the following extensions:
 
-### `npm run eject`
+- Code Spell Check (Street Side Software) set to en-GB.
+- ESLint
+- JSDoc syntax highlighting.
+- Prettier
+- markdownlint (David Anson)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ESLint can be set to format on save, or by using the built-in function "ESLint: Fix all auto-fixable problems", accessible by typing `ctrl + shift + p` or equivalent.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Internationalisation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Intl
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This project makes heavy use of the [JS utility Intl](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl) to provide localised numbers, currencies, and language customisations.
 
-## Learn More
+The following rules must be followed:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Where a currency or user-viewable value is used, the hook `useLocalisedNumber` must be used.
+  - currencyLocaliser: Takes a value and currency, injects the currently selected language, and displays a localised monetary value.
+  - numberLocaliser: Takes a number value, injects the currently selected language, and displays a readable format.
+- Where financial data is displayed, the currency value should be driven by the transaction row.
+- Locales are driven by the package [locale-codes](https://www.npmjs.com/package/locale-codes)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### I18Next
+
+The localisation / translation package i18next, and companion react-i18next, are used to provide dedicated translations.
+
+Where text is presented to the user, it must be driven from the translation file, typically using the `useTranslation` hook, or the `<Trans />` component for complex interpolations.
+
+The guidelines outlined bellow are influenced by project-specific implementation ideas and [i18n best practices](https://www.i18next.com/principles/best-practices).
+
+Translation files can be found in `/public/{language-code}`.
+
+The following guide must be used when deciding where to place translations:
+
+- Generally speaking, the more general or area / entity specific a piece of text is, should guide where it is placed.
+  - Page titles should go under `pageTitles`.
+  - Content for modals should go under `modalMessages`.
+  - Button labels and titles should be placed in `buttons` unless it is hyper specific to one location.
+  - The main data structure entities group messages and content that may appear in diffirent places, but are connected by relating to the same entity:
+    - Budget
+    - Category
+    - Card / Account
+    - Transaction
+- Literal vs complex sentences.
+  - Where the key / value are the same (i.e. the key looks almost the same as the value), *the key must mirror the value in english*. For example:
+    - ✅ `"Start date": "Start date"`: Literal key. Exact values are used.
+    - ❌ `"description": "Description"`: Literal key. Value differs in capitalisation.
+    - ✅ `"cannotBeUndone": "This action cannot be undone."`: Non-literal key. Key is developer-readable but differs from text value.
+  - If a value is a very simple, reusable, literal string (e.g. "Options", "Description") the value should be placed in `literals`.
