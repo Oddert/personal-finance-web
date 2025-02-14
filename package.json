@@ -46,6 +46,7 @@
     "file-loader": "^6.2.0",
     "fs-extra": "^10.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^9.1.7",
     "i18next": "^24.2.2",
     "i18next-browser-languagedetector": "^8.0.2",
     "i18next-http-backend": "^3.0.2",
@@ -101,7 +102,9 @@
     "test:watch": "node scripts/test.js --verbose --watch",
     "docs": "jsdoc -c jsdoc.conf.json -R README.md -r",
     "lint": "eslint . --config .eslintrc.json",
-    "lint:fix": "eslint . --config .eslintrc.json --fix"
+    "lint:fix": "eslint . --config .eslintrc.json --fix",
+    "postinstall": "husky install",
+    "prepare": "husky"
   },
   "eslintConfig": {
     "extends": [
