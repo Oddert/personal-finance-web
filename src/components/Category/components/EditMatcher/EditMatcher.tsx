@@ -145,7 +145,7 @@ const EditMatcher: FC<IProps> = ({
                         />
                     }
                     label={t('Category.caseSensitiveLabel')}
-                    componentsProps={{
+                    slotProps={{
                         typography: {
                             sx: {
                                 textWrap: 'wrap',
@@ -162,14 +162,6 @@ const EditMatcher: FC<IProps> = ({
                 />
             </FormGroup>
             <FormControlLabel
-                componentsProps={{
-                    typography: {
-                        sx: {
-                            textWrap: 'wrap',
-                            fontSize: '12px',
-                        },
-                    },
-                }}
                 control={
                     <Select
                         aria-labelledby='EditMatcher_match_type'
@@ -195,6 +187,14 @@ const EditMatcher: FC<IProps> = ({
                 }
                 id='EditMatcher_match_type'
                 label={t('Category.matchTypeLabel')}
+                slotProps={{
+                    typography: {
+                        sx: {
+                            textWrap: 'wrap',
+                            fontSize: '12px',
+                        },
+                    },
+                }}
                 sx={{
                     fontSize: '12px',
                     display: 'flex',

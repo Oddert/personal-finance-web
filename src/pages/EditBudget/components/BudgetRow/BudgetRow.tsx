@@ -189,9 +189,11 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 />
                 <TextFieldStyled
                     disabled={budgetRow.deleted}
-                    InputProps={inputProps}
                     label={t('Target spend')}
                     onChange={handleChangeTargetValue}
+                    slotProps={{
+                        input: inputProps,
+                    }}
                     sx={{
                         '& * ': {
                             textDecoration: budgetRow.deleted
@@ -213,9 +215,11 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 >
                     <TextFieldStyled
                         disabled={budgetRow.deleted}
-                        InputProps={inputProps}
                         label={t('Budget.overspendLimitPc')}
                         onChange={handleChangeOverspend}
+                        slotProps={{
+                            input: inputProps,
+                        }}
                         sx={{
                             '& * ': {
                                 textDecoration: budgetRow.deleted
@@ -228,9 +232,11 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     />
                     <TextFieldStyled
                         disabled={budgetRow.deleted}
-                        InputProps={inputProps}
                         label={t('Budget.underspendLimitPc')}
                         onChange={handleChangeUnderspend}
+                        slotProps={{
+                            input: inputProps,
+                        }}
                         sx={{
                             '& * ': {
                                 textDecoration: budgetRow.deleted
