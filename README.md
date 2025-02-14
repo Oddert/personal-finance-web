@@ -18,6 +18,24 @@ lint:fix | Runs the linter suite and fixes common problems. | `eslint . --config
 
 ## Contribution Guide
 
+### Commit style
+
+This project generally uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) commit tag style.
+
+The available tags are as follows:
+
+- build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- ci: Changes to CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- chore: Changes which doesn't change source code or tests e.g. changes to the build process, auxiliary tools, libraries
+- docs: Documentation only changes
+- feat: A new feature
+- fix: A bug fix
+- perf: A code change that improves performance
+- refactor: A code change that neither fixes a bug nor adds a feature
+- revert: Revert something
+- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- test: Adding missing tests or correcting existing tests
+
 ### Linting & code style
 
 This project makes use of linting to enforce a consistent code style and catch simple errors.
