@@ -52,7 +52,7 @@ const Categories = () => {
             >
                 <LayoutControls layout={layout} setLayout={setLayout} />
                 <Button onClick={handleDialogOpen} variant='contained'>
-                    <PlusIcon /> {t('Category.addCategory')}
+                    <PlusIcon /> {t('buttons.addCategory')}
                 </Button>
             </Box>
             <DynamicCardList layout={layout}>

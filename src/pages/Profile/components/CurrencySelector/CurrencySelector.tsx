@@ -95,9 +95,7 @@ const LanguageSelector: FC<IProps> = () => {
                 ])}
             />
             <Accordion>
-                <AccordionSummary>
-                    {t('buttons.changeOrder')}
-                </AccordionSummary>
+                <AccordionSummary>{t('buttons.changeOrder')}</AccordionSummary>
                 <AccordionDetails>
                     <List>
                         {usersCurrencies.map((currency, idx) => (

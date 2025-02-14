@@ -244,7 +244,7 @@ const EditBudget: FC<IProps> = () => {
                             ])
                         }
                     >
-                        <PlusIcon /> {t('Budget.addBudgetRow')}
+                        <PlusIcon /> {t('buttons.addBudgetRow')}
                     </Button>
                 </DynamicCardList>
                 <Button

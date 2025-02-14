@@ -61,14 +61,14 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
                     }}
                     variant='outlined'
                 >
-                    <DeleteIcon />{' '}
-                    {t('modelMessages.sureYouWantToDeleteBudget')}
+                    <DeleteIcon /> {t('buttons.deleteBudget')}
                 </Button>
             </Box>
             <Dialog open={open}>
                 <DialogTitle>
-                    {t('Budget.areYouSureDeleteDesc')} &ldquo;{budget.name}
-                    &rdquo;?
+                    {t('Budget.sureYouWantToDeleteBudget', {
+                        budgetName: budget.name,
+                    })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -80,7 +80,7 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
                         {t('buttons.Cancel')}
                     </Button>
                     <Button color='error' onClick={handleClickDelete}>
-                        {t('Budget.deleteBudget')}
+                        {t('buttons.deleteBudget')}
                     </Button>
                 </DialogActions>
             </Dialog>

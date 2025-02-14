@@ -201,7 +201,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                         {t('buttons.Cancel')}
                     </Button>
                     <Button autoFocus onClick={handleSaveAndClose}>
-                        {t('Category.createCategory')}
+                        {t('buttons.createCategory')}
                     </Button>
                 </DialogActions>
             </Dialog>

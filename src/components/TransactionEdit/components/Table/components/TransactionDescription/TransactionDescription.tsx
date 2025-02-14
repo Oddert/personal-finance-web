@@ -6,6 +6,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button, TableCell, TextField } from '@mui/material';
 import { Edit as IconEdit } from '@mui/icons-material';
@@ -25,6 +26,8 @@ import { IProps } from './TransactionDescription.types';
  * @subcategory Transaction Edit
  */
 const TransactionDescription: FC<IProps> = ({ transaction }) => {
+    const { t } = useTranslation();
+
     const {
         dispatch,
         state: { columnMap },
@@ -61,7 +64,7 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
             {editOpen ? (
                 <Fragment>
                     <TextField
-                        label='Transaction description'
+                        label={t('Transaction.transactionDescriptionLabel')}
                         name='description'
                         onChange={(event) =>
                             setInternalValue(event.target.value)
@@ -73,9 +76,11 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                             setEditOpen(false);
                             setInternalValue(title);
                         }}
-                        title='Click to cancel the description edit'
+                        title={t(
+                            'Transaction.transactionDescriptionEditCancel',
+                        )}
                     >
-                        Discard changes
+                        {t('buttons.discardChanges')}
                     </Button>
                     <Button
                         onClick={() => {
@@ -87,7 +92,7 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                                 ),
                             );
                         }}
-                        title='Click to save the edited description'
+                        title={t('Transaction.clickToSaveDescription')}
                     >
                         Save
                     </Button>
@@ -96,7 +101,7 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                 <Fragment>
                     <Button
                         onClick={() => handleClickTitle(title)}
-                        title='Click to add a new Category auto-matcher'
+                        title={t('Transaction.clickToAddMatcher')}
                         variant='text'
                     >
                         {title}
@@ -104,7 +109,7 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                     <Button
                         className='transaction_description_edit'
                         onClick={() => setEditOpen(true)}
-                        title='Click to make the description field editable'
+                        title={t('Transaction.clickToEditDescription')}
                     >
                         <IconEdit />
                     </Button>

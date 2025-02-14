@@ -114,10 +114,10 @@ const AddCategory: FC = () => {
                     }}
                 >
                     <Button onClick={() => setOpen(false)}>
-                        {t('Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button onClick={handleSubmit} variant='contained'>
-                        {t('Category.createCategory')}
+                        {t('buttons.createCategory')}
                     </Button>
                 </Box>
             </FormControl>
@@ -126,7 +126,7 @@ const AddCategory: FC = () => {
 
     return (
         <Button onClick={() => setOpen(true)} sx={{ mt: 2 }}>
-            <PlusIcon /> {t('Category.addCategory')}
+            <PlusIcon /> {t('buttons.addCategory')}
         </Button>
     );
 };

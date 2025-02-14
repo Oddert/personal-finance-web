@@ -212,9 +212,7 @@ const EditMatcher: FC<IProps> = ({
                     marginTop: '16px',
                 }}
             >
-                <Button onClick={handleCancel}>
-                    {t('buttons.Cancel')}
-                </Button>
+                <Button onClick={handleCancel}>{t('buttons.Cancel')}</Button>
                 <Button onClick={handleSave} variant='contained'>
                     {t('buttons.Save')}
                 </Button>

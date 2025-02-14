@@ -65,6 +65,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                     padding: 0,
                     minWidth: 'unset',
                 }}
+                title={t('literals.options')}
             >
                 <DotsIcon
                     sx={(theme) => ({
@@ -86,7 +87,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                 open={open}
             >
                 <MenuItem onClick={handleDeleteOptionClick}>
-                    {t('Delete')}
+                    {t('buttons.Delete')}
                 </MenuItem>
             </Menu>
             <Dialog
@@ -101,8 +102,9 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                         minWidth: '50vw',
                     }}
                 >
-                    {t('modalMessages.sureYouWantToDeleteCategory')} "
-                    {category.label}"?
+                    {t('modalMessages.sureYouWantToDeleteCategory', {
+                        categoryName: category.label,
+                    })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
@@ -111,14 +113,14 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button color='error' onClick={handleDelete}>
-                        {t('Category.deleteCategory')}
+                        {t('buttons.deleteCategory')}
                     </Button>
                     <Button
                         autoFocus
                         onClick={handleDeleteModalClose}
                         variant='contained'
                     >
-                        {t('Cancel')}
+                        {t('buttons.Cancel')}
                     </Button>
                 </DialogActions>
             </Dialog>

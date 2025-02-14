@@ -66,9 +66,9 @@ const DeleteBudget: FC<IProps> = ({ card }) => {
             </Box>
             <Dialog open={open}>
                 <DialogTitle>
-                    {t('modalMessages.sureYouWantToDeleteCard')} &ldquo;
-                    {card.cardName}
-                    &rdquo;?
+                    {t('modalMessages.sureYouWantToDeleteCard', {
+                        cardName: card.cardName,
+                    })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>

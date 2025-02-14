@@ -127,7 +127,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                             }}
                             variant='text'
                         >
-                            {t('Cancel')}
+                            {t('buttons.Cancel')}
                         </Button>
                         <Button
                             color='info'
@@ -143,7 +143,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                             }}
                             variant='contained'
                         >
-                            {t('Save')}
+                            {t('buttons.Save')}
                         </Button>
                     </Box>
                 </Box>

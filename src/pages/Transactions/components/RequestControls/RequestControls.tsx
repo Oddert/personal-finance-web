@@ -153,7 +153,7 @@ const RequestControls = () => {
                     size='large'
                     sx={{ px: 2, alignSelf: 'flex-end' }}
                 >
-                    {t('Refresh')} <RefreshIcon />
+                    {t('buttons.Refresh')} <RefreshIcon />
                 </Button>
             </Box>
         </Box>

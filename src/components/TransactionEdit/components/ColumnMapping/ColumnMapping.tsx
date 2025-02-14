@@ -127,7 +127,7 @@ const ColumnMapping = () => {
                         }}
                     >
                         <Button onClick={handleClickCancel}>
-                            {t('Cancel')}
+                            {t('buttons.Cancel')}
                         </Button>
                         <Button
                             onClick={handleClickSave}
@@ -140,7 +140,7 @@ const ColumnMapping = () => {
                 </Paper>
             </Dialog>
             <Button onClick={handleClickOpen}>
-                {t('Transaction.changeColumnMapping')}
+                {t('buttons.changeColumnMapping')}
             </Button>
         </Fragment>
     );

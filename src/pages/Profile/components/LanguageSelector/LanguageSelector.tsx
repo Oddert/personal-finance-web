@@ -87,9 +87,7 @@ const LanguageSelector: FC<IProps> = () => {
                 }))}
             />
             <Accordion>
-                <AccordionSummary>
-                    {t('buttons.changeOrder')}
-                </AccordionSummary>
+                <AccordionSummary>{t('buttons.changeOrder')}</AccordionSummary>
                 <AccordionDetails>
                     <List>
                         {usersLanguages.map((language, idx) => (

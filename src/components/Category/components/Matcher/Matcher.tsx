@@ -146,7 +146,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                         },
                     },
                 })}
-                title='edit this matcher'
+                title={t('buttons.editThisMatcher')}
                 variant='text'
             >
                 <Typography
@@ -166,8 +166,8 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 }}
                 title={
                     matcher.case_sensitive
-                        ? 'only matches exact case'
-                        : 'ignores case'
+                        ? t('Category.onlyMatchesExactCase')
+                        : t('Category.ignoresCase')
                 }
             >
                 {matcher.case_sensitive ? (

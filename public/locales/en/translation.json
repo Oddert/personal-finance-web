@@ -30,6 +30,7 @@
     "View budget breakdown": "View budget breakdown",
     "View budget overview": "View budget overview",
     "Zoom level": "Zoom level",
+    "exampleCurrencyDisplay": "Example currency display (using {{currencyName}}): \"<1>{{currencyValue}}</1>\"",
     "literals": {
         "above": "above",
         "Actual": "Actual",
@@ -63,6 +64,7 @@
         "Matchers": "Matchers",
         "Message": "Message",
         "Open": "Open",
+        "Options": "Options",
         "Out": "Out",
         "Title": "Title",
         "to": "to",
@@ -109,17 +111,26 @@
     },
     "buttons": {
         "Activate": "Activate",
+        "addBudgetRow": "Add budget row",
+        "addCategory": "Add Category",
         "addNewCard": "Add new card",
         "Cancel": "Cancel",
+        "changeColumnMapping": "Change column mapping",
         "changeOrder": "Change order",
+        "checkAll": "Check all",
         "clickToEdit": "Click to edit",
         "closeWithoutSaving": "Close without saving changes",
         "createCard": "Create card",
+        "createCategory": "Create Category",
         "createFromTemplate": "Create from template",
         "createNewBudget": "Create new budget",
         "createANewCard": "Create a new card",
         "Delete": "Delete",
+        "deleteBudget": "Delete budget",
         "deleteCard": "Delete card",
+        "deleteCategory": "Delete Category",
+        "discardChanges": "Discard changes",
+        "editThisMatcher": "Edit this matcher",
         "keepEditing": "Keep editing",
         "newBlankBudget": "New blank budget",
         "nextMonth": "Next Month",
@@ -130,7 +141,10 @@
         "saveChanges": "Save changes",
         "Save": "Save",
         "Submit": "Submit",
-        "viewAndEdit": "View and edit"
+        "uncheckAll": "Uncheck all",
+        "viewAndEdit": "View and edit",
+        "viewBudgetBreakdown": "View budget breakdown",
+        "viewBudgetOverview": "View budget overview"
     },
     "modalTitles": {
         "createBudgetFromTemplate": "Create new budget from template."
@@ -141,9 +155,9 @@
         "createBudgetFromTemplate": "Select a budget to use as a starting point for your new budget.",
         "endDateNotBeforeStart": "End date may not be before start date",
         "noServerResponse": "No response received from the server.",
-        "sureYouWantToDeleteCategory": "Are you sure you want to delete the Category",
-        "sureYouWantToDeleteCard": "Are you sure you want to delete the Card",
-        "sureYouWantToDeleteBudget": "Are you sure you want to delete budget",
+        "sureYouWantToDeleteCategory": "Are you sure you want to delete the Category &ldquo;{{categoryName}}&rdquo;?",
+        "sureYouWantToDeleteCard": "Are you sure you want to delete the Card &ldquo;{{cardName}}&rdquo;?",
+        "sureYouWantToDeleteBudget": "Are you sure you want to delete the budget &ldquo;{{budgetName}}&rdquo;?",
         "unsavedChangesWillBeLost": "You have unsaved changes that will be lost."
     },
     "zoom": {
@@ -162,7 +176,6 @@
         "useFloatTitle": "By default, the percentage breakdown charts show percentage discrepancies. Check to switch to raw currency value."
     },
     "Budget": {
-        "addBudgetRow": "Add budget row",
         "aggregateSpendChart": "Aggregate spend chart",
         "aggregateSpendTitle": "Aggregate % Spend Discrepancy",
         "budgetTable": {
@@ -174,7 +187,6 @@
         "categorySpend": "Category spend across period",
         "candleStickTitle": "Ballance min / max",
         "createANewBudget": "Create a new budget",
-        "deleteBudget": "Delete budget",
         "deleteRow": "delete budget row",
         "includeCreditLabel": "Include credit values",
         "includeCreditTitle": "If checked, incoming (negative) values.",
@@ -204,20 +216,17 @@
         "underspendLimitPc": "Underspend limit (%)"
     },
     "Category": {
-        "addCategory": "Add Category",
         "addCategoryDesc": "Add a new category of Transaction.",
         "addCategoryShortDesc": "Add a new category.",
         "addMatcher": "Add matcher",
         "caseSensitiveLabel": "Case Sensitive",
         "caseSensitiveOn": "match exact case",
         "caseSensitiveOff": "match any case",
-        "createCategory": "Create Category",
-        "deleteCategory": "Delete Category",
         "deleteMatcher": "delete this matcher",
         "descriptionPlaceholder": "Click to add a description.",
+        "ignoresCase": "ignores case",
         "matcherLabel": "Match",
         "matchTypeLabel": "Match Type",
-        "noCategoriesYet": "You have no Categories yet.",
         "matchTypes": {
             "Any": "Any",
             "Exact": "Exact",
@@ -229,7 +238,9 @@
             "exact": "Only matches this exact string (may not have anything before or after)",
             "start": "Matches only if this text is at the end of a description",
             "end": "Matches only if this text is at the beginning of a description"
-        }
+        },
+        "noCategoriesYet": "You have no Categories yet.",
+        "onlyMatchesExactCase": "only matches exact case"
     },
     "Card": {
         "bankNameLabel": "Bank Name",
@@ -246,10 +257,18 @@
     "Transaction": {
         "bulkEditTransactions": "Bulk edit transactions",
         "cardSlashAccount": "Card / Account",
+        "clickToAddMatcher": "Click to add a new Category auto-matcher",
+        "clickToEditDescription": "Click to make the description field editable",
+        "clickToSaveDescription": "Click to save the edited description",
         "editInRange": "Edit transactions in range",
-        "changeColumnMapping": "Change column mapping",
+        "filterUncategorised": "Filter un-categorised",
+        "filterUnchecked": "Filter un-checked",
+        "lengthRows": "{{count}} rows",
         "mapCSVHeadersTitle": "Map CSV headers to columns",
         "mapCSVHeadersDesc": "Map CSV headers to columns",
+        "showingCountOfRows": "Showing {{count}} of {{transactions}}",
+        "transactionDescriptionEditCancel": "Click to cancel the description edit",
+        "transactionDescriptionLabel": "Transaction description",
         "transactionRangeLabel": "Transaction range"
     }
 }

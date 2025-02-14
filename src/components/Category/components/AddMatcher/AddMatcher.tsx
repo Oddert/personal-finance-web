@@ -91,6 +91,7 @@ const AddMatcher: FC<IProps> = ({
                 <Button
                     color='primary'
                     onClick={() => setOpen(!open)}
+                    title={t('Category.addMatcher')}
                     sx={{
                         textAlign: 'center',
                         width: '100%',

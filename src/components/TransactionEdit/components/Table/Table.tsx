@@ -1,4 +1,5 @@
 import { Fragment, useContext, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Checkbox,
     FormControlLabel,
@@ -28,6 +29,8 @@ import Row from './components/Row';
  * @component
  */
 const Table = () => {
+    const { t } = useTranslation();
+
     const [filterUncategorised, setFilterUncategorised] = useState(false);
     const [filterUnchecked, setFilterUnchecked] = useState(false);
 
@@ -67,8 +70,13 @@ const Table = () => {
         <Fragment>
             <Typography>
                 {transactions.length === data.length
-                    ? `${transactions.length} rows`
-                    : `Showing ${data.length} of ${transactions.length} rows`}
+                    ? t('Transaction.lengthRows', {
+                          count: transactions.length,
+                      })
+                    : t('Transaction.showingCountOfRows', {
+                          count: data.length,
+                          transactions: transactions.length,
+                      })}
             </Typography>
             <Box>
                 <FormControlLabel
@@ -80,7 +88,7 @@ const Table = () => {
                             }
                         />
                     }
-                    label='Filter un-categorised'
+                    label={t('Transaction.filterUncategorised')}
                 />
                 <FormControlLabel
                     control={
@@ -91,11 +99,15 @@ const Table = () => {
                             }
                         />
                     }
-                    label='Filter un-checked'
+                    label={t('Transaction.filterUnchecked')}
                 />
             </Box>
-            <Button onClick={() => dispatch(checkAll())}>Check all</Button>
-            <Button onClick={() => dispatch(uncheckAll())}>Uncheck all</Button>
+            <Button onClick={() => dispatch(checkAll())}>
+                {t('buttons.checkAll')}
+            </Button>
+            <Button onClick={() => dispatch(uncheckAll())}>
+                {t('buttons.uncheckAll')}
+            </Button>
             <MuiTable
                 sx={{
                     width: '100%',

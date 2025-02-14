@@ -43,8 +43,8 @@ const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
         >
             <Button href={href} variant='contained'>
                 {mode === 'breakdown'
-                    ? t('View budget overview')
-                    : t('View budget breakdown')}
+                    ? t('buttons.viewBudgetOverview')
+                    : t('buttons.viewBudgetBreakdown')}
             </Button>
         </Box>
     );
