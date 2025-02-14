@@ -99,3 +99,7 @@ The following guide must be used when deciding where to place translations:
     - ❌ `"description": "Description"`: Literal key. Value differs in capitalisation.
     - ✅ `"cannotBeUndone": "This action cannot be undone."`: Non-literal key. Key is developer-readable but differs from text value.
   - If a value is a very simple, reusable, literal string (e.g. "Options", "Description") the value should be placed in `literals`.
+
+## License
+
+This project is [MIT licensed](./LICENSE).
