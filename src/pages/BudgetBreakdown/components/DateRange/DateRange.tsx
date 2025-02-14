@@ -5,8 +5,8 @@ import { Box, Button, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
-    ArrowLeft as BackButtonIcon,
-    ArrowRight as ForwardButtonIcon,
+    ArrowLeft as IconBackButton,
+    ArrowRight as IconForwardButton,
 } from '@mui/icons-material';
 
 import {
@@ -15,6 +15,7 @@ import {
 } from '../../../../utils/budgetUtils';
 
 import type { IProps } from './DateRange.types';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Displays date range controls.
@@ -30,6 +31,8 @@ const DateRange: FC<IProps> = ({
     setStartDate,
     startDate,
 }) => {
+    const { t } = useTranslation();
+
     const [dateError, setDateError] = useState<null | string>(null);
 
     const handleChangeStartDate = useCallback(
@@ -49,14 +52,14 @@ const DateRange: FC<IProps> = ({
                 setEndDate(toBeginningMonthDayjs(nextValue));
                 const convertedEndDate = toEndMonthDayjs(nextValue);
                 if (convertedEndDate.diff(startDate) < 0) {
-                    setDateError('End date may not be before start date');
+                    setDateError(t('modalMessages.unsavedChangesWillBeLost'));
                 } else {
                     setDateError(null);
                     setEndDate(convertedEndDate);
                 }
             }
         },
-        [setEndDate, startDate],
+        [setEndDate, startDate, t],
     );
 
     const prevMonth = useMemo(() => {
@@ -91,12 +94,12 @@ const DateRange: FC<IProps> = ({
                 }}
             >
                 <Button onClick={handleClickPrevMonth} variant='contained'>
-                    <BackButtonIcon /> Previous Month ({prevMonth.format('MMM')}{' '}
-                    {prevMonth.format('YYYY')})
+                    <IconBackButton /> {t('buttons.prevMonth')} (
+                    {prevMonth.format('MMM')} {prevMonth.format('YYYY')})
                 </Button>
                 <Box>
                     <DatePicker
-                        label='Start date'
+                        label={t('Start date')}
                         name='startDate'
                         onChange={handleChangeStartDate}
                         showDaysOutsideCurrentMonth
@@ -113,8 +116,8 @@ const DateRange: FC<IProps> = ({
                         views={['month', 'year']}
                     />
                     <DatePicker
-                        label='Start date'
-                        name='startDate'
+                        label={t('End date')}
+                        name='endDate'
                         onChange={handleChangeEndDate}
                         showDaysOutsideCurrentMonth
                         slotProps={{
@@ -131,8 +134,8 @@ const DateRange: FC<IProps> = ({
                     />
                 </Box>
                 <Button onClick={handleClickNextMonth} variant='contained'>
-                    Next Month ({nextMonth.format('MMM')}{' '}
-                    {nextMonth.format('YYYY')}) <ForwardButtonIcon />
+                    {t('buttons.nextMonth')} ({nextMonth.format('MMM')}{' '}
+                    {nextMonth.format('YYYY')}) <IconForwardButton />
                 </Button>
             </Box>
             <Typography color='error'>{dateError || ''}</Typography>

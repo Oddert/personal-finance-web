@@ -1,4 +1,5 @@
 import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -10,7 +11,7 @@ import {
 
 import type { IBudgetDatum } from '../../../../types/Budget.types';
 
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import { normaliseNum } from '../../../../utils/mathsUtils';
 
@@ -23,6 +24,8 @@ import type { IProps } from './GlanceCards.types';
  * @component
  */
 const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
+    const { t } = useTranslation();
+
     const [actualSpend, setActualSpend] = useState(0);
     const [largestOverspendPc, setLargestOverspendPc] =
         useState<IBudgetDatum | null>(null);
@@ -95,6 +98,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
         [actualSpend, expectedSpend],
     );
 
+    const { currencyLocaliser } = useLocalisedNumber();
+
     return (
         <Box
             sx={{
@@ -110,10 +115,10 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    Total expected spend: {expectedSpend}
+                    {t('Budget.totalExpectedSpend')}: {expectedSpend}
                 </Typography>
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    Total actual spend: {actualSpend}
+                    {t('Budget.totalActualSpend')}: {actualSpend}
                 </Typography>
             </Paper>
             <Paper
@@ -125,8 +130,9 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {spendDiff < 0 ? '-' : '+'} {CURRENCY_SYMBOL}
-                    {spendDiff} {spendDiff < 0 ? 'bellow' : 'above'} budget
+                    {spendDiff < 0 ? '-' : '+'} {currencyLocaliser(spendDiff)}{' '}
+                    {spendDiff < 0 ? t('literals.bellow') : t('literals.above')}{' '}
+                    {t('literals.budget')}
                 </Typography>
             </Paper>
             <Paper
@@ -141,9 +147,9 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
             >
                 {largestOverspendPc && largestOverspendVal ? (
                     <Fragment>
-                        <Typography>Largest overspend</Typography>
+                        <Typography>{t('Budget.largestOverspend')}</Typography>
                         <Typography>
-                            By percent:{' '}
+                            {t('Budget.byPercent')}:{' '}
                             <Typography
                                 component='span'
                                 sx={{ fontWeight: 'bold' }}
@@ -159,8 +165,10 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                                 sx={{ fontWeight: 'bold' }}
                             >
                                 {largestOverspendVal.categoryName} (+{' '}
-                                {CURRENCY_SYMBOL}
-                                {largestOverspendVal.diffFloat})
+                                {currencyLocaliser(
+                                    largestOverspendVal.diffFloat,
+                                )}
+                                )
                             </Typography>
                         </Typography>
                     </Fragment>
@@ -182,7 +190,8 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                         .join(', ')}
                 >
                     <Typography>
-                        Number of categories over budget: {numOverSpend.length}
+                        {t('Budget.numCategoriesOverBudget')}:{' '}
+                        {numOverSpend.length}
                     </Typography>
                 </Tooltip>
                 <Tooltip
@@ -191,7 +200,7 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                         .join(', ')}
                 >
                     <Typography>
-                        Number of categories under budget:{' '}
+                        {t('Budget.numCategoriesUnderBudget')}:{' '}
                         {numUnderSpend.length}
                     </Typography>
                 </Tooltip>

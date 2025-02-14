@@ -1,9 +1,10 @@
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Typography } from '@mui/material';
 
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import Table from '../../../../components/Table';
 
@@ -18,6 +19,8 @@ import type { IBudgetDatumTable, IProps } from './BudgetTable.types';
  * @component
  */
 const BudgetTable: FC<IProps> = ({ data }) => {
+    const { t } = useTranslation();
+
     const dataParsed: IBudgetDatumTable[] = useMemo(
         () =>
             data.map((datum) => ({
@@ -28,34 +31,36 @@ const BudgetTable: FC<IProps> = ({ data }) => {
         [data],
     );
 
+    const { currencyLocaliser } = useLocalisedNumber();
+
     const columns = useMemo<ColumnDef<IBudgetDatumTable>[]>(
         () => [
             {
-                header: 'Category',
+                header: t('literals.Category'),
                 accessorKey: 'categoryName',
             },
             {
-                header: 'Expected',
+                header: t('literals.Expected'),
                 accessorKey: 'budget',
             },
             {
-                header: 'Actual',
+                header: t('literals.Actual'),
                 accessorKey: 'spend',
             },
             {
-                header: `Difference (${CURRENCY_SYMBOL})`,
+                header: t('Budget.budgetTable.diffVal'),
                 accessorKey: 'diffFloat',
                 cell: (cell) => {
                     const value = cell.renderValue<number>();
                     return value === 0
                         ? '-'
                         : value > 0
-                          ? `+ ${CURRENCY_SYMBOL}${value}`
-                          : `- ${CURRENCY_SYMBOL}${Math.abs(value)}`;
+                          ? `+ ${currencyLocaliser(value)}`
+                          : `- ${currencyLocaliser(Math.abs(value))}`;
                 },
             },
             {
-                header: 'Difference (%)',
+                header: t('Budget.budgetTable.diffPc'),
                 accessorKey: 'diffPc',
                 cell: (cell) => {
                     const value = cell.renderValue<number>();
@@ -72,7 +77,7 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                 },
             },
             {
-                header: 'Variance low / high (%)',
+                header: t('Budget.budgetTable.variance'),
                 accessorKey: 'variance',
                 cell: (cell) => {
                     const value = cell.renderValue<[number, number]>();
@@ -80,7 +85,7 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                 },
             },
         ],
-        [],
+        [currencyLocaliser, t],
     );
 
     return <Table columns={columns} data={dataParsed} />;

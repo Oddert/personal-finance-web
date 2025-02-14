@@ -1,9 +1,9 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
-import { ArrowForward as RightArrowIcon } from '@mui/icons-material';
+import { ArrowForward as IconRightArrow } from '@mui/icons-material';
 
-import { LOCALE } from '../../../../constants/appConstants';
 import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
 
 import APIService from '../../../../services/APIService';
@@ -13,8 +13,9 @@ import {
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
 
-import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
+import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 import type { IProps } from './BudgetCard.types';
@@ -28,9 +29,12 @@ import type { IProps } from './BudgetCard.types';
  * @subcategory Manage Budgets
  */
 const BudgetCard: FC<IProps> = ({ budget }) => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const activeBudgetId = useAppSelector(getActiveBudgetId);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const handleClickActivate = () => {
         try {
@@ -71,10 +75,10 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                 >
                     <Typography variant='h3'>{budget.name}</Typography>
                     {activeBudgetId === budget.id ? (
-                        <Chip color='success' label='Enabled' />
+                        <Chip color='success' label={t('literals.Enabled')} />
                     ) : (
                         <Button onClick={handleClickActivate} variant='text'>
-                            Activate
+                            {t('buttons.Activate')}
                         </Button>
                     )}
                 </Box>
@@ -85,12 +89,14 @@ const BudgetCard: FC<IProps> = ({ budget }) => {
                     sx={(theme) => ({ color: theme.palette.text.disabled })}
                     variant='body2'
                 >
-                    Last updated:{' '}
-                    {new Date(budget.updatedOn).toLocaleString(LOCALE)}
+                    {t('Last updated:')}{' '}
+                    {new Date(budget.updatedOn).toLocaleString(language)}
                 </Typography>
                 <Button onClick={handleClickEdit}>
-                    <Typography component='span'>View and edit</Typography>{' '}
-                    <RightArrowIcon />
+                    <Typography component='span'>
+                        {t('buttons.viewAndEdit')}
+                    </Typography>{' '}
+                    <IconRightArrow />
                 </Button>
             </Paper>
         </ListItem>

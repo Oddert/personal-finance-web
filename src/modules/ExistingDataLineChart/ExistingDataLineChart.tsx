@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
 
@@ -14,19 +15,22 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import { ExpandMore as ExpandIcon } from '@mui/icons-material';
+import { ExpandMore as IconExpand } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import type { Transaction } from '../../types/Transaction.d';
+
+import useTransactions from '../../hooks/useTransactions';
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+
+import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
 
 import {
     chart1BaseOptions,
     chart2BaseOptions,
     defaultEnd,
     defaultStart,
-    title,
 } from './ExistingDataLineChartUtils';
-import useTransactions from '../../hooks/useTransactions';
 
 dayjs.extend(localizedFormat);
 
@@ -42,6 +46,8 @@ interface Props {
  * @param props.compact If true, displays as a card module for composition with other modules.
  */
 const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
+    const { t } = useTranslation();
+
     const [ballanceData, setBallanceData] = useState<
         { x: number | string; y: number }[]
     >([]);
@@ -61,12 +67,11 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     // Workaround for issue owners seem unwilling / unable to resolve:
     // https://github.com/apexcharts/react-apexcharts/issues/182
     // https://github.com/apexcharts/react-apexcharts/issues/31
-    const [chart1Options, setChart1Options] =
-        useState<ApexOptions>(chart1BaseOptions);
-    const [chart2Options, setChart2Options] =
-        useState<ApexOptions>(chart2BaseOptions);
+    const [chart1Options, setChart1Options] = useState<ApexOptions>({});
+    const [chart2Options, setChart2Options] = useState<ApexOptions>({});
 
     const { transactions } = useTransactions(startDate, endDate);
+    const language = useAppSelector(getActiveLanguageCode);
 
     useEffect(() => {
         const sorted = transactions.reduce(
@@ -118,22 +123,23 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     }, [endDate, startDate, transactions]);
 
     useEffect(() => {
-        setChart1Options(chart1BaseOptions);
+        setChart1Options(chart1BaseOptions(language));
+        const chart2Default = chart2BaseOptions(language);
         setChart2Options({
-            ...chart2BaseOptions,
+            ...chart2Default,
             tooltip: {
-                ...chart2BaseOptions.tooltip,
+                ...chart2Default.tooltip,
                 y: {
                     formatter: (val, opts) =>
                         `${debitTransactions[opts.dataPointIndex].description} : ${val}`,
                 },
             },
             yaxis: {
-                ...chart2BaseOptions.yaxis,
+                ...chart2Default.yaxis,
                 max: debitMax,
             },
         });
-    }, [debitTransactions, debitMax]);
+    }, [debitTransactions, debitMax, language]);
 
     const width = useMemo(() => (compact ? '100%' : '80%'), [compact]);
 
@@ -147,7 +153,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label='Start date'
+                        label={t('Start date')}
                         name='startDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -167,7 +173,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         value={startDate}
                     />
                 }
-                label='Start Date'
+                label={t('Start date')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -177,7 +183,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label='End date'
+                        label={t('End date')}
                         name='endDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -197,7 +203,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         value={endDate}
                     />
                 }
-                label='End Date'
+                label={t('End date')}
                 labelPlacement='top'
                 sx={(theme) => ({
                     alignItems: 'flex-start',
@@ -224,10 +230,10 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 <Accordion>
                     <AccordionSummary
                         aria-controls='projection-line-controls'
-                        expandIcon={<ExpandIcon />}
+                        expandIcon={<IconExpand />}
                         id='projection-controls-header'
                     >
-                        {title}
+                        {t('Past Data')}
                     </AccordionSummary>
                     <AccordionActions>{Controls}</AccordionActions>
                 </Accordion>
@@ -241,7 +247,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         })}
                         variant='h3'
                     >
-                        {title}
+                        {t('Past Data')}
                     </Typography>
                     {Controls}
                 </Box>
@@ -284,11 +290,11 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                     options={chart2Options}
                     series={[
                         {
-                            name: 'Debit',
+                            name: t('Debit'),
                             data: debitData,
                         },
                         {
-                            name: 'Credit',
+                            name: t('Credit'),
                             data: creditData,
                         },
                     ]}

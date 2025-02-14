@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -22,6 +23,7 @@ import { useAppDispatch } from '../../../../../../hooks/ReduxHookWrappers';
  * @component
  */
 const AddCategory: FC = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const [open, setOpen] = useState(false);
@@ -111,9 +113,11 @@ const AddCategory: FC = () => {
                         p: 1,
                     }}
                 >
-                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <Button onClick={() => setOpen(false)}>
+                        {t('buttons.Cancel')}
+                    </Button>
                     <Button onClick={handleSubmit} variant='contained'>
-                        Create Category
+                        {t('buttons.createCategory')}
                     </Button>
                 </Box>
             </FormControl>
@@ -122,7 +126,7 @@ const AddCategory: FC = () => {
 
     return (
         <Button onClick={() => setOpen(true)} sx={{ mt: 2 }}>
-            <PlusIcon /> Add Category
+            <IconPlus /> {t('buttons.addCategory')}
         </Button>
     );
 };

@@ -119,7 +119,7 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
                     title: 'Something went wrong',
                     message: 'An unexpected error was encountered.',
                     error: 'Application error',
-                    stackTrace: '',
+                    stackTrace: 'Error initiator information not available.',
                 }),
             );
         }

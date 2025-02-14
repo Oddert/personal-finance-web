@@ -25,18 +25,20 @@ const TransactionEditActionTypes = {
     uncheckAll: 'uncheckAll',
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
+    updateNumericValue: 'updateNumericValue',
     writeHeaders: 'writeHeaders',
-    writeTransactions: 'writeTransactions',
+    tecWriteTransactions: 'tecWriteTransactions',
 };
 
 export const transactionEditInitialState: TransactionEditState = {
     columnMap: {
-        date: 'Transaction Date',
-        transactionType: 'Transaction Type',
-        description: 'Transaction Description',
-        debit: 'Debit Amount',
-        credit: 'Credit Amount',
-        ballance: 'Balance',
+        date: 'date',
+        transactionType: 'transactionType',
+        description: 'description',
+        debit: 'debit',
+        credit: 'credit',
+        ballance: 'ballance',
+        currency: 'currency',
     },
     loading: false,
     headers: [],
@@ -52,7 +54,10 @@ export type TAccessorKey =
     | 'debit'
     | 'credit'
     | 'ballance'
-    | 'assignedCategory';
+    | 'assignedCategory'
+    | 'currency';
+
+export type TAccessorKeyNumbers = 'debit' | 'credit' | 'ballance';
 
 export interface IColumnDef {
     header: string;
@@ -84,6 +89,10 @@ export const defaultColumns: IColumnDef[] = [
     {
         header: 'Ballance',
         accessorKey: 'ballance',
+    },
+    {
+        header: 'Currency',
+        accessorKey: 'currency',
     },
     {
         header: 'Category',
@@ -184,7 +193,7 @@ export const transactionEditReducer = (
                 ...state,
                 headers: action?.payload?.headers,
             };
-        case TransactionEditActionTypes.writeTransactions:
+        case TransactionEditActionTypes.tecWriteTransactions:
             return {
                 ...state,
                 transactions: action?.payload?.transactions,
@@ -232,14 +241,23 @@ export const uncheckAll = () => ({
     payload: {},
 });
 
+export const updateCategory = (uid: string, assignedCategory: number) => ({
+    type: TransactionEditActionTypes.updateCategory,
+    payload: { uid, assignedCategory },
+});
+
 export const updateDescription = (uid: string, description: string) => ({
     type: TransactionEditActionTypes.updateDescription,
     payload: { uid, description },
 });
 
-export const updateCategory = (uid: string, assignedCategory: number) => ({
-    type: TransactionEditActionTypes.updateCategory,
-    payload: { uid, assignedCategory },
+export const updateNumericValue = (
+    uid: string,
+    field: TAccessorKeyNumbers,
+    value: string,
+) => ({
+    type: TransactionEditActionTypes.updateNumericValue,
+    payload: { uid, field, value },
 });
 
 export const writeHeaders = (headers: TransactionEditState['headers']) => ({
@@ -247,10 +265,10 @@ export const writeHeaders = (headers: TransactionEditState['headers']) => ({
     payload: { headers },
 });
 
-export const writeTransactions = (
+export const tecWriteTransactions = (
     transactions: TransactionEditState['transactions'],
 ) => ({
-    type: TransactionEditActionTypes.writeTransactions,
+    type: TransactionEditActionTypes.tecWriteTransactions,
     payload: { transactions },
 });
 

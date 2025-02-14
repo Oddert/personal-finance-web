@@ -1,4 +1,5 @@
 import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ColorChangeHandler, SketchPicker } from 'react-color';
 
 import { Box, Button, Popover } from '@mui/material';
@@ -20,6 +21,8 @@ import type { IProps } from './ColourEdit.types';
  * @param props.sx Style overrides applied to the overall container.
  */
 const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
+    const { t } = useTranslation();
+
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const [editedColour, setEditedColour] = useState<string>('#bec3c7');
     const [hasChanged, setHasChanged] = useState<boolean>(false);
@@ -124,7 +127,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                             }}
                             variant='text'
                         >
-                            Cancel
+                            {t('buttons.Cancel')}
                         </Button>
                         <Button
                             color='info'
@@ -140,7 +143,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                             }}
                             variant='contained'
                         >
-                            Save
+                            {t('buttons.Save')}
                         </Button>
                     </Box>
                 </Box>

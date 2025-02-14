@@ -1,11 +1,14 @@
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { IProps } from './CandleStickChart.types';
 import { Box, useTheme } from '@mui/material';
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+
+import { IProps } from './CandleStickChart.types';
 
 dayjs.extend(localizedFormat);
 
@@ -19,6 +22,8 @@ dayjs.extend(localizedFormat);
  * @param props.transactions The list of transactions ordered by date.
  */
 const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
+    const { t } = useTranslation();
+
     const data = useMemo(() => {
         let sDate = dayjs(startDate);
         const seriesData: {
@@ -77,11 +82,24 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
 
     const theme = useTheme();
 
+    const { currencyLocaliser } = useLocalisedNumber();
+
     return (
         <Box
             sx={{
                 '& *': {
                     color: theme.palette.primary.contrastText,
+                    '& .apexcharts-tooltip-candlestick': {
+                        padding: '8px',
+                        '& div': {
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gridGap: '8px',
+                            '& span': {
+                                fontWeight: 'bold',
+                            },
+                        },
+                    },
                 },
             }}
         >
@@ -127,12 +145,45 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                         x: {
                             format: 'dd/MM/yy',
                         },
-                        y: {
-                            formatter(val) {
-                                return val?.toFixed(2) || '';
-                            },
-                        },
                         shared: true,
+                        custom: ({ seriesIndex, dataPointIndex, w }) => {
+                            const o = currencyLocaliser(
+                                w.globals.seriesCandleO[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            const h = currencyLocaliser(
+                                w.globals.seriesCandleH[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            const l = currencyLocaliser(
+                                w.globals.seriesCandleL[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            const c = currencyLocaliser(
+                                w.globals.seriesCandleC[seriesIndex][
+                                    dataPointIndex
+                                ],
+                            );
+                            return (
+                                '<div class="apexcharts-tooltip-candlestick">' +
+                                `<div>${t('literals.Open')}: <span class="value">` +
+                                o +
+                                '</span></div>' +
+                                `<div>${t('literals.High')}: <span class="value">` +
+                                h +
+                                '</span></div>' +
+                                `<div>${t('literals.Low')}: <span class="value">` +
+                                l +
+                                '</span></div>' +
+                                `<div>${t('literals.Close')}: <span class="value">` +
+                                c +
+                                '</span></div>' +
+                                '</div>'
+                            );
+                        },
                     },
                     xaxis: {
                         type: 'datetime',
@@ -150,8 +201,12 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                             style: {
                                 colors: '#fff',
                             },
-                            formatter: (val) =>
-                                `${CURRENCY_SYMBOL}${Math.floor(val)}`,
+                            formatter: (val) => {
+                                return currencyLocaliser(Math.floor(val));
+                            },
+                        },
+                        tooltip: {
+                            enabled: true,
                         },
                     },
                 }}

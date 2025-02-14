@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
@@ -17,6 +18,7 @@ import { transactionColumns } from '../../../../utils/transactionUtils';
 
 import TableWrapper from '../../../../components/Table/Table';
 import { Box, CircularProgress } from '@mui/material';
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 
 dayjs.extend(customParseFormat);
 
@@ -27,6 +29,8 @@ dayjs.extend(customParseFormat);
  * @subcategory Transactions
  */
 const Table = () => {
+    const { t } = useTranslation();
+
     const {
         state: { rangeValues, value },
     } = useContext(TransactionRange);
@@ -38,10 +42,11 @@ const Table = () => {
     const { transactions } = useTransactions();
 
     const transactionsLoading = useAppSelector(getTransactionsLoading);
+    const language = useAppSelector(getActiveLanguageCode);
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
-        () => transactionColumns,
-        [],
+        () => transactionColumns(language, t),
+        [language, t],
     );
 
     useEffect(() => {

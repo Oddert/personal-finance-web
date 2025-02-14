@@ -1,6 +1,7 @@
 /**
  * User's locale setting for localisation functions.
  * @constant
+ * @deprecated
  * @category Constants
  * @subcategory App Constants
  */
@@ -9,6 +10,7 @@ export const LOCALE = 'en-GB';
 /**
  * The predominant currency unit for the user.
  * @constant
+ * @deprecated
  * @category Constants
  * @subcategory App Constants
  */
@@ -17,6 +19,7 @@ export const CURRENCY_SYMBOL = '£';
 /**
  * The predominant currency unit for the user.
  * @constant
+ * @deprecated
  * @category Constants
  * @subcategory App Constants
  */
@@ -36,6 +39,7 @@ export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING';
 
 /**
  * Title used in the header and anywhere the application references itself.
+ * @deprecated
  * @constant
  * @category Constants
  * @subcategory App Constants

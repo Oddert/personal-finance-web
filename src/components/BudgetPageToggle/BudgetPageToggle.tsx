@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button } from '@mui/material';
 
@@ -20,6 +21,8 @@ import type { IProps } from './BudgetPageToggle.types';
  * @param props.startDate The start date of the selected view.
  */
 const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
+    const { t } = useTranslation();
+
     const href = useMemo(
         () =>
             `${
@@ -40,8 +43,8 @@ const BudgetPageToggle: FC<IProps> = ({ endDate, mode, startDate }) => {
         >
             <Button href={href} variant='contained'>
                 {mode === 'breakdown'
-                    ? 'View budget overview'
-                    : 'View budget breakdown'}
+                    ? t('buttons.viewBudgetOverview')
+                    : t('buttons.viewBudgetBreakdown')}
             </Button>
         </Box>
     );

@@ -1,13 +1,13 @@
 import { CellContext, ColumnDef } from '@tanstack/react-table';
+import { TFunction } from 'i18next';
 
 import { Box } from '@mui/material';
 
-import { CURRENCY_SYMBOL, LOCALE } from '../constants/appConstants';
-
 import type { Transaction } from '../types/Transaction.d';
 import type { Category } from '../types/Category.d';
-
 import type { CategoryState } from '../redux/slices/categorySlice';
+
+import useLocalisedNumber from '../hooks/useLocalisedNumber';
 
 import { createReadableNumber } from './commonUtils';
 
@@ -84,11 +84,10 @@ export const orderTransactions = (transactions: Transaction[]) => {
 export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
     const rawValue = createReadableNumber(cell.renderValue(), 0);
     const value = Number(rawValue);
+    const { currencyLocaliser } = useLocalisedNumber();
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {isNaN(value) || value === 0
-                ? '-'
-                : `${CURRENCY_SYMBOL}${value.toFixed(2)}`}
+            {isNaN(value) || value === 0 ? '-' : currencyLocaliser(value)}
         </Box>
     );
 };
@@ -96,50 +95,53 @@ export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
 /**
  * Columns for the transaction table on the upload / edit form.
  */
-export const transactionColumns: ColumnDef<Transaction>[] = [
+export const transactionColumns = (
+    language: string,
+    t: TFunction<'translation', undefined>,
+): ColumnDef<Transaction>[] => [
     {
-        header: 'Date',
+        header: t('literals.Date'),
         accessorKey: 'date',
         cell: (cell) => {
             const value = cell.renderValue();
             if (typeof value === 'number') {
-                return new Date(value).toLocaleDateString(LOCALE);
+                return new Date(value).toLocaleDateString(language);
             }
             return value;
         },
     },
     {
-        header: 'Description',
+        header: t('literals.Description'),
         accessorKey: 'description',
     },
     {
-        header: 'Out',
+        header: t('literals.Out'),
         accessorKey: 'debit',
         cell: addCurrencySymbol,
     },
     {
-        header: 'In',
+        header: t('literals.In'),
         accessorKey: 'credit',
         cell: addCurrencySymbol,
     },
     {
-        header: 'Ballance',
+        header: t('literals.Ballance'),
         accessorKey: 'ballance',
         cell: addCurrencySymbol,
     },
     {
-        header: 'Category',
+        header: t('literals.Category'),
         accessorKey: 'assignedCategory',
         cell: (cell) => {
             const value: Category | unknown = cell.renderValue();
             if (value && typeof value === 'object' && 'label' in value) {
                 return value.label;
             }
-            return '- uncategorised -';
+            return `- ${t('literals.uncategorised')} -`;
         },
     },
     {
-        header: 'Cat Id',
+        header: t('Cat Id'),
         accessorKey: 'categoryId',
     },
 ];
@@ -192,7 +194,10 @@ const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
  * @param keysArray List of date strings encoded with {@link getRangeKeyEncoding}
  * @returns List of values for the Range component.
  */
-export const generateMarks = (keysArray: string[]) => {
+export const generateMarks = (
+    keysArray: string[],
+    t: TFunction<'translation', undefined>,
+) => {
     let markStepSize = 1;
     if (keysArray.length > 47) {
         markStepSize = 6;
@@ -210,8 +215,8 @@ export const generateMarks = (keysArray: string[]) => {
             value: i,
             label:
                 i === 0 || monthLabel === 'Jan'
-                    ? `${monthLabel} ${yearLabel}`
-                    : monthLabel,
+                    ? `${t(`monthsShort.${monthLabel}`)} ${yearLabel}`
+                    : t(`monthsShort.${monthLabel}`),
         });
     }
     return marks;

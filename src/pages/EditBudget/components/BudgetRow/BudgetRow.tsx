@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, SyntheticEvent, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Autocomplete,
@@ -10,8 +11,8 @@ import {
     TextField,
 } from '@mui/material';
 import {
-    Delete as DeleteIcon,
-    DeleteForever as UnDeleteIcon,
+    Delete as IconDelete,
+    DeleteForever as IconUnDelete,
 } from '@mui/icons-material';
 
 import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
@@ -39,6 +40,8 @@ const inputProps = {
  * @subcategory Home
  */
 const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
+    const { t } = useTranslation();
+
     const categories = useAppSelector(getCategoryResponse);
 
     const categoryOptions = useMemo(
@@ -154,7 +157,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     alignItems: 'center',
                     gridGap: '16px',
                 }}
-                title={budgetRow.deleted ? 'row deleted' : undefined}
+                title={budgetRow.deleted ? t('row deleted') : undefined}
             >
                 <ColourBase asButton={false} colour={budgetRow.colour} />
                 <Autocomplete
@@ -167,7 +170,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     renderInput={(params) => (
                         <TextFieldStyled
                             {...params}
-                            label='Category'
+                            label={t('literals.Category')}
                             placeholder='unset'
                             sx={{
                                 '& * ': {
@@ -186,9 +189,11 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 />
                 <TextFieldStyled
                     disabled={budgetRow.deleted}
-                    InputProps={inputProps}
-                    label='Target spend'
+                    label={t('Target spend')}
                     onChange={handleChangeTargetValue}
+                    slotProps={{
+                        input: inputProps,
+                    }}
                     sx={{
                         '& * ': {
                             textDecoration: budgetRow.deleted
@@ -210,9 +215,11 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 >
                     <TextFieldStyled
                         disabled={budgetRow.deleted}
-                        InputProps={inputProps}
-                        label='Overspend limit (%)'
+                        label={t('Budget.overspendLimitPc')}
                         onChange={handleChangeOverspend}
+                        slotProps={{
+                            input: inputProps,
+                        }}
                         sx={{
                             '& * ': {
                                 textDecoration: budgetRow.deleted
@@ -225,9 +232,11 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                     />
                     <TextFieldStyled
                         disabled={budgetRow.deleted}
-                        InputProps={inputProps}
-                        label='Underspend limit (%)'
+                        label={t('Budget.underspendLimitPc')}
                         onChange={handleChangeUnderspend}
+                        slotProps={{
+                            input: inputProps,
+                        }}
                         sx={{
                             '& * ': {
                                 textDecoration: budgetRow.deleted
@@ -242,16 +251,16 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 {budgetRow.deleted ? (
                     <Button
                         onClick={handleClickUndelete}
-                        title='row deleted. click to restore'
+                        title={t('Budget.rowDeletedCLickToRestore')}
                     >
-                        <UnDeleteIcon />
+                        <IconUnDelete />
                     </Button>
                 ) : (
                     <Button
                         onClick={handleClickDelete}
-                        title='delete budget row'
+                        title={t('Budget.deleteRow')}
                     >
-                        <DeleteIcon />
+                        <IconDelete />
                     </Button>
                 )}
             </Paper>

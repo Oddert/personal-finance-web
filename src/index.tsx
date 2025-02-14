@@ -18,6 +18,8 @@ import reportWebVitals from './reportWebVitals';
 import App from './components/App/';
 import FallbackError from './components/FallbackError';
 
+import './common/i18n';
+
 import './index.css';
 
 const root = ReactDOM.createRoot(

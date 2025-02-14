@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, FormLabel } from '@mui/material';
 
 import BudgetSelector from '../BudgetSelector/BudgetSelector';
@@ -12,6 +13,7 @@ import type { IProps } from './ActiveBudget.types';
  * @component
  */
 const ActiveBudget: FC<IProps> = () => {
+    const { t } = useTranslation();
     return (
         <Box
             sx={{
@@ -21,7 +23,7 @@ const ActiveBudget: FC<IProps> = () => {
             }}
         >
             <FormLabel sx={{ minWidth: '75px', textAlign: 'left' }}>
-                Budget:
+                {t('literals.Budget')}:
             </FormLabel>
             <BudgetSelector />
         </Box>

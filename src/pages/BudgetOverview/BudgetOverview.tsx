@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -28,17 +29,17 @@ import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import ActiveBudget from '../../components/ActiveBudget';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
 
 import AggregateTimeChart from './components/AggregateTimeChart';
 import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
+import CandleStickChart from './components/CandleStickChart';
 import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
-import ActiveCard from '../../components/ActiveCard/ActiveCard';
-import CandleStickChart from './components/CandleStickChart';
 
 dayjs.extend(localizedFormat);
 
@@ -61,6 +62,7 @@ const defaultEnd = toEndMonthDayjs(String(dayjs()));
  * @component
  */
 const BudgetOverview: FC<IProps> = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigation = useSearchParams();
 
@@ -146,7 +148,7 @@ const BudgetOverview: FC<IProps> = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budget Overview
+                    {t('pageTitles.budgetOverview')}
                 </Typography>
                 <DateRange
                     endDate={endDate}
@@ -165,7 +167,7 @@ const BudgetOverview: FC<IProps> = () => {
                             }
                         />
                     }
-                    label='Include empty categories'
+                    label={t('Budget.includeEmptyCategories')}
                 />
                 <PercentageCharts chartList={chartList} />
                 <Paper
@@ -178,7 +180,7 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Budget spend each month</Typography>
+                    <Typography>{t('Budget.monthSpendTitle')}</Typography>
                     <BudgetMonthSpendChart
                         chartList={chartList}
                         startDate={startDate}
@@ -195,7 +197,7 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Aggregate % Spend Discrepancy</Typography>
+                    <Typography>{t('Budget.aggregateSpendTitle')}</Typography>
                     <AggregateTimeChart
                         chartList={chartList}
                         endDate={endDate}
@@ -212,7 +214,7 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Spend Discrepancy & Trend Per Month</Typography>
+                    <Typography>{t('Budget.timeChartTitle')}</Typography>
                     <TimeChart
                         chartList={chartList}
                         endDate={endDate}
@@ -229,7 +231,7 @@ const BudgetOverview: FC<IProps> = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Ballance min / max</Typography>
+                    <Typography>{t('Budget.candleStickTitle')}</Typography>
                     <CandleStickChart
                         endDate={endDate}
                         startDate={startDate}

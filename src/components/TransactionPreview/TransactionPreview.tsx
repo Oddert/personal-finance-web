@@ -7,6 +7,7 @@ import { Button, Popover } from '@mui/material';
 import TPTable from './components/TPTable';
 
 import type { IProps } from './TransactionPreview.types';
+import { useTranslation } from 'react-i18next';
 
 dayjs.extend(localizedFormat);
 
@@ -32,6 +33,8 @@ const TransactionPreview: FC<IProps> = ({
     open,
     startDate,
 }) => {
+    const { t } = useTranslation();
+
     const handleClose = () => {
         clearAnchorEl();
     };
@@ -56,7 +59,7 @@ const TransactionPreview: FC<IProps> = ({
                 },
             }}
         >
-            <Button onClick={handleClose}>Close</Button>
+            <Button onClick={handleClose}>{t('buttons.Close')}</Button>
             <TPTable
                 categoryId={categoryId}
                 endDate={endDate}

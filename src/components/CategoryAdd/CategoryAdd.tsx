@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Button,
     Dialog,
@@ -28,6 +29,7 @@ import type { IProps } from './CategoryAdd.types';
  * @param props.open If true, the modal will display.
  */
 const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const [label, setLabel] = useState('');
@@ -121,11 +123,11 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                         minWidth: '50vw',
                     }}
                 >
-                    Add Category
+                    {t('Category.addCategory')}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
-                        Add a new category of Transaction.
+                        {t('Category.addCategoryDesc')}
                     </DialogContentText>
                     <FormControl
                         fullWidth
@@ -144,7 +146,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                                     value={label}
                                 />
                             }
-                            label='Title'
+                            label={t('literals.Title')}
                             labelPlacement='top'
                             required
                             sx={{
@@ -164,7 +166,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                                     value={description}
                                 />
                             }
-                            label='Description'
+                            label={t('literals.Description')}
                             labelPlacement='top'
                             required
                             sx={{
@@ -179,7 +181,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                             control={
                                 <ColourEdit onSubmit={handleColourChange} />
                             }
-                            label='Colour'
+                            label={t('literals.Colour')}
                             labelPlacement='top'
                             sx={{
                                 gridColumn: '2',
@@ -195,9 +197,11 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleConditionalClose}>Cancel</Button>
+                    <Button onClick={handleConditionalClose}>
+                        {t('buttons.Cancel')}
+                    </Button>
                     <Button autoFocus onClick={handleSaveAndClose}>
-                        Create Category
+                        {t('buttons.createCategory')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -213,19 +217,19 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                         minWidth: '50vw',
                     }}
                 >
-                    Close without saving?
+                    {t('modalMessages.closeWithoutSaving')}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
-                        You have unsaved changes that will be lost.
+                        {t('modalMessages.unsavedChangesWillBeLost')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setSaveModalOpen(false)}>
-                        Keep editing
+                        {t('buttons.keepEditing')}
                     </Button>
                     <Button autoFocus onClick={handleReset}>
-                        Close without saving changes
+                        {t('buttons.closeWithoutSaving')}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -7,9 +7,9 @@ import type {
 } from '../../../../../../types/Matcher';
 
 import {
-    TransactionEditContext,
+    tecWriteTransactions,
     toggleSideBar,
-    writeTransactions,
+    TransactionEditContext,
 } from '../../../../../../contexts/transactionEditContext';
 
 import { autoMatchCategories } from '../../../../../../utils/uploadUtils';
@@ -49,7 +49,7 @@ const Option: FC<IProps> = ({ category }) => {
                 updated_on: '',
             };
             dispatch(
-                writeTransactions(
+                tecWriteTransactions(
                     autoMatchCategories(transactions, [
                         {
                             ...category,

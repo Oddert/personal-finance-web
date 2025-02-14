@@ -1,8 +1,8 @@
 import { FC, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Autocomplete, TableCell, TextField } from '@mui/material';
-import { Circle as DotIcon } from '@mui/icons-material';
+import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
+import { Circle as IconDot } from '@mui/icons-material';
 
 import { Category } from '../../../../../../types/Category.d';
 
@@ -49,61 +49,61 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
     );
 
     return (
-        <TableCell
-            sx={{
-                padding: '4px',
-                display: 'flex',
-                alignItems: 'center',
-            }}
-        >
-            <Autocomplete
-                autoHighlight
-                disablePortal
-                isOptionEqualToValue={(option) => option.id === value?.id}
-                onChange={(event, category) => {
-                    if (!category) {
-                        return;
-                    }
-                    dispatch(
-                        updateCategory(
-                            transaction.tecTempId as string,
-                            Number(category.id),
-                        ),
-                    );
+        <TableCell>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
                 }}
-                options={options}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label='Category'
-                        placeholder='unset'
-                        sx={{
-                            paddingTop: marginTopBottom,
-                            paddingBottom: marginTopBottom,
-                        }}
+            >
+                <Autocomplete
+                    autoHighlight
+                    disablePortal
+                    isOptionEqualToValue={(option) => option.id === value?.id}
+                    onChange={(event, category) => {
+                        if (!category) {
+                            return;
+                        }
+                        dispatch(
+                            updateCategory(
+                                transaction.tecTempId as string,
+                                Number(category.id),
+                            ),
+                        );
+                    }}
+                    options={options}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            placeholder='unset'
+                            sx={{
+                                paddingTop: marginTopBottom,
+                                paddingBottom: marginTopBottom,
+                            }}
+                        />
+                    )}
+                    sx={{
+                        borderWidth:
+                            transaction.assignedCategory === 'unset' ? 4 : 1,
+                        width: '100%',
+                        '& .MuiInputBase-root': {
+                            padding: '2px',
+                        },
+                    }}
+                    value={value}
+                />
+                {value ? null : (
+                    <IconDot
+                        fontSize='small'
+                        sx={(theme) => ({
+                            color: theme.palette.warning.light,
+                            width: '16px',
+                            height: '16px',
+                            marginLeft: '6px',
+                        })}
                     />
                 )}
-                sx={{
-                    borderWidth:
-                        transaction.assignedCategory === 'unset' ? 4 : 1,
-                    width: '100%',
-                    '& .MuiInputBase-root': {
-                        padding: '2px',
-                    },
-                }}
-                value={value}
-            />
-            {value ? null : (
-                <DotIcon
-                    fontSize='small'
-                    sx={(theme) => ({
-                        color: theme.palette.warning.light,
-                        width: '16px',
-                        height: '16px',
-                        marginLeft: '6px',
-                    })}
-                />
-            )}
+            </Box>
         </TableCell>
     );
 };

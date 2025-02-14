@@ -1,4 +1,5 @@
 import { FC, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -26,6 +27,8 @@ const TimeChart: FC<IProps> = ({
     filteredTransactions,
     startDate,
 }) => {
+    const { t } = useTranslation();
+
     const [includeCredit, setIncludeCredit] = useState(false);
 
     const categories = useAppSelector(getCategoryOrderedDataById);
@@ -55,8 +58,8 @@ const TimeChart: FC<IProps> = ({
                         }
                     />
                 }
-                label='Include credit values'
-                title='If checked, incoming (negative) values.'
+                label={t('Budget.includeCreditLabel')}
+                title={t('Budget.includeCreditTitle')}
             />
             <Box
                 sx={(theme) => ({

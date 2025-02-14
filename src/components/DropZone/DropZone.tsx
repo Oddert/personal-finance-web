@@ -1,12 +1,15 @@
 import { FC, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDropzone, DropEvent, FileRejection } from 'react-dropzone';
 
 import { Box, Typography } from '@mui/material';
-import { Upload as UploadIcon } from '@mui/icons-material';
+import { Upload as IconUpload } from '@mui/icons-material';
 
 import { IProps } from './DropZone.types';
 
 const DropZone: FC<IProps> = ({ onSuccess }) => {
+    const { t } = useTranslation();
+
     const onDrop = useCallback(
         (
             acceptedFiles: File[],
@@ -42,7 +45,7 @@ const DropZone: FC<IProps> = ({ onSuccess }) => {
         >
             <input {...getInputProps()} />{' '}
             {isDragActive ? (
-                <Typography>Drop the files here...</Typography>
+                <Typography>{t('dragDrop.onDrag')}</Typography>
             ) : (
                 <Box
                     sx={{
@@ -52,10 +55,8 @@ const DropZone: FC<IProps> = ({ onSuccess }) => {
                         height: '100%',
                     }}
                 >
-                    <UploadIcon />{' '}
-                    <Typography>
-                        Click to upload or drag and drop CSV files here
-                    </Typography>
+                    <IconUpload />{' '}
+                    <Typography>{t('dragDrop.idleMessage')}</Typography>
                 </Box>
             )}
         </Box>

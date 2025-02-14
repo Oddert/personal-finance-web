@@ -12,7 +12,11 @@ dayjs.extend(localizedFormat);
  * @param startDate The start date value.
  * @param endDate The end date value.
  */
-export const formatReadableDate = (startDate: string, endDate: string) => {
+export const formatReadableDate = (
+    startDate: string,
+    endDate: string,
+    toString: string,
+) => {
     const d1 = dayjs(startDate);
     const d2 = dayjs(endDate);
     const format = d1.year() !== d2.year() ? 'dddd D MMMM YYYY' : 'dddd D MMMM';
@@ -24,7 +28,7 @@ export const formatReadableDate = (startDate: string, endDate: string) => {
             >
                 {d1.format(format)}
             </Typography>{' '}
-            to{' '}
+            {toString}{' '}
             <Typography
                 component='span'
                 sx={{ fontWeight: 'bold', fontSize: 'inherit' }}

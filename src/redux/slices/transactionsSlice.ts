@@ -3,8 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { LOCALE } from '../../constants/appConstants';
-
 import { Transaction } from '../../types/Transaction.d';
 
 dayjs.extend(localizedFormat);
@@ -56,42 +54,53 @@ export const transactionSlice = createSlice({
     reducers: {
         requestTransactions: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 startDate?: string;
                 endDate?: string;
             } | null>,
         ) => {
             state.loaded = false;
             state.loading = true;
-            if (action?.payload?.startDate) {
-                state.startDate = new Date(action.payload.startDate).getTime();
-                state.startDateReadable = action.payload.startDate;
+            if (payload?.startDate) {
+                state.startDate = new Date(payload.startDate).getTime();
+                state.startDateReadable = payload.startDate;
             }
-            if (action?.payload?.endDate) {
-                state.endDate = new Date(action.payload.endDate).getTime();
-                state.endDateReadable = action.payload.endDate;
+            if (payload?.endDate) {
+                state.endDate = new Date(payload.endDate).getTime();
+                state.endDateReadable = payload.endDate;
             }
         },
-        setStartDate: (state, action: PayloadAction<{ startDate: string }>) => {
-            state.startDate = new Date(action.payload.startDate).getTime();
-            state.startDateReadable = action.payload.startDate;
+        setStartDate: (
+            state,
+            { payload }: PayloadAction<{ startDate: string }>,
+        ) => {
+            state.startDate = new Date(payload.startDate).getTime();
+            state.startDateReadable = payload.startDate;
         },
-        setEndDate: (state, action: PayloadAction<{ endDate: string }>) => {
-            state.endDate = new Date(action.payload.endDate).getTime();
-            state.endDateReadable = action.payload.endDate;
+        setEndDate: (
+            state,
+            { payload }: PayloadAction<{ endDate: string }>,
+        ) => {
+            state.endDate = new Date(payload.endDate).getTime();
+            state.endDateReadable = payload.endDate;
         },
         writeTransactions: (
             state,
-            action: PayloadAction<{
+            {
+                payload,
+            }: PayloadAction<{
                 transactions: TransactionState['response'];
                 orderedTransactions: TransactionState['orderedData'];
+                timestamp: string;
             }>,
         ) => {
-            state.refreshed = new Date().toLocaleString(LOCALE);
+            state.refreshed = payload.timestamp;
             state.loaded = true;
             state.loading = false;
-            state.orderedData = action.payload.orderedTransactions;
-            state.response = action.payload.transactions;
+            state.orderedData = payload.orderedTransactions;
+            state.response = payload.transactions;
         },
     },
 });

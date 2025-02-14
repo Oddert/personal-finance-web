@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 import {
@@ -13,8 +14,8 @@ import {
     useTheme,
 } from '@mui/material';
 import {
-    ArrowBack as ArrowLeftIcon,
-    Save as SaveIcon,
+    ArrowBack as IconArrowLeft,
+    Save as IconSave,
 } from '@mui/icons-material';
 
 import { ICard, ICardTypes } from '../../types/Card.types';
@@ -67,6 +68,7 @@ const createEmptyBudget = (id: number): ICard => ({
  * @component
  */
 const EditBudget: FC<IProps> = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const theme = useTheme();
 
@@ -90,9 +92,7 @@ const EditBudget: FC<IProps> = () => {
                     );
 
                     if (!response || !response.payload) {
-                        throw new Error(
-                            'No response received from the server.',
-                        );
+                        throw new Error(t('modalMessages.noServerResponse'));
                     }
                     dispatch(updateCard({ card: response.payload.card }));
                 } else {
@@ -101,9 +101,7 @@ const EditBudget: FC<IProps> = () => {
                     });
 
                     if (!response || !response.payload) {
-                        throw new Error(
-                            'No response received from the server.',
-                        );
+                        throw new Error(t('modalMessages.noServerResponse'));
                     }
                     dispatch(addCard({ card: response.payload.card }));
                 }
@@ -122,7 +120,7 @@ const EditBudget: FC<IProps> = () => {
             const fetchCard = async (cardId: number) => {
                 const response = await APIService.getSingleCard(cardId);
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setCard(response.payload.card);
                 setLoading(false);
@@ -136,9 +134,9 @@ const EditBudget: FC<IProps> = () => {
                 ) {
                     dispatch(
                         writeErrorBoundary({
-                            title: 'Card not Found',
-                            message: `No card with ID "${card.id}" found.`,
-                            error: 'Not found error',
+                            title: t('Card.notFound'),
+                            message: `${t('Card.notFoundWithId')} "${card.id}".`,
+                            error: t('errors.notFound'),
                         }),
                     );
                 }
@@ -154,7 +152,7 @@ const EditBudget: FC<IProps> = () => {
             console.error(error);
             dispatch(intakeError(error));
         }
-    }, []);
+    }, [t]);
 
     if (loading) {
         return (
@@ -163,7 +161,6 @@ const EditBudget: FC<IProps> = () => {
             </ResponsiveContainer>
         );
     }
-    console.log(card.coverImage);
 
     return (
         <ResponsiveContainer>
@@ -180,10 +177,11 @@ const EditBudget: FC<IProps> = () => {
                     sx={{ alignSelf: 'flex-start', mt: '32px' }}
                     variant='text'
                 >
-                    <ArrowLeftIcon /> Return to all cards
+                    <IconArrowLeft /> {t('Card.returnToAllCards')}
                 </Button>
                 <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
-                    {isEdit ? 'Edit ' : 'Create '}Card
+                    {isEdit ? t('literals.Edit') : t('literals.Create')}{' '}
+                    {t('literals.Card')}
                 </Typography>
                 <Box
                     sx={{
@@ -210,7 +208,7 @@ const EditBudget: FC<IProps> = () => {
                         }}
                     >
                         <TextField
-                            label='Bank Name'
+                            label={t('Card.bankNameLabel')}
                             onChange={(event) =>
                                 setCard({
                                     ...card,
@@ -238,12 +236,18 @@ const EditBudget: FC<IProps> = () => {
                             }}
                             value={card.cardType}
                         >
-                            <MenuItem value={'OTHER'}>Other / unset</MenuItem>
-                            <MenuItem value={'DEBIT'}>Debit</MenuItem>
-                            <MenuItem value={'CREDIT'}>Credit</MenuItem>
+                            <MenuItem value={'OTHER'}>
+                                {t('buttons.otherUnset')}
+                            </MenuItem>
+                            <MenuItem value={'DEBIT'}>
+                                {t('literals.Debit')}
+                            </MenuItem>
+                            <MenuItem value={'CREDIT'}>
+                                {t('literals.Credit')}
+                            </MenuItem>
                         </Select>
                         <TextField
-                            label='Card Number'
+                            label={t('Card.cardNumberLabel')}
                             onChange={(event) =>
                                 setCard({
                                     ...card,
@@ -258,7 +262,7 @@ const EditBudget: FC<IProps> = () => {
                             value={card.cardNumber}
                         />
                         <TextField
-                            label='Sort Code'
+                            label={t('Card.sortCodeLabel')}
                             onChange={(event) =>
                                 setCard({
                                     ...card,
@@ -291,7 +295,7 @@ const EditBudget: FC<IProps> = () => {
                             value={card.cardName}
                         />
                         <TextField
-                            label='Description'
+                            label={t('literals.Description')}
                             minRows={3}
                             multiline
                             onChange={(event) =>
@@ -316,7 +320,7 @@ const EditBudget: FC<IProps> = () => {
                                 url={card.icon}
                             />
                             <EditImageIcon
-                                label='Background'
+                                label={t('literals.Background')}
                                 onConfirmChange={(url: string | null) => {
                                     if (url) {
                                         setCard({ ...card, coverImage: url });
@@ -339,7 +343,10 @@ const EditBudget: FC<IProps> = () => {
                     }}
                     variant='contained'
                 >
-                    <SaveIcon /> {isEdit ? 'Save changes' : 'Create card'}
+                    <IconSave />{' '}
+                    {isEdit
+                        ? t('buttons.saveChanges')
+                        : t('buttons.createCard')}
                 </Button>
                 {isEdit && <DeleteCard card={card} />}
             </Box>

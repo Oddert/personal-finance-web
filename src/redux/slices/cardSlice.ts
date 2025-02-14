@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ICard } from '../../types/Card.types';
 
@@ -27,7 +27,7 @@ export const cardSlice = createSlice({
     name: 'card',
     initialState,
     reducers: {
-        addCard: (state, { payload }: { payload: { card: ICard } }) => {
+        addCard: (state, { payload }: PayloadAction<{ card: ICard }>) => {
             state.loaded = true;
             state.loading = false;
             state.response.push(payload.card);
@@ -36,7 +36,7 @@ export const cardSlice = createSlice({
             state.loaded = false;
             state.loading = true;
         },
-        deleteCard: (state, { payload }: { payload: { cardId: number } }) => {
+        deleteCard: (state, { payload }: PayloadAction<{ cardId: number }>) => {
             state.loaded = true;
             state.loading = false;
             state.response = state.response.filter(
@@ -46,17 +46,17 @@ export const cardSlice = createSlice({
                 state.activeCard = null;
             }
         },
-        setActiveCard: (state, { payload }: { payload: { card: ICard } }) => {
+        setActiveCard: (state, { payload }: PayloadAction<{ card: ICard }>) => {
             state.activeCard = payload.card;
         },
-        updateCard: (state, { payload }: { payload: { card: ICard } }) => {
+        updateCard: (state, { payload }: PayloadAction<{ card: ICard }>) => {
             state.response = state.response.map((card) =>
                 card.id === payload.card.id ? payload.card : card,
             );
             state.loaded = true;
             state.loading = false;
         },
-        writeCards: (state, { payload }: { payload: { cards: ICard[] } }) => {
+        writeCards: (state, { payload }: PayloadAction<{ cards: ICard[] }>) => {
             state.loaded = true;
             state.loading = false;
             state.timestamp = Date.now();

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, FormControlLabel, Typography } from '@mui/material';
-import { Refresh as RefreshIcon } from '@mui/icons-material';
+import { Refresh as IconRefresh } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
@@ -30,6 +31,8 @@ dayjs.extend(localizedFormat);
  * @subcategory Transactions
  */
 const RequestControls = () => {
+    const { t } = useTranslation();
+
     const dispatch = useAppDispatch();
 
     const [start, setStart] = useState<Dayjs | null>(dayjs().startOf('month'));
@@ -74,7 +77,7 @@ const RequestControls = () => {
                 sx={{ textAlign: 'left', margin: '12px 16px' }}
                 variant='h3'
             >
-                Load data
+                {t('Load data')}
             </Typography>
             <Box
                 sx={{
@@ -88,7 +91,7 @@ const RequestControls = () => {
                     control={
                         <DatePicker
                             label=''
-                            name='endDate'
+                            name='startDate'
                             onChange={handleChangeStart}
                             showDaysOutsideCurrentMonth
                             slotProps={{
@@ -103,7 +106,7 @@ const RequestControls = () => {
                             value={start}
                         />
                     }
-                    label='Start Date'
+                    label={t('Start date')}
                     labelPlacement='top'
                     sx={(theme) => ({
                         alignItems: 'flex-start',
@@ -129,7 +132,7 @@ const RequestControls = () => {
                             value={end}
                         />
                     }
-                    label='End Date'
+                    label={t('End date')}
                     labelPlacement='top'
                     sx={(theme) => ({
                         alignItems: 'flex-start',
@@ -138,7 +141,7 @@ const RequestControls = () => {
                 />
                 <FormControlLabel
                     control={<CardSelector />}
-                    label='Card'
+                    label={t('literals.Card')}
                     labelPlacement='top'
                     sx={(theme) => ({
                         alignItems: 'flex-start',
@@ -150,7 +153,7 @@ const RequestControls = () => {
                     size='large'
                     sx={{ px: 2, alignSelf: 'flex-end' }}
                 >
-                    Refresh <RefreshIcon />
+                    {t('buttons.Refresh')} <IconRefresh />
                 </Button>
             </Box>
         </Box>

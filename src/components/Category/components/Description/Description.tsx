@@ -1,4 +1,5 @@
 import { FC, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
@@ -17,6 +18,7 @@ import type { IProps } from './Description.types';
  */
 const Title: FC<IProps> = ({ category }) => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
 
     const handleChange = useCallback(
         (value: string) => {
@@ -24,10 +26,11 @@ const Title: FC<IProps> = ({ category }) => {
                 initUpdateSingleCategory({
                     category: {
                         ...category,
-                        matchers: category.matchers.map((matcher) => ({
-                            ...matcher,
-                            case_sensitive: Boolean(matcher.case_sensitive),
-                        })),
+                        matchers:
+                            category?.matchers?.map((matcher) => ({
+                                ...matcher,
+                                case_sensitive: Boolean(matcher.case_sensitive),
+                            })) || [],
                         label: value,
                     },
                 }),
@@ -50,7 +53,7 @@ const Title: FC<IProps> = ({ category }) => {
                 },
             }}
             onChange={handleChange}
-            placeholder='Click to add a description.'
+            placeholder={t('Category.descriptionPlaceholder')}
             text={category.description}
         />
     );

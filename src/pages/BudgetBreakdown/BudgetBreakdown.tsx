@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -53,6 +54,7 @@ dayjs.extend(localizedFormat);
  * @component
  */
 const BudgetBreakdown: FC = () => {
+    const { t } = useTranslation();
     const navigation = useSearchParams();
 
     const [startDate, setStartDate] = useState<Dayjs>(
@@ -66,7 +68,7 @@ const BudgetBreakdown: FC = () => {
     const [categoryBreakdown, setCategoryBreakdown] =
         useState<ICategoryBreakdown>({
             uncategorised: {
-                label: 'Uncategorised',
+                label: t('Uncategorised'),
                 value: 0,
                 colour: '#bec3c7',
             },
@@ -120,11 +122,15 @@ const BudgetBreakdown: FC = () => {
                     gridGap: '16px',
                 }}
             >
-                <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    Budget from{' '}
+                <Typography variant='h2' sx={{ margin: '32px 0 0' }}>
+                    {t('pageTitles.budgetBreakdown')}
+                </Typography>
+                <Typography variant='h3' sx={{ margin: '0 0 32px' }}>
+                    {t('literals.from')}{' '}
                     {formatReadableDate(
                         startDate.format(DATE_FORMAT),
                         endDate.format(DATE_FORMAT),
+                        t('literals.to'),
                     )}{' '}
                     {formatNumMonths(numMonths)}
                 </Typography>
@@ -174,7 +180,7 @@ const BudgetBreakdown: FC = () => {
                         padding: '16px',
                     }}
                 >
-                    <Typography>Aggregate spend chart</Typography>
+                    <Typography>{t('Budget.aggregateSpendChart')}</Typography>
                     <TimeChart
                         endDate={endDate}
                         filteredTransactions={transactions}
@@ -192,7 +198,7 @@ const BudgetBreakdown: FC = () => {
                             padding: '16px',
                         }}
                     >
-                        <Typography>Category spend across period</Typography>
+                        <Typography>{t('Budget.categorySpend')}</Typography>
                         <BudgetMonthSpendChart
                             endDate={endDate}
                             filteredTransactions={transactions}

@@ -7,6 +7,8 @@ import type { Category } from '../../types/Category.d';
 
 import APIService from '../../services/APIService';
 
+import { intakeError } from '../thunks/errorThunks';
+
 import { createCategory } from '../slices/categorySlice';
 
 /**
@@ -23,10 +25,12 @@ export default function* categoryCreateSaga({
 
         if (response.error || !response.payload) {
             console.error(response.error);
+            yield put(intakeError(response.error));
         } else {
             yield put(createCategory({ category: response.payload.category }));
         }
     } catch (error) {
         console.error(error);
+        yield put(intakeError(error));
     }
 }

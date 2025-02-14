@@ -25,10 +25,11 @@ const Title: FC<IProps> = ({ category, small = false }) => {
                 initUpdateSingleCategory({
                     category: {
                         ...category,
-                        matchers: category.matchers.map((matcher) => ({
-                            ...matcher,
-                            case_sensitive: Boolean(matcher.case_sensitive),
-                        })),
+                        matchers:
+                            category?.matchers?.map((matcher) => ({
+                                ...matcher,
+                                case_sensitive: Boolean(matcher.case_sensitive),
+                            })) || [],
                         label: value,
                     },
                 }),

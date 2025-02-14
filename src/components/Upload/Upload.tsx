@@ -13,15 +13,16 @@ import {
     TransactionEditContext,
     transactionEditReducer,
     writeHeaders,
-    writeTransactions,
     setColumnMap,
     setLoading,
+    tecWriteTransactions,
 } from '../../contexts/transactionEditContext';
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
 
 import TransactionEdit from '../TransactionEdit';
 import DropZone from '../DropZone';
+import { getUserCurrencies } from '../../redux/selectors/profileSelectors';
 
 /**
  * Allows the user to upload new transactions.
@@ -36,6 +37,7 @@ const Upload = () => {
     );
 
     const categories = useSelector(getCategoryResponse);
+    const currencies = useSelector(getUserCurrencies);
 
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -66,10 +68,11 @@ const Upload = () => {
                                     ...datum,
                                     selected: 1,
                                     tecTempId: uuid(),
+                                    currency: currencies[0],
                                 }),
                             );
                             dispatch(writeHeaders(headers));
-                            dispatch(writeTransactions(withSelected));
+                            dispatch(tecWriteTransactions(withSelected));
                             dispatch(setLoading(false));
                         }
                     };
@@ -78,7 +81,7 @@ const Upload = () => {
                 setModalOpen(true);
             }
         },
-        [categories],
+        [categories, currencies],
     );
 
     useEffect(() => {

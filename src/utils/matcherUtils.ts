@@ -5,19 +5,19 @@ import type { MatchType } from '../types/Matcher.d';
  */
 export const matchTypesOptions: { label: string; value: MatchType }[] = [
     {
-        label: 'Any',
+        label: 'Category.matchTypes.Any',
         value: 'any',
     },
     {
-        label: 'Exact',
+        label: 'Category.matchTypes.Exact',
         value: 'exact',
     },
     {
-        label: 'Start',
+        label: 'Category.matchTypes.Start',
         value: 'start',
     },
     {
-        label: 'End',
+        label: 'Category.matchTypes.End',
         value: 'end',
     },
 ];

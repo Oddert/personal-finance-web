@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
 import { Box, Button, Container, ListItem, Typography } from '@mui/material';
-import { Add as PlusIcon } from '@mui/icons-material';
+import { Add as IconPlus } from '@mui/icons-material';
 
 import type { Category as CategoryT } from '../../types/Category.d';
 import type { IDynamicCardLayoutModes } from '../../types/Common.types';
@@ -21,6 +22,8 @@ import LayoutControls from '../../components/LayoutControls';
  * @component
  */
 const Categories = () => {
+    const { t } = useTranslation();
+
     const [dialogOpen, setDialogOpen] = useState(false);
     const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
 
@@ -38,7 +41,7 @@ const Categories = () => {
             })}
         >
             <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                Manage Categories
+                {t('pageTitles.manageCategories')}
             </Typography>
             <Box
                 sx={{
@@ -49,7 +52,7 @@ const Categories = () => {
             >
                 <LayoutControls layout={layout} setLayout={setLayout} />
                 <Button onClick={handleDialogOpen} variant='contained'>
-                    <PlusIcon /> Add Category
+                    <IconPlus /> {t('buttons.addCategory')}
                 </Button>
             </Box>
             <DynamicCardList layout={layout}>
@@ -67,10 +70,10 @@ const Categories = () => {
                             width: '100%',
                             height: '100%',
                         }}
-                        title='Add a new category'
+                        title={t('Category.addCategoryShortDesc')}
                         variant='outlined'
                     >
-                        <PlusIcon fontSize='large' />
+                        <IconPlus fontSize='large' />
                     </Button>
                 </ListItem>
             </DynamicCardList>

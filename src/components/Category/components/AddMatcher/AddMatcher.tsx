@@ -1,7 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button, ListItem, Tooltip } from '@mui/material';
-import { AddCircle as AddIcon } from '@mui/icons-material';
+import { AddCircle as IconAdd } from '@mui/icons-material';
 
 import type { Matcher } from '../../../../types/Matcher.d';
 
@@ -30,6 +31,7 @@ const AddMatcher: FC<IProps> = ({
     onSubmit,
 }) => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
 
@@ -85,7 +87,7 @@ const AddMatcher: FC<IProps> = ({
                 paddingRight: 0,
             }}
         >
-            <Tooltip title='Add matcher'>
+            <Tooltip title={t('Category.addMatcher')}>
                 <Button
                     color='primary'
                     onClick={() => setOpen(!open)}
@@ -99,7 +101,7 @@ const AddMatcher: FC<IProps> = ({
                     }}
                     variant='outlined'
                 >
-                    <AddIcon />
+                    <IconAdd />
                 </Button>
             </Tooltip>
         </ListItem>

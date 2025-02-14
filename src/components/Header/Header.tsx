@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 
-import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/AutoGraph';
-
-import { MAIN_TITLE } from '../../constants/appConstants';
+import { Menu as IconMenu, AutoGraph as IconHome } from '@mui/icons-material';
 
 import Sidebar from '../Sidebar/Sidebar';
 
@@ -17,6 +15,8 @@ import Sidebar from '../Sidebar/Sidebar';
  * @component
  */
 const Header = () => {
+    const { t } = useTranslation();
+
     const [open, setOpen] = useState(false);
 
     const handleDrawerClose = () => {
@@ -53,7 +53,7 @@ const Header = () => {
                             marginRight: 5,
                         }}
                     >
-                        <MenuIcon />
+                        <IconMenu />
                     </IconButton>
                     <Link to='/'>
                         <IconButton
@@ -65,7 +65,7 @@ const Header = () => {
                                 color: theme.palette.common.white,
                             })}
                         >
-                            <HomeIcon />
+                            <IconHome />
                         </IconButton>
                     </Link>
                     <Typography
@@ -88,7 +88,7 @@ const Header = () => {
                         })}
                         variant='h1'
                     >
-                        {MAIN_TITLE}
+                        {t('applicationTitle')}
                     </Typography>
                 </Toolbar>
             </AppBar>

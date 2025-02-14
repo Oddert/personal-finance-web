@@ -1,13 +1,6 @@
 import { ApexOptions } from 'apexcharts';
 
-import { LOCALE } from '../../constants/appConstants';
-
-/**
- * The chart title for Existing Data Line Chart.
- */
-export const title = 'Past Data';
-
-export const chart1BaseOptions: ApexOptions = {
+export const chart1BaseOptions = (language: string): ApexOptions => ({
     chart: {
         id: 'existing-data-line-chart',
         // group: 'all-transactions',
@@ -34,7 +27,7 @@ export const chart1BaseOptions: ApexOptions = {
             style: {
                 colors: '#fff',
             },
-            formatter: (val) => new Date(val).toLocaleDateString(LOCALE),
+            formatter: (val) => new Date(val).toLocaleDateString(language),
         },
         tickAmount: 10,
     },
@@ -59,9 +52,9 @@ export const chart1BaseOptions: ApexOptions = {
             },
         },
     },
-};
+});
 
-export const chart2BaseOptions: ApexOptions = {
+export const chart2BaseOptions = (language: string): ApexOptions => ({
     chart: {
         id: 'credit-debit-chart',
         // group: 'all-transactions',
@@ -94,7 +87,7 @@ export const chart2BaseOptions: ApexOptions = {
             style: {
                 colors: '#fff',
             },
-            formatter: (val) => new Date(val).toLocaleDateString(LOCALE),
+            formatter: (val) => new Date(val).toLocaleDateString(language),
         },
         tickAmount: 10,
     },
@@ -108,7 +101,7 @@ export const chart2BaseOptions: ApexOptions = {
         forceNiceScale: true,
         // max: debitMax,
     },
-};
+});
 
 export const defaultEnd = new Date();
 

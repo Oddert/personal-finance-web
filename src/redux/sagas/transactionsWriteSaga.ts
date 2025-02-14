@@ -22,6 +22,7 @@ import {
     getTransactionsEndDate,
     getTransactionsStartDate,
 } from '../selectors/transactionsSelectors';
+import { getActiveLanguageCode } from '../selectors/profileSelectors';
 
 /**
  * Bulk creates transactions and re-loads part of the state.
@@ -36,6 +37,7 @@ export default function* transactionsWriteSaga() {
         const startDate: number = yield select(getTransactionsStartDate);
         const endDate: number = yield select(getTransactionsEndDate);
         const activeCardId: number | null = yield select(getActiveCardId);
+        const language: string = yield select(getActiveLanguageCode);
 
         const transactionsResponse: IStandardResponse<{
             transactions: Transaction[];
@@ -60,8 +62,11 @@ export default function* transactionsWriteSaga() {
         const orderedTransactions = orderTransactions(
             transactionsResponse?.payload?.transactions,
         );
+        const timestamp = new Date().toLocaleString(language);
 
-        yield put(writeTransactions({ transactions, orderedTransactions }));
+        yield put(
+            writeTransactions({ transactions, orderedTransactions, timestamp }),
+        );
     } catch (error) {
         console.error(error);
     }

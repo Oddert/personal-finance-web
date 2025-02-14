@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 
-import { Checkbox } from '@mui/material';
+import { Checkbox, TableCell } from '@mui/material';
 
 import {
     changeSingleSelected,
@@ -21,17 +21,19 @@ const SelectOption: FC<IProps> = ({ transaction }) => {
     const { dispatch } = useContext(TransactionEditContext);
 
     return (
-        <Checkbox
-            checked={Boolean(transaction.selected)}
-            onChange={(event) =>
-                dispatch(
-                    changeSingleSelected(
-                        transaction.tecTempId as string,
-                        event.target.checked,
-                    ),
-                )
-            }
-        />
+        <TableCell>
+            <Checkbox
+                checked={Boolean(transaction.selected)}
+                onChange={(event) =>
+                    dispatch(
+                        changeSingleSelected(
+                            transaction.tecTempId as string,
+                            event.target.checked,
+                        ),
+                    )
+                }
+            />
+        </TableCell>
     );
 };
 

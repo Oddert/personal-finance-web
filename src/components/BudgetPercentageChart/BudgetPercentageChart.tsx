@@ -5,9 +5,10 @@ import { Box } from '@mui/material';
 
 import type { IBudgetDatum } from '../../types/Budget.types';
 
-import { CURRENCY_SYMBOL } from '../../constants/appConstants';
+import useLocalisedNumber from '../../hooks/useLocalisedNumber';
 
 import type { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Vertical bar chart showing positive and negative discrepancies for a list of budget spend items.
@@ -29,6 +30,8 @@ const BudgetPercentageChart: FC<IProps> = ({
     useFloat = false,
     width = 350,
 }) => {
+    const { t } = useTranslation();
+
     const { categoryIdsOrdered, seriesData, seriesRef } = useMemo(() => {
         const values = Object.values(data);
 
@@ -57,6 +60,8 @@ const BudgetPercentageChart: FC<IProps> = ({
             },
         );
     }, [data, useFloat]);
+
+    const { currencyLocaliser } = useLocalisedNumber();
 
     return (
         <Box
@@ -124,10 +129,10 @@ const BudgetPercentageChart: FC<IProps> = ({
                                 const budgetDatum =
                                     seriesRef[opts.dataPointIndex];
                                 return `
-									<p>Discrepancy (%): ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
-									<p>Discrepancy (${CURRENCY_SYMBOL}): ${budgetDatum.diffFloat < 0 ? `-${CURRENCY_SYMBOL}${Math.abs(budgetDatum.diffFloat)}` : `+${CURRENCY_SYMBOL}${budgetDatum.diffFloat}`}</p>
-									<p>Expected: ${CURRENCY_SYMBOL}${budgetDatum.budget}</p>
-									<p>Actual: ${CURRENCY_SYMBOL}${budgetDatum.spend}</p>
+									<p>${t('Discrepancy pc')}: ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
+									<p>${t('Discrepancy val')}: ${budgetDatum.diffFloat < 0 ? `-${currencyLocaliser(Math.abs(budgetDatum.diffFloat))}` : `+${currencyLocaliser(budgetDatum.diffFloat)}`}</p>
+									<p>${t('literals.Expected')}: ${currencyLocaliser(budgetDatum.budget)}</p>
+									<p>${t('literals.Actual')}: ${currencyLocaliser(budgetDatum.spend)}</p>
 								`;
                             },
                         },

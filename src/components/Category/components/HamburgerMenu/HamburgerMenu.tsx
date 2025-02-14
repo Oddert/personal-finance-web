@@ -1,4 +1,5 @@
 import { FC, Fragment, MouseEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Button,
@@ -10,7 +11,7 @@ import {
     Menu,
     MenuItem,
 } from '@mui/material';
-import { MoreVert as DotsIcon } from '@mui/icons-material';
+import { MoreVert as IconDots } from '@mui/icons-material';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 import { initDeleteSingleCategory } from '../../../../redux/slices/categorySlice';
@@ -25,6 +26,7 @@ import type { IProps } from './HamburgerMenu.types';
  * @param props.category The Category to display.
  */
 const HamburgerMenu: FC<IProps> = ({ category }) => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -63,8 +65,9 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                     padding: 0,
                     minWidth: 'unset',
                 }}
+                title={t('literals.options')}
             >
-                <DotsIcon
+                <IconDots
                     sx={(theme) => ({
                         transition: '.1s linear',
                         color: theme.palette.common.white,
@@ -77,13 +80,15 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
             <Menu
                 id='hamburger-menu'
                 anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
+                onClose={handleClose}
+                open={open}
             >
-                <MenuItem onClick={handleDeleteOptionClick}>Delete</MenuItem>
+                <MenuItem onClick={handleDeleteOptionClick}>
+                    {t('buttons.Delete')}
+                </MenuItem>
             </Menu>
             <Dialog
                 open={deleteModalOpen}
@@ -97,23 +102,25 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
                         minWidth: '50vw',
                     }}
                 >
-                    Are you sure you want to delete Category "{category.label}"?
+                    {t('modalMessages.sureYouWantToDeleteCategory', {
+                        categoryName: category.label,
+                    })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
-                        This action cannot be undone.
+                        {t('modalMessages.cannotBeUndone')}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button color='error' onClick={handleDelete}>
-                        Delete Category
+                        {t('buttons.deleteCategory')}
                     </Button>
                     <Button
                         autoFocus
                         onClick={handleDeleteModalClose}
                         variant='contained'
                     >
-                        Cancel
+                        {t('buttons.Cancel')}
                     </Button>
                 </DialogActions>
             </Dialog>

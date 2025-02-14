@@ -1,17 +1,15 @@
 import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Autocomplete, Box, TextField } from '@mui/material';
 
-import { CURRENCY_SYMBOL } from '../../../../constants/appConstants';
-
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
-import { createReadableNumber } from '../../../../utils/commonUtils';
-
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import {
     IMonthSpendCategory,
@@ -35,11 +33,14 @@ const BudgetMonthSpendChart: FC<IProps> = ({
     filteredTransactions,
     startDate,
 }) => {
+    const { t } = useTranslation();
+
     const [fullSeries, setSeries] = useState<ISeries[]>([]);
     const [options, setOptions] = useState<IMonthSpendCategory[]>([]);
     const [value, setValue] = useState<IMonthSpendCategory[]>([]);
 
     const categories = useAppSelector(getCategoryOrderedDataById);
+
     useEffect(() => {
         const { series: nextSeries, allCategories } = generateMonthSpendData(
             categories,
@@ -64,6 +65,8 @@ const BudgetMonthSpendChart: FC<IProps> = ({
         );
     }, [fullSeries, value]);
 
+    const { currencyLocaliser } = useLocalisedNumber();
+
     return (
         <Box>
             <Autocomplete<IMonthSpendCategory, true>
@@ -73,7 +76,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                 options={options}
                 onChange={(e, nextValue) => setValue(nextValue)}
                 renderInput={(params) => (
-                    <TextField {...params} label='Categories' />
+                    <TextField {...params} label={t('Categories')} />
                 )}
                 value={value}
             />
@@ -125,7 +128,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                             },
                             y: {
                                 formatter(val) {
-                                    return `${CURRENCY_SYMBOL}${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                    return currencyLocaliser(val);
                                 },
                             },
                             shared: true,
@@ -147,7 +150,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                                 formatter(val) {
-                                    return `${CURRENCY_SYMBOL}${createReadableNumber(Number(val.toFixed(3))) || ''}`;
+                                    return currencyLocaliser(val);
                                 },
                             },
                         },
