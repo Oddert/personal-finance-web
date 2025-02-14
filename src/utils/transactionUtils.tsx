@@ -1,4 +1,5 @@
 import { CellContext, ColumnDef } from '@tanstack/react-table';
+import { TFunction } from 'i18next';
 
 import { Box } from '@mui/material';
 
@@ -9,7 +10,6 @@ import type { CategoryState } from '../redux/slices/categorySlice';
 import useLocalisedNumber from '../hooks/useLocalisedNumber';
 
 import { createReadableNumber } from './commonUtils';
-import { TFunction } from 'i18next';
 
 /**
  * Maps over a list of transactions and attempts to assign a Category to `assignedCategory`.

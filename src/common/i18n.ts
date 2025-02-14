@@ -9,13 +9,6 @@ i18n.use(Backend)
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        // resources: {
-        //     en: {
-        //         translation: {
-        //             test123: 'Hello this is a test message.',
-        //         },
-        //     },
-        // },
         debug: Boolean(process.env.debug),
         lng: 'en',
         fallbackLng: 'en',

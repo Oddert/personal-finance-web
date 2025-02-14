@@ -68,7 +68,6 @@ const EditableNumber: FC<IProps> = ({ colMapKey, transaction }) => {
                 {open ? (
                     <TextField
                         onBlur={handleClose}
-                        onSubmit={() => console.log('????')}
                         onChange={(event) =>
                             setInternalValue(event.target.value)
                         }
