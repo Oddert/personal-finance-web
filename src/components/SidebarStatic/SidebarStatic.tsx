@@ -1,21 +1,12 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
 
-import {
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    useTheme,
-} from '@mui/material';
+import { IconButton, useTheme } from '@mui/material';
 import {
     ChevronLeft as IconChevronLeft,
     ChevronRight as IconChevronRight,
 } from '@mui/icons-material';
 
-import { navigation } from '../../constants/routerConstants';
+import SidebarOptions from '../SidebarOptions';
 
 import type { IProps } from './SidebarStatic.types';
 import { Drawer, DrawerHeader } from './SidebarStatic.styles';
@@ -59,39 +50,11 @@ const SidebarStatic: FC<IProps> = ({
                     </IconButton>
                 )}
             </DrawerHeader>
-            <List>
-                {navigation.map(({ label, Icon, location }, index) => (
-                    <ListItem
-                        disablePadding
-                        key={index}
-                        sx={{ display: 'block' }}
-                    >
-                        <Link to={location}>
-                            <ListItemButton
-                                onClick={
-                                    tempPermanentOpen ? undefined : onClose
-                                }
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Icon />
-                                </ListItemIcon>
-                                {open && <ListItemText primary={label} />}
-                            </ListItemButton>
-                        </Link>
-                    </ListItem>
-                ))}
-            </List>
+            <SidebarOptions
+                onClose={onClose}
+                open={open}
+                permanent={tempPermanentOpen}
+            />
         </Drawer>
     );
 };

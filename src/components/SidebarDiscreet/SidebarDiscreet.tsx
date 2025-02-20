@@ -1,19 +1,8 @@
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
 
-import {
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    useTheme,
-    styled,
-} from '@mui/material';
+import { Drawer, IconButton, useTheme, styled } from '@mui/material';
 
-import { navigation } from '../../constants/routerConstants';
+import SidebarOptions from '../SidebarOptions';
 
 import type { IProps } from './SidebarDiscreet.types';
 
@@ -44,37 +33,7 @@ const SidebarDiscreet: FC<IProps> = ({ onClose = () => {}, open = false }) => {
                     {theme.direction === 'rtl'}
                 </IconButton>
             </DrawerHeader>
-            <List>
-                {navigation.map(({ label, Icon, location }, index) => (
-                    <ListItem
-                        disablePadding
-                        key={index}
-                        sx={{ display: 'block' }}
-                    >
-                        <Link to={location}>
-                            <ListItemButton
-                                onClick={onClose}
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Icon />
-                                </ListItemIcon>
-                                {open && <ListItemText primary={label} />}
-                            </ListItemButton>
-                        </Link>
-                    </ListItem>
-                ))}
-            </List>
+            <SidebarOptions onClose={onClose} open={open} />
         </Drawer>
     );
 };
