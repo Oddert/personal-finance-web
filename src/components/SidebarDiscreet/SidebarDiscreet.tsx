@@ -15,7 +15,7 @@ import {
 
 import { navigation } from '../../constants/routerConstants';
 
-import type { IProps } from './Sidebar.types';
+import type { IProps } from './SidebarDiscreet.types';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -27,21 +27,20 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 /**
  * Main navigation component, displays the page options.
+ *
+ * Is fully hidden when closed and opens above main content as a drawer.
  * @category Components
- * @subcategory Sidebar
+ * @subcategory SidebarDiscreet
  * @component
- * @param props.handleDrawerClose Callback function invoked when the component requests to close.
+ * @param props.onClose Callback function invoked when the component requests to close.
  * @param props.open If true, the drawer is open.
  */
-const Sidebar: FC<IProps> = ({
-    handleDrawerClose = () => {},
-    open = false,
-}) => {
+const SidebarDiscreet: FC<IProps> = ({ onClose = () => {}, open = false }) => {
     const theme = useTheme();
     return (
-        <Drawer onClose={handleDrawerClose} open={open} variant='persistent'>
+        <Drawer onClose={onClose} open={open} variant='persistent'>
             <DrawerHeader>
-                <IconButton onClick={handleDrawerClose}>
+                <IconButton onClick={onClose}>
                     {theme.direction === 'rtl'}
                 </IconButton>
             </DrawerHeader>
@@ -54,7 +53,7 @@ const Sidebar: FC<IProps> = ({
                     >
                         <Link to={location}>
                             <ListItemButton
-                                onClick={handleDrawerClose}
+                                onClick={onClose}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
@@ -80,4 +79,4 @@ const Sidebar: FC<IProps> = ({
     );
 };
 
-export default Sidebar;
+export default SidebarDiscreet;

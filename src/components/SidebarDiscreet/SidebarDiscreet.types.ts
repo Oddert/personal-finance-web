@@ -1,4 +1,4 @@
 export interface IProps {
-    handleDrawerClose: (args: any) => void;
+    onClose: (args: any) => void;
     open: boolean;
 }

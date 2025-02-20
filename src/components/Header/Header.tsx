@@ -2,11 +2,48 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import {
+    AppBar as MuiAppBar,
+    AppBarProps as MuiAppBarProps,
+    Box,
+    IconButton,
+    Toolbar,
+    Typography,
+    styled,
+} from '@mui/material';
 
-import { Menu as IconMenu, AutoGraph as IconHome } from '@mui/icons-material';
+import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
 
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../SidebarStatic';
+
+const openWidth = 240;
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme }) => ({
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    variants: [
+        {
+            props: ({ open }) => open,
+            style: {
+                marginLeft: openWidth,
+                width: `calc(100% - ${openWidth}px)`,
+                transition: theme.transitions.create(['width', 'margin'], {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+            },
+        },
+    ],
+    zIndex: theme.zIndex.drawer + 1,
+}));
 
 /**
  * Common header component, displays navigation elements and application title as h1.
@@ -28,30 +65,20 @@ const Header = () => {
     };
 
     return (
-        <Box
-            sx={{
-                position: 'sticky',
-                top: 0,
-                left: 0,
-                zIndex: (theme) => (theme.zIndex.drawer || 0) + 2,
-            }}
-        >
-            <AppBar
-                sx={{
-                    position: 'sticky',
-                    top: 0,
-                    zIndex: (theme) => (theme.zIndex.drawer || 0) + 2,
-                }}
-            >
+        <Box>
+            <AppBar position='fixed' open={open}>
                 <Toolbar>
                     <IconButton
-                        color='inherit'
                         aria-label='open drawer'
-                        onClick={handleToggleDrawer}
+                        color='inherit'
                         edge='start'
-                        sx={{
-                            marginRight: 5,
-                        }}
+                        onClick={handleToggleDrawer}
+                        sx={[
+                            {
+                                marginRight: 5,
+                            },
+                            open && { display: 'none' },
+                        ]}
                     >
                         <IconMenu />
                     </IconButton>
@@ -92,7 +119,11 @@ const Header = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Sidebar handleDrawerClose={handleDrawerClose} open={open} />
+            <Sidebar
+                onClose={handleDrawerClose}
+                onToggle={handleToggleDrawer}
+                open={open}
+            />
         </Box>
     );
 };
