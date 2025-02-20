@@ -14,10 +14,16 @@ import { IProps } from './SidebarOptions.types';
  * @category Components
  * @subcategory Sidebar Options
  * @param props.onClose Callback function invoked when the item is clicked (if permanent is false).
+ * @param props.onOpen Callback function invoked if the item requests to open the sidebar.
  * @param props.open True if the menu is open.
  * @param props.permanent If true, the component renders assuming the menu is fixed.
  */
-const SidebarOptions: FC<IProps> = ({ onClose, open, permanent = false }) => {
+const SidebarOptions: FC<IProps> = ({
+    onClose,
+    onOpen,
+    open,
+    permanent = false,
+}) => {
     return (
         <Box
             sx={{
@@ -31,8 +37,10 @@ const SidebarOptions: FC<IProps> = ({ onClose, open, permanent = false }) => {
                 {navigation.top.map((navItem, index) => (
                     <NavItem
                         index={index}
+                        key={index}
                         navItem={navItem}
                         onClose={onClose}
+                        onOpen={onOpen}
                         open={open}
                         permanent={permanent}
                     />
@@ -42,8 +50,10 @@ const SidebarOptions: FC<IProps> = ({ onClose, open, permanent = false }) => {
                 {navigation.bottom.map((navItem, index) => (
                     <NavItem
                         index={index}
+                        key={index}
                         navItem={navItem}
                         onClose={onClose}
+                        onOpen={onOpen}
                         open={open}
                         permanent={permanent}
                     />

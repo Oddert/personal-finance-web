@@ -22,9 +22,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
  * @subcategory SidebarDiscreet
  * @component
  * @param props.onClose Callback function invoked when the component requests to close.
+ * @param props.onOpen Callback function invoked if the component requests to open.
  * @param props.open If true, the drawer is open.
  */
-const SidebarDiscreet: FC<IProps> = ({ onClose = () => {}, open = false }) => {
+const SidebarDiscreet: FC<IProps> = ({
+    onClose = () => {},
+    onOpen = () => {},
+    open = false,
+}) => {
     const theme = useTheme();
     return (
         <Drawer onClose={onClose} open={open} variant='persistent'>
@@ -33,7 +38,7 @@ const SidebarDiscreet: FC<IProps> = ({ onClose = () => {}, open = false }) => {
                     {theme.direction === 'rtl'}
                 </IconButton>
             </DrawerHeader>
-            <SidebarOptions onClose={onClose} open={open} />
+            <SidebarOptions onClose={onClose} onOpen={onOpen} open={open} />
         </Drawer>
     );
 };

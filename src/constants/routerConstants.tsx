@@ -6,14 +6,17 @@ import { OverridableComponent } from '@mui/material/OverridableComponent';
 import {
     WaterfallChart as IconAllData,
     Category as IconCategory,
+    StackedBarChart as IconBudget,
     DonutSmall as IconBudgetBreakdown,
     CandlestickChart as IconBudgetOverview,
     AutoAwesomeMotion as IconManageBudget,
     Payments as IconManageCards,
+    Person as IconUser,
     // ManageAccounts as IconProfile,
     //  Tune as IconManageBudget,
     //  DeveloperBoard as IconScenarioEdit,
     ReceiptLong as IconTransactions,
+    Receipt as IconTransaction,
     Settings as IconProfile,
 } from '@mui/icons-material';
 
@@ -37,6 +40,7 @@ export interface INavigationOption {
         muiName: string;
     };
     location: string;
+    children?: INavigationOption[];
 }
 
 export interface INavigation {
@@ -213,41 +217,62 @@ export const navigation: INavigation = {
             location: ROUTES.ALL_DATA,
         },
         {
-            label: 'Budget Breakdown',
-            Icon: IconBudgetBreakdown,
-            location: ROUTES.BUDGET_BREAKDOWN,
-        },
-        {
-            label: 'Budget Overview',
-            Icon: IconBudgetOverview,
-            location: ROUTES.BUDGET_OVERVIEW,
-        },
-        {
-            label: 'My Budgets',
-            Icon: IconManageBudget,
-            location: ROUTES.MANAGE_BUDGETS,
-        },
-        {
-            label: 'My Cards',
-            Icon: IconManageCards,
-            location: ROUTES.MANAGE_CARDS,
-        },
-        {
-            label: 'Categories',
-            Icon: IconCategory,
-            location: ROUTES.CATEGORIES,
-        },
-        {
             label: 'Transactions',
-            Icon: IconTransactions,
-            location: ROUTES.TRANSACTIONS,
+            Icon: IconTransaction,
+            location: '',
+            children: [
+                {
+                    label: 'Upload & View',
+                    Icon: IconTransactions,
+                    location: ROUTES.TRANSACTIONS,
+                },
+                {
+                    label: 'Categories',
+                    Icon: IconCategory,
+                    location: ROUTES.CATEGORIES,
+                },
+            ],
+        },
+        {
+            label: 'Budget',
+            Icon: IconBudget,
+            location: '',
+            children: [
+                {
+                    label: 'Budget Breakdown',
+                    Icon: IconBudgetBreakdown,
+                    location: ROUTES.BUDGET_BREAKDOWN,
+                },
+                {
+                    label: 'Budget Overview',
+                    Icon: IconBudgetOverview,
+                    location: ROUTES.BUDGET_OVERVIEW,
+                },
+                {
+                    label: 'My Budgets',
+                    Icon: IconManageBudget,
+                    location: ROUTES.MANAGE_BUDGETS,
+                },
+            ],
         },
     ],
     bottom: [
         {
-            label: 'Settings',
-            Icon: IconProfile,
-            location: ROUTES.PROFILE,
+            label: 'Profile',
+            Icon: IconUser,
+            location: '',
+            children: [
+                {
+                    label: 'My Cards',
+                    Icon: IconManageCards,
+                    location: ROUTES.MANAGE_CARDS,
+                },
+                {
+                    label: 'Settings',
+                    Icon: IconProfile,
+                    location: ROUTES.PROFILE,
+                },
+            ],
         },
     ],
 };

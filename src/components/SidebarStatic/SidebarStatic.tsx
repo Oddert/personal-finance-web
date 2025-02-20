@@ -25,6 +25,7 @@ const tempPermanentOpen = false;
  */
 const SidebarStatic: FC<IProps> = ({
     onClose = () => {},
+    onOpen = () => {},
     onToggle = () => {},
     open = false,
 }) => {
@@ -52,6 +53,7 @@ const SidebarStatic: FC<IProps> = ({
             </DrawerHeader>
             <SidebarOptions
                 onClose={onClose}
+                onOpen={onOpen}
                 open={open}
                 permanent={tempPermanentOpen}
             />

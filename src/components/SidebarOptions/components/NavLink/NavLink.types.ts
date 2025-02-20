@@ -1,10 +1,9 @@
 import { INavigationOption } from '../../../../constants/routerConstants';
 
 export interface IProps {
-    index: number;
     navItem: INavigationOption;
+    isChild?: boolean;
     onClose: (args?: any) => void;
-    onOpen: (args?: any) => void;
     open: boolean;
     permanent?: boolean;
 }

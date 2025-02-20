@@ -28,6 +28,10 @@ const Header = () => {
         setOpen(false);
     };
 
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
     const handleToggleDrawer = () => {
         setOpen(!open);
     };
@@ -90,10 +94,15 @@ const Header = () => {
                 </Toolbar>
             </AppBar>
             {tempDiscreetSwitch ? (
-                <SidebarDiscreet onClose={handleDrawerClose} open={open} />
+                <SidebarDiscreet
+                    onClose={handleDrawerClose}
+                    onOpen={handleDrawerOpen}
+                    open={open}
+                />
             ) : (
                 <SidebarStatic
                     onClose={handleDrawerClose}
+                    onOpen={handleDrawerOpen}
                     onToggle={handleToggleDrawer}
                     open={open}
                 />
