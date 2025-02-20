@@ -2,51 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import {
-    AppBar as MuiAppBar,
-    AppBarProps as MuiAppBarProps,
-    Box,
-    IconButton,
-    Toolbar,
-    Typography,
-    styled,
-} from '@mui/material';
+import { Box, IconButton, Toolbar, Typography } from '@mui/material';
 
 import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
 
 import SidebarDiscreet from '../SidebarDiscreet';
 import SidebarStatic from '../SidebarStatic';
 
-const openWidth = 240;
+import { AppBar } from './Header.styles';
+
 const tempDiscreetSwitch = false;
-
-interface AppBarProps extends MuiAppBarProps {
-    discreet?: boolean;
-    open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme }) => ({
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    variants: [
-        {
-            props: ({ open, discreet }) => open && !discreet,
-            style: {
-                marginLeft: openWidth,
-                width: `calc(100% - ${openWidth}px)`,
-                transition: theme.transitions.create(['width', 'margin'], {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.enteringScreen,
-                }),
-            },
-        },
-    ],
-    zIndex: theme.zIndex.drawer + 1,
-}));
 
 /**
  * Common header component, displays navigation elements and application title as h1.
@@ -69,7 +34,7 @@ const Header = () => {
 
     return (
         <Box>
-            <AppBar discreet={tempDiscreetSwitch} position='fixed' open={open}>
+            <AppBar discreet={tempDiscreetSwitch} open={open} position='fixed'>
                 <Toolbar>
                     <IconButton
                         aria-label='open drawer'

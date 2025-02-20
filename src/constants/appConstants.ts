@@ -45,3 +45,11 @@ export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING';
  * @subcategory App Constants
  */
 export const MAIN_TITLE = 'Personal Finance';
+
+/**
+ * Width of the main drawer panel when in open state.
+ * @constant
+ * @category Constants
+ * @subcategory App Constants
+ */
+export const headerDrawerOpenWidth = 240;
