@@ -14,11 +14,14 @@ import {
 
 import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
 
-import Sidebar from '../SidebarStatic';
+import SidebarDiscreet from '../SidebarDiscreet';
+import SidebarStatic from '../SidebarStatic';
 
 const openWidth = 240;
+const tempDiscreetSwitch = false;
 
 interface AppBarProps extends MuiAppBarProps {
+    discreet?: boolean;
     open?: boolean;
 }
 
@@ -31,7 +34,7 @@ const AppBar = styled(MuiAppBar, {
     }),
     variants: [
         {
-            props: ({ open }) => open,
+            props: ({ open, discreet }) => open && !discreet,
             style: {
                 marginLeft: openWidth,
                 width: `calc(100% - ${openWidth}px)`,
@@ -66,7 +69,7 @@ const Header = () => {
 
     return (
         <Box>
-            <AppBar position='fixed' open={open}>
+            <AppBar discreet={tempDiscreetSwitch} position='fixed' open={open}>
                 <Toolbar>
                     <IconButton
                         aria-label='open drawer'
@@ -77,7 +80,9 @@ const Header = () => {
                             {
                                 marginRight: 5,
                             },
-                            open && { display: 'none' },
+                            open && !tempDiscreetSwitch
+                                ? { display: 'none' }
+                                : false,
                         ]}
                     >
                         <IconMenu />
@@ -119,11 +124,15 @@ const Header = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Sidebar
-                onClose={handleDrawerClose}
-                onToggle={handleToggleDrawer}
-                open={open}
-            />
+            {tempDiscreetSwitch ? (
+                <SidebarDiscreet onClose={handleDrawerClose} open={open} />
+            ) : (
+                <SidebarStatic
+                    onClose={handleDrawerClose}
+                    onToggle={handleToggleDrawer}
+                    open={open}
+                />
+            )}
         </Box>
     );
 };
