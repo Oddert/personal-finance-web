@@ -17,10 +17,10 @@ const ResponsiveContainer: FC<IProps> = ({ children }) => {
     return (
         <Container
             sx={(theme) => ({
-                transition: '.2s linear',
-                minHeight: `calc(100vh)`,
                 margin: '0 auto',
-                padding: '0 16px',
+                minHeight: `calc(100vh)`,
+                padding: '64px 16px 0',
+                transition: '.2s linear',
                 [theme.breakpoints.down('xl')]: {
                     maxWidth: '1300px',
                 },
