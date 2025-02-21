@@ -10,9 +10,11 @@ import Header from '../Header/Header';
  * @param props.children The page contents.
  */
 const Layout = ({ children }) => (
-    <Box>
+    <Box sx={{ display: 'flex' }}>
         <Header />
-        {children}
+        <Box component='main' sx={{ flexGrow: 1, p: 3, pt: 12 }}>
+            {children}
+        </Box>
     </Box>
 );
 

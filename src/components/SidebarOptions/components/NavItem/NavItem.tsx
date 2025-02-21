@@ -52,19 +52,24 @@ const MenuItem: FC<IProps> = ({
                                 m: 1,
                                 borderRadius: '4px',
                                 width: 'calc(100% - 16px)',
-                                // '& .MuiAccordionSummary-content': {
-                                //     m: 0,
-                                // },
+                                '& .MuiAccordionSummary-content': {
+                                    m: 0,
+                                },
                                 '&:hover': {
                                     backgroundColor: theme.palette.action.hover,
                                 },
-                                '& .MuiAccordionSummary-content': {
-                                    my: 0,
-                                },
+                                '& .MuiAccordionSummary-content, .MuiAccordionSummary-content.Mui-expanded':
+                                    {
+                                        my: 1,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    },
                                 '&.Mui-expanded': {
-                                    minHeight: 48,
-                                    my: 0,
+                                    minHeight: 32,
+                                    my: 1,
+                                    mt: 0,
                                 },
+                                minHeight: 32,
                             })}
                         >
                             <ListItemIcon
@@ -86,15 +91,19 @@ const MenuItem: FC<IProps> = ({
                             {navItem.children.map((childNavItem, childIdx) => (
                                 <ListItem
                                     key={childIdx}
-                                    sx={
+                                    sx={[
+                                        { my: 0 },
                                         open
-                                            ? { my: 0 }
-                                            : {
-                                                  m: 0,
-                                                  p: 0,
-                                                  justifyContent: 'center',
+                                            ? {
+                                                  '& a': { width: '100%' },
                                               }
-                                    }
+                                            : {
+                                                  mx: 1,
+                                                  p: 0,
+                                                  width: 'auto',
+                                                  justifyContent: 'center',
+                                              },
+                                    ]}
                                 >
                                     <NavLink
                                         isChild

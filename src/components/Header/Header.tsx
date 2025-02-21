@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { IconButton, Toolbar, Typography } from '@mui/material';
 
 import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
 
@@ -37,7 +37,7 @@ const Header = () => {
     };
 
     return (
-        <Box>
+        <Fragment>
             <AppBar discreet={tempDiscreetSwitch} open={open} position='fixed'>
                 <Toolbar>
                     <IconButton
@@ -107,7 +107,7 @@ const Header = () => {
                     open={open}
                 />
             )}
-        </Box>
+        </Fragment>
     );
 };
 
