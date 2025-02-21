@@ -52,4 +52,4 @@ export const MAIN_TITLE = 'Personal Finance';
  * @category Constants
  * @subcategory App Constants
  */
-export const headerDrawerOpenWidth = 260;
+export const headerDrawerOpenWidth = 280;

@@ -38,18 +38,34 @@ const MenuItem: FC<IProps> = ({
     return (
         <ListItem disablePadding key={index} sx={{ display: 'block' }}>
             {navItem.children ? (
-                <Accordion onChange={onOpen}>
+                <Accordion
+                    defaultExpanded={navItem.defaultExpanded}
+                    elevation={0}
+                    onChange={onOpen}
+                >
                     <Tooltip placement='right' title={navItem.label}>
                         <AccordionSummary
                             onClick={onOpen}
-                            sx={{
-                                minHeight: 48,
+                            sx={(theme) => ({
                                 justifyContent: open ? 'initial' : 'center',
                                 px: 2.5,
-                                '& .MuiAccordionSummary-content': {
-                                    m: 0,
+                                m: 1,
+                                borderRadius: '4px',
+                                width: 'calc(100% - 16px)',
+                                // '& .MuiAccordionSummary-content': {
+                                //     m: 0,
+                                // },
+                                '&:hover': {
+                                    backgroundColor: theme.palette.action.hover,
                                 },
-                            }}
+                                '& .MuiAccordionSummary-content': {
+                                    my: 0,
+                                },
+                                '&.Mui-expanded': {
+                                    minHeight: 48,
+                                    my: 0,
+                                },
+                            })}
                         >
                             <ListItemIcon
                                 sx={{
@@ -65,12 +81,20 @@ const MenuItem: FC<IProps> = ({
                             ) : null}
                         </AccordionSummary>
                     </Tooltip>
-                    <AccordionDetails sx={{ p: 0 }}>
+                    <AccordionDetails sx={[{ p: 0 }, open && { pl: '12px' }]}>
                         <List sx={{ p: 0 }}>
                             {navItem.children.map((childNavItem, childIdx) => (
                                 <ListItem
                                     key={childIdx}
-                                    sx={open ? { my: 0 } : { m: 0, p: 0 }}
+                                    sx={
+                                        open
+                                            ? { my: 0 }
+                                            : {
+                                                  m: 0,
+                                                  p: 0,
+                                                  justifyContent: 'center',
+                                              }
+                                    }
                                 >
                                     <NavLink
                                         isChild

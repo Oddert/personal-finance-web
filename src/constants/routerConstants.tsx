@@ -41,6 +41,7 @@ export interface INavigationOption {
     };
     location: string;
     children?: INavigationOption[];
+    defaultExpanded?: boolean;
 }
 
 export interface INavigation {
@@ -261,6 +262,7 @@ export const navigation: INavigation = {
             label: 'Profile',
             Icon: IconUser,
             location: '',
+            defaultExpanded: true,
             children: [
                 {
                     label: 'My Cards',
