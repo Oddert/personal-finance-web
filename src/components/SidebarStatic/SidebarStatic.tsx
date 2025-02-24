@@ -11,7 +11,7 @@ import SidebarOptions from '../SidebarOptions';
 import type { IProps } from './SidebarStatic.types';
 import { Drawer, DrawerHeader } from './SidebarStatic.styles';
 
-const tempPermanentOpen = false;
+const placeholderPermOpen = false;
 
 /**
  * Main navigation component, displays the page options.
@@ -30,10 +30,11 @@ const SidebarStatic: FC<IProps> = ({
     open = false,
 }) => {
     const theme = useTheme();
+
     return (
         <Drawer onClose={onClose} open={open} variant='permanent'>
             <DrawerHeader>
-                {tempPermanentOpen ? null : (
+                {placeholderPermOpen ? null : (
                     <IconButton
                         color='inherit'
                         aria-label='open drawer'
@@ -55,7 +56,7 @@ const SidebarStatic: FC<IProps> = ({
                 onClose={onClose}
                 onOpen={onOpen}
                 open={open}
-                permanent={tempPermanentOpen}
+                permanent={placeholderPermOpen}
             />
         </Drawer>
     );

@@ -34,3 +34,11 @@ export const getUserCurrencies = createSelector(
     getProfileState,
     (profileState) => profileState.currencies,
 );
+
+/**
+ * The selected sidebar mode preference.
+ */
+export const getSidebarMode = createSelector(
+    getProfileState,
+    (profileState) => profileState.sidebarMode,
+);

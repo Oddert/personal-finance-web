@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -6,12 +6,14 @@ import { IconButton, Toolbar, Typography } from '@mui/material';
 
 import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
 
+import { getSidebarMode } from '../../redux/selectors/profileSelectors';
+
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+
 import SidebarDiscreet from '../SidebarDiscreet';
 import SidebarStatic from '../SidebarStatic';
 
 import { AppBar } from './Header.styles';
-
-const tempDiscreetSwitch = false;
 
 /**
  * Common header component, displays navigation elements and application title as h1.
@@ -21,6 +23,8 @@ const tempDiscreetSwitch = false;
  */
 const Header = () => {
     const { t } = useTranslation();
+
+    const sidebarMode = useAppSelector(getSidebarMode);
 
     const [open, setOpen] = useState(false);
 
@@ -36,9 +40,11 @@ const Header = () => {
         setOpen(!open);
     };
 
+    const isStatic = useMemo(() => sidebarMode === 'static', [sidebarMode]);
+
     return (
         <Fragment>
-            <AppBar discreet={tempDiscreetSwitch} open={open} position='fixed'>
+            <AppBar discreet={isStatic} open={open} position='fixed'>
                 <Toolbar>
                     <IconButton
                         aria-label='open drawer'
@@ -49,9 +55,7 @@ const Header = () => {
                             {
                                 marginRight: 5,
                             },
-                            open && !tempDiscreetSwitch
-                                ? { display: 'none' }
-                                : false,
+                            open && !isStatic ? { display: 'none' } : false,
                         ]}
                     >
                         <IconMenu />
@@ -93,7 +97,7 @@ const Header = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            {tempDiscreetSwitch ? (
+            {isStatic ? (
                 <SidebarDiscreet
                     onClose={handleDrawerClose}
                     onOpen={handleDrawerOpen}

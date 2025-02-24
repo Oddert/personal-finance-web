@@ -1,23 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ILanguage } from '../../types/Intl.types';
+import { TSidebarMode } from '../../types/Profile.types';
 
 export interface IProfileState {
     activeLanguage: ILanguage;
     languages: ILanguage[];
     currencies: string[];
+    sidebarMode: TSidebarMode;
 }
 
 export const initialState: IProfileState = {
     activeLanguage: { code: 'en-GB', displayName: 'English (standard)' },
     languages: [{ code: 'en-GB', displayName: 'English (standard)' }],
     currencies: ['GBP', 'USD', 'EUR'],
+    sidebarMode: 'discreet',
 };
 
 export const profileSlice = createSlice({
     name: 'profile',
     initialState,
     reducers: {
+        changeSidebarMode: (
+            state,
+            { payload }: PayloadAction<{ mode: TSidebarMode }>,
+        ) => {
+            state.sidebarMode = payload.mode;
+        },
         reorderCurrencies: (
             state,
             { payload }: PayloadAction<{ from: number; to: number }>,
@@ -56,6 +65,7 @@ export const profileSlice = createSlice({
 });
 
 export const {
+    changeSidebarMode,
     reorderCurrencies,
     reorderLanguages,
     setActiveLanguage,
