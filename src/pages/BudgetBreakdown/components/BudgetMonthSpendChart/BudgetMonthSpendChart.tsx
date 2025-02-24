@@ -83,7 +83,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
             <Box
                 sx={(theme) => ({
                     '& *': {
-                        color: theme.palette.primary.contrastText,
+                        color: theme.palette.common.black,
                     },
                 })}
             >

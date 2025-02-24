@@ -78,10 +78,11 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
         <Box
             sx={(theme) => ({
                 '& *': {
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.common.black,
                 },
             })}
         >
+            this one
             <Chart
                 type='area'
                 height={500}

@@ -7,6 +7,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { Box, useTheme } from '@mui/material';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+// import useContentWidth from '../../../../hooks/useContentWidth';
 
 import { IProps } from './CandleStickChart.types';
 
@@ -84,11 +85,13 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
 
     const { currencyLocaliser } = useLocalisedNumber();
 
+    // const { contentWidth } = useContentWidth();
+
     return (
         <Box
             sx={{
                 '& *': {
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.common.black,
                     '& .apexcharts-tooltip-candlestick': {
                         padding: '8px',
                         '& div': {
@@ -107,6 +110,7 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                 type='candlestick'
                 height={500}
                 width={700}
+                // width={contentWidth}
                 options={{
                     chart: {
                         type: 'candlestick',
