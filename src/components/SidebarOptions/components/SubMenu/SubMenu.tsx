@@ -76,19 +76,18 @@ const SubMenu: FC<IProps> = ({ navItem, onClose, onOpen, open, permanent }) => {
                 </AccordionSummary>
             </Tooltip>
             <AccordionDetails sx={[{ p: 0 }, open && { pl: '12px' }]}>
-                <List sx={{ p: 0, ml: '5px' }}>
+                <List sx={{ p: 0, ml: open ? 2 : '5px' }}>
                     {navItem.children?.map((childNavItem, childIdx) => (
                         <ListItem
                             key={childIdx}
                             sx={[
-                                { my: 1 },
+                                { my: 1, p: 0 },
                                 open
                                     ? {
                                           '& a': { width: '100%' },
                                       }
                                     : {
                                           mx: 1,
-                                          p: 0,
                                           width: 'auto',
                                           justifyContent: 'center',
                                       },
