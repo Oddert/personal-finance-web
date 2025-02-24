@@ -56,8 +56,7 @@ const SubMenu: FC<IProps> = ({ navItem, onClose, onOpen, open, permanent }) => {
                             },
                         '&.Mui-expanded': {
                             minHeight: 32,
-                            my: 1,
-                            mt: 0,
+                            my: 0,
                         },
                         minHeight: 32,
                     })}
@@ -77,12 +76,12 @@ const SubMenu: FC<IProps> = ({ navItem, onClose, onOpen, open, permanent }) => {
                 </AccordionSummary>
             </Tooltip>
             <AccordionDetails sx={[{ p: 0 }, open && { pl: '12px' }]}>
-                <List sx={{ p: 0 }}>
+                <List sx={{ p: 0, ml: '5px' }}>
                     {navItem.children?.map((childNavItem, childIdx) => (
                         <ListItem
                             key={childIdx}
                             sx={[
-                                { my: 0 },
+                                { my: 1 },
                                 open
                                     ? {
                                           '& a': { width: '100%' },

@@ -47,6 +47,7 @@ const NavLink: FC<IProps> = ({
                         px: 2,
                         m: 1,
                         borderRadius: '4px',
+                        minWidth: 40,
                     },
                     selected &&
                         ((theme) => ({
@@ -57,12 +58,13 @@ const NavLink: FC<IProps> = ({
                             },
                         })),
                     isChild ? { margin: 0 } : false,
+                    open ? false : { p: 0, mx: '8px' },
                 ]}
             >
                 <ListItemIcon
                     sx={{
                         minWidth: 0,
-                        mr: open ? 3 : 'auto',
+                        mr: open ? 3 : 0,
                         justifyContent: 'center',
                     }}
                 >
