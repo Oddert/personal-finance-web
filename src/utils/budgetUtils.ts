@@ -142,11 +142,12 @@ export const createBudgetChartData = (
 ) => {
     const budgetRowsById = budget.budgetRows.reduce(
         (acc: { [id: number]: IBudgetRow }, each) => {
-            acc[each.id] = each;
+            acc[each.categoryId] = each;
             return acc;
         },
         {},
     );
+
     const chart = Object.entries(categoryBreakdown).reduce(
         (acc: IBudgetDatum[], [uid, categoryBd]) => {
             const budgetDatum = budgetRowsById[Number(uid)];
