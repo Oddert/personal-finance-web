@@ -39,6 +39,16 @@ const components: Components = {
             },
         ],
     },
+    MuiCheckbox: {
+        variants: [
+            {
+                props: { checked: true },
+                style: ({ theme }: { theme: any }) => ({
+                    color: theme.palette.primary.light,
+                }),
+            },
+        ],
+    },
 };
 
 export default components;
