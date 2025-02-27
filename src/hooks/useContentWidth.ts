@@ -38,37 +38,32 @@ const bp = breakpoints?.values
 const useContentWidth = () => {
     const [contentWidth, setContentWidth] = useState(contentWidths.md);
     const [windowWidth, setWindowWidth] = useState(contentWidths.md);
-    const [breakpoint, setBreakPoint] = useState<TSizes>('lg');
+    const [breakpoint, setBreakPoint] = useState<TSizes>('md');
 
     const handleResize = () => {
         const nextWindowWidth = window.innerWidth;
         setWindowWidth(nextWindowWidth);
         if (nextWindowWidth <= bp.sm) {
             if (breakpoint !== 'xs') {
-                console.log('Setting to XS');
                 setBreakPoint('xs');
                 setContentWidth(contentWidths.xs);
             }
         } else if (nextWindowWidth <= bp.md) {
             if (breakpoint !== 'sm') {
-                console.log('Setting to SM');
                 setBreakPoint('sm');
                 setContentWidth(contentWidths.sm);
             }
         } else if (nextWindowWidth <= bp.lg) {
             if (breakpoint !== 'md') {
-                console.log('Setting to MD');
                 setBreakPoint('md');
                 setContentWidth(contentWidths.md);
             }
         } else if (nextWindowWidth <= bp.xl) {
             if (breakpoint !== 'lg') {
-                console.log('Setting to LG');
                 setBreakPoint('lg');
                 setContentWidth(contentWidths.lg);
             }
         } else {
-            console.log('Setting to XL');
             setBreakPoint('xl');
             setContentWidth(contentWidths.xl);
         }
