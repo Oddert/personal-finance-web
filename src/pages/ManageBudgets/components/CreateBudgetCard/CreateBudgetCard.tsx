@@ -35,6 +35,7 @@ const CreateBudgetCard: FC<IProps> = () => {
                     sx={{
                         width: '100%',
                         height: '100%',
+                        minHeight: '150px',
                     }}
                     title={t('Budget.createANewBudget')}
                     variant='outlined'
