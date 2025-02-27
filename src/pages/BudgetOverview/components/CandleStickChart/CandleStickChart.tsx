@@ -7,7 +7,6 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { Box, useTheme } from '@mui/material';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-// import useContentWidth from '../../../../hooks/useContentWidth';
 
 import { IProps } from './CandleStickChart.types';
 
@@ -75,7 +74,7 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                 };
                 seriesData.push(chart);
             }
-            sDate = sDate.add(1, 'month').set('date', 10);
+            sDate = sDate.add(1, 'month').startOf('month');
         }
 
         return seriesData;
@@ -84,8 +83,6 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
     const theme = useTheme();
 
     const { currencyLocaliser } = useLocalisedNumber();
-
-    // const { contentWidth } = useContentWidth();
 
     return (
         <Box
@@ -110,7 +107,6 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                 type='candlestick'
                 height={500}
                 width={700}
-                // width={contentWidth}
                 options={{
                     chart: {
                         type: 'candlestick',
