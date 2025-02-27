@@ -6,9 +6,9 @@ type TSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const contentWidths = {
     xs: 400,
-    sm: 500,
-    md: 700,
-    lg: 1200,
+    sm: 600,
+    md: 850,
+    lg: 1100,
     xl: 1500,
 };
 
@@ -38,24 +38,37 @@ const bp = breakpoints?.values
 const useContentWidth = () => {
     const [contentWidth, setContentWidth] = useState(contentWidths.md);
     const [windowWidth, setWindowWidth] = useState(contentWidths.md);
-    const [breakpoint, setBreakPoint] = useState<TSizes>('md');
+    const [breakpoint, setBreakPoint] = useState<TSizes>('lg');
 
     const handleResize = () => {
         const nextWindowWidth = window.innerWidth;
         setWindowWidth(nextWindowWidth);
-        if (nextWindowWidth <= bp.sm && breakpoint !== 'xs') {
-            setBreakPoint('xs');
-            setContentWidth(contentWidths.xs);
-        } else if (nextWindowWidth <= bp.md && breakpoint !== 'sm') {
-            setBreakPoint('sm');
-            setContentWidth(contentWidths.sm);
-        } else if (nextWindowWidth <= bp.lg && breakpoint !== 'md') {
-            setBreakPoint('md');
-            setContentWidth(contentWidths.md);
-        } else if (nextWindowWidth <= bp.xl && breakpoint !== 'lg') {
-            setBreakPoint('lg');
-            setContentWidth(contentWidths.lg);
+        if (nextWindowWidth <= bp.sm) {
+            if (breakpoint !== 'xs') {
+                console.log('Setting to XS');
+                setBreakPoint('xs');
+                setContentWidth(contentWidths.xs);
+            }
+        } else if (nextWindowWidth <= bp.md) {
+            if (breakpoint !== 'sm') {
+                console.log('Setting to SM');
+                setBreakPoint('sm');
+                setContentWidth(contentWidths.sm);
+            }
+        } else if (nextWindowWidth <= bp.lg) {
+            if (breakpoint !== 'md') {
+                console.log('Setting to MD');
+                setBreakPoint('md');
+                setContentWidth(contentWidths.md);
+            }
+        } else if (nextWindowWidth <= bp.xl) {
+            if (breakpoint !== 'lg') {
+                console.log('Setting to LG');
+                setBreakPoint('lg');
+                setContentWidth(contentWidths.lg);
+            }
         } else {
+            console.log('Setting to XL');
             setBreakPoint('xl');
             setContentWidth(contentWidths.xl);
         }
@@ -65,7 +78,7 @@ const useContentWidth = () => {
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [breakpoint]);
 
     return { breakpoint, contentWidth, windowWidth };
 };
