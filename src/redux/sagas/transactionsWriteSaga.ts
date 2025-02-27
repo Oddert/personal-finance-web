@@ -52,16 +52,21 @@ export default function* transactionsWriteSaga() {
             return;
         }
 
+        // Redundant catch to deal with weak typings inside sagas, payload.transactions is defined.
+        const stagedTransactions =
+            transactionsResponse?.payload?.transactions || [];
+        const sortedByDate = stagedTransactions.sort((a, b) =>
+            new Date(a.date) < new Date(b.date) ? -1 : 1,
+        );
+
         const orderedCategories: CategoryState['orderedData']['byId'] =
             yield select(getCategoryOrderedDataById);
 
         const transactions = mapCategoriesToTransactions(
-            transactionsResponse?.payload?.transactions,
+            sortedByDate,
             orderedCategories,
         );
-        const orderedTransactions = orderTransactions(
-            transactionsResponse?.payload?.transactions,
-        );
+        const orderedTransactions = orderTransactions(sortedByDate);
         const timestamp = new Date().toLocaleString(language);
 
         yield put(
