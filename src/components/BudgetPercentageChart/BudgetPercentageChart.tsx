@@ -67,7 +67,7 @@ const BudgetPercentageChart: FC<IProps> = ({
         <Box
             sx={(theme) => ({
                 '& *': {
-                    color: theme.palette.common.white,
+                    color: theme.palette.common.black,
                 },
             })}
         >
