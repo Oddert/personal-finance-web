@@ -36,9 +36,9 @@ const bp = breakpoints?.values
  * @subcategory useContentWidth
  */
 const useContentWidth = () => {
-    const [contentWidth, setContentWidth] = useState(contentWidths.md);
-    const [windowWidth, setWindowWidth] = useState(contentWidths.md);
-    const [breakpoint, setBreakPoint] = useState<TSizes>('md');
+    const [contentWidth, setContentWidth] = useState(contentWidths.lg);
+    const [windowWidth, setWindowWidth] = useState(contentWidths.lg);
+    const [breakpoint, setBreakPoint] = useState<TSizes>('lg');
 
     const handleResize = () => {
         const nextWindowWidth = window.innerWidth;
