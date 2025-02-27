@@ -41,10 +41,11 @@ const Category: FC<IProps> = ({
     layout = 'standard',
 }) => {
     const { t } = useTranslation();
+    console.log(category);
 
     const CategoryList = (
         <List>
-            {category?.matchers.map((matcher: IMatcher) => (
+            {category.matchers?.map((matcher: IMatcher) => (
                 <Matcher
                     categoryId={category.id}
                     key={matcher.id}
