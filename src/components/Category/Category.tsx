@@ -41,7 +41,6 @@ const Category: FC<IProps> = ({
     layout = 'standard',
 }) => {
     const { t } = useTranslation();
-    console.log(category);
 
     const CategoryList = (
         <List>

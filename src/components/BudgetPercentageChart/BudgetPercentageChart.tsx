@@ -120,6 +120,9 @@ const BudgetPercentageChart: FC<IProps> = ({
                             },
                         },
                     },
+                    // theme: {
+                    //     mode: 'dark',
+                    // },
                     tooltip: {
                         y: {
                             title: {

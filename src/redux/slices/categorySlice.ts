@@ -204,11 +204,6 @@ export const categorySlice = createSlice({
             const updatedMatchers = state.orderedData.byId[
                 payload.categoryId
             ].matchers.map((matcher) => {
-                console.log(
-                    matcher.id,
-                    payload.matcher.id,
-                    matcher.id === payload.matcher.id,
-                );
                 if (matcher.id === payload.matcher.id) {
                     return payload.matcher;
                 }
