@@ -18,6 +18,17 @@ import type { Transaction } from '../types/Transaction.d';
 const APIService = Object.freeze({
     // Auth
     /**
+     * Checks if a username is already taken.
+     * @param username The entered username.
+     * @returns True if the user already exists, false if the name is available.
+     */
+    checkUserExists: async (username: string) => {
+        const response: IStandardResponse<{
+            exists: boolean;
+        }> = await request.post(`/auth/user-exists/${username}`);
+        return response;
+    },
+    /**
      * Attempts to login the user.
      * @param username The entered username.
      * @param password The entered password.

@@ -48,6 +48,11 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
     try {
         if (error instanceof AxiosError) {
             // Condition 1: If a network error is caught we want to extract specific network info for the user.
+            // Condition 1.1: If the user's auth has expired, no error message is needed. The Axios instance will redirect to the login page.
+            if (error.status === 401) {
+                return;
+            }
+            // Condition 1.2: All other Axios errors.
             if (
                 error?.response?.data &&
                 !/<\!DOCTYPE html>/.test(error.response.data)

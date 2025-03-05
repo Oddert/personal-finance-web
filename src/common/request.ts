@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import router, { ROUTES } from '../constants/routerConstants';
+
 import { AuthLSService } from '../services/AuthLSService';
 
 import { getServerURL } from '../utils/requestUtils';
@@ -29,11 +31,19 @@ request.interceptors.request.use((config) => {
     return config;
 });
 
-request.interceptors.response.use((response) => {
-    if (response.status < 200 || response.status >= 300) {
-        console.error(response);
-    }
-    return response.data;
-});
+request.interceptors.response.use(
+    (response) => {
+        return response.data;
+    },
+    (error) => {
+        if (error.status === 401) {
+            router.navigate(ROUTES.LOGIN);
+        }
+        if (error.status < 200 || error.status >= 300) {
+            console.error(error);
+        }
+        return error;
+    },
+);
 
 export default request;

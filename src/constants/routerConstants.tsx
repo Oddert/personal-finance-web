@@ -29,6 +29,7 @@ import Categories from '../pages/Categories/';
 import EditBudget from '../pages/EditBudget';
 import EditCard from '../pages/EditCard';
 import Home from '../pages/Home';
+import Login from '../pages/Login';
 import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
 import Profile from '../pages/Profile';
@@ -65,6 +66,7 @@ export const ROUTES = Object.freeze({
     CREATE_CARD: '/create-card',
     EDIT_BUDGET: '/edit-budget',
     EDIT_CARD: '/edit-card',
+    LOGIN: '/login',
     MANAGE_BUDGETS: '/manage-budgets',
     MANAGE_CARDS: '/profile',
     PROFILE: '/user-settings',
@@ -109,7 +111,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.TRANSACTIONS,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <Transactions />
             </Layout>
         ),
@@ -117,7 +119,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.CATEGORIES,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <Categories />
             </Layout>
         ),
@@ -125,7 +127,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.ALL_DATA,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <AllData />
             </Layout>
         ),
@@ -133,7 +135,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.BUDGET_BREAKDOWN,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <BudgetBreakdown />
             </Layout>
         ),
@@ -141,7 +143,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.BUDGET_OVERVIEW,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <BudgetOverview />
             </Layout>
         ),
@@ -149,7 +151,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.MANAGE_BUDGETS,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <ManageBudgets />
             </Layout>
         ),
@@ -157,7 +159,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.CREATE_BUDGET,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <EditBudget />
             </Layout>
         ),
@@ -165,7 +167,7 @@ const router = createBrowserRouter([
     {
         path: `${ROUTES.EDIT_BUDGET}/:budgetId`,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <EditBudget />
             </Layout>
         ),
@@ -173,7 +175,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.MANAGE_CARDS,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <ManageCards />
             </Layout>
         ),
@@ -181,7 +183,7 @@ const router = createBrowserRouter([
     {
         path: ROUTES.CREATE_CARD,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <EditCard />
             </Layout>
         ),
@@ -189,7 +191,7 @@ const router = createBrowserRouter([
     {
         path: `${ROUTES.EDIT_CARD}/:cardId`,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <EditCard />
             </Layout>
         ),
@@ -197,8 +199,16 @@ const router = createBrowserRouter([
     {
         path: `${ROUTES.PROFILE}`,
         element: (
-            <Layout>
+            <Layout requiresAuth>
                 <Profile />
+            </Layout>
+        ),
+    },
+    {
+        path: `${ROUTES.LOGIN}`,
+        element: (
+            <Layout>
+                <Login />
             </Layout>
         ),
     },
