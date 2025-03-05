@@ -38,6 +38,14 @@ export const CURRENCY_SYMBOL_UNICODE = '&#163;';
 export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING';
 
 /**
+ * Accessor key for local storage space where the authentication access token is stored.
+ * @constant
+ * @category Constants
+ * @subcategory App Constants
+ */
+export const PERSONAL_FINANCE_ACCESS_TOKEN = 'PERSONAL_FINANCE_ACCESS_TOKEN';
+
+/**
  * Title used in the header and anywhere the application references itself.
  * @deprecated
  * @constant
