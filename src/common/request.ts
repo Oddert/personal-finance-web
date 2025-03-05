@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { AuthLSService } from '../services/AuthLSService';
+
 import { getServerURL } from '../utils/requestUtils';
 
 const baseURL = getServerURL();
@@ -19,6 +21,10 @@ const request = axios.create({
 request.interceptors.request.use((config) => {
     if (process.env.NODE_ENV === 'development') {
         console.log('[request]', config.url);
+    }
+    const token = AuthLSService.getToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
