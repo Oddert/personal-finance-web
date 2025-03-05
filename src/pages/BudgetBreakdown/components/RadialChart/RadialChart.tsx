@@ -3,6 +3,8 @@ import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+
 import type { IProps } from './RadialChart.types';
 
 /**
@@ -28,6 +30,8 @@ const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
         );
         return combined;
     }, [categoryBreakdown]);
+
+    const { currencyLocaliser } = useLocalisedNumber();
 
     return (
         <Box
@@ -83,7 +87,7 @@ const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
                                     </div>
                                     <div class="apexcharts-tooltip-text">
                                         <span class="apexcharts-tooltip-marker" style="color: ${colour};" shape="circle"></span>
-                                        ${value}
+                                        ${currencyLocaliser(value)}
                                     </div>
                                 </div>
                             `;
