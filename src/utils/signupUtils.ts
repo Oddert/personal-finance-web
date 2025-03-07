@@ -6,7 +6,7 @@
  */
 export const comparePasswords = (pwd1: string, pwd2: string) => {
     if (pwd1.trim() !== pwd2.trim()) {
-        return 'Passwords do not match';
+        return 'auth.passwordsDontMatch';
     }
     return null;
 };
@@ -21,10 +21,10 @@ export const comparePasswords = (pwd1: string, pwd2: string) => {
 export const passwordStrength = (password: string) => {
     let response = null;
     if (!/[0-9]/g.test(password)) {
-        response = 'Passwords must have at least one number character.';
+        response = 'auth.passwordsMustHaveOneNumber';
     }
     if (password.trim().length < 5) {
-        response = 'Passwords must be minimum 5 characters long.';
+        response = 'auth.passwordsMustBeXLong';
     }
     return response;
 };
