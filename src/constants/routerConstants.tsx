@@ -206,11 +206,7 @@ const router = createBrowserRouter([
     },
     {
         path: `${ROUTES.LOGIN}`,
-        element: (
-            <Layout>
-                <Login />
-            </Layout>
-        ),
+        element: <Login />,
     },
 ]);
 
