@@ -21,7 +21,10 @@ import { IValidationMap, IValidationSet } from './NewUser.types';
 /**
  * The "Sign Up" page allowing a user to make a new account.
  *
- * Links to the "Login" page.
+ * Links back to the "Login" page for users which already have an account.
+ * @component
+ * @category Pages
+ * @subcategory Login
  */
 const NewUser: FC = () => {
     const { t } = useTranslation();

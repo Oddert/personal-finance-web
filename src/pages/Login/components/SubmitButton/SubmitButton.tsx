@@ -3,13 +3,7 @@ import { FC } from 'react';
 import { Button, CircularProgress } from '@mui/material';
 import { CheckCircleOutline as SuccessIcon } from '@mui/icons-material';
 
-interface IProps {
-    loading: boolean;
-    onSubmit: () => void;
-    submitDisabled: boolean;
-    success: boolean;
-    text: string;
-}
+import { IProps } from './SubmitButton.types';
 
 const SubmitButton: FC<IProps> = ({
     onSubmit,

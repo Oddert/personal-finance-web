@@ -3,6 +3,12 @@ import { useTranslation } from 'react-i18next';
 
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
+/**
+ * Simplified header component used by the Login page, with buttons and nav removed.
+ * @component
+ * @category Pages
+ * @subcategory Login
+ */
 const Header: FC = () => {
     const { t } = useTranslation();
     return (

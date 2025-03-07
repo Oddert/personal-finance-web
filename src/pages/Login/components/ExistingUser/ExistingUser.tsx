@@ -14,7 +14,10 @@ import SubmitButton from '../SubmitButton';
 /**
  * The "Login" page allowing a user to sign in.
  *
- * Links to the "Sign Up" page.
+ * Links to the "Sign Up" page for users without an account.
+ * @component
+ * @category Pages
+ * @subcategory Login
  */
 const ExistingUser: FC = () => {
     const dispatch = useAppDispatch();

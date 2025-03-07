@@ -14,6 +14,12 @@ import Header from './components/Header';
 import NewUser from './components/NewUser';
 import SwitchMode from './components/SwitchMode';
 
+/**
+ * Landing page for un-authenticated users.
+ * @component
+ * @category Pages
+ * @subcategory Login
+ */
 const Login: FC = () => {
     const [search] = useSearchParams();
     const [isExistingUser, setIsExistingUser] = useState(true);

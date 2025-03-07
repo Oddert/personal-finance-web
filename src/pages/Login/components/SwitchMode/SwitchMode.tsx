@@ -1,20 +1,15 @@
 import { FC, Fragment, useMemo } from 'react';
-import { Button, Divider, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-interface IProps {
-    /**
-     * True if the user is on the "Login" page, false for "Sign Up".
-     */
-    isExisting: boolean;
-    /**
-     * @param isExistingUser True if the user is on the login page, false for sign up.
-     */
-    setIsExistingUser: (isExistingUser: boolean) => void;
-}
+import { Button, Divider, Typography } from '@mui/material';
+
+import { IProps } from './SwitchMode.types';
 
 /**
  * Displays the bottom section of the Login / Sign Up modal with buttons to switch to the other mode.
+ * @component
+ * @category Pages
+ * @subcategory Login
  */
 const SwitchMode: FC<IProps> = ({ isExisting, setIsExistingUser }) => {
     const { t } = useTranslation();
