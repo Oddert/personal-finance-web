@@ -3,8 +3,11 @@ import * as jwt from 'jwt-decode';
 import APIService from '../../services/APIService';
 
 import { AppDispatch } from '../constants/store';
+import router, { ROUTES } from '../../constants/routerConstants';
+
 import {
     authenticateUser,
+    clearAuthentication,
     setIncorrectDetails,
     writeUserDetails,
 } from '../slices/authSlice';
@@ -52,3 +55,17 @@ export const loginUser =
             }
         }
     };
+
+/**
+ * Logs out a user, clears their stored details, and redirects them to the login page.
+ * @category Redux
+ * @subcategory Thunks
+ */
+export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(clearAuthentication());
+        router.navigate(ROUTES.LOGIN);
+    } catch (error) {
+        dispatch(intakeError(error));
+    }
+};

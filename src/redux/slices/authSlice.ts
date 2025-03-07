@@ -36,6 +36,12 @@ export const authSlice = createSlice({
             state.accessToken = payload.accessToken;
             state.accessTokenExpires = payload.accessTokenExpires;
         },
+        clearAuthentication(state) {
+            state.accessToken = null;
+            state.accessTokenExpires = 0;
+            state.authenticated = false;
+            state.user = null;
+        },
         clearIncorrectDetails(state) {
             state.incorrectDetails = false;
         },
@@ -57,6 +63,7 @@ export const authSlice = createSlice({
 
 export const {
     authenticateUser,
+    clearAuthentication,
     clearIncorrectDetails,
     setIncorrectDetails,
     writeUserDetails,
