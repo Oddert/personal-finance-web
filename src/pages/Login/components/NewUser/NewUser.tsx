@@ -1,7 +1,7 @@
-import { ChangeEvent, FC, Fragment, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { debounce, FormControl, Typography } from '@mui/material';
+import { debounce, Typography } from '@mui/material';
 
 import router, { ROUTES } from '../../../../constants/routerConstants';
 
@@ -12,7 +12,7 @@ import {
     passwordStrength,
 } from '../../../../utils/signupUtils';
 
-import { TextField } from '../../Login.styles';
+import { Form, TextField } from '../../Login.styles';
 
 import SubmitButton from '../SubmitButton';
 
@@ -191,52 +191,50 @@ const NewUser: FC = () => {
     );
 
     return (
-        <Fragment>
-            <FormControl onSubmit={handleSubmit}>
-                <Typography variant='h2'>{t('auth.signUp')}</Typography>
-                <TextField
-                    disabled={loading || success}
-                    error={Boolean(usernameError)}
-                    label={t('auth.Username')}
-                    onChange={handleChangeUsername}
-                    value={username}
-                    variant='outlined'
-                />
-                {usernameError && (
-                    <Typography color='error'>{usernameError}</Typography>
-                )}
-                <TextField
-                    disabled={loading || success}
-                    error={Boolean(passwordError)}
-                    label={t('auth.Password')}
-                    onBlur={validatePassword}
-                    onChange={(event) => setPassword(event.target.value)}
-                    type='password'
-                    value={password}
-                    variant='outlined'
-                />
-                <TextField
-                    disabled={loading || success}
-                    error={Boolean(passwordError)}
-                    label={t('auth.confirmPassword')}
-                    onBlur={validateConfPassword}
-                    onChange={(event) => setConfPassword(event.target.value)}
-                    type='password'
-                    value={confPassword}
-                    variant='outlined'
-                />
-                {passwordError && (
-                    <Typography color='error'>{passwordError}</Typography>
-                )}
-                <SubmitButton
-                    loading={loading}
-                    onSubmit={handleSubmit}
-                    submitDisabled={submitDisabled}
-                    success={success}
-                    text={t('auth.signUp')}
-                />
-            </FormControl>
-        </Fragment>
+        <Form onSubmit={handleSubmit}>
+            <Typography variant='h2'>{t('auth.signUp')}</Typography>
+            <TextField
+                disabled={loading || success}
+                error={Boolean(usernameError)}
+                label={t('auth.Username')}
+                onChange={handleChangeUsername}
+                value={username}
+                variant='outlined'
+            />
+            {usernameError && (
+                <Typography color='error'>{usernameError}</Typography>
+            )}
+            <TextField
+                disabled={loading || success}
+                error={Boolean(passwordError)}
+                label={t('auth.Password')}
+                onBlur={validatePassword}
+                onChange={(event) => setPassword(event.target.value)}
+                type='password'
+                value={password}
+                variant='outlined'
+            />
+            <TextField
+                disabled={loading || success}
+                error={Boolean(passwordError)}
+                label={t('auth.confirmPassword')}
+                onBlur={validateConfPassword}
+                onChange={(event) => setConfPassword(event.target.value)}
+                type='password'
+                value={confPassword}
+                variant='outlined'
+            />
+            {passwordError && (
+                <Typography color='error'>{passwordError}</Typography>
+            )}
+            <SubmitButton
+                loading={loading}
+                onSubmit={handleSubmit}
+                submitDisabled={submitDisabled}
+                success={success}
+                text={t('auth.signUp')}
+            />
+        </Form>
     );
 };
 

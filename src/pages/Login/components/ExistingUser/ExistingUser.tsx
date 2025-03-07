@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, Fragment, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Typography } from '@mui/material';
@@ -7,7 +7,7 @@ import { loginUser } from '../../../../redux/thunks/authThunks';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { TextField } from '../../Login.styles';
+import { Form, TextField } from '../../Login.styles';
 
 import SubmitButton from '../SubmitButton';
 
@@ -66,7 +66,7 @@ const ExistingUser: FC = () => {
     );
 
     return (
-        <Fragment>
+        <Form onSubmit={handleSubmit}>
             <Typography variant='h2'>{t('auth.Login')}</Typography>
             <TextField
                 label={t('auth.Username')}
@@ -88,7 +88,7 @@ const ExistingUser: FC = () => {
                 success={success}
                 text={t('auth.Login')}
             />
-        </Fragment>
+        </Form>
     );
 };
 
