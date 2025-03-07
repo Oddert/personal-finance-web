@@ -38,6 +38,7 @@ request.interceptors.response.use(
     (error) => {
         if (error.status === 401) {
             router.navigate(ROUTES.LOGIN);
+            return error;
         }
         if (error.status < 200 || error.status >= 300) {
             console.error(error);
