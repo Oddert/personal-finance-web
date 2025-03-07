@@ -1,8 +1,10 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const Header: FC = () => {
+    const { t } = useTranslation();
     return (
         <AppBar position='fixed'>
             <Toolbar>
@@ -27,7 +29,7 @@ const Header: FC = () => {
                     })}
                     variant='h1'
                 >
-                    Tickler Files
+                    {t('applicationTitle')}
                 </Typography>
             </Toolbar>
         </AppBar>

@@ -1,5 +1,6 @@
 import { FC, Fragment, useMemo } from 'react';
 import { Button, Divider, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     /**
@@ -16,18 +17,20 @@ interface IProps {
  * Displays the bottom section of the Login / Sign Up modal with buttons to switch to the other mode.
  */
 const SwitchMode: FC<IProps> = ({ isExisting, setIsExistingUser }) => {
+    const { t } = useTranslation();
+
     const state = useMemo(
         () =>
             isExisting
                 ? {
-                      question: 'Need an account?',
-                      buttonText: 'Sign Up',
+                      question: t('auth.signUpCTA'),
+                      buttonText: t('auth.signUp'),
                   }
                 : {
-                      question: 'Already a user?',
-                      buttonText: 'Login',
+                      question: t('auth.signInCTA'),
+                      buttonText: t('auth.Login'),
                   },
-        [isExisting],
+        [isExisting, t],
     );
 
     return (

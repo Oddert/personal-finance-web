@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent, FC, Fragment, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { Typography } from '@mui/material';
-
-import { ROUTES } from '../../../../constants/routerConstants';
 
 import { loginUser } from '../../../../redux/thunks/authThunks';
 
@@ -22,7 +18,7 @@ import SubmitButton from '../SubmitButton';
  */
 const ExistingUser: FC = () => {
     const dispatch = useAppDispatch();
-    const [search] = useSearchParams();
+    const { t } = useTranslation();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -68,15 +64,15 @@ const ExistingUser: FC = () => {
 
     return (
         <Fragment>
-            <Typography variant='h2'>Login</Typography>
+            <Typography variant='h2'>{t('auth.Login')}</Typography>
             <TextField
-                label='Username'
+                label={t('auth.Username')}
                 onChange={handleChangeUsername}
                 value={username}
                 variant='outlined'
             />
             <TextField
-                label='Password'
+                label={t('auth.Password')}
                 onChange={handleChangePassword}
                 type='password'
                 value={password}
@@ -87,7 +83,7 @@ const ExistingUser: FC = () => {
                 onSubmit={handleSubmit}
                 submitDisabled={submitDisabled}
                 success={success}
-                text='Login'
+                text={t('auth.Login')}
             />
         </Fragment>
     );

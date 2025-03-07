@@ -169,6 +169,19 @@
         "lg": "lg",
         "xl": "xl"
     },
+    "auth": {
+        "confirmPassword": "Confirm Password",
+        "Login": "Login",
+        "Password": "Password",
+        "passwordsDontMatch": "Passwords do not match.",
+        "passwordsMustBeXLong": "Passwords must be minimum 5 characters long.",
+        "passwordsMustHaveOneNumber": "Passwords must have at least one number character.",
+        "signInCTA": "Already have an account?",
+        "signUp": "Sign Up",
+        "signUpCTA": "Don't yet have an account?",
+        "Username": "Username",
+        "usernameTaken": "A user with this username already exists"
+    },
     "budgetPercentageControls": {
         "zoomTitles": {
             "decrease": "decrease chart size",

@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, Fragment, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { debounce, FormControl, Typography } from '@mui/material';
 
@@ -23,6 +24,8 @@ import { IValidationMap, IValidationSet } from './NewUser.types';
  * Links to the "Login" page.
  */
 const NewUser: FC = () => {
+    const { t } = useTranslation();
+
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
     const [passwordError, setPasswordError] = useState<null | string>(null);
@@ -152,9 +155,7 @@ const NewUser: FC = () => {
         APIService.checkUserExists(changeValue)
             .then((response) => {
                 if (response.payload?.exists) {
-                    setUsernameError(
-                        'A user with this username already exists',
-                    );
+                    setUsernameError(t('usernameTaken'));
                 } else {
                     setUsernameError(null);
                 }
@@ -189,11 +190,11 @@ const NewUser: FC = () => {
     return (
         <Fragment>
             <FormControl onSubmit={handleSubmit}>
-                <Typography variant='h2'>Sign Up</Typography>
+                <Typography variant='h2'>{t('auth.signUp')}</Typography>
                 <TextField
                     disabled={loading || success}
                     error={Boolean(usernameError)}
-                    label='Username'
+                    label={t('auth.Username')}
                     onChange={handleChangeUsername}
                     value={username}
                     variant='outlined'
@@ -204,7 +205,7 @@ const NewUser: FC = () => {
                 <TextField
                     disabled={loading || success}
                     error={Boolean(passwordError)}
-                    label='Password'
+                    label={t('auth.Password')}
                     onBlur={validatePassword}
                     onChange={(event) => setPassword(event.target.value)}
                     type='password'
@@ -214,7 +215,7 @@ const NewUser: FC = () => {
                 <TextField
                     disabled={loading || success}
                     error={Boolean(passwordError)}
-                    label='Confirm Password'
+                    label={t('auth.confirmPassword')}
                     onBlur={validateConfPassword}
                     onChange={(event) => setConfPassword(event.target.value)}
                     type='password'
@@ -229,7 +230,7 @@ const NewUser: FC = () => {
                     onSubmit={handleSubmit}
                     submitDisabled={submitDisabled}
                     success={success}
-                    text='Sign Up'
+                    text={t('auth.signUp')}
                 />
             </FormControl>
         </Fragment>
