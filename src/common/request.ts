@@ -24,7 +24,7 @@ request.interceptors.request.use((config) => {
     if (process.env.NODE_ENV === 'development') {
         console.log('[request]', config.url);
     }
-    const token = AuthLSService.getToken();
+    const token = AuthLSService.getAccessToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

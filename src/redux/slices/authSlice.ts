@@ -7,6 +7,8 @@ export interface IAuthState {
     accessTokenExpires: number;
     authenticated: boolean;
     incorrectDetails: boolean;
+    refreshToken: string | null;
+    refreshTokenExpires: number;
     user: null | IUser;
 }
 
@@ -15,6 +17,8 @@ const initialState: IAuthState = {
     accessTokenExpires: 0,
     authenticated: false,
     incorrectDetails: false,
+    refreshToken: null,
+    refreshTokenExpires: 0,
     user: null,
 };
 
@@ -29,12 +33,16 @@ export const authSlice = createSlice({
             }: PayloadAction<{
                 accessToken: string;
                 accessTokenExpires: number;
+                refreshToken: string;
+                refreshTokenExpires: number;
             }>,
         ) {
             state.authenticated = true;
             state.incorrectDetails = false;
             state.accessToken = payload.accessToken;
             state.accessTokenExpires = payload.accessTokenExpires;
+            state.refreshToken = payload.refreshToken;
+            state.refreshTokenExpires = payload.refreshTokenExpires;
         },
         clearAuthentication(state) {
             state.accessToken = null;

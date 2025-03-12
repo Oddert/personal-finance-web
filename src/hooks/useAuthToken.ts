@@ -4,7 +4,7 @@ import APIService from '../services/APIService';
 import { AuthLSService } from '../services/AuthLSService';
 
 import { authenticateUser, writeUserDetails } from '../redux/slices/authSlice';
-import { userUnauthenticated } from '../redux/thunks/authThunks';
+import { refreshAuthentication } from '../redux/thunks/authThunks';
 
 import { useAppDispatch } from './ReduxHookWrappers';
 
@@ -21,7 +21,7 @@ const useAuthToken = () => {
     /**
      * Internal function to fetch the user details and authenticate them.
      * @param accessToken The retrieved access token.
-     * @param decoded The decoded token body.
+     * @param accessDecoded The access token's decoded token body.
      * @param callback Optional function called after the user has been successfully authenticated.
      * @returns The result of the callback or null if none provided.
      */
@@ -29,13 +29,17 @@ const useAuthToken = () => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const _authenticate = async (
         accessToken: string,
-        decoded: jwt.JwtPayload,
+        accessDecoded: jwt.JwtPayload,
+        refreshToken: string,
+        refreshDecoded: jwt.JwtPayload,
         callback?: () => void,
     ) => {
         dispatch(
             authenticateUser({
                 accessToken,
-                accessTokenExpires: decoded.exp || 0,
+                accessTokenExpires: accessDecoded.exp || 0,
+                refreshToken,
+                refreshTokenExpires: refreshDecoded.exp || 0,
             }),
         );
 
@@ -59,9 +63,8 @@ const useAuthToken = () => {
      *
      * If this is not possible the user auth details are wiped and the user is directed to login again.
      */
-    const refreshToken = () => {
-        // TODO: implement refresh tokens
-        dispatch(userUnauthenticated());
+    const refreshAuth = () => {
+        dispatch(refreshAuthentication());
     };
 
     /**
@@ -72,29 +75,37 @@ const useAuthToken = () => {
      * @returns The result of the callback function if provided or void.
      */
     const conditionallyRefreshAuth = async (callback?: () => void) => {
-        const accessToken = AuthLSService.getToken();
-        if (!accessToken) {
-            return refreshToken();
+        const accessToken = AuthLSService.getAccessToken();
+        const refreshToken = AuthLSService.getRefreshToken();
+        if (!accessToken || !refreshToken) {
+            return refreshAuth();
         }
         try {
-            const decoded = jwt.jwtDecode(accessToken);
+            const accessDecoded = jwt.jwtDecode(accessToken);
+            const refreshDecoded = jwt.jwtDecode(refreshToken);
 
             if (
-                !decoded?.exp ||
-                decoded.exp <= new Date().getTime() + timeoutOffset
+                !accessDecoded?.exp ||
+                accessDecoded.exp <= new Date().getTime() + timeoutOffset
             ) {
-                return refreshToken();
+                return refreshAuth();
             }
 
-            return await _authenticate(accessToken, decoded, callback);
+            return await _authenticate(
+                accessToken,
+                accessDecoded,
+                refreshToken,
+                refreshDecoded,
+                callback,
+            );
         } catch (error) {
-            return refreshToken();
+            return refreshAuth();
         }
     };
 
     return {
         conditionallyRefreshAuth,
-        refreshToken,
+        refreshAuth,
     };
 };
 

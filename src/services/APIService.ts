@@ -45,6 +45,20 @@ const APIService = Object.freeze({
     /**
      * Gets the full user details for a logged in user.
      * @returns The user details.
+     * @param refreshToken The user's last refresh token.
+     * @returns The access and refresh tokens or a failed login attempt.
+     */
+    refreshToken: async (refreshToken: string) => {
+        const response: IStandardResponse<{
+            accessToken: string;
+            refreshToken: string;
+            user: IUser;
+        }> = await request.post('/auth/refresh-token', { refreshToken });
+        return response;
+    },
+    /**
+     * Gets the full user details for a logged in user.
+     * @returns The user details.
      */
     userDetails: async () => {
         const response: IStandardResponse<{ user: IUser }> =

@@ -46,6 +46,14 @@ export const PERSONAL_FINANCE_CSV_MAPPING = 'PERSONAL_FINANCE_CSV_MAPPING';
 export const PERSONAL_FINANCE_ACCESS_TOKEN = 'PERSONAL_FINANCE_ACCESS_TOKEN';
 
 /**
+ * Accessor key for local storage space where the authentication refresh token is stored.
+ * @constant
+ * @category Constants
+ * @subcategory App Constants
+ */
+export const PERSONAL_FINANCE_REFRESH_TOKEN = 'PERSONAL_FINANCE_REFRESH_TOKEN';
+
+/**
  * Title used in the header and anywhere the application references itself.
  * @deprecated
  * @constant

@@ -1,27 +1,51 @@
-import { PERSONAL_FINANCE_ACCESS_TOKEN } from '../constants/appConstants';
+import {
+    PERSONAL_FINANCE_ACCESS_TOKEN,
+    PERSONAL_FINANCE_REFRESH_TOKEN,
+} from '../constants/appConstants';
 
 /**
  * Provides an abstracted interface for the AUth localstorage.
  */
 export const AuthLSService = Object.freeze({
     /**
-     * Updates the user's access token in localstorage.
-     * @param accessToken The new access token.
-     */
-    writeToken: (accessToken: string) => {
-        localStorage.setItem(PERSONAL_FINANCE_ACCESS_TOKEN, accessToken);
-    },
-
-    /**
      * Retrieves the users stored access token if available from a previous session.
      * @returns The stored access token or null.
      */
-    getToken: () => {
+    getAccessToken: () => {
         try {
             const token = localStorage.getItem(PERSONAL_FINANCE_ACCESS_TOKEN);
             return token;
         } catch (error) {
             return null;
         }
+    },
+
+    /**
+     * Retrieves the users stored refresh token if available from a previous session.
+     * @returns The stored access token or null.
+     */
+    getRefreshToken: () => {
+        try {
+            const token = localStorage.getItem(PERSONAL_FINANCE_REFRESH_TOKEN);
+            return token;
+        } catch (error) {
+            return null;
+        }
+    },
+
+    /**
+     * Updates the user's access token in localstorage.
+     * @param accessToken The new access token.
+     */
+    writeAccessToken: (accessToken: string) => {
+        localStorage.setItem(PERSONAL_FINANCE_ACCESS_TOKEN, accessToken);
+    },
+
+    /**
+     * Updates the user's refresh token in localstorage.
+     * @param accessToken The new access token.
+     */
+    writeRefreshToken: (accessToken: string) => {
+        localStorage.setItem(PERSONAL_FINANCE_REFRESH_TOKEN, accessToken);
     },
 });
