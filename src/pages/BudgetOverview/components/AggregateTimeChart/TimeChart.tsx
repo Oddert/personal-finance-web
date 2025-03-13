@@ -83,7 +83,7 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
         <Box
             sx={(theme) => ({
                 '& *': {
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.common.black,
                 },
             })}
         >

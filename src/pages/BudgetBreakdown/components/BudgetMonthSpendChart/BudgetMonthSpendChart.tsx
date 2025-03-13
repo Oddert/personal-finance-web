@@ -55,7 +55,9 @@ const BudgetMonthSpendChart: FC<IProps> = ({
     const series = useMemo(() => {
         const valuesLookup = value.reduce(
             (acc: { [id: number]: boolean }, val) => {
-                acc[val.categoryId] = true;
+                if (val?.categoryId) {
+                    acc[val.categoryId] = true;
+                }
                 return acc;
             },
             {},
@@ -83,7 +85,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
             <Box
                 sx={(theme) => ({
                     '& *': {
-                        color: theme.palette.primary.contrastText,
+                        color: theme.palette.common.black,
                     },
                 })}
             >

@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { IconButton, Toolbar, Typography } from '@mui/material';
 
-import { Menu as IconMenu, AutoGraph as IconHome } from '@mui/icons-material';
+import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
 
-import Sidebar from '../Sidebar/Sidebar';
+import { getSidebarMode } from '../../redux/selectors/profileSelectors';
+
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+
+import SidebarDiscreet from '../SidebarDiscreet';
+import SidebarStatic from '../SidebarStatic';
+
+import { AppBar } from './Header.styles';
 
 /**
  * Common header component, displays navigation elements and application title as h1.
@@ -17,41 +24,39 @@ import Sidebar from '../Sidebar/Sidebar';
 const Header = () => {
     const { t } = useTranslation();
 
+    const sidebarMode = useAppSelector(getSidebarMode);
+
     const [open, setOpen] = useState(false);
 
     const handleDrawerClose = () => {
         setOpen(false);
     };
 
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
     const handleToggleDrawer = () => {
         setOpen(!open);
     };
 
+    const isStatic = useMemo(() => sidebarMode === 'static', [sidebarMode]);
+
     return (
-        <Box
-            sx={{
-                position: 'sticky',
-                top: 0,
-                left: 0,
-                zIndex: (theme) => (theme.zIndex.drawer || 0) + 2,
-            }}
-        >
-            <AppBar
-                sx={{
-                    position: 'sticky',
-                    top: 0,
-                    zIndex: (theme) => (theme.zIndex.drawer || 0) + 2,
-                }}
-            >
+        <Fragment>
+            <AppBar discreet={isStatic} open={open} position='fixed'>
                 <Toolbar>
                     <IconButton
-                        color='inherit'
                         aria-label='open drawer'
-                        onClick={handleToggleDrawer}
+                        color='inherit'
                         edge='start'
-                        sx={{
-                            marginRight: 5,
-                        }}
+                        onClick={handleToggleDrawer}
+                        sx={[
+                            {
+                                marginRight: 5,
+                            },
+                            open && !isStatic ? { display: 'none' } : false,
+                        ]}
                     >
                         <IconMenu />
                     </IconButton>
@@ -92,8 +97,21 @@ const Header = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Sidebar handleDrawerClose={handleDrawerClose} open={open} />
-        </Box>
+            {isStatic ? (
+                <SidebarDiscreet
+                    onClose={handleDrawerClose}
+                    onOpen={handleDrawerOpen}
+                    open={open}
+                />
+            ) : (
+                <SidebarStatic
+                    onClose={handleDrawerClose}
+                    onOpen={handleDrawerOpen}
+                    onToggle={handleToggleDrawer}
+                    open={open}
+                />
+            )}
+        </Fragment>
     );
 };
 

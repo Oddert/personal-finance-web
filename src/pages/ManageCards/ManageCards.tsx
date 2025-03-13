@@ -41,8 +41,6 @@ const ManageCards: FC<IProps> = () => {
         // TODO: re-enable react-hooks/exhaustive-deps
     }, []);
 
-    console.log(setLayout, cards);
-
     return (
         <ResponsiveContainer>
             <Box

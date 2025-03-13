@@ -2,6 +2,8 @@ import { FC } from 'react';
 
 import { Container } from '@mui/material';
 
+import useContentWidth from '../../hooks/useContentWidth';
+
 import type { IProps } from './ResponsiveContainer.types';
 
 /**
@@ -14,25 +16,21 @@ import type { IProps } from './ResponsiveContainer.types';
  * @param props.children The components to be rendered inside the container.
  */
 const ResponsiveContainer: FC<IProps> = ({ children }) => {
+    const { contentWidth } = useContentWidth();
     return (
         <Container
+            disableGutters
             sx={(theme) => ({
-                transition: '.2s linear',
-                minHeight: `calc(100vh)`,
                 margin: '0 auto',
-                padding: '0 16px',
-                [theme.breakpoints.down('xl')]: {
-                    maxWidth: '1300px',
-                },
-                [theme.breakpoints.down('lg')]: {
-                    maxWidth: '900px',
-                },
-                [theme.breakpoints.down('md')]: {
-                    maxWidth: '768px',
+                minHeight: `calc(100vh)`,
+                padding: '0 16px 0',
+                transition: '.2s linear',
+                [theme.breakpoints.up('sm')]: {
+                    maxWidth: contentWidth,
                 },
                 [theme.breakpoints.down('sm')]: {
                     padding: '4px',
-                    maxWidth: '90vw',
+                    maxWidth: '94vw',
                 },
             })}
         >

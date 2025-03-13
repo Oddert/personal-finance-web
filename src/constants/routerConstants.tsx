@@ -1,16 +1,23 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { SvgIconTypeMap } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+
 import {
     WaterfallChart as IconAllData,
     Category as IconCategory,
+    StackedBarChart as IconBudget,
     DonutSmall as IconBudgetBreakdown,
     CandlestickChart as IconBudgetOverview,
     AutoAwesomeMotion as IconManageBudget,
     Payments as IconManageCards,
-    ManageAccounts as IconProfile,
+    Person as IconUser,
+    // ManageAccounts as IconProfile,
     //  Tune as IconManageBudget,
     //  DeveloperBoard as IconScenarioEdit,
     ReceiptLong as IconTransactions,
+    Receipt as IconTransaction,
+    Settings as IconProfile,
 } from '@mui/icons-material';
 
 import Layout from '../components/Layout';
@@ -26,6 +33,21 @@ import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
 import Profile from '../pages/Profile';
 import Transactions from '../pages/Transactions/';
+
+export interface INavigationOption {
+    label: string;
+    Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+        muiName: string;
+    };
+    location: string;
+    children?: INavigationOption[];
+    defaultExpanded?: boolean;
+}
+
+export interface INavigation {
+    top: INavigationOption[];
+    bottom: INavigationOption[];
+}
 
 /**
  * Enum object to hold all route paths.
@@ -188,47 +210,73 @@ const router = createBrowserRouter([
  * @category Constants
  * @subcategory Router
  */
-export const navigation = [
-    {
-        label: 'All Historical Data',
-        Icon: IconAllData,
-        location: ROUTES.ALL_DATA,
-    },
-    {
-        label: 'Budget Breakdown',
-        Icon: IconBudgetBreakdown,
-        location: ROUTES.BUDGET_BREAKDOWN,
-    },
-    {
-        label: 'Budget Overview',
-        Icon: IconBudgetOverview,
-        location: ROUTES.BUDGET_OVERVIEW,
-    },
-    {
-        label: 'My Budgets',
-        Icon: IconManageBudget,
-        location: ROUTES.MANAGE_BUDGETS,
-    },
-    {
-        label: 'My Cards',
-        Icon: IconManageCards,
-        location: ROUTES.MANAGE_CARDS,
-    },
-    {
-        label: 'Categories',
-        Icon: IconCategory,
-        location: ROUTES.CATEGORIES,
-    },
-    {
-        label: 'Transactions',
-        Icon: IconTransactions,
-        location: ROUTES.TRANSACTIONS,
-    },
-    {
-        label: 'Profile',
-        Icon: IconProfile,
-        location: ROUTES.PROFILE,
-    },
-];
+export const navigation: INavigation = {
+    top: [
+        {
+            label: 'All Historical Data',
+            Icon: IconAllData,
+            location: ROUTES.ALL_DATA,
+        },
+        {
+            label: 'Transactions',
+            Icon: IconTransaction,
+            location: '',
+            children: [
+                {
+                    label: 'Upload & View',
+                    Icon: IconTransactions,
+                    location: ROUTES.TRANSACTIONS,
+                },
+                {
+                    label: 'Categories',
+                    Icon: IconCategory,
+                    location: ROUTES.CATEGORIES,
+                },
+            ],
+        },
+        {
+            label: 'Budget',
+            Icon: IconBudget,
+            location: '',
+            children: [
+                {
+                    label: 'Budget Breakdown',
+                    Icon: IconBudgetBreakdown,
+                    location: ROUTES.BUDGET_BREAKDOWN,
+                },
+                {
+                    label: 'Budget Overview',
+                    Icon: IconBudgetOverview,
+                    location: ROUTES.BUDGET_OVERVIEW,
+                },
+                {
+                    label: 'My Budgets',
+                    Icon: IconManageBudget,
+                    location: ROUTES.MANAGE_BUDGETS,
+                },
+            ],
+        },
+    ],
+    bottom: [
+        {
+            label: 'Profile',
+            Icon: IconUser,
+            location: '',
+            defaultExpanded: true,
+            children: [
+                {
+                    label: 'My Cards',
+                    Icon: IconManageCards,
+                    location: ROUTES.MANAGE_CARDS,
+                },
+                {
+                    label: 'Settings',
+                    Icon: IconProfile,
+                    location: ROUTES.PROFILE,
+                },
+            ],
+        },
+    ],
+};
 
 export default router;

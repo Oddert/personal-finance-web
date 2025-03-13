@@ -64,7 +64,7 @@ const TimeChart: FC<IProps> = ({
             <Box
                 sx={(theme) => ({
                     '& *': {
-                        color: theme.palette.primary.contrastText,
+                        color: theme.palette.common.black,
                     },
                 })}
             >
@@ -93,8 +93,24 @@ const TimeChart: FC<IProps> = ({
                                 opacityTo: 0.8,
                             },
                         },
+                        legend: {
+                            labels: {
+                                colors: '#fff',
+                            },
+                        },
                         stroke: {
                             curve: 'straight',
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'dd/MM/yy',
+                            },
+                            y: {
+                                formatter: (val) => {
+                                    return val?.toFixed(2) || '';
+                                },
+                            },
+                            shared: true,
                         },
                         xaxis: {
                             type: 'datetime',
@@ -106,20 +122,14 @@ const TimeChart: FC<IProps> = ({
                             min: new Date(String(startDate)).getTime(),
                             max: new Date(String(endDate)).getTime(),
                         },
-                        tooltip: {
-                            x: {
-                                format: 'dd/MM/yy',
-                            },
-                            y: {
-                                formatter(val) {
+                        yaxis: {
+                            labels: {
+                                formatter: (val) => {
                                     return val?.toFixed(2) || '';
                                 },
-                            },
-                            shared: true,
-                        },
-                        legend: {
-                            labels: {
-                                colors: '#fff',
+                                style: {
+                                    colors: '#fff',
+                                },
                             },
                         },
                     }}

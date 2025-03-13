@@ -14,6 +14,41 @@ const components: Components = {
             },
         },
     },
+    MuiButton: {
+        styleOverrides: {
+            root: () => {
+                return {
+                    textTransform: 'none',
+                };
+            },
+        },
+        variants: [
+            {
+                props: { variant: 'text' },
+                style: ({ theme }: { theme: any }) => ({
+                    color: theme.palette.primary.light,
+                }),
+            },
+        ],
+    },
+    MuiPaper: {
+        variants: [
+            {
+                props: { elevation: 0 },
+                style: { '--Paper-overlay': 'none' },
+            },
+        ],
+    },
+    MuiCheckbox: {
+        variants: [
+            {
+                props: { checked: true },
+                style: ({ theme }: { theme: any }) => ({
+                    color: theme.palette.primary.light,
+                }),
+            },
+        ],
+    },
 };
 
 export default components;

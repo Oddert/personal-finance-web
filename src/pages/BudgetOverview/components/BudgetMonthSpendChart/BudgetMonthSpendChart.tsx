@@ -45,7 +45,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
         <Box
             sx={(theme) => ({
                 '& *': {
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.common.black,
                 },
             })}
         >
@@ -80,7 +80,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                             style: {
                                 colors: '#fff',
                             },
-                            formatter(val) {
+                            formatter: (val) => {
                                 return `${Math.floor(val)}%`;
                             },
                         },
@@ -100,7 +100,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                             format: 'dd/MM/yy',
                         },
                         y: {
-                            formatter(val) {
+                            formatter: (val) => {
                                 return val?.toFixed(2) || '';
                             },
                         },

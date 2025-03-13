@@ -20,6 +20,7 @@ import CurrencySelector from './components/CurrencySelector';
 import LanguageSelector from './components/LanguageSelector';
 
 import { IProps } from './Profile.types';
+import SidebarMode from './components/SidebarMode';
 
 /**
  * A user profile and settings page.
@@ -115,6 +116,7 @@ const Profile: FC<IProps> = () => {
                         />
                         <LanguageSelector />
                         <CurrencySelector />
+                        <SidebarMode />
                     </Box>
                 </Box>
             </Box>

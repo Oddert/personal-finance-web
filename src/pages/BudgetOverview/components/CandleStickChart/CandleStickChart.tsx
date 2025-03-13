@@ -74,7 +74,7 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                 };
                 seriesData.push(chart);
             }
-            sDate = sDate.add(1, 'month').set('date', 10);
+            sDate = sDate.add(1, 'month').startOf('month');
         }
 
         return seriesData;
@@ -88,7 +88,7 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
         <Box
             sx={{
                 '& *': {
-                    color: theme.palette.primary.contrastText,
+                    color: theme.palette.common.black,
                     '& .apexcharts-tooltip-candlestick': {
                         padding: '8px',
                         '& div': {

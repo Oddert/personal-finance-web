@@ -3,20 +3,20 @@ import { Palette } from '@mui/material/styles';
 const palette: Partial<Palette> = {
     mode: 'dark',
     primary: {
-        main: '#ba85ec',
-        light: '#bbb0c5',
-        dark: '#8638d6',
-        contrastText: '#2f2f2f',
+        main: '#842fdc',
+        light: '#c799f6',
+        dark: '#53099F',
+        contrastText: '#ecf0f1',
     },
     secondary: {
-        main: '#2d3e50',
-        light: '#576473',
-        dark: '#1c2631',
-        contrastText: '#ffffff',
+        main: '#16B2D9',
+        light: '#77DCF4',
+        dark: '#007995',
+        contrastText: '#2d3e50',
     },
     background: {
-        paper: '#2d3e50',
-        default: '#1c2631',
+        paper: '#0F2A45',
+        default: '#010E1B',
     },
     common: {
         black: '#222',

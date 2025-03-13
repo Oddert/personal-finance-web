@@ -1,6 +1,8 @@
 import { FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
+import { Box } from '@mui/material';
+
 import type { IProps } from './RadialChart.types';
 
 /**
@@ -28,42 +30,71 @@ const RadialChart: FC<IProps> = ({ categoryBreakdown }) => {
     }, [categoryBreakdown]);
 
     return (
-        <Chart
-            options={{
-                chart: {
-                    type: 'donut',
-                    zoom: {
-                        allowMouseWheelZoom: false,
-                    },
-                },
-                responsive: [
-                    {
-                        breakpoint: 480,
-                        options: {
-                            chart: {
-                                width: 200,
-                            },
-                            legend: {
-                                position: 'bottom',
-                            },
+        <Box
+            sx={{
+                '& .radial_chart-tooltip .apexcharts-tooltip-title, .radial_chart-tooltip .apexcharts-tooltip-text':
+                    { p: 1 },
+            }}
+        >
+            <Chart
+                height='400px'
+                options={{
+                    chart: {
+                        type: 'donut',
+                        zoom: {
+                            allowMouseWheelZoom: false,
                         },
                     },
-                ],
-                labels,
-                // fight me americans
-                colors: colours,
-                legend: {
-                    labels: {
-                        colors: '#fff',
+                    // fight me americans
+                    colors: colours,
+                    labels,
+                    legend: {
+                        labels: {
+                            colors: '#fff',
+                        },
+                        horizontalAlign: 'left',
                     },
-                    horizontalAlign: 'left',
-                },
-            }}
-            series={series}
-            type='donut'
-            width={500}
-            height='400px'
-        />
+                    responsive: [
+                        {
+                            breakpoint: 480,
+                            options: {
+                                chart: {
+                                    width: 200,
+                                },
+                                legend: {
+                                    position: 'bottom',
+                                },
+                            },
+                        },
+                    ],
+                    tooltip: {
+                        x: {
+                            format: 'dd/MM/yy',
+                        },
+                        shared: true,
+                        custom: ({ seriesIndex, w }) => {
+                            const value = w.globals.initialSeries[seriesIndex];
+                            const label = w.globals.labels[seriesIndex];
+                            const colour = w.globals.colors[seriesIndex];
+                            return `
+                                <div class="radial_chart-tooltip">
+                                    <div class="apexcharts-tooltip-title">
+                                        ${label}
+                                    </div>
+                                    <div class="apexcharts-tooltip-text">
+                                        <span class="apexcharts-tooltip-marker" style="color: ${colour};" shape="circle"></span>
+                                        ${value}
+                                    </div>
+                                </div>
+                            `;
+                        },
+                    },
+                }}
+                series={series}
+                type='donut'
+                width={500}
+            />
+        </Box>
     );
 };
 

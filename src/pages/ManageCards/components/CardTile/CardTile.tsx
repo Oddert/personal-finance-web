@@ -123,7 +123,7 @@ const BudgetCard: FC<IProps> = ({ card }) => {
                     {t('Card.sortCodeColon')} {formatSortCode(card.sortCode)}
                 </Typography>
                 <Typography variant='subtitle1'>
-                    {t('Card.cardNUmberColon')}{' '}
+                    {t('Card.cardNumberColon')}{' '}
                     {blurCardNumber(card.cardNumber)}
                 </Typography>
                 <Button onClick={handleClickEdit}>
