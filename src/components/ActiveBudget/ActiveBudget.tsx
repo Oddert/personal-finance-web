@@ -22,7 +22,10 @@ const ActiveBudget: FC<IProps> = () => {
                 alignItems: 'center',
             }}
         >
-            <FormLabel sx={{ minWidth: '75px', textAlign: 'left' }}>
+            <FormLabel
+                data-testid='components-ActiveBudget__title'
+                sx={{ minWidth: '75px', textAlign: 'left' }}
+            >
                 {t('literals.Budget')}:
             </FormLabel>
             <BudgetSelector />

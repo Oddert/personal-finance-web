@@ -28,6 +28,7 @@ const BudgetSelector: FC<IProps> = () => {
 
     const budgets = useAppSelector(getBudgetResponse);
     const monthBudget = useAppSelector(getActiveBudget);
+    console.log(budgets);
 
     const setMonthBudget = (nextBudget: IBudget) => {
         dispatch(setActiveBudget({ budget: nextBudget }));
