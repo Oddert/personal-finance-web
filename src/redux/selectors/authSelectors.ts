@@ -18,3 +18,13 @@ export const getIsAuthenticated = createSelector(
     getAuthState,
     (authState) => authState.authenticated,
 );
+
+/**
+ * Returns true if the user-entered details are incorrect.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getIncorrectAuthDetails = createSelector(
+    getAuthState,
+    (authState) => authState.incorrectDetails,
+);

@@ -82,7 +82,11 @@ export const loginUser =
         try {
             const response = await APIService.loginUser(username, password);
 
-            dispatch(handleAuthResponse(response));
+            if (response.status === 404) {
+                dispatch(setIncorrectDetails());
+            } else {
+                dispatch(handleAuthResponse(response));
+            }
         } catch (error: any) {
             if (error.status === 404) {
                 dispatch(setIncorrectDetails());

@@ -25,6 +25,7 @@ const Login: FC = () => {
     const [isExistingUser, setIsExistingUser] = useState(true);
 
     const isAuth = useAppSelector(getIsAuthenticated);
+    console.log('[pages/Login] isAuth: ', isAuth);
 
     if (isAuth) {
         const redirectAddr = search.get('redirect');

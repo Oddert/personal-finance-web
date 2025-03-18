@@ -1,6 +1,8 @@
+import { SyntheticEvent } from 'react';
+
 export interface IProps {
     loading: boolean;
-    onSubmit: () => void;
+    onSubmit: (event: SyntheticEvent) => void;
     submitDisabled: boolean;
     success: boolean;
     text: string;
