@@ -86,12 +86,12 @@ const Category: FC<IProps> = ({
                         [theme.breakpoints.up('xs')]: {
                             padding: '8px',
                         },
-                        ' .Category_AddMatcher': {
-                            opacity: '0',
-                        },
-                        '&:hover .Category_AddMatcher': {
-                            opacity: '1',
-                        },
+                        // ' .Category_AddMatcher': {
+                        //     opacity: '0',
+                        // },
+                        // '&:hover .Category_AddMatcher': {
+                        //     opacity: '1',
+                        // },
                     })}
                 >
                     <Paper
