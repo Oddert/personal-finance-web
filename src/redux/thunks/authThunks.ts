@@ -2,20 +2,25 @@ import * as jwt from 'jwt-decode';
 
 import APIService from '../../services/APIService';
 
-import { AppDispatch } from '../constants/store';
-import router, { ROUTES } from '../../constants/routerConstants';
+import { AppDispatch, RootState } from '../constants/store';
+import router, { ROUTES_FACTORY } from '../../constants/routerConstants';
 
 import { IUser } from '../../types/Auth.types';
 import { IStandardResponse } from '../../types/Request.d';
 
 import { AuthLSService } from '../../services/AuthLSService';
 
+import { createLoginAddrWithReturn } from '../../utils/routingUtils';
+
 import {
     authenticateUser,
     clearAuthentication,
+    refreshTokenRequestFinished,
+    refreshTokenRequestPending,
     setIncorrectDetails,
     writeUserDetails,
 } from '../slices/authSlice';
+import { getRefreshTokenPending } from '../selectors/authSelectors';
 
 import { intakeError } from './errorThunks';
 
@@ -56,6 +61,7 @@ export const handleAuthResponse =
                     refreshTokenExpires: refreshDecoded.exp || 0,
                 }),
             );
+
             dispatch(
                 writeUserDetails({
                     user: response.payload.user,
@@ -104,7 +110,7 @@ export const loginUser =
 export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(clearAuthentication());
-        router.navigate(ROUTES.LOGIN);
+        router.navigate(createLoginAddrWithReturn());
     } catch (error) {
         dispatch(intakeError(error));
     }
@@ -115,23 +121,44 @@ export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
  * @category Redux
  * @subcategory Thunks
  */
-export const refreshAuthentication = () => async (dispatch: AppDispatch) => {
-    try {
-        const refreshToken = AuthLSService.getRefreshToken();
+export const refreshAuthentication =
+    () => async (dispatch: AppDispatch, getState: () => RootState) => {
+        try {
+            const refreshRequestPending = getRefreshTokenPending(getState());
 
-        if (!refreshToken) {
-            dispatch(userUnauthenticated());
-            return;
+            if (refreshRequestPending) {
+                return;
+            }
+
+            dispatch(refreshTokenRequestPending());
+            const refreshToken = AuthLSService.getRefreshToken();
+
+            if (!refreshToken) {
+                dispatch(userUnauthenticated());
+                return;
+            }
+
+            const response = await APIService.refreshToken(refreshToken);
+
+            if (response.status === 401 || response.status === 403) {
+                dispatch(userUnauthenticated());
+                router.navigate(
+                    ROUTES_FACTORY.LOGIN(
+                        `${window.location.pathname}${window.location.search}`,
+                    ),
+                );
+            } else {
+                dispatch(handleAuthResponse(response));
+            }
+        } catch (error: any) {
+            if (error.status === 401 || error.status === 403) {
+                dispatch(userUnauthenticated());
+                router.navigate(createLoginAddrWithReturn());
+            } else if (error.status === 404) {
+                dispatch(setIncorrectDetails());
+            } else {
+                dispatch(intakeError(error));
+            }
+            dispatch(refreshTokenRequestFinished());
         }
-
-        const response = await APIService.refreshToken(refreshToken);
-
-        dispatch(handleAuthResponse(response));
-    } catch (error: any) {
-        if (error.status === 404) {
-            dispatch(setIncorrectDetails());
-        } else {
-            dispatch(intakeError(error));
-        }
-    }
-};
+    };

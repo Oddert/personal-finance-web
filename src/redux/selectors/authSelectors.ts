@@ -28,3 +28,13 @@ export const getIncorrectAuthDetails = createSelector(
     getAuthState,
     (authState) => authState.incorrectDetails,
 );
+
+/**
+ * Returns true if a request to the refresh token endpoint is pending.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getRefreshTokenPending = createSelector(
+    getAuthState,
+    (authState) => authState.refreshRequestInProgress,
+);
