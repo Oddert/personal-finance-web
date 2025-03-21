@@ -25,11 +25,9 @@ const Login: FC = () => {
     const [isExistingUser, setIsExistingUser] = useState(true);
 
     const isAuth = useAppSelector(getIsAuthenticated);
-    console.log('[pages/Login] isAuth: ', isAuth);
 
     if (isAuth) {
         const redirectAddr = search.get('redirect');
-        console.log({ redirectAddr });
         if (redirectAddr) {
             router.navigate(redirectAddr);
             return null;
