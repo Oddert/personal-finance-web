@@ -87,6 +87,7 @@ export const ROUTES_FACTORY = Object.freeze({
     EDIT_BUDGET: (budgetId: string | number) =>
         `${ROUTES.EDIT_BUDGET}/${budgetId}`,
     EDIT_CARD: (cardId: string | number) => `${ROUTES.EDIT_CARD}/${cardId}`,
+    LOGIN: (returnAddr?: string) => `${ROUTES.LOGIN}?redirect=${returnAddr}`,
 });
 
 // export const GO = Object.freeze({
