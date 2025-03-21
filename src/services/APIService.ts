@@ -1,10 +1,11 @@
 import request from '../common/request';
 
+import type { IUser } from '../types/Auth.types';
 import type { IBudget } from '../types/Budget.types';
-import { ICard } from '../types/Card.types';
+import type { ICard } from '../types/Card.types';
 import type { Category } from '../types/Category.d';
 import type { Matcher } from '../types/Matcher.d';
-import { IStandardResponse } from '../types/Request.d';
+import type { IStandardResponse } from '../types/Request.d';
 import type { Transaction } from '../types/Transaction.d';
 
 /**
@@ -15,6 +16,56 @@ import type { Transaction } from '../types/Transaction.d';
  * @subcategory API Service
  */
 const APIService = Object.freeze({
+    // Auth
+    /**
+     * Checks if a username is already taken.
+     * @param username The entered username.
+     * @returns True if the user already exists, false if the name is available.
+     */
+    checkUserExists: async (username: string) => {
+        const response: IStandardResponse<{
+            exists: boolean;
+        }> = await request.post(`/auth/user-exists/${username}`);
+        return response;
+    },
+    /**
+     * Attempts to login the user.
+     * @param username The entered username.
+     * @param password The entered password.
+     * @returns The access and refresh tokens or a failed login attempt.
+     */
+    loginUser: async (username: string, password: string) => {
+        const response: IStandardResponse<{
+            accessToken: string;
+            refreshToken: string;
+            user: IUser;
+        }> = await request.post('/auth/login', { username, password });
+        return response;
+    },
+    /**
+     * Gets the full user details for a logged in user.
+     * @returns The user details.
+     * @param refreshToken The user's last refresh token.
+     * @returns The access and refresh tokens or a failed login attempt.
+     */
+    refreshToken: async (refreshToken: string) => {
+        const response: IStandardResponse<{
+            accessToken: string;
+            refreshToken: string;
+            user: IUser;
+        }> = await request.post('/auth/refresh-token', { refreshToken });
+        return response;
+    },
+    /**
+     * Gets the full user details for a logged in user.
+     * @returns The user details.
+     */
+    userDetails: async () => {
+        const response: IStandardResponse<{ user: IUser }> =
+            await request.get('/auth/user');
+        return response;
+    },
+
     // Transactions
     /**
      * Creates multiple Transactions at once.

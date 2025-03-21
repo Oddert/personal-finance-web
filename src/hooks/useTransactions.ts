@@ -9,6 +9,8 @@ import {
     getTransactionsOrderedByDate,
     getTransactionsStartDate,
 } from '../redux/selectors/transactionsSelectors';
+import { getIsAuthenticated } from '../redux/selectors/authSelectors';
+
 import { conditionallyRefreshTransactions } from '../redux/thunks/transactionThunks';
 
 import { useAppDispatch, useAppSelector } from './ReduxHookWrappers';
@@ -30,6 +32,7 @@ const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
     const allTransactions = useAppSelector(getTransactionsOrderedByDate);
     const rangeStartDate = useAppSelector(getTransactionsStartDate);
     const rangeEndDate = useAppSelector(getTransactionsEndDate);
+    const isAuthenticated = useAppSelector(getIsAuthenticated);
 
     const fromDate = useMemo(
         () => dayjs(startDate || rangeStartDate),
@@ -69,7 +72,7 @@ const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
         }
 
         return transactionList;
-    }, [allTransactions, fromDate, toDate]);
+    }, [allTransactions, fromDate, isAuthenticated, toDate]);
 
     return { fromDate, toDate, transactions };
 };

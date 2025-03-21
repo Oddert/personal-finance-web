@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+import router, { ROUTES } from '../constants/routerConstants';
+
+import { AuthLSService } from '../services/AuthLSService';
+
 import { getServerURL } from '../utils/requestUtils';
 
 const baseURL = getServerURL();
@@ -20,14 +24,27 @@ request.interceptors.request.use((config) => {
     if (process.env.NODE_ENV === 'development') {
         console.log('[request]', config.url);
     }
+    const token = AuthLSService.getAccessToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 });
 
-request.interceptors.response.use((response) => {
-    if (response.status < 200 || response.status >= 300) {
-        console.error(response);
-    }
-    return response.data;
-});
+request.interceptors.response.use(
+    (response) => {
+        return response.data;
+    },
+    (error) => {
+        if (error.status === 401) {
+            router.navigate(ROUTES.LOGIN);
+            return error;
+        }
+        if (error.status < 200 || error.status >= 300) {
+            console.error(error);
+        }
+        return error;
+    },
+);
 
 export default request;

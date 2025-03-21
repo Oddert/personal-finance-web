@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
+import authReducer from '../slices/authSlice';
 import budgetReducer from '../slices/budgetSlice';
 import cardReducer from '../slices/cardSlice';
 import errorReducer from '../slices/errorSlice';
@@ -14,6 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
     reducer: {
+        auth: authReducer,
         budget: budgetReducer,
         card: cardReducer,
         category: categoryReducer,

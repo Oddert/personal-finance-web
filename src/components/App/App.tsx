@@ -9,6 +9,7 @@ import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 import { refreshCategories } from '../../redux/thunks/categoryThunks';
 import { refreshCards } from '../../redux/thunks/cardThunks';
 
+import useAuthToken from '../../hooks/useAuthToken';
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 
 import './App.css';
@@ -22,10 +23,15 @@ import './App.css';
 const App = () => {
     const dispatch = useAppDispatch();
 
+    const { conditionallyRefreshAuth } = useAuthToken();
+
     useEffect(() => {
-        dispatch(refreshCategories());
-        dispatch(refreshBudgets());
-        dispatch(refreshCards());
+        const loadAppBaseInfo = () => {
+            dispatch(refreshCategories());
+            dispatch(refreshBudgets());
+            dispatch(refreshCards());
+        };
+        conditionallyRefreshAuth(loadAppBaseInfo);
     }, []);
 
     return (
