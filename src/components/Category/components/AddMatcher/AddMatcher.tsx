@@ -36,6 +36,7 @@ const AddMatcher: FC<IProps> = ({
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        console.log('setting default open: ', { defaultOpen });
         setOpen(defaultOpen);
     }, [defaultOpen]);
 
@@ -57,6 +58,7 @@ const AddMatcher: FC<IProps> = ({
         },
         [dispatch, categoryId, onSubmit],
     );
+    console.log({ open });
 
     if (open) {
         return (

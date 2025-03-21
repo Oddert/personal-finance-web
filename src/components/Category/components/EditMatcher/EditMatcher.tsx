@@ -99,6 +99,7 @@ const EditMatcher: FC<IProps> = ({
 
     return (
         <Box
+            data-testid='components-Category-EditMatcher'
             onBlur={handleBlur}
             sx={{
                 display: 'grid',
@@ -210,6 +211,7 @@ const EditMatcher: FC<IProps> = ({
                     display: 'flex',
                     justifyContent: 'flex-end',
                     marginTop: '16px',
+                    gridGap: '8px',
                 }}
             >
                 <Button onClick={handleCancel}>{t('buttons.Cancel')}</Button>

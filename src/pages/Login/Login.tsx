@@ -28,7 +28,6 @@ const Login: FC = () => {
 
     if (isAuth) {
         const redirectAddr = search.get('redirect');
-        console.log({ redirectAddr });
         if (redirectAddr) {
             router.navigate(redirectAddr);
             return null;

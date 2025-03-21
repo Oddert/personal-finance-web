@@ -53,7 +53,6 @@ const Submit: FC<IProps> = ({ onClose }) => {
         const filteredTransactions = transactions.filter(
             (transaction) => transaction.selected,
         );
-        // console.log({ filteredTransactions });
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const stagedTemp = filteredTransactions.map((transaction) => {

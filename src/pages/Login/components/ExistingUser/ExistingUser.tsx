@@ -1,15 +1,21 @@
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { ChangeEvent, FC, SyntheticEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Typography } from '@mui/material';
 
 import { loginUser } from '../../../../redux/thunks/authThunks';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import {
+    useAppDispatch,
+    useAppSelector,
+} from '../../../../hooks/ReduxHookWrappers';
 
 import { Form, TextField } from '../../Login.styles';
 
 import SubmitButton from '../SubmitButton';
+import { getIncorrectAuthDetails } from '../../../../redux/selectors/authSelectors';
+import { clearIncorrectDetails } from '../../../../redux/slices/authSlice';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
 
 /**
  * The "Login" page allowing a user to sign in.
@@ -33,11 +39,16 @@ const ExistingUser: FC = () => {
     const loading = Boolean(loadingState === 'loading');
     const success = Boolean(loadingState === 'success');
 
+    const incorrectDetails = useAppSelector(getIncorrectAuthDetails);
+
     /**
      * Change handler for the username field.
      */
     const handleChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
         setUsername(event.target.value);
+        if (incorrectDetails) {
+            dispatch(clearIncorrectDetails());
+        }
     };
 
     /**
@@ -45,15 +56,20 @@ const ExistingUser: FC = () => {
      */
     const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
+        if (incorrectDetails) {
+            dispatch(clearIncorrectDetails());
+        }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (event: SyntheticEvent) => {
+        event.preventDefault();
         setLoadingState('loading');
         try {
             dispatch(loginUser(username, password));
+            setLoadingState('idle');
         } catch (error) {
             setLoadingState('idle');
-            console.error(error);
+            dispatch(intakeError(error));
         }
     };
 
@@ -88,6 +104,11 @@ const ExistingUser: FC = () => {
                 success={success}
                 text={t('auth.Login')}
             />
+            {incorrectDetails && (
+                <Typography color='error'>
+                    Incorrect username or password, please check and try again.
+                </Typography>
+            )}
         </Form>
     );
 };

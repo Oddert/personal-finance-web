@@ -27,7 +27,6 @@
     "babel-loader": "^10.0.0",
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.1.0",
-    "bable-loader": "^0.0.1-security",
     "bfj": "^9.1.2",
     "browserslist": "^4.18.1",
     "camelcase": "^8.0.0",
@@ -97,8 +96,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test:m": "jest",
+    "test:m": "jest --verbose",
     "test": "node scripts/test.js --verbose",
+    "test:coverage": "node scripts/test.js --verbose --coverage",
     "test:watch": "node scripts/test.js --verbose --watch",
     "docs": "jsdoc -c jsdoc.conf.json -R README.md -r",
     "lint": "eslint . --config .eslintrc.json",
@@ -128,7 +128,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-typescript": "^7.23.3",
     "@types/color-convert": "^2.0.0",
-    "@types/jest": "^29.5.14",
+    "@types/jest": "^27.5.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
     "@types/react": "^18.2.14",
@@ -136,6 +136,7 @@
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.1.0",
@@ -145,6 +146,7 @@
     "prettier": "^3.5.3"
   },
   "jest": {
+    "preset": "ts-jest",
     "roots": [
       "<rootDir>/src"
     ],
@@ -164,9 +166,8 @@
     ],
     "testEnvironment": "jsdom",
     "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.(ts|tsx)?$": "ts-jest",
+      "^.+\\.(js|jsx)?$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
@@ -176,7 +177,8 @@
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-      "^mui-file-input-es$": "mui-file-input"
+      "^mui-file-input-es$": "mui-file-input",
+      "^.+\\.(css|less)$": "<rootDir>/config/CSSStub.js"
     },
     "moduleFileExtensions": [
       "web.js",
@@ -198,7 +200,7 @@
   },
   "babel": {
     "presets": [
-      "react-app",
+      "@babel/react",
       [
         "@babel/preset-env",
         {
@@ -206,8 +208,7 @@
             "node": "current"
           }
         }
-      ],
-      "@babel/preset-typescript"
+      ]
     ],
     "env": {
       "test": {
