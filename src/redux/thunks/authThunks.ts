@@ -103,6 +103,43 @@ export const loginUser =
     };
 
 /**
+ * Attempts to register a new user account.
+ * @category Redux
+ * @subcategory Thunks
+ * @param username The user-entered username.
+ * @param password The user-entered password.
+ */
+export const registerUser =
+    (
+        username: string,
+        password: string,
+        displayName: string,
+        languages: string,
+    ) =>
+    async (dispatch: AppDispatch) => {
+        try {
+            const response = await APIService.registerUser(
+                username,
+                password,
+                displayName,
+                languages,
+            );
+
+            if (response.status === 404) {
+                dispatch(setIncorrectDetails());
+            } else {
+                dispatch(handleAuthResponse(response));
+            }
+        } catch (error: any) {
+            if (error.status === 404) {
+                dispatch(setIncorrectDetails());
+            } else {
+                dispatch(intakeError(error));
+            }
+        }
+    };
+
+/**
  * Logs out a user, clears their stored details, and redirects them to the login page.
  * @category Redux
  * @subcategory Thunks
