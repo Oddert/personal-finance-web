@@ -119,8 +119,6 @@ const NewUser: FC = () => {
             .catch((err) => console.error(err));
     };
 
-    // TODO: language selector
-
     return (
         <Form onSubmit={handleSubmit}>
             <Typography variant='h2'>{t('auth.signUp')}</Typography>
