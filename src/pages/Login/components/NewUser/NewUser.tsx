@@ -1,11 +1,17 @@
-import { ChangeEvent, FC, useMemo, useState } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
+import locale from 'locale-codes';
 
-import { debounce, Typography } from '@mui/material';
-
-import router, { ROUTES } from '../../../../constants/routerConstants';
+import { Autocomplete, Box, Typography } from '@mui/material';
+import { Translate as IconTranslate } from '@mui/icons-material';
 
 import APIService from '../../../../services/APIService';
+
+import { registerUser } from '../../../../redux/thunks/authThunks';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import {
     comparePasswords,
@@ -16,8 +22,6 @@ import { Form, TextField } from '../../Login.styles';
 
 import SubmitButton from '../SubmitButton';
 
-import { IValidationMap, IValidationSet } from './NewUser.types';
-
 /**
  * The "Sign Up" page allowing a user to make a new account.
  *
@@ -27,211 +31,186 @@ import { IValidationMap, IValidationSet } from './NewUser.types';
  * @subcategory Login
  */
 const NewUser: FC = () => {
+    const dispatch = useAppDispatch();
     const { t } = useTranslation();
 
-    const [password, setPassword] = useState('');
-    const [confPassword, setConfPassword] = useState('');
-    const [passwordError, setPasswordError] = useState<null | string>(null);
+    const [language, setLanguage] = useState(locale.getByTag('en-GB'));
 
-    const [username, setUsername] = useState('');
-    const [usernameError, setUsernameError] = useState<null | string>(null);
-
-    const [usernameTaken] = useState<null | boolean>(null);
-    const [loadingState, setLoadingState] = useState<
-        'idle' | 'loading' | 'success'
-    >('idle');
-
-    const loading = Boolean(loadingState === 'loading');
-    const success = Boolean(loadingState === 'success');
-
-    const validationMap = useMemo<IValidationMap>(
-        () => ({
-            password: [
-                setPasswordError,
-                [
-                    () => comparePasswords(password, confPassword),
-                    () => passwordStrength(password),
-                ],
-            ],
-            // username: [
-            //     setUsernameError,
-            //     [() => checkUsernameAvailable(usernameTaken)],
-            // ],
-        }),
-        [
-            confPassword,
-            password,
-            setPasswordError,
-            setUsernameError,
-            usernameTaken,
-            username,
-        ],
-    );
-
-    /**
-     * Validates across the entire validation set defined above.
-     * @returns True if any validation failed.
-     */
-    const performCompleteValidation = () => {
-        let anyResult = false;
-        Object.values(validationMap).forEach((validationSet) => {
-            const response = validationSet[1].reduce(
-                (acc: null | string, validator) => {
-                    const result = validator();
-                    if (result) {
-                        return result;
-                    }
-                    return acc;
-                },
-                null,
+    const {
+        errors,
+        handleSubmit,
+        isSubmitting,
+        setFieldError,
+        setFieldValue,
+        setTouched,
+        touched,
+        validateField,
+        values,
+    } = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            confPassword: '',
+            displayName: '',
+        },
+        validate: (nextValues) => {
+            const nextErrors: {
+                username: string;
+                password: string;
+                confPassword: string;
+                displayName: string;
+            } = {
+                username: '',
+                password: '',
+                confPassword: '',
+                displayName: '',
+            };
+            const passwordComparison = comparePasswords(
+                nextValues.password,
+                nextValues.confPassword,
             );
-            if (response) {
-                anyResult = true;
+            if (passwordComparison) {
+                nextErrors.confPassword = passwordComparison;
             }
-            validationSet[0](response);
-        });
-        return anyResult;
-    };
+            const pwdStrength = passwordStrength(nextValues.password);
+            if (pwdStrength) {
+                nextErrors.password = pwdStrength;
+            }
 
-    /**
-     * Checks a single validation set.
-     * @param validationSet The validation set to check.
-     */
-    const validateSingle = (validationSet: IValidationSet) => {
-        const response = validationSet[1].reduce(
-            (acc: null | string, validator) => {
-                const result = validator();
-                if (result) {
-                    return result;
-                }
-                return acc;
-            },
-            null,
-        );
-        validationSet[0](response);
-    };
+            return nextErrors;
+        },
+        onSubmit: (nextValues, formikBag) => {
+            formikBag.setSubmitting(true);
+            try {
+                APIService.checkUserExists(nextValues.username)
+                    .then((response) => {
+                        if (response.payload?.exists) {
+                            formikBag.setFieldError(
+                                'username',
+                                t('auth.usernameTaken'),
+                            );
+                        } else {
+                            dispatch(
+                                registerUser(
+                                    nextValues.username,
+                                    nextValues.password,
+                                    nextValues.displayName,
+                                    'en-GB',
+                                ),
+                            );
+                        }
+                        formikBag.setSubmitting(false);
+                    })
+                    .catch((err) => console.error(err));
+            } catch (error) {
+                dispatch(intakeError(error));
+                formikBag.setSubmitting(false);
+            }
+        },
+    });
 
-    // TODO: passwords to update on type but only if both have length
-    // Use second validator set to perform a full.
-
-    /**
-     * Performs password validation triggered by the "confirm password" field.
-     */
-    const validateConfPassword = () => {
-        validateSingle(validationMap.password);
-    };
-
-    /**
-     * Performs password validation on the "password" field (not the confirm field).
-     */
-    const validatePassword = () => {
-        if (password.length && confPassword.length) {
-            validateSingle(validationMap.password);
-        }
-    };
-
-    /**
-     * Submits the input, performing a validation first
-     */
-    const handleSubmit = () => {
-        setLoadingState('loading');
-        const validation = performCompleteValidation();
-        if (validation) {
-            return null;
-        }
-        try {
-            // register user
-            router.navigate(ROUTES.HOME);
-        } catch (error) {
-            setLoadingState('idle');
-            // TODO: error boundary
-            console.error(error);
-        }
-    };
-
-    /**
-     * Debounced function to check if a username is taken while typing.
-     *
-     * Used in place of the validation set pattern in order to deal with the async nature of the requests.
-     */
-    const debounceCheck = debounce((changeValue: string) => {
-        APIService.checkUserExists(changeValue)
+    const checkUsernameAvailable = () => {
+        APIService.checkUserExists(values.username)
             .then((response) => {
                 if (response.payload?.exists) {
-                    setUsernameError(t('usernameTaken'));
-                } else {
-                    setUsernameError(null);
+                    setFieldError('username', t('auth.usernameTaken'));
                 }
             })
             .catch((err) => console.error(err));
-    }, 500);
-
-    /**
-     * Handles change events for the username input.
-     * @param event The change event.
-     */
-    const handleChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
-        debounceCheck(event.target.value);
     };
 
-    /**
-     * Disables the submit button on a number of conditions.
-     */
-    const submitDisabled = useMemo(
-        () =>
-            Boolean(
-                !password.length ||
-                    !username.length ||
-                    passwordError ||
-                    usernameError ||
-                    loading,
-            ),
-        [password, username, passwordError, usernameError, loading],
-    );
+    // TODO: language selector
 
     return (
         <Form onSubmit={handleSubmit}>
             <Typography variant='h2'>{t('auth.signUp')}</Typography>
             <TextField
-                disabled={loading || success}
-                error={Boolean(usernameError)}
+                disabled={isSubmitting}
+                error={Boolean(touched.username && errors.username)}
                 label={t('auth.Username')}
-                onChange={handleChangeUsername}
-                value={username}
+                onBlur={() => {
+                    checkUsernameAvailable();
+                    setTouched({ ...touched, username: true });
+                }}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    setFieldValue('username', event.target.value);
+                }}
+                value={values.username}
                 variant='outlined'
             />
-            {usernameError && (
-                <Typography color='error'>{usernameError}</Typography>
-            )}
+            {touched.username && errors.username ? (
+                <Typography color='error'>{t(errors.username)}</Typography>
+            ) : null}
             <TextField
-                disabled={loading || success}
-                error={Boolean(passwordError)}
+                disabled={isSubmitting}
+                error={Boolean(touched.password && errors.password)}
                 label={t('auth.Password')}
-                onBlur={validatePassword}
-                onChange={(event) => setPassword(event.target.value)}
+                onBlur={() => {
+                    validateField('password');
+                    setTouched({ ...touched, password: true });
+                }}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    setFieldValue('password', event.target.value);
+                }}
                 type='password'
-                value={password}
+                value={values.password}
                 variant='outlined'
             />
+            {touched.password && errors.password ? (
+                <Typography color='error'>{t(errors.password)}</Typography>
+            ) : null}
             <TextField
-                disabled={loading || success}
-                error={Boolean(passwordError)}
+                disabled={isSubmitting}
+                error={Boolean(touched.confPassword && errors.confPassword)}
                 label={t('auth.confirmPassword')}
-                onBlur={validateConfPassword}
-                onChange={(event) => setConfPassword(event.target.value)}
+                onBlur={() => {
+                    validateField('confPassword');
+                    setTouched({ ...touched, confPassword: true });
+                }}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    setFieldValue('confPassword', event.target.value);
+                }}
                 type='password'
-                value={confPassword}
+                value={values.confPassword}
                 variant='outlined'
             />
-            {passwordError && (
-                <Typography color='error'>{passwordError}</Typography>
-            )}
+            {touched.confPassword && errors.confPassword ? (
+                <Typography color='error'>{t(errors.confPassword)}</Typography>
+            ) : null}
+            <Box
+                sx={{
+                    display: 'flex',
+                    gridGap: '16px',
+                    alignItems: 'center',
+                    mt: '16px',
+                }}
+            >
+                <IconTranslate />
+                <Autocomplete
+                    getOptionLabel={(option) =>
+                        `${option.name} (${option.tag})`
+                    }
+                    getOptionKey={(option) => option.tag}
+                    onChange={(event, nextValue) => {
+                        if (nextValue) {
+                            setLanguage(nextValue);
+                        }
+                    }}
+                    options={locale.all}
+                    renderInput={(props) => (
+                        <TextField
+                            {...props}
+                            label={'placeholder - change profile page'}
+                        />
+                    )}
+                    value={language}
+                />
+            </Box>
             <SubmitButton
-                loading={loading}
-                onSubmit={handleSubmit}
-                submitDisabled={submitDisabled}
-                success={success}
+                loading={isSubmitting}
+                onSubmit={() => handleSubmit()}
+                submitDisabled={isSubmitting}
+                success={false}
                 text={t('auth.signUp')}
             />
         </Form>
