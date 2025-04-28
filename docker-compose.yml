@@ -1,0 +1,10 @@
+services:
+  personal-finance-web:
+    container_name: personal-finance-web-${NODE_ENV}
+    image: personal-finance-web-${NODE_ENV}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
