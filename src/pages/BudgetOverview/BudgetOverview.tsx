@@ -44,7 +44,7 @@ import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 dayjs.extend(localizedFormat);
 
 const defaultStart = toBeginningMonthDayjs(
-    String(dayjs().subtract(12, 'months')),
+    String(dayjs().subtract(3, 'months')),
 );
 const defaultEnd = toEndMonthDayjs(String(dayjs()));
 
