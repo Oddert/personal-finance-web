@@ -142,7 +142,9 @@
         "returnHome": "Return home",
         "saveChanges": "Save changes",
         "Save": "Save",
+        "showFullDateRange": "Show full date range",
         "Submit": "Submit",
+        "toggleAllCategories": "Toggle all categories",
         "uncheckAll": "Uncheck all",
         "viewAndEdit": "View and edit",
         "viewBudgetBreakdown": "View budget breakdown",
@@ -226,8 +228,9 @@
             "pastYear": "Past Year",
             "currentYear": "Current Year"
         },
-        "totalExpectedSpend": "Total expected spend",
         "totalActualSpend": "Total actual spend",
+        "totalDiscrepancyTitle": "Total discrepancy",
+        "totalExpectedSpend": "Total expected spend",
         "underspendLimitPc": "Underspend limit (%)"
     },
     "Category": {
