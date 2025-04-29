@@ -147,7 +147,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                 />
             </Box>
             <Button onClick={handleClickToggle} variant='contained'>
-                {t('Buttons.toggleAllCategories')}
+                {t('buttons.toggleAllCategories')}
             </Button>
         </Fragment>
     );

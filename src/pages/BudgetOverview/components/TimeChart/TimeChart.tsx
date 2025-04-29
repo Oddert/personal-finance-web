@@ -1,5 +1,6 @@
 import { FC, Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
 import { Box, Button } from '@mui/material';
@@ -181,7 +182,7 @@ const TimeChart: FC<IProps> = ({
                 />
             </Box>
             <Button onClick={handleClickToggle} variant='contained'>
-                {t('Buttons.toggleAllCategories')}
+                {t('buttons.toggleAllCategories')}
             </Button>
         </Fragment>
     );

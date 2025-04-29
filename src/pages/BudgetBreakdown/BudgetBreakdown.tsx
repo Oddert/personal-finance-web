@@ -37,6 +37,7 @@ import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
 
 import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
+import { ChartPaper } from './BudgetBreakdown.styles';
 
 dayjs.extend(localizedFormat);
 
@@ -140,8 +141,16 @@ const BudgetBreakdown: FC = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
-                <ActiveCard />
-                <ActiveBudget />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gridGap: '64px',
+                        '& > *': { flex: 1 },
+                    }}
+                >
+                    <ActiveCard />
+                    <ActiveBudget />
+                </Box>
                 <Paper
                     elevation={0}
                     sx={{
@@ -170,41 +179,23 @@ const BudgetBreakdown: FC = () => {
                 >
                     <BudgetTable data={data} />
                 </Paper>
-                <Paper
-                    elevation={0}
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                        justifyContent: 'space-around',
-                        padding: '16px',
-                    }}
-                >
+                <ChartPaper elevation={0}>
                     <Typography>{t('Budget.aggregateSpendChart')}</Typography>
                     <TimeChart
                         endDate={endDate}
                         filteredTransactions={transactions}
                         startDate={startDate}
                     />
-                </Paper>
+                </ChartPaper>
                 {numMonths > 1 ? (
-                    <Paper
-                        elevation={0}
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            justifyContent: 'space-around',
-                            padding: '16px',
-                        }}
-                    >
+                    <ChartPaper elevation={0}>
                         <Typography>{t('Budget.categorySpend')}</Typography>
                         <BudgetMonthSpendChart
                             endDate={endDate}
                             filteredTransactions={transactions}
                             startDate={startDate}
                         />
-                    </Paper>
+                    </ChartPaper>
                 ) : null}
                 <BudgetPageToggle
                     endDate={endDate}

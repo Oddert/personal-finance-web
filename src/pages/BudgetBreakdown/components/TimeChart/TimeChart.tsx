@@ -1,18 +1,22 @@
 import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
+import ApexCharts from 'apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 // import useContentWidth from '../../../../hooks/useContentWidth';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
 import type { IProps } from './TimeChart.types';
 import { generateTimeChartSeries } from './TimeChartUtils';
+
+const breakdownTimeChart = 'breakdown-time-chart';
 
 dayjs.extend(localizedFormat);
 
@@ -34,6 +38,7 @@ const TimeChart: FC<IProps> = ({
     const categories = useAppSelector(getCategoryOrderedDataById);
 
     // const { contentWidth } = useContentWidth();
+    const { currencyLocaliser } = useLocalisedNumber();
 
     const series = useMemo(
         () =>
@@ -46,6 +51,12 @@ const TimeChart: FC<IProps> = ({
             ),
         [categories, endDate, filteredTransactions, includeCredit, startDate],
     );
+
+    const handleClickToggle = () => {
+        series.forEach((value) =>
+            ApexCharts.exec(breakdownTimeChart, 'toggleSeries', value.name),
+        );
+    };
 
     return (
         <Box>
@@ -75,6 +86,7 @@ const TimeChart: FC<IProps> = ({
                     width={1000}
                     options={{
                         chart: {
+                            id: breakdownTimeChart,
                             height: 350,
                             type: 'area',
                             stacked: true,
@@ -106,9 +118,7 @@ const TimeChart: FC<IProps> = ({
                                 format: 'dd/MM/yy',
                             },
                             y: {
-                                formatter: (val) => {
-                                    return val?.toFixed(2) || '';
-                                },
+                                formatter: (val) => currencyLocaliser(val),
                             },
                             shared: true,
                         },
@@ -123,10 +133,9 @@ const TimeChart: FC<IProps> = ({
                             max: new Date(String(endDate)).getTime(),
                         },
                         yaxis: {
+                            tickAmount: 14,
                             labels: {
-                                formatter: (val) => {
-                                    return val?.toFixed(2) || '';
-                                },
+                                formatter: (val) => currencyLocaliser(val),
                                 style: {
                                     colors: '#fff',
                                 },
@@ -136,6 +145,9 @@ const TimeChart: FC<IProps> = ({
                     series={series}
                 />
             </Box>
+            <Button onClick={handleClickToggle} variant='contained'>
+                {t('buttons.toggleAllCategories')}
+            </Button>
         </Box>
     );
 };
