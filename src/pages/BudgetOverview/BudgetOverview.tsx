@@ -4,7 +4,13 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import {
+    Box,
+    Checkbox,
+    Divider,
+    FormControlLabel,
+    Typography,
+} from '@mui/material';
 
 import {
     createBudgetChartData,
@@ -154,8 +160,17 @@ const BudgetOverview: FC<IProps> = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
-                <ActiveCard />
-                <ActiveBudget />
+                <Divider />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gridGap: '64px',
+                        '& > *': { flex: 1 },
+                    }}
+                >
+                    <ActiveCard />
+                    <ActiveBudget />
+                </Box>
                 <Box sx={{ display: 'flex', gridGap: '16px' }}>
                     <FormControlLabel
                         control={
