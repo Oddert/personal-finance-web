@@ -40,6 +40,7 @@ import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+import TotalDiscrepancyChart from './components/TotalDiscrepancyChart';
 
 dayjs.extend(localizedFormat);
 
@@ -170,6 +171,23 @@ const BudgetOverview: FC<IProps> = () => {
                     label={t('Budget.includeEmptyCategories')}
                 />
                 <PercentageCharts chartList={chartList} />
+                <Paper
+                    elevation={0}
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                        padding: '16px',
+                    }}
+                >
+                    <Typography>{t('Budget.totalDiscrepancyTitle')}</Typography>
+                    <TotalDiscrepancyChart
+                        chartList={chartList}
+                        startDate={startDate}
+                        endDate={endDate}
+                    />
+                </Paper>
                 <Paper
                     elevation={0}
                     sx={{

@@ -104,7 +104,6 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                             id: discrepancyTimeChartId,
                             height: 500,
                             type: 'line',
-                            stacked: true,
                             zoom: {
                                 allowMouseWheelZoom: false,
                             },
