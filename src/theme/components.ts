@@ -1,15 +1,14 @@
 import { Components } from '@mui/material/styles';
 
-// import convert from 'color-convert';
+import { ColorTranslator } from 'colortranslator';
 
 const components: Components = {
     MuiAppBar: {
         styleOverrides: {
             root: ({ theme }: { theme: any }) => {
-                // const colour = convert.hex.rgb(theme.palette.primary.dark);
+                const colour = new ColorTranslator(theme.palette.primary.dark);
                 return {
-                    background: theme.palette.primary.dark,
-                    // background: `rgba(${colour[0]}, ${colour[1]}, ${colour[2]}, 0.5)`,
+                    background: `rgba(${colour.R}, ${colour.G}, ${colour.B}, 0.5)`,
                     backdropFilter: 'blur(8px)',
                 };
             },
