@@ -66,7 +66,7 @@ const BudgetOverview: FC<IProps> = () => {
     const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
     const [endDate, setEndDate] = useState<Dayjs>(defaultEnd);
     const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
-    const [showFullDateRange, setShowFullDateRange] = useState(false);
+    const [showFullDateRange, setShowFullDateRange] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
@@ -169,7 +169,6 @@ const BudgetOverview: FC<IProps> = () => {
                         label={t('Budget.includeEmptyCategories')}
                     />
                     <FormControlLabel
-                        label={t('buttons.showFullDateRange')}
                         control={
                             <Checkbox
                                 checked={showFullDateRange}
@@ -178,6 +177,8 @@ const BudgetOverview: FC<IProps> = () => {
                                 }
                             />
                         }
+                        label={t('buttons.showFullDateRange')}
+                        title={t('Budget.showFullDateRangeTitle')}
                     />
                 </Box>
                 <PercentageCharts chartList={chartList} />
