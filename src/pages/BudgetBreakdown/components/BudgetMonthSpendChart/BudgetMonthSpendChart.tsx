@@ -28,11 +28,7 @@ dayjs.extend(localizedFormat);
  * @param props.endDate The start date for the date range.
  * @param props.startDate The end date for the date range.
  */
-const BudgetMonthSpendChart: FC<IProps> = ({
-    endDate,
-    filteredTransactions,
-    startDate,
-}) => {
+const BudgetMonthSpendChart: FC<IProps> = ({ filteredTransactions }) => {
     const { t } = useTranslation();
 
     const [fullSeries, setSeries] = useState<ISeries[]>([]);
@@ -142,8 +138,6 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                             },
-                            min: new Date(String(startDate)).getTime(),
-                            max: new Date(String(endDate)).getTime(),
                         },
                         yaxis: {
                             tickAmount: 20,

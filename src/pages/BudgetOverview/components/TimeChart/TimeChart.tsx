@@ -31,8 +31,6 @@ const TimeChart: FC<IProps> = ({
     const { t } = useTranslation();
 
     const series = useMemo(() => {
-        chartList.map((chart) => [chart.data, chart.timestamp]);
-
         interface IAccumulator {
             totalTimeList: number[];
             times: {

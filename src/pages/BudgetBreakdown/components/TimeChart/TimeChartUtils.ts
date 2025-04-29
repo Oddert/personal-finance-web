@@ -18,8 +18,8 @@ export const generateTimeChartSeries = (
     startDate: Dayjs,
 ) => {
     const dates: number[] = [];
-    const endDateJs = endDate;
-    let date = startDate;
+    const endDateJs = dayjs(endDate).startOf('date');
+    let date = dayjs(startDate).startOf('date');
 
     while (date.valueOf() <= endDateJs.valueOf()) {
         dates.push(date.valueOf());
@@ -39,7 +39,7 @@ export const generateTimeChartSeries = (
                         transactions: {},
                     };
                 }
-                const dateInt = dayjs(each.date).valueOf();
+                const dateInt = dayjs(each.date).startOf('date').valueOf();
                 if (!(dateInt in acc[each.categoryId].transactions)) {
                     acc[each.categoryId].transactions[dateInt] = [];
                 }

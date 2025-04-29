@@ -1,11 +1,7 @@
-import { Dayjs } from 'dayjs';
-
 import { Transaction } from '../../../../types/Transaction.d';
 
 export interface IProps {
     filteredTransactions: Transaction[];
-    endDate: Dayjs;
-    startDate: Dayjs;
 }
 
 export interface IMonthSpendCategory {

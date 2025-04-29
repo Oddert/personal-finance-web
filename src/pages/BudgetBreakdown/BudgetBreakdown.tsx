@@ -191,9 +191,7 @@ const BudgetBreakdown: FC = () => {
                     <ChartPaper elevation={0}>
                         <Typography>{t('Budget.categorySpend')}</Typography>
                         <BudgetMonthSpendChart
-                            endDate={endDate}
                             filteredTransactions={transactions}
-                            startDate={startDate}
                         />
                     </ChartPaper>
                 ) : null}

@@ -24,7 +24,7 @@ export const generateMonthSpendData = (
     // Filter over all transactions in range and arrange them into sorted objects by year and month (as time series is month based).
     const { allCategories, categoriesByDate } = filteredTransactions.reduce(
         (acc: IAgDataAccumulator, transaction) => {
-            const date = dayjs(transaction.date);
+            const date = dayjs(transaction.date).startOf('date');
             const year = date.year();
             const month = date.month();
 
