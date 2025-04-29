@@ -37,6 +37,7 @@ export const handleAuthResponse =
             refreshToken: string;
             user: IUser;
         }>,
+        callback?: () => void,
     ) =>
     async (dispatch: AppDispatch) => {
         try {
@@ -67,6 +68,10 @@ export const handleAuthResponse =
                     user: response.payload.user,
                 }),
             );
+
+            if (callback) {
+                callback();
+            }
         } catch (error: any) {
             if (error.status === 404) {
                 dispatch(setIncorrectDetails());
@@ -159,7 +164,8 @@ export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
  * @subcategory Thunks
  */
 export const refreshAuthentication =
-    () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    (callback?: () => void) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const refreshRequestPending = getRefreshTokenPending(getState());
 
@@ -179,16 +185,19 @@ export const refreshAuthentication =
 
             if (response.status === 401 || response.status === 403) {
                 dispatch(userUnauthenticated());
+                console.log(response);
+                console.log('[srx/redux/thunks] authThunks 401 or 403 LOGIN');
                 router.navigate(
                     ROUTES_FACTORY.LOGIN(
                         `${window.location.pathname}${window.location.search}`,
                     ),
                 );
             } else {
-                dispatch(handleAuthResponse(response));
+                dispatch(handleAuthResponse(response, callback));
             }
         } catch (error: any) {
             if (error.status === 401 || error.status === 403) {
+                console.log('[src/redux/thunks] authThunks try/catch LOGIN');
                 dispatch(userUnauthenticated());
                 router.navigate(createLoginAddrWithReturn());
             } else if (error.status === 404) {

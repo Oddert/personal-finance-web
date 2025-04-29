@@ -63,8 +63,8 @@ const useAuthToken = () => {
      *
      * If this is not possible the user auth details are wiped and the user is directed to login again.
      */
-    const refreshAuth = () => {
-        dispatch(refreshAuthentication());
+    const refreshAuth = (callback?: () => void) => {
+        dispatch(refreshAuthentication(callback));
     };
 
     /**
@@ -78,7 +78,7 @@ const useAuthToken = () => {
         const accessToken = AuthLSService.getAccessToken();
         const refreshToken = AuthLSService.getRefreshToken();
         if (!accessToken || !refreshToken) {
-            return refreshAuth();
+            return refreshAuth(callback);
         }
         try {
             const accessDecoded = jwt.jwtDecode(accessToken);
@@ -88,7 +88,7 @@ const useAuthToken = () => {
                 !accessDecoded?.exp ||
                 accessDecoded.exp <= new Date().getTime() + timeoutOffset
             ) {
-                return refreshAuth();
+                return refreshAuth(callback);
             }
 
             return await _authenticate(
@@ -99,7 +99,7 @@ const useAuthToken = () => {
                 callback,
             );
         } catch (error) {
-            return refreshAuth();
+            return refreshAuth(callback);
         }
     };
 
