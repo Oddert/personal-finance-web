@@ -1,7 +1,8 @@
-import { FC, Fragment, useMemo, useState } from 'react';
+import { FC, Fragment, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
 
-import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
@@ -20,8 +21,13 @@ const discrepancyTimeChartId = 'discrepancy-time-chart';
  * @param props.endDate The start date for the date range.
  * @param props.startDate The end date for the date range.
  */
-const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
-    const [fullDateRange, setFullDateRange] = useState(true);
+const TimeChart: FC<IProps> = ({
+    chartList,
+    endDate,
+    showFullDateRange,
+    startDate,
+}) => {
+    const { t } = useTranslation();
 
     const series = useMemo(() => {
         chartList.map((chart) => [chart.data, chart.timestamp]);
@@ -154,10 +160,10 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                                     colors: '#fff',
                                 },
                             },
-                            min: fullDateRange
+                            min: showFullDateRange
                                 ? new Date(String(startDate)).getTime()
                                 : undefined,
-                            max: fullDateRange
+                            max: showFullDateRange
                                 ? new Date(String(endDate)).getTime()
                                 : undefined,
                         },
@@ -174,22 +180,9 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
                     series={series}
                 />
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FormControlLabel
-                    label='Show full date range'
-                    control={
-                        <Checkbox
-                            checked={fullDateRange}
-                            onChange={(event) =>
-                                setFullDateRange(event.target.checked)
-                            }
-                        />
-                    }
-                />
-                <Button onClick={handleClickToggle} variant='contained'>
-                    Toggle all categories
-                </Button>
-            </Box>
+            <Button onClick={handleClickToggle} variant='contained'>
+                {t('Buttons.toggleAllCategories')}
+            </Button>
         </Fragment>
     );
 };

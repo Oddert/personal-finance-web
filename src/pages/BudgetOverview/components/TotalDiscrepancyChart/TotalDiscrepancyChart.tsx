@@ -1,7 +1,7 @@
 import { FC, Fragment, useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
 
-import { Box, Checkbox, FormControlLabel, Tab, Tabs } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
@@ -28,9 +28,9 @@ const a11yProps = (index: number) => ({
 const TotalDiscrepancyChart: FC<IProps> = ({
     chartList,
     endDate,
+    showFullDateRange,
     startDate,
 }) => {
-    const [fullDateRange, setFullDateRange] = useState(true);
     const [tabValue, setTabValue] = useState(0);
 
     const [series1, series2] = useMemo(() => {
@@ -169,10 +169,10 @@ const TotalDiscrepancyChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                             },
-                            min: fullDateRange
+                            min: showFullDateRange
                                 ? new Date(String(startDate)).getTime()
                                 : undefined,
-                            max: fullDateRange
+                            max: showFullDateRange
                                 ? new Date(String(endDate)).getTime()
                                 : undefined,
                         },
@@ -259,10 +259,10 @@ const TotalDiscrepancyChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                             },
-                            min: fullDateRange
+                            min: showFullDateRange
                                 ? new Date(String(startDate)).getTime()
                                 : undefined,
-                            max: fullDateRange
+                            max: showFullDateRange
                                 ? new Date(String(endDate)).getTime()
                                 : undefined,
                         },
@@ -279,17 +279,6 @@ const TotalDiscrepancyChart: FC<IProps> = ({
                     series={series2}
                 />
             </Box>
-            <FormControlLabel
-                label='Show full date range'
-                control={
-                    <Checkbox
-                        checked={fullDateRange}
-                        onChange={(event) =>
-                            setFullDateRange(event.target.checked)
-                        }
-                    />
-                }
-            />
         </Fragment>
     );
 };

@@ -1,8 +1,9 @@
-import { FC, Fragment, useMemo, useState } from 'react';
+import { FC, Fragment, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
@@ -21,9 +22,10 @@ const budgetMonthSpendId = 'budget-month-spend';
 const BudgetMonthSpendChart: FC<IProps> = ({
     chartList,
     endDate,
+    showFullDateRange,
     startDate,
 }) => {
-    const [fullDateRange, setFullDateRange] = useState(true);
+    const { t } = useTranslation();
 
     const series: { name: string; data: { x: number; y: number }[] }[] =
         useMemo(() => {
@@ -124,10 +126,10 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                             },
-                            min: fullDateRange
+                            min: showFullDateRange
                                 ? new Date(String(startDate)).getTime()
                                 : undefined,
-                            max: fullDateRange
+                            max: showFullDateRange
                                 ? new Date(String(endDate)).getTime()
                                 : undefined,
                         },
@@ -144,22 +146,9 @@ const BudgetMonthSpendChart: FC<IProps> = ({
                     series={series}
                 />
             </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FormControlLabel
-                    label='Show full date range'
-                    control={
-                        <Checkbox
-                            checked={fullDateRange}
-                            onChange={(event) =>
-                                setFullDateRange(event.target.checked)
-                            }
-                        />
-                    }
-                />
-                <Button onClick={handleClickToggle} variant='contained'>
-                    Toggle all categories
-                </Button>
-            </Box>
+            <Button onClick={handleClickToggle} variant='contained'>
+                {t('Buttons.toggleAllCategories')}
+            </Button>
         </Fragment>
     );
 };
