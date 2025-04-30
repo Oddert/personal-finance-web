@@ -188,6 +188,19 @@ export const transactionEditReducer = (
                         : transaction,
                 ),
             };
+        case TransactionEditActionTypes.updateNumericValue:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? {
+                              ...transaction,
+                              [state.columnMap[action.payload.field]]:
+                                  action.payload.value,
+                          }
+                        : transaction,
+                ),
+            };
         case TransactionEditActionTypes.writeHeaders:
             return {
                 ...state,
