@@ -34,7 +34,7 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
                       }
                     : null
                 : null,
-        [],
+        [categories, transaction],
     );
 
     const options = useMemo(
