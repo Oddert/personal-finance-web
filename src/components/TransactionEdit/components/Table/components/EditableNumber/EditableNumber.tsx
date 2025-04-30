@@ -50,7 +50,7 @@ const EditableNumber: FC<IProps> = ({ colMapKey, transaction }) => {
                 ? (transaction[columnMap[colMapKey]] as string)
                 : (transaction[colMapKey] as string);
         setInternalValue(value);
-    }, [transaction]);
+    }, [columnMap, colMapKey, transaction]);
 
     useEffect(() => {
         document.addEventListener('keypress', handleEnter);
