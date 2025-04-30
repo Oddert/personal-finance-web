@@ -2,8 +2,6 @@ import { FC } from 'react';
 
 import { Box } from '@mui/material';
 
-import router, { ROUTES } from '../../constants/routerConstants';
-
 import { getIsAuthenticated } from '../../redux/selectors/authSelectors';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
@@ -28,13 +26,14 @@ const Layout: FC<IProps> = ({
 
     if (requiresAuth && !isAuth) {
         console.log(
-            '[components/Layout] requiresAuth, !isAuth',
+            '[components/Layout] requiresAuth, !isAuth, returnAddr',
             requiresAuth,
             !isAuth,
+            returnAddr,
         );
-        router.navigate(`${ROUTES.LOGIN}?redirect=${returnAddr}`);
         return null;
     }
+    console.log('[src/components/Layout] auth check passed');
 
     return (
         <Box sx={{ display: 'flex' }}>
