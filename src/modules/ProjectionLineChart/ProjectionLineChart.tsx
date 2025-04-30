@@ -284,7 +284,6 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label={t('Start date')}
                         name='startDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -314,7 +313,6 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label={t('End date')}
                         name='endDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
