@@ -25,6 +25,12 @@ const Home = () => {
                 // gridAutoRows: '400px',
             }}
         >
+            {/* <Typography
+                sx={{ gridColumn: '1/-1', textAlign: 'left' }}
+                variant='h2'
+            >
+                Welcome, Robyn
+            </Typography> */}
             <ExistingDataLineChart compact />
             <ProjectionLineChart compact />
         </Container>
