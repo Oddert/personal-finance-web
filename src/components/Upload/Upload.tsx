@@ -19,10 +19,10 @@ import {
 } from '../../contexts/transactionEditContext';
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
+import { getUserCurrencies } from '../../redux/selectors/profileSelectors';
 
 import TransactionEdit from '../TransactionEdit';
 import DropZone from '../DropZone';
-import { getUserCurrencies } from '../../redux/selectors/profileSelectors';
 
 /**
  * Allows the user to upload new transactions.
