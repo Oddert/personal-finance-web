@@ -100,7 +100,6 @@
     "build:staging": "cross-env NODE_ENV=\"staging\" node scripts/build.js",
     "build:production": "cross-env NODE_ENV=\"production\" node scripts/build.js",
     "build": "npm run build:production",
-    "test:m": "jest --verbose",
     "test": "node scripts/test.js --verbose",
     "test:coverage": "node scripts/test.js --verbose --coverage",
     "test:watch": "node scripts/test.js --verbose --watch",
