@@ -39,6 +39,9 @@ const Table = () => {
         state: { columnMap, transactions },
     } = useContext(TransactionEditContext);
 
+    const handleClickCheckAll = () => dispatch(checkAll());
+    const handleClickUnCheckAll = () => dispatch(uncheckAll());
+
     const columns: { accessorKey: string; header: string }[] = useMemo(() => {
         return defaultColumns.map((header) => {
             return {
@@ -102,10 +105,10 @@ const Table = () => {
                     label={t('Transaction.filterUnchecked')}
                 />
             </Box>
-            <Button onClick={() => dispatch(checkAll())}>
+            <Button onClick={handleClickCheckAll}>
                 {t('buttons.checkAll')}
             </Button>
-            <Button onClick={() => dispatch(uncheckAll())}>
+            <Button onClick={handleClickUnCheckAll}>
                 {t('buttons.uncheckAll')}
             </Button>
             <MuiTable
