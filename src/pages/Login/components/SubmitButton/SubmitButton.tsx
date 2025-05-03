@@ -21,7 +21,7 @@ const SubmitButton: FC<IProps> = ({
                 mt: '16px',
                 minWidth: '350px',
             }}
-            type='submit'
+            // type='submit'
             variant='contained'
         >
             {text}
