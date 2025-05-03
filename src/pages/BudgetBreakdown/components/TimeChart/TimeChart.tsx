@@ -31,7 +31,6 @@ const TimeChart: FC<IProps> = ({
     filteredTransactions,
     startDate,
 }) => {
-    console.log({ filteredTransactions });
     const { t } = useTranslation();
 
     const [includeCredit, setIncludeCredit] = useState(false);
@@ -52,7 +51,6 @@ const TimeChart: FC<IProps> = ({
             ),
         [categories, endDate, filteredTransactions, includeCredit, startDate],
     );
-    console.log({ series });
 
     const handleClickToggle = () => {
         series.forEach((value) =>
