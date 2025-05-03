@@ -2,19 +2,50 @@
 
 A finance and spending tracker for an individual to use.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+Instructions are provided to run the project development server for working on changes, but also to create builds for a static web server with Docker.
+
+### Development Server
+
+In the root of the project simply run the install and start commands on your favourite terminal.
+
+```bash
+npm install
+npm start
+```
+
+### Creating Builds with Docker
+
+To create a docker config for a "production" deployment, run the docker compose file in the project root as shown.
+
+The variable "NODE_ENV" must be set to one of the following:
+
+- development
+- staging
+- production
+
+```bash
+NODE_ENV=development docker-compose up -d
+```
+
+## Available Scripts
 
 script | description | value
 -|-|-
 start | Launches the development server. | `node scripts/start.js`
-build | Creates a production-ready build. | `node scripts/build.js`
+build:development | Creates a build for a "development" testing environment | `cross-env NODE_ENV=\"development\" node scripts/build.js`
+build:staging | Creates a build for a "staging" testing environment | `cross-env NODE_ENV=\"staging\" node scripts/build.js`
+build:production | Creates a build for a "production" live environment | `cross-env NODE_ENV=\"production\" node scripts/build.js`
+build | Alias for the production build script | `npm run build:production`
 test | Runs a single-pass of the testing suite. | `node scripts/test.js --verbose`
-test:watch | Runs the test-runner in watch mode. | `node scripts/test.js --verbose --watch`
+test:coverage | Runs the test-runner in coverage and watch mode. | `node scripts/test.js --verbose --coverage`
+test:watch | Runs the test-runner in watch mode with verbose output. | `node scripts/test.js --verbose --watch`
 docs | Generates documentation using JSDoc. | `jsdoc -c jsdoc.conf.json -R README.md -r`
 lint | Runs the linter suite in review mode. | `eslint . --config .eslintrc.json`
 lint:fix | Runs the linter suite and fixes common problems. | `eslint . --config .eslintrc.json --fix`
+postinstall | Installs Husky after project installation | `husky install`
+prepare | Runs the Husky config | `husky`
 
 ## Contribution Guide
 
