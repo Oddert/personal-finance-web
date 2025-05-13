@@ -1,7 +1,7 @@
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 export interface IProps {
-    filteredTransactions: Transaction[];
+    filteredTransactions: ITransaction[];
 }
 
 export interface IMonthSpendCategory {

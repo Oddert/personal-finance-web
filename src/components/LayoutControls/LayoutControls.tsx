@@ -13,7 +13,7 @@ import {
     TableRows as IconLayoutList,
 } from '@mui/icons-material';
 
-import type { IDynamicCardLayoutModes } from '../../types/Common.types';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 import type { IProps } from './LayoutControls.types';
 
@@ -34,7 +34,7 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 defaultValue='standard'
                 name='radio-buttons-group'
                 onChange={(event) =>
-                    setLayout(event.target.value as IDynamicCardLayoutModes)
+                    setLayout(event.target.value as TDynamicCardLayoutModes)
                 }
                 sx={{
                     flexDirection: 'row',

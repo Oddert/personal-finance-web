@@ -5,7 +5,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import type { ColumnDef } from '@tanstack/react-table';
 
-import type { Transaction } from '../../../../types/Transaction.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
@@ -36,7 +36,7 @@ const Table = () => {
     } = useContext(TransactionRange);
 
     const [filteredTransactions, setFilteredTransactions] = useState<
-        Transaction[]
+        ITransaction[]
     >([]);
 
     const { transactions } = useTransactions();
@@ -44,7 +44,7 @@ const Table = () => {
     const transactionsLoading = useAppSelector(getTransactionsLoading);
     const language = useAppSelector(getActiveLanguageCode);
 
-    const columns = useMemo<ColumnDef<Transaction>[]>(
+    const columns = useMemo<ColumnDef<ITransaction>[]>(
         () => transactionColumns(language, t),
         [language, t],
     );
@@ -70,7 +70,7 @@ const Table = () => {
     }
 
     return (
-        <TableWrapper<Transaction>
+        <TableWrapper<ITransaction>
             data={filteredTransactions}
             columns={columns}
         />

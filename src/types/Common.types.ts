@@ -7,4 +7,4 @@
  * - 'list': A list-style layout, also typically quite dense.
  * @category Global Types
  */
-export declare type IDynamicCardLayoutModes = 'standard' | 'compact' | 'list';
+export declare type TDynamicCardLayoutModes = 'standard' | 'compact' | 'list';

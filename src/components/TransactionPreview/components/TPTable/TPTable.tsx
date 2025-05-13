@@ -13,7 +13,7 @@ import useTransactions from '../../../../hooks/useTransactions';
 import Table from '../../../Table';
 
 import { addCurrencySymbol, debitCell } from './TPTableUtils';
-import type { IProps, TransactionExtended } from './TPTable.types';
+import type { IProps, ITransactionExtended } from './TPTable.types';
 
 /**
  * Table component which renders the transactions.
@@ -27,14 +27,14 @@ import type { IProps, TransactionExtended } from './TPTable.types';
 const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
     const [loading, setLoading] = useState(true);
     const [filteredTransactions, setFilteredTransactions] = useState<
-        TransactionExtended[]
+        ITransactionExtended[]
     >([]);
 
     const language = useAppSelector(getActiveLanguageCode);
 
     const { transactions } = useTransactions(startDate, endDate);
 
-    const columns = useMemo<ColumnDef<TransactionExtended>[]>(
+    const columns = useMemo<ColumnDef<ITransactionExtended>[]>(
         () => [
             {
                 header: 'Date',
@@ -97,7 +97,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
         const sd = standardDeviation(values);
         const high = mean + sd;
 
-        const response: TransactionExtended[] = transactionsFiltered.map(
+        const response: ITransactionExtended[] = transactionsFiltered.map(
             (transaction) => ({
                 ...transaction,
                 outOfBounds: transaction.debit > high,

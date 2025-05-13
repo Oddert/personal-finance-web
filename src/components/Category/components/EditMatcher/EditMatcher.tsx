@@ -15,7 +15,7 @@ import {
     FontDownload as IconMatchPositive,
 } from '@mui/icons-material';
 
-import type { MatchType } from '../../../../types/Matcher.d';
+import type { TMatchType } from '../../../../types/Matcher.d';
 
 import { matchTypesOptions } from '../../../../utils/matcherUtils';
 
@@ -51,7 +51,7 @@ const EditMatcher: FC<IProps> = ({
 
     const [caseSensitive, setCaseSensitive] = useState<boolean>(false);
     const [match, setMatch] = useState<string>('');
-    const [matchType, setMatchType] = useState<MatchType>('any');
+    const [matchType, setMatchType] = useState<TMatchType>('any');
 
     useEffect(() => {
         setMatch(matcher?.match || '');
@@ -174,7 +174,7 @@ const EditMatcher: FC<IProps> = ({
                         }}
                         name='match_type_options'
                         onChange={(e) =>
-                            setMatchType(e?.target?.value as MatchType)
+                            setMatchType(e?.target?.value as TMatchType)
                         }
                         size='small'
                         value={matchType}

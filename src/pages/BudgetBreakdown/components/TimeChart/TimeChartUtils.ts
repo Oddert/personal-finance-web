@@ -1,8 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Category } from '../../../../types/Category.d';
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ICategory } from '../../../../types/Category.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 import { ISortedByCategory, ISortedByCategoryRow } from './TimeChart.types';
 
@@ -10,10 +10,10 @@ dayjs.extend(localizedFormat);
 
 export const generateTimeChartSeries = (
     categories: {
-        [id: string]: Category;
+        [id: string]: ICategory;
     },
     endDate: Dayjs,
-    filteredTransactions: Transaction[],
+    filteredTransactions: ITransaction[],
     includeCredit: boolean,
     startDate: Dayjs,
 ) => {

@@ -2,7 +2,7 @@ import { put } from 'redux-saga/effects';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { Category } from '../../types/Category.d';
+import type { ICategory } from '../../types/Category.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
 import APIService from '../../services/APIService';
@@ -16,7 +16,7 @@ import { intakeError } from '../thunks/errorThunks';
 export default function* categoryDeleteSingleSaga({
     payload,
 }: PayloadAction<{
-    categoryId: Category['id'];
+    categoryId: ICategory['id'];
 }>): any {
     try {
         const response: IStandardResponse<{ error?: string }> =

@@ -1,5 +1,5 @@
-import type { Category } from '../types/Category.d';
-import type { Matcher } from '../types/Matcher.d';
+import type { ICategory } from '../types/Category.d';
+import type { IMatcher } from '../types/Matcher.d';
 
 import { TransactionEditState } from '../contexts/transactionEditContext';
 
@@ -10,7 +10,7 @@ import { escapeRegex } from './commonUtils';
  * @param matcher The Matcher to be converted.
  * @returns The created expression.
  */
-export const createRegexFromMatcher = (matcher: Matcher) => {
+export const createRegexFromMatcher = (matcher: IMatcher) => {
     const prefix =
         matcher.match_type === 'exact' || matcher.match_type === 'start'
             ? '^'
@@ -35,13 +35,13 @@ export const createRegexFromMatcher = (matcher: Matcher) => {
  */
 export const autoMatchCategories = (
     transactions: TransactionEditState['transactions'],
-    categories: Category[],
+    categories: ICategory[],
 ) => {
     // Reduces the list of categories down to key-value pairs and a raw list of all `match` attributes.
     const regexList = categories.reduce(
         (
-            acc: { all: string[]; withCategory: [RegExp, Category][] },
-            category: Category,
+            acc: { all: string[]; withCategory: [RegExp, ICategory][] },
+            category: ICategory,
         ) => {
             category?.matchers?.forEach((matcher) => {
                 const re = createRegexFromMatcher(matcher);

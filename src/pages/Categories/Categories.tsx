@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { Box, Button, Container, ListItem, Typography } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
 
-import type { Category as CategoryT } from '../../types/Category.d';
-import type { IDynamicCardLayoutModes } from '../../types/Common.types';
+import type { ICategory } from '../../types/Category.d';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
 
@@ -25,7 +25,7 @@ const Categories = () => {
     const { t } = useTranslation();
 
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
+    const [layout, setLayout] = useState<TDynamicCardLayoutModes>('standard');
 
     const categories = useSelector(getCategoryResponse);
 
@@ -56,7 +56,7 @@ const Categories = () => {
                 </Button>
             </Box>
             <DynamicCardList layout={layout}>
-                {categories.map((category: CategoryT) => (
+                {categories.map((category: ICategory) => (
                     <Category
                         category={category}
                         key={category.id}

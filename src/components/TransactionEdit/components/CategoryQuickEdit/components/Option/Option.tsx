@@ -1,10 +1,7 @@
 import { FC, useCallback, useContext, useState } from 'react';
 import { Button } from '@mui/material';
 
-import type {
-    Matcher as MatcherT,
-    MatchType,
-} from '../../../../../../types/Matcher';
+import type { IMatcher, TMatchType } from '../../../../../../types/Matcher';
 
 import {
     tecWriteTransactions,
@@ -36,11 +33,11 @@ const Option: FC<IProps> = ({ category }) => {
     const [open, setOpen] = useState(false);
 
     const handleClose = useCallback(
-        (partialMatcher: Partial<MatcherT>) => {
-            const matcher: MatcherT = {
+        (partialMatcher: Partial<IMatcher>) => {
+            const matcher: IMatcher = {
                 id: '0',
                 match: partialMatcher.match as string,
-                match_type: partialMatcher.match_type as MatchType,
+                match_type: partialMatcher.match_type as TMatchType,
                 case_sensitive: partialMatcher.case_sensitive as
                     | boolean
                     | 0

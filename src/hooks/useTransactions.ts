@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Transaction } from '../types/Transaction.d';
+import type { ITransaction } from '../types/Transaction.d';
 
 import {
     getTransactionsEndDate,
@@ -48,7 +48,7 @@ const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
         let sDate = dayjs(fromDate);
         const eDate = dayjs(toDate);
 
-        const transactionList: Transaction[] = [];
+        const transactionList: ITransaction[] = [];
         const values: number[] = [];
 
         dispatch(

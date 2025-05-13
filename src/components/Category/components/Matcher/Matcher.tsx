@@ -19,7 +19,7 @@ import APIService from '../../../../services/APIService';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { Matcher as MatcherT } from '../../../../types/Matcher.d';
+import { IMatcher } from '../../../../types/Matcher.d';
 
 import EditMatcher from '../EditMatcher';
 
@@ -41,7 +41,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const handleSubmit = (_matcher: Partial<MatcherT>) => {
+    const handleSubmit = (_matcher: Partial<IMatcher>) => {
         const request = async () => {
             try {
                 const response = await APIService.updateSingleMatcher(
@@ -87,6 +87,8 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 return 'Category.matchMessages.end';
             case 'start':
                 return 'Category.matchMessages.start';
+            default:
+                return '';
         }
     }, [matcher?.match_type]);
 

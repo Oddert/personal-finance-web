@@ -3,8 +3,8 @@ import { put } from 'redux-saga/effects';
 
 import APIService from '../../services/APIService';
 
-import type { Category } from '../../types/Category.d';
-import type { Matcher } from '../../types/Matcher.d';
+import type { ICategory } from '../../types/Category.d';
+import type { IMatcher } from '../../types/Matcher.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
 import { createSingleMatcher } from '../slices/categorySlice';
@@ -17,11 +17,11 @@ import { intakeError } from '../thunks/errorThunks';
 export default function* matcherCreateSingleSaga({
     payload,
 }: PayloadAction<{
-    matcher: Partial<Matcher>;
-    categoryId: Category['id'];
+    matcher: Partial<IMatcher>;
+    categoryId: ICategory['id'];
 }>) {
     try {
-        const response: IStandardResponse<{ matcher: Matcher }> =
+        const response: IStandardResponse<{ matcher: IMatcher }> =
             yield APIService.addSingleMatcher(
                 payload.matcher,
                 payload.categoryId,

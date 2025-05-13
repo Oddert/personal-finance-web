@@ -3,8 +3,8 @@ import { TFunction } from 'i18next';
 
 import { Box } from '@mui/material';
 
-import type { Transaction } from '../types/Transaction.d';
-import type { Category } from '../types/Category.d';
+import type { ITransaction } from '../types/Transaction.d';
+import type { ICategory } from '../types/Category.d';
 import type { CategoryState } from '../redux/slices/categorySlice';
 
 import useLocalisedNumber from '../hooks/useLocalisedNumber';
@@ -18,7 +18,7 @@ import { createReadableNumber } from './commonUtils';
  * @returns The transactions with mapped category.
  */
 export const mapCategoriesToTransactions = (
-    transactions: Transaction[],
+    transactions: ITransaction[],
     orderedCategories: CategoryState['orderedData']['byId'],
 ) => {
     const mappedTransactions = transactions.map((transaction) => {
@@ -41,11 +41,11 @@ export const mapCategoriesToTransactions = (
  * @param transactions The transactions to sort.
  * @returns The transactions ordered by category and by date (year, month).
  */
-export const orderTransactions = (transactions: Transaction[]) => {
+export const orderTransactions = (transactions: ITransaction[]) => {
     const orderedByDate: {
-        [year: string]: { [month: number]: Transaction[] };
+        [year: string]: { [month: number]: ITransaction[] };
     } = {};
-    const orderedByCategory: { [category: number | string]: Transaction[] } = {
+    const orderedByCategory: { [category: number | string]: ITransaction[] } = {
         default: [],
     };
 
@@ -81,7 +81,7 @@ export const orderTransactions = (transactions: Transaction[]) => {
  * @param cell The column cell from react table.
  * @returns A container with the formatted text.
  */
-export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
+export const addCurrencySymbol = (cell: CellContext<ITransaction, unknown>) => {
     const rawValue = createReadableNumber(cell.renderValue(), 0);
     const value = Number(rawValue);
     const { currencyLocaliser } = useLocalisedNumber();
@@ -98,7 +98,7 @@ export const addCurrencySymbol = (cell: CellContext<Transaction, unknown>) => {
 export const transactionColumns = (
     language: string,
     t: TFunction<'translation', undefined>,
-): ColumnDef<Transaction>[] => [
+): ColumnDef<ITransaction>[] => [
     {
         header: t('literals.Date'),
         accessorKey: 'date',
@@ -133,7 +133,7 @@ export const transactionColumns = (
         header: t('literals.Category'),
         accessorKey: 'assignedCategory',
         cell: (cell) => {
-            const value: Category | unknown = cell.renderValue();
+            const value: ICategory | unknown = cell.renderValue();
             if (value && typeof value === 'object' && 'label' in value) {
                 return value.label;
             }

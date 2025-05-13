@@ -6,8 +6,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button, CircularProgress } from '@mui/material';
 
-import { Category } from '../../../../types/Category.d';
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ICategory } from '../../../../types/Category.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 import { TransactionEditContext } from '../../../../contexts/transactionEditContext';
 
@@ -56,12 +56,12 @@ const Submit: FC<IProps> = ({ onClose }) => {
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const stagedTemp = filteredTransactions.map((transaction) => {
-            const formattedTransaction: Partial<Transaction> = {
+            const formattedTransaction: Partial<ITransaction> = {
                 assignedCategory:
                     (transaction[
                         columnMap.assignedCategory
-                    ] as Category | null) ||
-                    (transaction.assignedCategory as Category | null) ||
+                    ] as ICategory | null) ||
+                    (transaction.assignedCategory as ICategory | null) ||
                     undefined,
                 ballance:
                     (transaction[columnMap.ballance] as number) ||

@@ -3,7 +3,7 @@ import { put } from 'redux-saga/effects';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import type { IStandardResponse } from '../../types/Request.d';
-import type { Category } from '../../types/Category.d';
+import type { ICategory } from '../../types/Category.d';
 
 import APIService from '../../services/APIService';
 
@@ -17,10 +17,10 @@ import { createCategory } from '../slices/categorySlice';
 export default function* categoryCreateSaga({
     payload,
 }: PayloadAction<{
-    category: Partial<Category>;
+    category: Partial<ICategory>;
 }>): any {
     try {
-        const response: IStandardResponse<{ category: Category }> =
+        const response: IStandardResponse<{ category: ICategory }> =
             yield APIService.createCategory(payload.category);
 
         if (response.error || !response.payload) {

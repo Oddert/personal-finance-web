@@ -3,7 +3,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IBudget, IBudgetDatum, IBudgetRow } from '../types/Budget.types';
 import type { ICategoryBreakdown } from '../types/Category.d';
-import type { Transaction } from '../types/Transaction.d';
+import type { ITransaction } from '../types/Transaction.d';
 
 import { CategoryState } from '../redux/slices/categorySlice';
 
@@ -66,7 +66,7 @@ export const toEndMonthDayjs = (rawDate: string | Date | Dayjs) => {
  * @returns The combined categories and transactions.
  */
 export const createCategoryBreakdown = (
-    transactions: Transaction[],
+    transactions: ITransaction[],
     categoriesOrderedById: CategoryState['orderedData']['byId'],
     includeEmptyCategories = false,
 ) => {

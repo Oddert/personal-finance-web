@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
 import { Circle as IconDot } from '@mui/icons-material';
 
-import { Category } from '../../../../../../types/Category.d';
+import type { ICategory } from '../../../../../../types/Category.d';
 
 import { getCategoryOrderedDataById } from '../../../../../../redux/selectors/categorySelectors';
 
@@ -39,7 +39,7 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
 
     const options = useMemo(
         () =>
-            Object.entries(categories as { [id: string]: Category }).map(
+            Object.entries(categories as { [id: string]: ICategory }).map(
                 ([id, category]) => ({
                     id,
                     label: category.label,

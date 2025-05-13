@@ -18,7 +18,7 @@ import {
 import { ExpandMore as IconExpand } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import type { Transaction } from '../../types/Transaction.d';
+import type { ITransaction } from '../../types/Transaction.d';
 
 import useTransactions from '../../hooks/useTransactions';
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
@@ -54,7 +54,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [debitData, setDebitData] = useState<
         { x: number | string; y: number }[]
     >([]);
-    const [debitTransactions, setDebitTransactions] = useState<Transaction[]>(
+    const [debitTransactions, setDebitTransactions] = useState<ITransaction[]>(
         [],
     );
     const [creditData, setCreditData] = useState<
@@ -81,7 +81,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                     debit: { x: number | string; y: number }[];
                     credit: { x: number | string; y: number }[];
                     debitMax: number;
-                    debitTransactions: Transaction[];
+                    debitTransactions: ITransaction[];
                 },
                 transaction,
             ) => {

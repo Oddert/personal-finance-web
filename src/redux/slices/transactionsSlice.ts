@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Transaction } from '../../types/Transaction.d';
+import type { ITransaction } from '../../types/Transaction.d';
 
 dayjs.extend(localizedFormat);
 
@@ -20,17 +20,17 @@ export interface TransactionState {
     orderedData: {
         byDate: {
             [year: string]: {
-                [month: number]: Transaction[];
+                [month: number]: ITransaction[];
             };
         };
         byCategory: {
-            [category: number]: Transaction[];
+            [category: number]: ITransaction[];
         };
     };
     startDate: number;
     startDateReadable: string | null;
     refreshed: string | null;
-    response: Transaction[];
+    response: ITransaction[];
 }
 
 const initialState: TransactionState = {

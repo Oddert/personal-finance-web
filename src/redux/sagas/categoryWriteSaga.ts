@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import type { Category } from '../../types/Category.d';
+import type { ICategory } from '../../types/Category.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
 import APIService from '../../services/APIService';
@@ -15,7 +15,7 @@ import { writeCategories } from '../slices/categorySlice';
 export default function* categoryWriteSaga() {
     try {
         const categoriesResponse: IStandardResponse<{
-            categories: Category[];
+            categories: ICategory[];
         }> = yield call(APIService.getAllCategoriesWithMatchers);
 
         const categories = categoriesResponse?.payload?.categories || [];

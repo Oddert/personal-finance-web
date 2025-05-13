@@ -40,7 +40,7 @@ import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
-import type { Transaction } from '../../types/Transaction.d';
+import type { ITransaction } from '../../types/Transaction.d';
 
 import {
     chart1BaseOptions,
@@ -131,7 +131,7 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
 
     useEffect(() => {
         const monthSets = Object.values(transactions).reduce(
-            (acc: Transaction[][], yearObj) => {
+            (acc: ITransaction[][], yearObj) => {
                 const months = Object.values(yearObj);
                 return [...acc, ...months];
             },

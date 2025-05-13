@@ -3,7 +3,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import userEvent from '@testing-library/user-event';
 
-import { Category as ICategory } from '../../types/Category.d';
+import type { ICategory } from '../../types/Category.d';
 
 import { act, customRenderer, screen, waitFor } from '../../utils/testUtils';
 
