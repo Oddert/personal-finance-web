@@ -38,7 +38,7 @@ export const budgetSlice = createSlice({
         },
         deleteBudget: (
             state,
-            { payload }: PayloadAction<{ budgetId: number }>,
+            { payload }: PayloadAction<{ budgetId: string }>,
         ) => {
             state.loaded = true;
             state.loading = false;

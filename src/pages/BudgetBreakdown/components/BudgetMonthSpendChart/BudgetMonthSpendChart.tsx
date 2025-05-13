@@ -50,7 +50,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({ filteredTransactions }) => {
 
     const series = useMemo(() => {
         const valuesLookup = value.reduce(
-            (acc: { [id: number]: boolean }, val) => {
+            (acc: { [id: string]: boolean }, val) => {
                 if (val?.categoryId) {
                     acc[val.categoryId] = true;
                 }

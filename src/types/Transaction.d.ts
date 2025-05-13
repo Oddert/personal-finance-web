@@ -6,15 +6,15 @@ import { Category } from './Category.d';
  */
 export declare interface Transaction {
     ballance: number;
-    cardId: number | null;
-    categoryId: number | null;
+    cardId: string | null;
+    categoryId: string | null;
     createdOn: string;
     credit: number;
     currency: string | null;
     date: number;
     debit: number;
     description: string;
-    id: number;
+    id: string;
     transactionType: string;
     updatedOn: string;
     assignedCategory?: Category;

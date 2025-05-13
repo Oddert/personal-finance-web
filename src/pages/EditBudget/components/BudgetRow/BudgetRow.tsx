@@ -56,7 +56,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
 
     const handleChangeCategory = (
         event: SyntheticEvent,
-        value: { id: number; label: string } | null,
+        value: { id: string; label: string } | null,
     ) => {
         const filteredRows = budgetRows.map((row) => {
             if (row.id === budgetRow.id && value) {

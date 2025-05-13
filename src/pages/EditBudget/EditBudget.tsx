@@ -2,6 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
+import { v4 as uuid } from 'uuid';
+
 import {
     Box,
     Button,
@@ -43,7 +45,7 @@ import { IBudgetRowEditable, IProps } from './EditBudget.types';
  * @param id The temporary ID.
  * @returns An empty budget row object.
  */
-const createEmptyBudget = (id: number): IBudget => ({
+const createEmptyBudget = (id: string): IBudget => ({
     id,
     name: '',
     shortDescription: '',
@@ -67,7 +69,7 @@ const EditBudget: FC<IProps> = () => {
 
     const [loading, setLoading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
-    const [budget, setBudget] = useState<IBudget>(createEmptyBudget(-1));
+    const [budget, setBudget] = useState<IBudget>(createEmptyBudget('-1'));
     const [budgetRows, setBudgetRows] = useState<IBudgetRowEditable[]>([]);
 
     const location = useLocation();
@@ -112,7 +114,7 @@ const EditBudget: FC<IProps> = () => {
 
     useEffect(() => {
         try {
-            const fetchBudget = async (budgetId: number) => {
+            const fetchBudget = async (budgetId: string) => {
                 const response = await APIService.getSingleBudget(budgetId);
                 if (!response || !response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
@@ -133,7 +135,7 @@ const EditBudget: FC<IProps> = () => {
                 setLoading(false);
             };
             if ('budgetId' in params) {
-                fetchBudget(Number(params.budgetId));
+                fetchBudget(String(params.budgetId));
                 setIsEdit(true);
             } else {
                 if (
@@ -149,7 +151,7 @@ const EditBudget: FC<IProps> = () => {
                 }
                 const templateId = search[0].get('templateId');
                 if (templateId) {
-                    fetchBudget(Number(templateId));
+                    fetchBudget(String(templateId));
                     setIsEdit(false);
                 } else {
                     setLoading(false);
@@ -231,9 +233,9 @@ const EditBudget: FC<IProps> = () => {
                             setBudgetRows([
                                 ...budgetRows,
                                 {
-                                    id: budgetRows.length + 10,
+                                    id: uuid(),
                                     label: '',
-                                    categoryId: -1,
+                                    categoryId: '-1',
                                     value: 20,
                                     varLowPc: 10,
                                     varHighPc: 10,

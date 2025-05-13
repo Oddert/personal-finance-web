@@ -36,7 +36,7 @@ export const cardSlice = createSlice({
             state.loaded = false;
             state.loading = true;
         },
-        deleteCard: (state, { payload }: PayloadAction<{ cardId: number }>) => {
+        deleteCard: (state, { payload }: PayloadAction<{ cardId: string }>) => {
             state.loaded = true;
             state.loading = false;
             state.response = state.response.filter(

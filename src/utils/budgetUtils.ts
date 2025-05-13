@@ -141,7 +141,7 @@ export const createBudgetChartData = (
     numMonths = 1,
 ) => {
     const budgetRowsById = budget.budgetRows.reduce(
-        (acc: { [id: number]: IBudgetRow }, each) => {
+        (acc: { [id: string]: IBudgetRow }, each) => {
             acc[each.categoryId] = each;
             return acc;
         },
@@ -150,7 +150,7 @@ export const createBudgetChartData = (
 
     const chart = Object.entries(categoryBreakdown).reduce(
         (acc: IBudgetDatum[], [uid, categoryBd]) => {
-            const budgetDatum = budgetRowsById[Number(uid)];
+            const budgetDatum = budgetRowsById[uid];
             const normalisedValue = normaliseNum(categoryBd.value);
 
             if (budgetDatum?.value) {
@@ -159,7 +159,7 @@ export const createBudgetChartData = (
                 const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
                 acc.push({
                     budget: normaliseNum(budgetDatum.value * numMonths),
-                    categoryId: Number(uid),
+                    categoryId: uid,
                     categoryName: categoryBd.label,
                     colour: categoryBd.colour,
                     diffFloat,
@@ -170,7 +170,7 @@ export const createBudgetChartData = (
             } else {
                 acc.push({
                     budget: 0,
-                    categoryId: Number(uid),
+                    categoryId: uid,
                     categoryName: categoryBd.label,
                     colour: categoryBd.colour,
                     diffFloat: 0,

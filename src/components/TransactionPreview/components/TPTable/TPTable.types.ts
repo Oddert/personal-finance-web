@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 import { Transaction } from '../../../../types/Transaction.d';
 
 export interface IProps {
-    categoryId: number;
+    categoryId: string;
     endDate: Dayjs;
     startDate: Dayjs;
 }

@@ -38,7 +38,7 @@ const Option: FC<IProps> = ({ category }) => {
     const handleClose = useCallback(
         (partialMatcher: Partial<MatcherT>) => {
             const matcher: MatcherT = {
-                id: 0,
+                id: '0',
                 match: partialMatcher.match as string,
                 match_type: partialMatcher.match_type as MatchType,
                 case_sensitive: partialMatcher.case_sensitive as

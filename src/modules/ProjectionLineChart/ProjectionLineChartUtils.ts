@@ -2,7 +2,7 @@ import { ApexOptions } from 'apexcharts';
 
 // temp file used for privacy, swap for ../../constants/projectionConstants.ts
 import {
-    defaultScenario,
+    defaultScenario2,
     newBike,
     scenarioTrimFat,
     bonus,
@@ -21,7 +21,7 @@ defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3);
 defaultEndConstructor.setDate(0);
 export const defaultEnd = new Date(defaultEndConstructor);
 
-export const scenarios = [defaultScenario, scenarioTrimFat, newBike, bonus];
+export const scenarios = [defaultScenario2, scenarioTrimFat, newBike, bonus];
 export const scenarioOptions = scenarios.map((scenario) => ({
     label: scenario.title,
     id: scenario.id,

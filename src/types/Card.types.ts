@@ -1,7 +1,7 @@
 export type ICardTypes = 'OTHER' | 'DEBIT' | 'CREDIT';
 
 export interface ICard {
-    id: number;
+    id: string;
     isDefault: boolean;
     cardName: string;
     cardType: ICardTypes;

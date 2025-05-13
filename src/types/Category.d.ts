@@ -5,7 +5,7 @@ import { Matcher } from './Matcher.d';
  * @category Global Types
  */
 export declare interface Category {
-    id: number;
+    id: string;
     label: string;
     description: string;
     colour: string;

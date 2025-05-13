@@ -10,7 +10,7 @@ export interface IProps {
 }
 
 export interface IAgDataAccumulator {
-    [categoryId: number]: {
+    [categoryId: string]: {
         name: string;
         data: { x: number; y: number }[];
     };

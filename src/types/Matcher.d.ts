@@ -9,7 +9,7 @@ export declare type MatchType = 'exact' | 'start' | 'end' | 'any';
  * @category Global Types
  */
 export declare interface Matcher {
-    id: number;
+    id: string;
     match: string;
     match_type: MatchType;
     case_sensitive: boolean | 1 | 0;

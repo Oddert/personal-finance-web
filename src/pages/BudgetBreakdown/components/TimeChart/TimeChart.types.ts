@@ -10,12 +10,12 @@ export interface IProps {
 
 export interface ISortedByCategoryRow {
     label: string;
-    id: number;
+    id: string;
     transactions: {
-        [key: number]: Transaction[];
+        [key: string]: Transaction[];
     };
 }
 
 export interface ISortedByCategory {
-    [key: number]: ISortedByCategoryRow;
+    [key: string]: ISortedByCategoryRow;
 }

@@ -124,7 +124,7 @@ const APIService = Object.freeze({
     getAllTransactionsWithinRange: async (
         startDate: number,
         endDate: number,
-        activeCardId: number | null,
+        activeCardId: string | null,
     ) => {
         const from = `?from=${new Date(startDate).toISOString()}`;
         const to = `&to=${new Date(endDate).toISOString()}`;
@@ -215,7 +215,7 @@ const APIService = Object.freeze({
      * @param matcherId The ID of the Matcher to delete.
      * @returns The ID of the Matcher, confirming the delete.
      */
-    deleteSingleMatcher: async (matcherId: number | string) => {
+    deleteSingleMatcher: async (matcherId: string) => {
         const response: IStandardResponse<{ deleted: number }> =
             await request.delete(`/matcher/${matcherId}`);
         return response;
@@ -251,7 +251,7 @@ const APIService = Object.freeze({
      * @param budgetId The partial Budget to delete.
      * @returns The ID of the budget, confirming the delete.
      */
-    deleteSingleBudget: async (budgetId: number) => {
+    deleteSingleBudget: async (budgetId: string) => {
         const response: IStandardResponse<null> = await request.delete(
             `/budget/${budgetId}`,
         );
@@ -273,7 +273,7 @@ const APIService = Object.freeze({
      * @param budgetId The ID of the Budget to request.
      * @returns The Budget.
      */
-    getSingleBudget: async (budgetId: number) => {
+    getSingleBudget: async (budgetId: string) => {
         const response: IStandardResponse<{ budget: IBudget }> =
             await request.get(`/budget/${budgetId}`);
         return response;
@@ -282,7 +282,7 @@ const APIService = Object.freeze({
      * Updates the user preferences to set a new default (active) Budget.
      * @param budgetId The Budget ID to set as default.
      */
-    setBudgetPreference: async (budgetId: number) => {
+    setBudgetPreference: async (budgetId: string) => {
         const response: IStandardResponse<null> = await request.put(
             `/budget/preferences/${budgetId}`,
         );
@@ -294,7 +294,7 @@ const APIService = Object.freeze({
      * @param budgetId The ID of the Budget.
      * @returns The updated Budget.
      */
-    updateSingleBudget: async (budget: IBudget, budgetId: number) => {
+    updateSingleBudget: async (budget: IBudget, budgetId: string) => {
         const response: IStandardResponse<{ budget: IBudget }> =
             await request.put(`/budget/${budgetId}`, budget);
         return response;
@@ -318,7 +318,7 @@ const APIService = Object.freeze({
      * @param cardId The partial Card to delete.
      * @returns The ID of the card, confirming the delete.
      */
-    deleteSingleCard: async (cardId: number) => {
+    deleteSingleCard: async (cardId: string) => {
         const response: IStandardResponse<null> = await request.delete(
             `/card/${cardId}`,
         );
@@ -340,7 +340,7 @@ const APIService = Object.freeze({
      * @param cardId The ID of the Card to request.
      * @returns The Card.
      */
-    getSingleCard: async (cardId: number) => {
+    getSingleCard: async (cardId: string) => {
         const response: IStandardResponse<{ card: ICard }> = await request.get(
             `/card/${cardId}`,
         );
@@ -350,7 +350,7 @@ const APIService = Object.freeze({
      * Updates the user preferences to set a new default (active) Card.
      * @param cardId The Card ID to set as default.
      */
-    setCardPreference: async (cardId: number) => {
+    setCardPreference: async (cardId: string) => {
         const response: IStandardResponse<null> = await request.put(
             `/card/preferences/${cardId}`,
         );
@@ -362,7 +362,7 @@ const APIService = Object.freeze({
      * @param cardId The ID of the Card.
      * @returns The updated Card.
      */
-    updateSingleCard: async (card: ICard, cardId: number) => {
+    updateSingleCard: async (card: ICard, cardId: string) => {
         const response: IStandardResponse<{ card: ICard }> = await request.put(
             `/card/${cardId}`,
             card,

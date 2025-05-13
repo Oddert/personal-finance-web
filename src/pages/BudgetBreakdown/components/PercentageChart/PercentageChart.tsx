@@ -30,7 +30,7 @@ const zoomDimensionsLookup: [
  * @component
  */
 const PercentageChart: FC<IProps> = ({ data, endDate, startDate }) => {
-    const [categoryId, setCategoryId] = useState(-1);
+    const [categoryId, setCategoryId] = useState('-1');
     const [open, setOpen] = useState(false);
     const [useFloat, setUseFloat] = useState(false);
     const [zoomDim, setZoomDim] = useState<{ height: number; width: number }>(
@@ -39,7 +39,7 @@ const PercentageChart: FC<IProps> = ({ data, endDate, startDate }) => {
 
     const ref = useRef<Element | null>(null);
 
-    const dataPointCallback = (nextCategoryId: number) => {
+    const dataPointCallback = (nextCategoryId: string) => {
         setOpen(true);
         setCategoryId(nextCategoryId);
     };

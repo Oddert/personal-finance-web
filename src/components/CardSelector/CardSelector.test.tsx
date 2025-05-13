@@ -19,7 +19,7 @@ describe('components/CardSelector', () => {
         const activeCard: ICard = {
             updatedOn: new Date().toISOString(),
             createdOn: new Date().toISOString(),
-            id: 1,
+            id: '1',
             isDefault: true,
             bankName: 'Bank of test ID 1',
             cardName: 'Card of default',
@@ -34,7 +34,7 @@ describe('components/CardSelector', () => {
         const inactiveCard: ICard = {
             updatedOn: new Date().toISOString(),
             createdOn: new Date().toISOString(),
-            id: 2,
+            id: '2',
             isDefault: true,
             bankName: 'Bank of test ID 2',
             cardName: 'Card of second choice',
@@ -80,7 +80,7 @@ describe('components/CardSelector', () => {
         const activeCard: ICard = {
             updatedOn: new Date().toISOString(),
             createdOn: new Date().toISOString(),
-            id: 1,
+            id: '1',
             isDefault: true,
             bankName: 'Bank of test ID 1',
             cardName: 'Card of default',
@@ -95,7 +95,7 @@ describe('components/CardSelector', () => {
         const inactiveCard: ICard = {
             updatedOn: new Date().toISOString(),
             createdOn: new Date().toISOString(),
-            id: 2,
+            id: '2',
             isDefault: true,
             bankName: 'Bank of test ID 2',
             cardName: 'Card of second choice',
@@ -141,7 +141,7 @@ describe('components/CardSelector', () => {
         const activeCard: ICard = {
             updatedOn: new Date().toISOString(),
             createdOn: new Date().toISOString(),
-            id: 1,
+            id: '1',
             isDefault: true,
             bankName: 'Bank of test ID 1',
             cardName: 'Card of default',
@@ -156,7 +156,7 @@ describe('components/CardSelector', () => {
         const inactiveCard: ICard = {
             updatedOn: new Date().toISOString(),
             createdOn: new Date().toISOString(),
-            id: 2,
+            id: '2',
             isDefault: true,
             bankName: 'Bank of test ID 2',
             cardName: 'Card of second choice',
