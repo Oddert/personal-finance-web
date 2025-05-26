@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 
 import authReducer from '../slices/authSlice';
@@ -13,24 +13,31 @@ import rootSaga from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        budget: budgetReducer,
-        card: cardReducer,
-        category: categoryReducer,
-        error: errorReducer,
-        profile: profileReducer,
-        transaction: transactionReducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(sagaMiddleware),
+const rootReducer = combineReducers({
+    auth: authReducer,
+    budget: budgetReducer,
+    card: cardReducer,
+    category: categoryReducer,
+    error: errorReducer,
+    profile: profileReducer,
+    transaction: transactionReducer,
 });
+
+export const setupStore = (preloadedState?: Partial<RootState>) => {
+    return configureStore({
+        preloadedState,
+        reducer: rootReducer,
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(sagaMiddleware),
+    });
+};
+
+const store = setupStore();
 
 sagaMiddleware.run(rootSaga);
 
 export default store;
 
-export type RootState = ReturnType<typeof store.getState>;
-
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof setupStore>;

@@ -25,7 +25,10 @@ const ActiveCard: FC<IProps> = () => {
                 alignItems: 'center',
             }}
         >
-            <FormLabel sx={{ minWidth: '75px', textAlign: 'left' }}>
+            <FormLabel
+                data-testid='components-ActiveCard__title'
+                sx={{ minWidth: '75px', textAlign: 'left' }}
+            >
                 {t('literals.Card')}:
             </FormLabel>
             <CardSelector refreshTransactions sx={{ width: '100%' }} />

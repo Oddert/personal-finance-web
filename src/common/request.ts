@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-import router, { ROUTES } from '../constants/routerConstants';
-
 import { AuthLSService } from '../services/AuthLSService';
 
 import { getServerURL } from '../utils/requestUtils';
+
+import store from '../redux/constants/store';
+import { refreshAuthentication } from '../redux/thunks/authThunks';
 
 const baseURL = getServerURL();
 
@@ -37,7 +38,7 @@ request.interceptors.response.use(
     },
     (error) => {
         if (error.status === 401) {
-            router.navigate(ROUTES.LOGIN);
+            store.dispatch(refreshAuthentication());
             return error;
         }
         if (error.status < 200 || error.status >= 300) {

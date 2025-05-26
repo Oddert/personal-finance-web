@@ -4,7 +4,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { ThemeProvider } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import store from './redux/constants/store';
 

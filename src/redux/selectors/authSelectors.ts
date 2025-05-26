@@ -18,3 +18,23 @@ export const getIsAuthenticated = createSelector(
     getAuthState,
     (authState) => authState.authenticated,
 );
+
+/**
+ * Returns true if the user-entered details are incorrect.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getIncorrectAuthDetails = createSelector(
+    getAuthState,
+    (authState) => authState.incorrectDetails,
+);
+
+/**
+ * Returns true if a request to the refresh token endpoint is pending.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getRefreshTokenPending = createSelector(
+    getAuthState,
+    (authState) => authState.refreshRequestInProgress,
+);
