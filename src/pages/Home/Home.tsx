@@ -1,5 +1,7 @@
-import React from 'react';
-import { Container } from '@mui/material';
+import { Container, Typography } from '@mui/material';
+
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { getUserFirstName } from '../../redux/selectors/authSelectors';
 
 import ExistingDataLineChart from '../../modules/ExistingDataLineChart';
 import ProjectionLineChart from '../../modules/ProjectionLineChart';
@@ -13,6 +15,7 @@ import ProjectionLineChart from '../../modules/ProjectionLineChart';
  * @subcategory Home
  */
 const Home = () => {
+    const firstName = useAppSelector(getUserFirstName);
     return (
         <Container
             sx={{
@@ -25,12 +28,12 @@ const Home = () => {
                 // gridAutoRows: '400px',
             }}
         >
-            {/* <Typography
+            <Typography
                 sx={{ gridColumn: '1/-1', textAlign: 'left' }}
                 variant='h2'
             >
-                Welcome, Robyn
-            </Typography> */}
+                Welcome {firstName}
+            </Typography>
             <ExistingDataLineChart compact />
             <ProjectionLineChart compact />
         </Container>

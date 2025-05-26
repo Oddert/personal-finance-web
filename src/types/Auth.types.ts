@@ -3,7 +3,8 @@ export interface IUser {
     createdOn: string;
     updatedOn: string;
     username: string;
-    displayName: string;
+    fistName: string;
+    lastName: string;
     languages: string;
     defaultLang: string;
     currencies: string;

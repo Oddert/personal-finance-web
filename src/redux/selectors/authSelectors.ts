@@ -38,3 +38,13 @@ export const getRefreshTokenPending = createSelector(
     getAuthState,
     (authState) => authState.refreshRequestInProgress,
 );
+
+/**
+ * Returns the logged in user's first name.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getUserFirstName = createSelector(
+    getAuthState,
+    (authState) => authState.user?.fistName,
+);
