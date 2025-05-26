@@ -216,10 +216,7 @@ const NewUser: FC = () => {
             </Box>
             <SubmitButton
                 loading={isSubmitting}
-                onSubmit={() => {
-                    console.log('handle submit');
-                    handleSubmit();
-                }}
+                onSubmit={() => handleSubmit()}
                 submitDisabled={isSubmitting}
                 success={false}
                 text={t('auth.signUp')}

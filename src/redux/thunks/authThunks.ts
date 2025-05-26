@@ -185,8 +185,6 @@ export const refreshAuthentication =
 
             if (response.status === 401 || response.status === 403) {
                 dispatch(userUnauthenticated());
-                console.log(response);
-                console.log('[srx/redux/thunks] authThunks 401 or 403 LOGIN');
                 router.navigate(
                     ROUTES_FACTORY.LOGIN(
                         `${window.location.pathname}${window.location.search}`,
@@ -197,7 +195,6 @@ export const refreshAuthentication =
             }
         } catch (error: any) {
             if (error.status === 401 || error.status === 403) {
-                console.log('[src/redux/thunks] authThunks try/catch LOGIN');
                 dispatch(userUnauthenticated());
                 router.navigate(createLoginAddrWithReturn());
             } else if (error.status === 404) {
@@ -232,7 +229,6 @@ export const checkAuth =
             }
         } catch (error: any) {
             if (error.status === 401 || error.status === 403) {
-                console.log('[src/redux/thunks] authThunks try/catch LOGIN');
                 dispatch(userUnauthenticated());
                 router.navigate(createLoginAddrWithReturn());
             } else if (error.status === 404) {

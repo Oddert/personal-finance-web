@@ -112,7 +112,6 @@ export const transactionEditReducer = (
     state: TransactionEditState,
     action: PayloadAction<any>,
 ) => {
-    console.log(action);
     switch (action.type) {
         case TransactionEditActionTypes.changeSelected:
             return {

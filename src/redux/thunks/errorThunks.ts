@@ -45,15 +45,11 @@ export const writeErrorBoundary =
  * @param errorArgs Message components to override defaults.
  */
 export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
-    console.log('[intakeError] error received');
-    console.log(error);
     try {
         if (error instanceof AxiosError) {
-            console.log('[intakeError] COND 1: Axios error identified');
             // Condition 1: If a network error is caught we want to extract specific network info for the user.
             // Condition 1.1: If the user's auth has expired, no error message is needed. The Axios instance will redirect to the login page.
             if (error.status === 401) {
-                console.log('[intakeError] COND 1.1: error.status is 401');
                 return;
             }
             // Condition 1.2: All other Axios errors.
@@ -61,9 +57,6 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
                 error?.response?.data &&
                 !/<\!DOCTYPE html>/.test(error.response.data)
             ) {
-                console.log(
-                    '[intakeError] COND 1.2.1: not a standard response',
-                );
                 // Condition 1.2.1: If the error is coming from our backend (request gets through at least), use our standard response format.
                 dispatch(
                     writeError(
@@ -84,9 +77,6 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
                     ),
                 );
             } else {
-                console.log(
-                    '[intakeError] COND 1.2.2: unable to interpret response, generic error.',
-                );
                 // Condition 1.2: If the request failed to reach our backend or an unhandled error occurs, use Axios's response info.
                 dispatch(
                     writeError(
@@ -108,7 +98,6 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
                 );
             }
         } else if (error instanceof Error) {
-            console.log('[intakeError] COND 2: Instance of Error');
             // Condition 2: Non network error but conforming to a standard JS error.
             dispatch(
                 writeError(
@@ -129,9 +118,6 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
                 ),
             );
         } else {
-            console.log(
-                '[intakeError] COND 3: Unable to infer anything about error, final default message',
-            );
             // Condition 3: No recognisable error format found.
             dispatch(
                 writeError({
