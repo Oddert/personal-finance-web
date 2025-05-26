@@ -152,7 +152,7 @@ const APIService = Object.freeze({
      * @returns The created Category.
      */
     createCategory: async (category: Partial<ICategory>) => {
-        const response: IStandardResponse<{ category: ICategory[] }> =
+        const response: IStandardResponse<{ category: ICategory }> =
             await request.post(`/category`, category);
         return response;
     },
