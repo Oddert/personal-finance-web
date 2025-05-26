@@ -32,14 +32,14 @@ const PercentageChartWrapper: FC<IProps> = ({
     useFloat,
     zoomDim,
 }) => {
-    const [categoryId, setCategoryId] = useState(-1);
+    const [categoryId, setCategoryId] = useState('-1');
     const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
     const [endDate, setEndDate] = useState<Dayjs>(defaultEnd);
     const [open, setOpen] = useState(false);
 
     const ref = useRef<Element | null>(null);
 
-    const dataPointCallback = (nextCategoryId: number) => {
+    const dataPointCallback = (nextCategoryId: string) => {
         setOpen(true);
         setCategoryId(nextCategoryId);
         setStartDate(toBeginningMonthDayjs(monthData.timestamp));

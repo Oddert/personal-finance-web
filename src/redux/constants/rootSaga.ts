@@ -30,15 +30,15 @@ export default function* rootSaga() {
         categoryUpdateSingleSaga,
     );
     yield takeEvery(
-        initDeleteSingleCategory({ categoryId: 0 }).type,
+        initDeleteSingleCategory({ categoryId: '' }).type,
         categoryDeleteSingleSaga,
     );
     yield takeEvery(
-        initCreateSingleMatcher({ categoryId: 0, matcher: {} }).type,
+        initCreateSingleMatcher({ categoryId: '', matcher: {} }).type,
         matcherCreateSingleSaga,
     );
     yield takeEvery(
-        initDeleteSingleMatcher({ categoryId: 0, matcherId: 0 }).type,
+        initDeleteSingleMatcher({ categoryId: '', matcherId: '' }).type,
         matcherDeleteSingleSaga,
     );
 }

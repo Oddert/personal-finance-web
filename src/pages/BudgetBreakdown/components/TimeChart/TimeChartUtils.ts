@@ -1,8 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Category } from '../../../../types/Category.d';
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ICategory } from '../../../../types/Category.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 import { ISortedByCategory, ISortedByCategoryRow } from './TimeChart.types';
 
@@ -10,16 +10,16 @@ dayjs.extend(localizedFormat);
 
 export const generateTimeChartSeries = (
     categories: {
-        [id: string]: Category;
+        [id: string]: ICategory;
     },
     endDate: Dayjs,
-    filteredTransactions: Transaction[],
+    filteredTransactions: ITransaction[],
     includeCredit: boolean,
     startDate: Dayjs,
 ) => {
     const dates: number[] = [];
-    const endDateJs = endDate;
-    let date = startDate;
+    const endDateJs = dayjs(endDate).startOf('date');
+    let date = dayjs(startDate).startOf('date');
 
     while (date.valueOf() <= endDateJs.valueOf()) {
         dates.push(date.valueOf());
@@ -39,7 +39,7 @@ export const generateTimeChartSeries = (
                         transactions: {},
                     };
                 }
-                const dateInt = dayjs(each.date).valueOf();
+                const dateInt = dayjs(each.date).startOf('date').valueOf();
                 if (!(dateInt in acc[each.categoryId].transactions)) {
                     acc[each.categoryId].transactions[dateInt] = [];
                 }

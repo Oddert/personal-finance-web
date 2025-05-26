@@ -115,10 +115,12 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {t('Budget.totalExpectedSpend')}: {expectedSpend}
+                    {t('Budget.totalExpectedSpend')}:{' '}
+                    {currencyLocaliser(expectedSpend)}
                 </Typography>
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {t('Budget.totalActualSpend')}: {actualSpend}
+                    {t('Budget.totalActualSpend')}:{' '}
+                    {currencyLocaliser(actualSpend)}
                 </Typography>
             </Paper>
             <Paper
@@ -130,7 +132,7 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 }}
             >
                 <Typography sx={{ fontSize: '1.3rem' }}>
-                    {spendDiff < 0 ? '-' : '+'} {currencyLocaliser(spendDiff)}{' '}
+                    {spendDiff < 0 ? '' : '+'} {currencyLocaliser(spendDiff)}{' '}
                     {spendDiff < 0 ? t('literals.bellow') : t('literals.above')}{' '}
                     {t('literals.budget')}
                 </Typography>

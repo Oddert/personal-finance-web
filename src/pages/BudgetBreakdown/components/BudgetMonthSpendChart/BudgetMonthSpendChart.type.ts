@@ -1,21 +1,17 @@
-import { Dayjs } from 'dayjs';
-
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 export interface IProps {
-    filteredTransactions: Transaction[];
-    endDate: Dayjs;
-    startDate: Dayjs;
+    filteredTransactions: ITransaction[];
 }
 
 export interface IMonthSpendCategory {
-    categoryId: number;
+    categoryId: string;
     categoryName: string;
     colour: string;
 }
 
 export interface IAllCategories {
-    [categoryId: number]: IMonthSpendCategory;
+    [categoryId: string]: IMonthSpendCategory;
 }
 
 export interface IAgDataAccumulator {
@@ -23,7 +19,7 @@ export interface IAgDataAccumulator {
     categoriesByDate: {
         [year: number]: {
             [month: number]: {
-                [categoryId: number | string]: {
+                [categoryId: string]: {
                     categoryName: string;
                     colour: string;
                     value: number;
@@ -34,13 +30,13 @@ export interface IAgDataAccumulator {
 }
 
 export interface ISeries {
-    categoryId: number;
+    categoryId: string;
     name: string;
     data: { x: string; y: number }[];
 }
 
 export interface IPivotAccumulator {
-    [categoryId: number]: ISeries;
+    [categoryId: string]: ISeries;
 }
 
 export interface ISPendChartCategory {
@@ -50,7 +46,7 @@ export interface ISPendChartCategory {
 }
 
 export interface ISPendChartMonth {
-    [categoryId: number | string]: ISPendChartCategory;
+    [categoryId: string]: ISPendChartCategory;
 }
 
 export interface ISpendChartYear {

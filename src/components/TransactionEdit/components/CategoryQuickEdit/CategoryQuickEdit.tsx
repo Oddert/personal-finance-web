@@ -51,12 +51,16 @@ const CategoryQuickEdit = () => {
             open={sideBarOpen}
             onClose={toggleDrawer(false)}
             elevation={10}
+            slotProps={{
+                backdrop: {
+                    onClick: toggleDrawer(false),
+                },
+            }}
             sx={(theme) => ({
                 minWidth: '10vw',
                 maxWidth: '50vw',
                 zIndex: theme.zIndex.appBar * 2,
             })}
-            ModalProps={{ onBackdropClick: toggleDrawer(false) }}
         >
             <AddCategory />
             <Box

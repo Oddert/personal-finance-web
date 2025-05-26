@@ -1,9 +1,9 @@
-import { Category } from '../../../../types/Category.d';
-import { Matcher } from '../../../../types/Matcher.d';
+import type { ICategory } from '../../../../types/Category.d';
+import { IMatcher } from '../../../../types/Matcher.d';
 
 export interface IProps {
-    categoryId: Category['id'];
+    categoryId: ICategory['id'];
     defaultOpen?: boolean;
-    matcher?: Partial<Matcher>;
-    onSubmit?: (matcher: Partial<Matcher>) => void;
+    matcher?: Partial<IMatcher>;
+    onSubmit?: (matcher: Partial<IMatcher>) => void;
 }

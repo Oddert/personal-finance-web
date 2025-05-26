@@ -57,7 +57,7 @@ export const intakeError = (error: any) => async (dispatch: AppDispatch) => {
                 error?.response?.data &&
                 !/<\!DOCTYPE html>/.test(error.response.data)
             ) {
-                // Condition 1.1: If the error is coming from our backend (request gets through at least), use our standard response format.
+                // Condition 1.2.1: If the error is coming from our backend (request gets through at least), use our standard response format.
                 dispatch(
                     writeError(
                         Object.assign(

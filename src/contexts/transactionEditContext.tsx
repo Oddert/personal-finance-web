@@ -112,7 +112,6 @@ export const transactionEditReducer = (
     state: TransactionEditState,
     action: PayloadAction<any>,
 ) => {
-    console.log(action);
     switch (action.type) {
         case TransactionEditActionTypes.changeSelected:
             return {
@@ -184,6 +183,19 @@ export const transactionEditReducer = (
                         ? {
                               ...transaction,
                               assignedCategory: action.payload.assignedCategory,
+                          }
+                        : transaction,
+                ),
+            };
+        case TransactionEditActionTypes.updateNumericValue:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? {
+                              ...transaction,
+                              [state.columnMap[action.payload.field]]:
+                                  action.payload.value,
                           }
                         : transaction,
                 ),

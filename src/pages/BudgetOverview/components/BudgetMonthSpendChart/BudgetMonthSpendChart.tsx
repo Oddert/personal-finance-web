@@ -1,9 +1,15 @@
-import { FC, useMemo } from 'react';
+import { FC, Fragment, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import { IAgDataAccumulator, IProps } from './BudgetMonthSpendChart.type';
+
+const budgetMonthSpendId = 'budget-month-spend';
 
 /**
  * Displays each budgets raw spend value across the date range.
@@ -16,106 +22,134 @@ import { IAgDataAccumulator, IProps } from './BudgetMonthSpendChart.type';
 const BudgetMonthSpendChart: FC<IProps> = ({
     chartList,
     endDate,
+    showFullDateRange,
     startDate,
 }) => {
-    const series = useMemo(() => {
-        const aggregatedData = chartList.reduce(
-            (acc: IAgDataAccumulator, monthData) => {
-                monthData.data.forEach((categoryData) => {
-                    if (!(categoryData.categoryId in acc)) {
-                        acc[categoryData.categoryId] = {
-                            name: categoryData.categoryName,
-                            data: [],
-                        };
-                    }
-                    acc[categoryData.categoryId].data.push({
-                        x: monthData.timestamp.valueOf(),
-                        y: categoryData.spend,
-                    });
-                });
-                return acc;
-            },
-            {},
-        );
+    const { t } = useTranslation();
 
-        return Object.values(aggregatedData);
-    }, [chartList]);
+    const series: { name: string; data: { x: number; y: number }[] }[] =
+        useMemo(() => {
+            const aggregatedData = chartList.reduce(
+                (acc: IAgDataAccumulator, monthData) => {
+                    monthData.data.forEach((categoryData) => {
+                        if (!(categoryData.categoryId in acc)) {
+                            acc[categoryData.categoryId] = {
+                                name: categoryData.categoryName,
+                                data: [],
+                            };
+                        }
+                        acc[categoryData.categoryId].data.push({
+                            x: monthData.timestamp.valueOf(),
+                            y: categoryData.spend,
+                        });
+                    });
+                    return acc;
+                },
+                {},
+            );
+
+            return Object.values(aggregatedData);
+        }, [chartList]);
+
+    const handleClickToggle = () => {
+        series.map((value) =>
+            ApexCharts.exec(budgetMonthSpendId, 'toggleSeries', value.name),
+        );
+    };
+
+    const { currencyLocaliser } = useLocalisedNumber();
 
     return (
-        <Box
-            sx={(theme) => ({
-                '& *': {
-                    color: theme.palette.common.black,
-                },
-            })}
-        >
-            <Chart
-                type='line'
-                height={500}
-                width={700}
-                options={{
-                    chart: {
-                        height: 500,
-                        type: 'area',
-                        stacked: true,
-                        zoom: {
-                            allowMouseWheelZoom: false,
-                        },
+        <Fragment>
+            <Box
+                sx={(theme) => ({
+                    '& *': {
+                        color: theme.palette.common.black,
                     },
-                    dataLabels: {
-                        enabled: false,
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            opacityFrom: 0.6,
-                            opacityTo: 0.8,
-                        },
-                    },
-                    stroke: {
-                        curve: 'straight',
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            },
-                            formatter: (val) => {
-                                return `${Math.floor(val)}%`;
+                })}
+            >
+                <Chart
+                    type='line'
+                    height={500}
+                    width={700}
+                    options={{
+                        chart: {
+                            id: budgetMonthSpendId,
+                            height: 500,
+                            type: 'line',
+                            zoom: {
+                                allowMouseWheelZoom: false,
                             },
                         },
-                    },
-                    xaxis: {
-                        type: 'datetime',
-                        labels: {
-                            style: {
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        fill: {
+                            type: 'solid',
+                        },
+                        grid: {
+                            show: true,
+                            strokeDashArray: 2,
+                            row: {
+                                opacity: 0.5,
+                            },
+                            xaxis: {
+                                lines: {
+                                    show: true,
+                                },
+                            },
+                        },
+                        legend: {
+                            labels: {
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(String(startDate)).getTime(),
-                        max: new Date(String(endDate)).getTime(),
-                    },
-                    tooltip: {
-                        x: {
-                            format: 'dd/MM/yy',
+                        markers: {
+                            size: 1,
                         },
-                        y: {
-                            formatter: (val) => {
-                                return val?.toFixed(2) || '';
+                        stroke: {
+                            curve: 'straight',
+                            width: 2,
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'dd/MM/yy',
+                            },
+                            y: {
+                                formatter: (val) => currencyLocaliser(val),
                             },
                         },
-                        shared: true,
-                    },
-                    legend: {
-                        labels: {
-                            colors: '#fff',
+                        xaxis: {
+                            type: 'datetime',
+                            labels: {
+                                style: {
+                                    colors: '#fff',
+                                },
+                            },
+                            min: showFullDateRange
+                                ? new Date(String(startDate)).getTime()
+                                : undefined,
+                            max: showFullDateRange
+                                ? new Date(String(endDate)).getTime()
+                                : undefined,
                         },
-                    },
-                }}
-                series={series}
-                // series={[{ name: 'food', data: [1, 2, 3] }]}
-            />
-        </Box>
+                        yaxis: {
+                            tickAmount: 20,
+                            labels: {
+                                style: {
+                                    colors: '#fff',
+                                },
+                                formatter: (val) => currencyLocaliser(val),
+                            },
+                        },
+                    }}
+                    series={series}
+                />
+            </Box>
+            <Button onClick={handleClickToggle} variant='contained'>
+                {t('buttons.toggleAllCategories')}
+            </Button>
+        </Fragment>
     );
 };
 

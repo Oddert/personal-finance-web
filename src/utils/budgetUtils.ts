@@ -3,7 +3,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IBudget, IBudgetDatum, IBudgetRow } from '../types/Budget.types';
 import type { ICategoryBreakdown } from '../types/Category.d';
-import type { Transaction } from '../types/Transaction.d';
+import type { ITransaction } from '../types/Transaction.d';
 
 import { CategoryState } from '../redux/slices/categorySlice';
 
@@ -66,7 +66,7 @@ export const toEndMonthDayjs = (rawDate: string | Date | Dayjs) => {
  * @returns The combined categories and transactions.
  */
 export const createCategoryBreakdown = (
-    transactions: Transaction[],
+    transactions: ITransaction[],
     categoriesOrderedById: CategoryState['orderedData']['byId'],
     includeEmptyCategories = false,
 ) => {
@@ -141,7 +141,7 @@ export const createBudgetChartData = (
     numMonths = 1,
 ) => {
     const budgetRowsById = budget.budgetRows.reduce(
-        (acc: { [id: number]: IBudgetRow }, each) => {
+        (acc: { [id: string]: IBudgetRow }, each) => {
             acc[each.categoryId] = each;
             return acc;
         },
@@ -150,7 +150,7 @@ export const createBudgetChartData = (
 
     const chart = Object.entries(categoryBreakdown).reduce(
         (acc: IBudgetDatum[], [uid, categoryBd]) => {
-            const budgetDatum = budgetRowsById[Number(uid)];
+            const budgetDatum = budgetRowsById[uid];
             const normalisedValue = normaliseNum(categoryBd.value);
 
             if (budgetDatum?.value) {
@@ -159,7 +159,7 @@ export const createBudgetChartData = (
                 const diffPc = normaliseNum((diffFloat / budgetValue) * 100);
                 acc.push({
                     budget: normaliseNum(budgetDatum.value * numMonths),
-                    categoryId: Number(uid),
+                    categoryId: uid,
                     categoryName: categoryBd.label,
                     colour: categoryBd.colour,
                     diffFloat,
@@ -170,7 +170,7 @@ export const createBudgetChartData = (
             } else {
                 acc.push({
                     budget: 0,
-                    categoryId: Number(uid),
+                    categoryId: uid,
                     categoryName: categoryBd.label,
                     colour: categoryBd.colour,
                     diffFloat: 0,

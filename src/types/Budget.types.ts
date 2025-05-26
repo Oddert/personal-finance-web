@@ -3,8 +3,8 @@
  * @category Global Types
  */
 export interface IBudgetRow {
-    id: number;
-    categoryId: number;
+    id: string;
+    categoryId: string;
     colour: string;
     label: string;
     value: number;
@@ -18,9 +18,9 @@ export interface IBudgetRow {
  */
 export interface IBudget {
     budgetRows: IBudgetRow[];
-    cardId: number | null;
+    cardId: string | null;
     createdOn: string;
-    id: number;
+    id: string;
     isDefault: boolean;
     longDescription: string;
     name: string;
@@ -36,7 +36,7 @@ export interface IBudget {
  */
 export interface IBudgetDatum {
     colour: string;
-    categoryId: number;
+    categoryId: string;
     categoryName: string;
     budget: number;
     spend: number;

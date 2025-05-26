@@ -192,8 +192,6 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(String(startDate)).getTime(),
-                        max: new Date(String(endDate)).getTime(),
                     },
                     yaxis: {
                         tickAmount: 10,

@@ -45,7 +45,7 @@ import { IProps } from './EditCard.types';
  * @param id The temporary ID.
  * @returns An empty card row object.
  */
-const createEmptyBudget = (id: number): ICard => ({
+const createEmptyBudget = (id: string): ICard => ({
     id,
     isDefault: false,
     cardName: '',
@@ -74,7 +74,7 @@ const EditBudget: FC<IProps> = () => {
 
     const [loading, setLoading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
-    const [card, setCard] = useState<ICard>(createEmptyBudget(-1));
+    const [card, setCard] = useState<ICard>(createEmptyBudget('-1'));
 
     const location = useLocation();
     const params = useParams();
@@ -117,7 +117,7 @@ const EditBudget: FC<IProps> = () => {
 
     useEffect(() => {
         try {
-            const fetchCard = async (cardId: number) => {
+            const fetchCard = async (cardId: string) => {
                 const response = await APIService.getSingleCard(cardId);
                 if (!response || !response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
@@ -126,7 +126,7 @@ const EditBudget: FC<IProps> = () => {
                 setLoading(false);
             };
             if ('cardId' in params) {
-                fetchCard(Number(params.cardId));
+                fetchCard(String(params.cardId));
                 setIsEdit(true);
             } else {
                 if (
@@ -142,7 +142,7 @@ const EditBudget: FC<IProps> = () => {
                 }
                 const templateId = search[0].get('templateId');
                 if (templateId) {
-                    fetchCard(Number(templateId));
+                    fetchCard(String(templateId));
                     setIsEdit(false);
                 } else {
                     setLoading(false);

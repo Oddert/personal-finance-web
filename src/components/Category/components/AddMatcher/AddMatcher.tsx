@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, ListItem, Tooltip } from '@mui/material';
 import { AddCircle as IconAdd } from '@mui/icons-material';
 
-import type { Matcher } from '../../../../types/Matcher.d';
+import type { IMatcher } from '../../../../types/Matcher.d';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
@@ -36,12 +36,11 @@ const AddMatcher: FC<IProps> = ({
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        console.log('setting default open: ', { defaultOpen });
         setOpen(defaultOpen);
     }, [defaultOpen]);
 
     const handleSubmit = useCallback(
-        (nextMatcher: Partial<Matcher>) => {
+        (nextMatcher: Partial<IMatcher>) => {
             const addMatcher = async () => {
                 dispatch(
                     initCreateSingleMatcher({
@@ -58,7 +57,6 @@ const AddMatcher: FC<IProps> = ({
         },
         [dispatch, categoryId, onSubmit],
     );
-    console.log({ open });
 
     if (open) {
         return (

@@ -2,13 +2,15 @@ import { put } from 'redux-saga/effects';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { Category } from '../../types/Category.d';
-import type { IStandardResponse } from '../../types/Request.d';
+import type { ICategory } from '../../types/Category.d';
+
+import { retry } from '../../utils/requestUtils';
 
 import APIService from '../../services/APIService';
 
-import { deleteSingleCategory } from '../slices/categorySlice';
 import { intakeError } from '../thunks/errorThunks';
+
+import { deleteSingleCategory } from '../slices/categorySlice';
 
 /**
  * Deletes a category and updates the state.
@@ -16,11 +18,14 @@ import { intakeError } from '../thunks/errorThunks';
 export default function* categoryDeleteSingleSaga({
     payload,
 }: PayloadAction<{
-    categoryId: Category['id'];
+    categoryId: ICategory['id'];
 }>): any {
     try {
-        const response: IStandardResponse<{ error?: string }> =
-            yield APIService.deleteSingleMatcher(payload.categoryId);
+        // const response: IStandardResponse<{ error?: string }> =
+        //     yield APIService.deleteSingleMatcher(payload.categoryId);
+        const response = yield retry<{ deleted: number }>(() =>
+            APIService.deleteSingleMatcher(payload.categoryId),
+        );
 
         if (response.error) {
             console.error(response?.payload?.error);

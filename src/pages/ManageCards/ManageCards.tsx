@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 
-import { IDynamicCardLayoutModes } from '../../types/Common.types';
+import { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
@@ -32,7 +32,7 @@ const ManageCards: FC<IProps> = () => {
 
     const dispatch = useAppDispatch();
 
-    const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
+    const [layout, setLayout] = useState<TDynamicCardLayoutModes>('standard');
 
     const cards = useAppSelector(getCardResponse);
 

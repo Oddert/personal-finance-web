@@ -38,7 +38,7 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
 
     useEffect(() => {
         setInternalValue(transaction[columnMap.description] as string);
-    }, [transaction]);
+    }, [columnMap, transaction]);
 
     const handleClickTitle = useCallback(
         (match: string) => {

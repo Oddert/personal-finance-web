@@ -1,7 +1,7 @@
-import type { Category } from '../../../../types/Category.d';
-import type { Matcher as MatcherT } from '../../../../types/Matcher.d';
+import type { ICategory } from '../../../../types/Category.d';
+import type { IMatcher } from '../../../../types/Matcher.d';
 
 export interface IProps {
-    matcher: MatcherT;
-    categoryId: Category['id'];
+    matcher: IMatcher;
+    categoryId: ICategory['id'];
 }

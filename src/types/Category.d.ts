@@ -1,17 +1,17 @@
-import { Matcher } from './Matcher.d';
+import { IMatcher } from './Matcher.d';
 
 /**
  * A single Category definition.
  * @category Global Types
  */
-export declare interface Category {
-    id: number;
+export declare interface ICategory {
+    id: string;
     label: string;
     description: string;
     colour: string;
     created_on: string;
     updated_on: string;
-    matchers: Matcher[];
+    matchers: IMatcher[];
 }
 
 /**

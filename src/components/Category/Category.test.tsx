@@ -3,7 +3,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import userEvent from '@testing-library/user-event';
 
-import { Category as ICategory } from '../../types/Category.d';
+import type { ICategory } from '../../types/Category.d';
 
 import { act, customRenderer, screen, waitFor } from '../../utils/testUtils';
 
@@ -14,7 +14,7 @@ dayjs.extend(localizedFormat);
 describe('components/Category', () => {
     test('Renders in standard layout with expected attributes', async () => {
         const category: ICategory = {
-            id: 1,
+            id: '1',
             label: 'Test Category label',
             description: 'Text Category desc',
             colour: '#ecf0f1',
@@ -24,7 +24,7 @@ describe('components/Category', () => {
                 {
                     case_sensitive: false,
                     created_on: new Date().toISOString(),
-                    id: 1,
+                    id: '1',
                     match: 'TESCO',
                     match_type: 'any',
                     updated_on: new Date().toISOString(),
@@ -54,7 +54,7 @@ describe('components/Category', () => {
     test('Allows the matchers to be viewed and hidden via a toggle', async () => {
         // NOTE: RTL error message "Warning: An update to Transition inside a test was not wrapped in act(...)"
         const category: ICategory = {
-            id: 1,
+            id: '1',
             label: 'Test Category label',
             description: 'Text Category desc',
             colour: '#ecf0f1',
@@ -64,7 +64,7 @@ describe('components/Category', () => {
                 {
                     case_sensitive: false,
                     created_on: new Date().toISOString(),
-                    id: 1,
+                    id: '1',
                     match: 'TESCO',
                     match_type: 'any',
                     updated_on: new Date().toISOString(),
@@ -110,7 +110,7 @@ describe('components/Category', () => {
     });
     test('Presents the add matcher form when the add matcher button is clicked', async () => {
         const category: ICategory = {
-            id: 1,
+            id: '1',
             label: 'Test Category label',
             description: 'Text Category desc',
             colour: '#ecf0f1',
@@ -120,7 +120,7 @@ describe('components/Category', () => {
                 {
                     case_sensitive: false,
                     created_on: new Date().toISOString(),
-                    id: 1,
+                    id: '1',
                     match: 'TESCO',
                     match_type: 'any',
                     updated_on: new Date().toISOString(),

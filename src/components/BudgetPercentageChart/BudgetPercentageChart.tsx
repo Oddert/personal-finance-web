@@ -38,7 +38,7 @@ const BudgetPercentageChart: FC<IProps> = ({
         return values.reduce(
             (
                 acc: {
-                    categoryIdsOrdered: number[];
+                    categoryIdsOrdered: string[];
                     seriesData: ISeriesDatum[];
                     seriesRef: IBudgetDatum[];
                 },

@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { Category } from '../../types/Category.d';
-import { Matcher } from '../../types/Matcher.d';
+import { ICategory } from '../../types/Category.d';
+import { IMatcher } from '../../types/Matcher.d';
 
 /**
  * Redux state key for 'category'
@@ -11,10 +11,10 @@ import { Matcher } from '../../types/Matcher.d';
 export interface CategoryState {
     loading: boolean;
     queried: boolean;
-    response: Category[];
+    response: ICategory[];
     orderedData: {
-        byId: { [id: string]: Category };
-        byLabel: { [label: string]: Category };
+        byId: { [id: string]: ICategory };
+        byLabel: { [label: string]: ICategory };
     };
 }
 
@@ -41,7 +41,7 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                categories: Category[];
+                categories: ICategory[];
                 orderedData: CategoryState['orderedData'];
             }>,
         ) => {
@@ -56,7 +56,7 @@ export const categorySlice = createSlice({
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
             }: PayloadAction<{
-                category: Partial<Category>;
+                category: Partial<ICategory>;
             }>,
         ) => {
             state.loading = true;
@@ -66,7 +66,7 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                category: Category;
+                category: ICategory;
             }>,
         ) => {
             const category = payload.category;
@@ -81,7 +81,7 @@ export const categorySlice = createSlice({
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
             }: PayloadAction<{
-                category: Partial<Category>;
+                category: Partial<ICategory>;
             }>,
         ) => {
             state.loading = true;
@@ -91,7 +91,7 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                category: Category;
+                category: ICategory;
             }>,
         ) => {
             state.orderedData.byId[payload.category.id] = {
@@ -117,7 +117,7 @@ export const categorySlice = createSlice({
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
+                categoryId: ICategory['id'];
             }>,
         ) => {
             state.loading = true;
@@ -127,7 +127,7 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
+                categoryId: ICategory['id'];
             }>,
         ) => {
             const categoryId = payload.categoryId;
@@ -146,8 +146,8 @@ export const categorySlice = createSlice({
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
-                matcher: Partial<Matcher>;
+                categoryId: ICategory['id'];
+                matcher: Partial<IMatcher>;
             }>,
         ) => {
             state.loading = true;
@@ -157,8 +157,8 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
-                matcher: Matcher;
+                categoryId: ICategory['id'];
+                matcher: IMatcher;
             }>,
         ) => {
             const updatedCategory = {
@@ -186,8 +186,8 @@ export const categorySlice = createSlice({
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
-                matcher: Partial<Matcher>;
+                categoryId: ICategory['id'];
+                matcher: Partial<IMatcher>;
             }>,
         ) => {
             state.loading = true;
@@ -197,8 +197,8 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
-                matcher: Matcher;
+                categoryId: ICategory['id'];
+                matcher: IMatcher;
             }>,
         ) => {
             const updatedMatchers = state.orderedData.byId[
@@ -231,8 +231,8 @@ export const categorySlice = createSlice({
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
             }: PayloadAction<{
-                matcherId: Matcher['id'];
-                categoryId: Category['id'];
+                matcherId: IMatcher['id'];
+                categoryId: ICategory['id'];
             }>,
         ) => {
             state.loading = true;
@@ -242,8 +242,8 @@ export const categorySlice = createSlice({
             {
                 payload,
             }: PayloadAction<{
-                categoryId: Category['id'];
-                matcherId: Matcher['id'];
+                categoryId: ICategory['id'];
+                matcherId: IMatcher['id'];
             }>,
         ) => {
             const updatedMatchers = state.orderedData.byId[

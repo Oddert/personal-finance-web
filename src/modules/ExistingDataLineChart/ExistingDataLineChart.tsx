@@ -18,7 +18,7 @@ import {
 import { ExpandMore as IconExpand } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import type { Transaction } from '../../types/Transaction.d';
+import type { ITransaction } from '../../types/Transaction.d';
 
 import useTransactions from '../../hooks/useTransactions';
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
@@ -54,7 +54,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     const [debitData, setDebitData] = useState<
         { x: number | string; y: number }[]
     >([]);
-    const [debitTransactions, setDebitTransactions] = useState<Transaction[]>(
+    const [debitTransactions, setDebitTransactions] = useState<ITransaction[]>(
         [],
     );
     const [creditData, setCreditData] = useState<
@@ -81,7 +81,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                     debit: { x: number | string; y: number }[];
                     credit: { x: number | string; y: number }[];
                     debitMax: number;
-                    debitTransactions: Transaction[];
+                    debitTransactions: ITransaction[];
                 },
                 transaction,
             ) => {
@@ -153,7 +153,6 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label={t('Start date')}
                         name='startDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -163,7 +162,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         showDaysOutsideCurrentMonth
                         slotProps={{
                             toolbar: {
-                                toolbarFormat: 'ddd DD MMMM',
+                                toolbarFormat: 'ddd MMMM YYYY',
                                 hidden: false,
                             },
                         }}
@@ -183,7 +182,6 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
             <FormControlLabel
                 control={
                     <DatePicker
-                        label={t('End date')}
                         name='endDate'
                         onChange={(nextValue) => {
                             if (nextValue) {
@@ -193,7 +191,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                         showDaysOutsideCurrentMonth
                         slotProps={{
                             toolbar: {
-                                toolbarFormat: 'ddd DD MMMM',
+                                toolbarFormat: 'ddd MMMM YYYY',
                                 hidden: false,
                             },
                         }}
@@ -252,56 +250,68 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                     {Controls}
                 </Box>
             )}
-            <Chart
-                options={chart1Options}
-                series={[
-                    {
-                        name: 'Ballance',
-                        data: ballanceData,
-                    },
-                    // {
-                    //     name: 'Out',
-                    //     type: 'bar',
-                    //     data: debitData,
-                    // },
-                    // {
-                    //     name: 'Out',
-                    //     type: 'bar',
-                    //     data: creditData,
-                    // }
-                    // {
-                    //     name: 'Ballance',
-                    //     data: [
-                    //         { x: 'cat 1', y: 5 },
-                    //         { x: 'cat 2', y: 2 },
-                    //         { x: 'cat 3', y: 8 },
-                    //         { x: 'cat 4', y: 4 },
-                    //         { x: 'cat 5', y: 9 },
-                    //         { x: 'cat 6', y: 1 },
-                    //     ],
-                    // }
-                ]}
-                type='line'
-                width={width}
-                height='400px'
-            />
-            <Box sx={{ position: 'relative' }}>
+            <Box
+                sx={{
+                    '& .apexcharts-canvas': { margin: '0 auto' },
+                }}
+            >
                 <Chart
-                    options={chart2Options}
+                    options={chart1Options}
                     series={[
                         {
-                            name: t('Debit'),
-                            data: debitData,
+                            name: 'Ballance',
+                            data: ballanceData,
                         },
-                        {
-                            name: t('Credit'),
-                            data: creditData,
-                        },
+                        // {
+                        //     name: 'Out',
+                        //     type: 'bar',
+                        //     data: debitData,
+                        // },
+                        // {
+                        //     name: 'Out',
+                        //     type: 'bar',
+                        //     data: creditData,
+                        // }
+                        // {
+                        //     name: 'Ballance',
+                        //     data: [
+                        //         { x: 'cat 1', y: 5 },
+                        //         { x: 'cat 2', y: 2 },
+                        //         { x: 'cat 3', y: 8 },
+                        //         { x: 'cat 4', y: 4 },
+                        //         { x: 'cat 5', y: 9 },
+                        //         { x: 'cat 6', y: 1 },
+                        //     ],
+                        // }
                     ]}
-                    type='bar'
+                    type='line'
                     width={width}
-                    height='200px'
+                    height='400px'
                 />
+            </Box>
+            <Box sx={{ position: 'relative' }}>
+                <Box
+                    sx={{
+                        '& .apexcharts-canvas': { margin: '0 auto' },
+                    }}
+                >
+                    <Chart
+                        options={chart2Options}
+                        series={[
+                            {
+                                name: t('Debit'),
+                                data: debitData,
+                            },
+                            {
+                                name: t('Credit'),
+                                data: creditData,
+                            },
+                        ]}
+                        type='bar'
+                        width={width}
+                        height='200px'
+                    />
+                </Box>
             </Box>
         </Paper>
     );

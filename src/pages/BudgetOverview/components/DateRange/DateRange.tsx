@@ -39,11 +39,11 @@ const DateRange: FC<IProps> = ({
         (nextValue: Dayjs | null) => {
             if (nextValue) {
                 setStartDate(toBeginningMonthDayjs(nextValue));
-                setEndDate(toEndMonthDayjs(nextValue));
+                // setEndDate(toEndMonthDayjs(nextValue));
                 setDateError(null);
             }
         },
-        [setEndDate, setStartDate],
+        [setStartDate],
     );
 
     const handleChangeEndDate = useCallback(

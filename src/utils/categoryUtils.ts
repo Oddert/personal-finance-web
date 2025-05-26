@@ -1,4 +1,4 @@
-import { Category } from '../types/Category.d';
+import type { ICategory } from '../types/Category.d';
 
 import type { CategoryState } from '../redux/slices/categorySlice';
 
@@ -7,7 +7,7 @@ import type { CategoryState } from '../redux/slices/categorySlice';
  * @param categories The Categories to sort.
  * @returns The Categories sorted by ID and label.
  */
-export const sortCategories = (categories: Category[]) => {
+export const sortCategories = (categories: ICategory[]) => {
     const values = Object.values(categories);
     const orderedData = values.reduce(
         (accumulator: CategoryState['orderedData'], category) => {

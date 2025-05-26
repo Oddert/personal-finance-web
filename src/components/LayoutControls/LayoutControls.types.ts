@@ -1,6 +1,6 @@
-import { IDynamicCardLayoutModes } from '../../types/Common.types';
+import { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 export interface IProps {
-    layout: IDynamicCardLayoutModes;
-    setLayout: (value: IDynamicCardLayoutModes) => void;
+    layout: TDynamicCardLayoutModes;
+    setLayout: (value: TDynamicCardLayoutModes) => void;
 }

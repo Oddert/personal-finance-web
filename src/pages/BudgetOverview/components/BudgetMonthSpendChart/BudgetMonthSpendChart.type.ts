@@ -5,11 +5,12 @@ import { IBudgetOverviewChart } from '../../BudgetOverview.types';
 export interface IProps {
     chartList: IBudgetOverviewChart[];
     endDate: Dayjs;
+    showFullDateRange: boolean;
     startDate: Dayjs;
 }
 
 export interface IAgDataAccumulator {
-    [categoryId: number]: {
+    [categoryId: string]: {
         name: string;
         data: { x: number; y: number }[];
     };

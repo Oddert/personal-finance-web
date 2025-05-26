@@ -1,11 +1,15 @@
-import { FC, useMemo } from 'react';
+import { FC, Fragment, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
-// import dayjs from 'dayjs';
-// import localizedFormat from 'dayjs/plugin/localizedFormat'
 
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import type { IProps } from './TimeChart.types';
+
+const discrepancyTimeChartId = 'discrepancy-time-chart';
 
 /**
  * Area Chart component.
@@ -18,10 +22,15 @@ import type { IProps } from './TimeChart.types';
  * @param props.endDate The start date for the date range.
  * @param props.startDate The end date for the date range.
  */
-const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
-    const series = useMemo(() => {
-        chartList.map((chart) => [chart.data, chart.timestamp]);
+const TimeChart: FC<IProps> = ({
+    chartList,
+    endDate,
+    showFullDateRange,
+    startDate,
+}) => {
+    const { t } = useTranslation();
 
+    const series = useMemo(() => {
         interface IAccumulator {
             totalTimeList: number[];
             times: {
@@ -74,81 +83,106 @@ const TimeChart: FC<IProps> = ({ chartList, endDate, startDate }) => {
         return createdSeries;
     }, [chartList]);
 
+    const handleClickToggle = () => {
+        series.map((value) =>
+            ApexCharts.exec(discrepancyTimeChartId, 'toggleSeries', value.name),
+        );
+    };
+
+    const { currencyLocaliser } = useLocalisedNumber();
+
     return (
-        <Box
-            sx={(theme) => ({
-                '& *': {
-                    color: theme.palette.common.black,
-                },
-            })}
-        >
-            this one
-            <Chart
-                type='area'
-                height={500}
-                width={700}
-                options={{
-                    chart: {
-                        height: 500,
-                        type: 'area',
-                        stacked: true,
-                        zoom: {
-                            allowMouseWheelZoom: false,
-                        },
+        <Fragment>
+            <Box
+                sx={(theme) => ({
+                    '& *': {
+                        color: theme.palette.common.black,
                     },
-                    dataLabels: {
-                        enabled: false,
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            opacityFrom: 0.6,
-                            opacityTo: 0.8,
-                        },
-                    },
-                    stroke: {
-                        curve: 'straight',
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            },
-                            formatter(val) {
-                                return `${Math.floor(val)}%`;
+                })}
+            >
+                <Chart
+                    type='line'
+                    height={500}
+                    width={700}
+                    options={{
+                        chart: {
+                            id: discrepancyTimeChartId,
+                            height: 500,
+                            type: 'line',
+                            zoom: {
+                                allowMouseWheelZoom: false,
                             },
                         },
-                    },
-                    xaxis: {
-                        type: 'datetime',
-                        labels: {
-                            style: {
+                        dataLabels: {
+                            enabled: false,
+                        },
+                        fill: {
+                            type: 'solid',
+                        },
+                        grid: {
+                            show: true,
+                            strokeDashArray: 2,
+                            row: {
+                                opacity: 0.5,
+                            },
+                            xaxis: {
+                                lines: {
+                                    show: true,
+                                },
+                            },
+                        },
+                        legend: {
+                            labels: {
                                 colors: '#fff',
                             },
                         },
-                        min: new Date(String(startDate)).getTime(),
-                        max: new Date(String(endDate)).getTime(),
-                    },
-                    tooltip: {
-                        x: {
-                            format: 'dd/MM/yy',
+                        markers: {
+                            size: 1,
                         },
-                        y: {
-                            formatter(val) {
-                                return val?.toFixed(2) || '';
+                        stroke: {
+                            curve: 'straight',
+                            width: 2,
+                        },
+                        tooltip: {
+                            x: {
+                                format: 'dd/MM/yy',
+                            },
+                            y: {
+                                formatter: (val) => currencyLocaliser(val),
+                            },
+                            shared: true,
+                        },
+                        xaxis: {
+                            type: 'datetime',
+                            labels: {
+                                style: {
+                                    colors: '#fff',
+                                },
+                            },
+                            min: showFullDateRange
+                                ? new Date(String(startDate)).getTime()
+                                : undefined,
+                            max: showFullDateRange
+                                ? new Date(String(endDate)).getTime()
+                                : undefined,
+                        },
+                        yaxis: {
+                            tickAmount: 16,
+                            labels: {
+                                style: {
+                                    colors: '#fff',
+                                },
+                                formatter: (val) => currencyLocaliser(val),
                             },
                         },
-                        shared: true,
-                    },
-                    legend: {
-                        labels: {
-                            colors: '#fff',
-                        },
-                    },
-                }}
-                series={series}
-            />
-        </Box>
+                    }}
+                    series={series}
+                />
+            </Box>
+            <Button onClick={handleClickToggle} variant='contained'>
+                {t('buttons.toggleAllCategories')}
+            </Button>
+        </Fragment>
     );
 };
 

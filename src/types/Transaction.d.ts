@@ -1,23 +1,23 @@
-import { Category } from './Category.d';
+import type { ICategory } from './Category.d';
 
 /**
  * A single transaction.
  * @category Global Types
  */
-export declare interface Transaction {
+export declare interface ITransaction {
     ballance: number;
-    cardId: number | null;
-    categoryId: number | null;
+    cardId: string | null;
+    categoryId: string | null;
     createdOn: string;
     credit: number;
     currency: string | null;
     date: number;
     debit: number;
     description: string;
-    id: number;
+    id: string;
     transactionType: string;
     updatedOn: string;
-    assignedCategory?: Category;
+    assignedCategory?: ICategory;
 }
 
 export type TTransactionKeys =

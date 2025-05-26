@@ -1,21 +1,21 @@
 import { Dayjs } from 'dayjs';
 
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 export interface IProps {
     endDate: Dayjs;
-    filteredTransactions: Transaction[];
+    filteredTransactions: ITransaction[];
     startDate: Dayjs;
 }
 
 export interface ISortedByCategoryRow {
     label: string;
-    id: number;
+    id: string;
     transactions: {
-        [key: number]: Transaction[];
+        [key: string]: ITransaction[];
     };
 }
 
 export interface ISortedByCategory {
-    [key: number]: ISortedByCategoryRow;
+    [key: string]: ISortedByCategoryRow;
 }

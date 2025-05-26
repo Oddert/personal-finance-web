@@ -7,8 +7,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import {
     Box,
     Checkbox,
+    Divider,
     FormControlLabel,
-    Paper,
     Typography,
 } from '@mui/material';
 
@@ -39,12 +39,15 @@ import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
 import TimeChart from './components/TimeChart';
 
+import TotalDiscrepancyChart from './components/TotalDiscrepancyChart';
+
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+import { ChartPaper } from './BudgetOverview.styles';
 
 dayjs.extend(localizedFormat);
 
 const defaultStart = toBeginningMonthDayjs(
-    String(dayjs().subtract(12, 'months')),
+    String(dayjs().subtract(3, 'months')),
 );
 const defaultEnd = toEndMonthDayjs(String(dayjs()));
 
@@ -69,6 +72,7 @@ const BudgetOverview: FC<IProps> = () => {
     const [startDate, setStartDate] = useState<Dayjs>(defaultStart);
     const [endDate, setEndDate] = useState<Dayjs>(defaultEnd);
     const [displayEmptyCats, setDisplayEmptyCats] = useState(true);
+    const [showFullDateRange, setShowFullDateRange] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const categories = useAppSelector(getCategoryOrderedDataById);
@@ -156,88 +160,87 @@ const BudgetOverview: FC<IProps> = () => {
                     setStartDate={setStartDate}
                     startDate={startDate}
                 />
-                <ActiveCard />
-                <ActiveBudget />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={displayEmptyCats}
-                            onClick={() =>
-                                setDisplayEmptyCats(!displayEmptyCats)
-                            }
-                        />
-                    }
-                    label={t('Budget.includeEmptyCategories')}
-                />
-                <PercentageCharts chartList={chartList} />
-                <Paper
-                    elevation={0}
+                <Divider />
+                <Box
                     sx={{
                         display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                        justifyContent: 'space-around',
-                        padding: '16px',
+                        gridGap: '64px',
+                        '& > *': { flex: 1 },
                     }}
                 >
+                    <ActiveCard />
+                    <ActiveBudget />
+                </Box>
+                <Box sx={{ display: 'flex', gridGap: '16px' }}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={displayEmptyCats}
+                                onClick={() =>
+                                    setDisplayEmptyCats(!displayEmptyCats)
+                                }
+                            />
+                        }
+                        label={t('Budget.includeEmptyCategories')}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={showFullDateRange}
+                                onChange={(event) =>
+                                    setShowFullDateRange(event.target.checked)
+                                }
+                            />
+                        }
+                        label={t('buttons.showFullDateRange')}
+                        title={t('Budget.showFullDateRangeTitle')}
+                    />
+                </Box>
+                <PercentageCharts chartList={chartList} />
+                <ChartPaper elevation={0}>
+                    <Typography>{t('Budget.totalDiscrepancyTitle')}</Typography>
+                    <TotalDiscrepancyChart
+                        chartList={chartList}
+                        endDate={endDate}
+                        showFullDateRange={showFullDateRange}
+                        startDate={startDate}
+                    />
+                </ChartPaper>
+                <ChartPaper elevation={0}>
                     <Typography>{t('Budget.monthSpendTitle')}</Typography>
                     <BudgetMonthSpendChart
                         chartList={chartList}
-                        startDate={startDate}
                         endDate={endDate}
+                        showFullDateRange={showFullDateRange}
+                        startDate={startDate}
                     />
-                </Paper>
-                <Paper
-                    elevation={0}
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                        justifyContent: 'space-around',
-                        padding: '16px',
-                    }}
-                >
+                </ChartPaper>
+                <ChartPaper elevation={0}>
                     <Typography>{t('Budget.aggregateSpendTitle')}</Typography>
                     <AggregateTimeChart
                         chartList={chartList}
                         endDate={endDate}
+                        showFullDateRange={showFullDateRange}
                         startDate={startDate}
                     />
-                </Paper>
-                <Paper
-                    elevation={0}
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-around',
-                        padding: '16px',
-                    }}
-                >
+                </ChartPaper>
+                <ChartPaper elevation={0}>
                     <Typography>{t('Budget.timeChartTitle')}</Typography>
                     <TimeChart
                         chartList={chartList}
                         endDate={endDate}
+                        showFullDateRange={showFullDateRange}
                         startDate={startDate}
                     />
-                </Paper>
-                <Paper
-                    elevation={0}
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-around',
-                        padding: '16px',
-                    }}
-                >
+                </ChartPaper>
+                <ChartPaper elevation={0}>
                     <Typography>{t('Budget.candleStickTitle')}</Typography>
                     <CandleStickChart
                         endDate={endDate}
                         startDate={startDate}
                         transactions={transactions}
                     />
-                </Paper>
+                </ChartPaper>
                 <BudgetPageToggle
                     endDate={endDate}
                     mode='overview'

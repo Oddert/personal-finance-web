@@ -1,5 +1,5 @@
-import type { Category } from '../../../../../../types/Category';
+import type { ICategory } from '../../../../../../types/Category';
 
 export interface IProps {
-    category: Category;
+    category: ICategory;
 }

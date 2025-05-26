@@ -6,10 +6,10 @@ import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import { createReadableNumber } from '../../../../utils/commonUtils';
 
-import { TransactionExtended } from './TPTable.types';
+import { ITransactionExtended } from './TPTable.types';
 
 export const addCurrencySymbol = (
-    cell: CellContext<TransactionExtended, unknown>,
+    cell: CellContext<ITransactionExtended, unknown>,
 ) => {
     const { currencyLocaliser } = useLocalisedNumber();
     const rawValue = createReadableNumber(cell.renderValue(), 0);
@@ -21,7 +21,7 @@ export const addCurrencySymbol = (
     );
 };
 
-export const debitCell = (cell: CellContext<TransactionExtended, unknown>) => {
+export const debitCell = (cell: CellContext<ITransactionExtended, unknown>) => {
     const { currencyLocaliser } = useLocalisedNumber();
     const value = cell.renderValue<number>();
     const ctx = cell.row.getValue<boolean>('outOfBounds');

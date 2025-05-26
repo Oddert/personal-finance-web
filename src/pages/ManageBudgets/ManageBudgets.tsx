@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 
-import type { IDynamicCardLayoutModes } from '../../types/Common.types';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 import { getBudgetResponse } from '../../redux/selectors/budgetSelectors';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
@@ -31,7 +31,7 @@ const ManageBudgets: FC<IProps> = () => {
 
     const dispatch = useAppDispatch();
 
-    const [layout, setLayout] = useState<IDynamicCardLayoutModes>('standard');
+    const [layout, setLayout] = useState<TDynamicCardLayoutModes>('standard');
 
     const budgets = useAppSelector(getBudgetResponse);
 

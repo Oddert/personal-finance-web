@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
-import { IDynamicCardLayoutModes } from '../../types/Common.types';
+import { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 export interface IProps {
     children: ReactNode[];
-    layout: IDynamicCardLayoutModes;
+    layout: TDynamicCardLayoutModes;
 }

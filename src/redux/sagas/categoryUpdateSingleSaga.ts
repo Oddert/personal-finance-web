@@ -1,10 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { put } from 'redux-saga/effects';
 
+import { retry } from '../../utils/requestUtils';
+
 import APIService from '../../services/APIService';
 
-import type { Category } from '../../types/Category.d';
-import type { IStandardResponse } from '../../types/Request.d';
+import type { ICategory } from '../../types/Category.d';
 
 import { updateSingleCategory } from '../slices/categorySlice';
 
@@ -14,11 +15,12 @@ import { updateSingleCategory } from '../slices/categorySlice';
 export default function* categoryUpdateSingleSaga({
     payload,
 }: PayloadAction<{
-    category: Partial<Category>;
+    category: Partial<ICategory>;
 }>): any {
     try {
-        const response: IStandardResponse<{ category: Category }> =
-            yield APIService.updateCategory(payload.category);
+        const response = yield retry<{ category: ICategory }>(() =>
+            APIService.updateCategory(payload.category),
+        );
 
         if (!response.payload?.category || response.error) {
             throw new Error(

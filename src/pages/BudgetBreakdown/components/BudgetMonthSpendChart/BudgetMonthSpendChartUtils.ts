@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Category } from '../../../../types/Category.d';
-import { Transaction } from '../../../../types/Transaction.d';
+import type { ICategory } from '../../../../types/Category.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 import {
     IAgDataAccumulator,
@@ -17,18 +17,18 @@ dayjs.extend(localizedFormat);
 
 export const generateMonthSpendData = (
     categories: {
-        [id: string]: Category;
+        [id: string]: ICategory;
     },
-    filteredTransactions: Transaction[],
+    filteredTransactions: ITransaction[],
 ): { series: ISeries[]; allCategories: IAllCategories } => {
     // Filter over all transactions in range and arrange them into sorted objects by year and month (as time series is month based).
     const { allCategories, categoriesByDate } = filteredTransactions.reduce(
         (acc: IAgDataAccumulator, transaction) => {
-            const date = dayjs(transaction.date);
+            const date = dayjs(transaction.date).startOf('date');
             const year = date.year();
             const month = date.month();
 
-            const foundCategory: Category | undefined =
+            const foundCategory: ICategory | undefined =
                 categories[transaction.categoryId || -1];
 
             if (foundCategory) {

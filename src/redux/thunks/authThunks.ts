@@ -37,6 +37,7 @@ export const handleAuthResponse =
             refreshToken: string;
             user: IUser;
         }>,
+        callback?: () => void,
     ) =>
     async (dispatch: AppDispatch) => {
         try {
@@ -67,6 +68,10 @@ export const handleAuthResponse =
                     user: response.payload.user,
                 }),
             );
+
+            if (callback) {
+                callback();
+            }
         } catch (error: any) {
             if (error.status === 404) {
                 dispatch(setIncorrectDetails());
@@ -159,7 +164,8 @@ export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
  * @subcategory Thunks
  */
 export const refreshAuthentication =
-    () => async (dispatch: AppDispatch, getState: () => RootState) => {
+    (callback?: () => void) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const refreshRequestPending = getRefreshTokenPending(getState());
 
@@ -185,7 +191,7 @@ export const refreshAuthentication =
                     ),
                 );
             } else {
-                dispatch(handleAuthResponse(response));
+                dispatch(handleAuthResponse(response, callback));
             }
         } catch (error: any) {
             if (error.status === 401 || error.status === 403) {
@@ -197,5 +203,38 @@ export const refreshAuthentication =
                 dispatch(intakeError(error));
             }
             dispatch(refreshTokenRequestFinished());
+        }
+    };
+
+/**
+ * Checks the current time against the user's auth token expiry and conditionally refreshes the auth.
+ *
+ * Intended to be dispatched frequently as a way of verifying the user's auth before a potential action which will result in a logout.
+ *
+ * By default it will attempt to refresh if the token if the current token is less than 1 minute from expiry. This can be overridden by the `margin` argument.
+ * @category Redux
+ * @subcategory Thunks
+ * @param margin Minimum time in milliseconds to the token's expiry.
+ */
+export const checkAuth =
+    (margin?: number) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+        try {
+            const state = getState();
+            if (
+                state.auth.accessTokenExpires <=
+                new Date().getTime() - (margin || 60_000)
+            ) {
+                dispatch(refreshAuthentication());
+            }
+        } catch (error: any) {
+            if (error.status === 401 || error.status === 403) {
+                dispatch(userUnauthenticated());
+                router.navigate(createLoginAddrWithReturn());
+            } else if (error.status === 404) {
+                dispatch(setIncorrectDetails());
+            } else {
+                dispatch(intakeError(error));
+            }
         }
     };

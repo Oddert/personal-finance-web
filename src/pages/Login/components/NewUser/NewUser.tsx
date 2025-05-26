@@ -54,6 +54,7 @@ const NewUser: FC = () => {
             displayName: '',
         },
         validate: (nextValues) => {
+            let errorsFound: boolean = false;
             const nextErrors: {
                 username: string;
                 password: string;
@@ -71,13 +72,18 @@ const NewUser: FC = () => {
             );
             if (passwordComparison) {
                 nextErrors.confPassword = passwordComparison;
+                errorsFound = true;
             }
             const pwdStrength = passwordStrength(nextValues.password);
             if (pwdStrength) {
                 nextErrors.password = pwdStrength;
+                errorsFound = true;
             }
 
-            return nextErrors;
+            if (errorsFound) {
+                return nextErrors;
+            }
+            return undefined;
         },
         onSubmit: (nextValues, formikBag) => {
             formikBag.setSubmitting(true);
@@ -128,7 +134,11 @@ const NewUser: FC = () => {
                 label={t('auth.Username')}
                 onBlur={() => {
                     checkUsernameAvailable();
-                    setTouched({ ...touched, username: true });
+                    setTouched({
+                        ...touched,
+                        username: true,
+                        displayName: true,
+                    });
                 }}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
                     setFieldValue('username', event.target.value);

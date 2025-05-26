@@ -8,7 +8,7 @@ import {
 } from '../../utils/transactionUtils';
 
 import type { IStandardResponse } from '../../types/Request.d';
-import type { Transaction } from '../../types/Transaction.d';
+import type { ITransaction } from '../../types/Transaction.d';
 
 import { CategoryState, requestCategories } from '../slices/categorySlice';
 import { writeTransactions } from '../slices/transactionsSlice';
@@ -36,11 +36,11 @@ export default function* transactionsWriteSaga() {
 
         const startDate: number = yield select(getTransactionsStartDate);
         const endDate: number = yield select(getTransactionsEndDate);
-        const activeCardId: number | null = yield select(getActiveCardId);
+        const activeCardId: string | null = yield select(getActiveCardId);
         const language: string = yield select(getActiveLanguageCode);
 
         const transactionsResponse: IStandardResponse<{
-            transactions: Transaction[];
+            transactions: ITransaction[];
         }> = yield call(
             APIService.getAllTransactionsWithinRange,
             startDate,

@@ -1,11 +1,11 @@
-import type { Category as CategoryT } from '../../types/Category.d';
-import type { IDynamicCardLayoutModes } from '../../types/Common.types';
-import type { Matcher as MatcherT } from '../../types/Matcher.d';
+import type { ICategory } from '../../types/Category.d';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
+import type { IMatcher } from '../../types/Matcher.d';
 
 export interface IProps {
-    category: CategoryT;
+    category: ICategory;
     defaultOpenAddNew?: boolean;
-    defaultOpenMatcher?: Partial<MatcherT>;
-    onAddNewSubmit?: (matcher: Partial<MatcherT>) => any;
-    layout?: IDynamicCardLayoutModes;
+    defaultOpenMatcher?: Partial<IMatcher>;
+    onAddNewSubmit?: (matcher: Partial<IMatcher>) => any;
+    layout?: TDynamicCardLayoutModes;
 }
