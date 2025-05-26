@@ -235,8 +235,8 @@
         "underspendLimitPc": "Underspend limit (%)"
     },
     "Category": {
-        "addCategory": "Add transaction category",
-        "addCategoryDesc": "Add a new category of Transaction.",
+        "addCategory": "Add new Category",
+        "addCategoryDesc": "Add a new Category for Transactions to be assigned to.",
         "addCategoryShortDesc": "Add a new category.",
         "addMatcher": "Add matcher",
         "caseSensitiveLabel": "Case Sensitive",

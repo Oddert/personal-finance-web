@@ -116,13 +116,16 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                 onClose={handleConditionalClose}
                 aria-labelledby='alert-dialog-title'
                 aria-describedby='alert-dialog-description'
+                slotProps={{
+                    paper: {
+                        sx: {
+                            minWidth: '50vw',
+                            p: 3,
+                        },
+                    },
+                }}
             >
-                <DialogTitle
-                    id='alert-dialog-title'
-                    sx={{
-                        minWidth: '50vw',
-                    }}
-                >
+                <DialogTitle id='alert-dialog-title'>
                     {t('Category.addCategory')}
                 </DialogTitle>
                 <DialogContent>
@@ -135,6 +138,8 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                             display: 'grid',
                             gridTemplateColumns: '1fr auto',
                             alignContent: 'start',
+                            mt: '16px',
+                            gridGap: '8px',
                         }}
                     >
                         <FormControlLabel
@@ -161,6 +166,8 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                             control={
                                 <TextField
                                     error={descError}
+                                    minRows={2}
+                                    multiline
                                     onChange={handleDescChange}
                                     sx={{ width: '100%' }}
                                     value={description}
@@ -200,7 +207,11 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                     <Button onClick={handleConditionalClose}>
                         {t('buttons.Cancel')}
                     </Button>
-                    <Button autoFocus onClick={handleSaveAndClose}>
+                    <Button
+                        autoFocus
+                        onClick={handleSaveAndClose}
+                        variant='contained'
+                    >
                         {t('buttons.createCategory')}
                     </Button>
                 </DialogActions>
