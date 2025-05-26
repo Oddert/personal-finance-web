@@ -2,10 +2,11 @@ import { put } from 'redux-saga/effects';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type { IStandardResponse } from '../../types/Request.d';
 import type { ICategory } from '../../types/Category.d';
 
 import APIService from '../../services/APIService';
+
+import { retry } from '../../utils/requestUtils';
 
 import { intakeError } from '../thunks/errorThunks';
 
@@ -20,17 +21,16 @@ export default function* categoryCreateSaga({
     category: Partial<ICategory>;
 }>): any {
     try {
-        const response: IStandardResponse<{ category: ICategory }> =
-            yield APIService.createCategory(payload.category);
+        const response = yield retry<{ category: ICategory }>(() =>
+            APIService.createCategory(payload.category),
+        );
 
         if (response.error || !response.payload) {
-            console.error(response.error);
-            yield put(intakeError(response.error));
+            yield put(intakeError(response));
         } else {
             yield put(createCategory({ category: response.payload.category }));
         }
     } catch (error) {
-        console.error(error);
         yield put(intakeError(error));
     }
 }

@@ -10,6 +10,7 @@ import type { IStandardResponse } from '../../types/Request.d';
 import { deleteSingleMatcher } from '../slices/categorySlice';
 
 import { intakeError } from '../thunks/errorThunks';
+import { retry } from '../../utils/requestUtils';
 
 /**
  * Deletes a matcher and updates the Category in state.
@@ -21,8 +22,9 @@ export default function* matcherDeleteSingleSaga({
     categoryId: ICategory['id'];
 }>) {
     try {
-        const response: IStandardResponse<{ error?: string }> =
-            yield APIService.deleteSingleMatcher(payload.matcherId);
+        const response: IStandardResponse<{ error?: string }> = yield retry<{
+            deleted: number;
+        }>(() => APIService.deleteSingleMatcher(payload.matcherId));
 
         if (response.error) {
             console.error(response?.payload?.error);
