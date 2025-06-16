@@ -85,6 +85,33 @@ const APIService = Object.freeze({
         return response;
     },
     /**
+     * Updates non-security user details.
+     * @returns The user details.
+     */
+    updateUserDetails: async (
+        username: string,
+        firstName: string,
+        lastName: string,
+        languages: string,
+        defaultLang: string,
+        currencies: string,
+        defaultCurrency: string,
+    ) => {
+        const response: IStandardResponse<{ user: IUser }> = await request.put(
+            '/auth/user',
+            {
+                username,
+                firstName,
+                lastName,
+                languages,
+                defaultLang,
+                currencies,
+                defaultCurrency,
+            },
+        );
+        return response;
+    },
+    /**
      * Gets the full user details for a logged in user.
      * @returns The user details.
      */

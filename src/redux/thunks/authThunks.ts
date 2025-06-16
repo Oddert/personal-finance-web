@@ -20,9 +20,19 @@ import {
     setIncorrectDetails,
     writeUserDetails,
 } from '../slices/authSlice';
-import { getRefreshTokenPending } from '../selectors/authSelectors';
+import {
+    getRefreshTokenPending,
+    getUserEmail,
+    getUserFirstName,
+    getUserLastName,
+} from '../selectors/authSelectors';
 
 import { intakeError } from './errorThunks';
+import {
+    getActiveLanguage,
+    getUserCurrencies,
+    getUserLanguages,
+} from '../selectors/profileSelectors';
 
 /**
  * Lower-order thunk to handle the result of a successful login.
@@ -236,5 +246,59 @@ export const checkAuth =
             } else {
                 dispatch(intakeError(error));
             }
+        }
+    };
+
+/**
+ * Updates non-security related user details such as email, languages, display name etc.
+ *
+ * Will populate any omitted fields using the stored redux state values.
+ *
+ * Will use empty strings to satisfy type safety requirements. Expect an error to be thrown if any values are not present or valid in the state.
+ * @category Redux
+ * @subcategory Thunks
+ * @param margin Minimum time in milliseconds to the token's expiry.
+ */
+export const updateUserDetails =
+    ({
+        email,
+        firstName,
+        lastName,
+        languages,
+        activeLang,
+        currencies,
+    }: {
+        email?: string;
+        firstName?: string;
+        lastName?: string;
+        languages?: string[];
+        activeLang?: string;
+        currencies?: string[];
+    }) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+        try {
+            const state = getState();
+            const currentUsername = getUserEmail(state);
+            const currentFirstName = getUserFirstName(state);
+            const currentLastName = getUserLastName(state);
+            const currentLang = getUserLanguages(state);
+            const currentActiveLang = getActiveLanguage(state);
+            const currentCurrency = getUserCurrencies(state);
+
+            const response = await APIService.updateUserDetails(
+                email || currentUsername || '',
+                firstName || currentFirstName || '',
+                lastName || currentLastName || '',
+                (languages || currentLang).join(',') || '',
+                activeLang || currentActiveLang.displayName,
+                (currencies || currentCurrency).join(','),
+                (currencies || currentCurrency)[0],
+            );
+
+            if (response.payload) {
+                dispatch(writeUserDetails({ user: response.payload?.user }));
+            }
+        } catch (error: any) {
+            dispatch(intakeError(error));
         }
     };
