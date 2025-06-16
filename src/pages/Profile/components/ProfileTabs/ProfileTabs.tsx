@@ -1,12 +1,16 @@
 import { FC, SyntheticEvent, useCallback } from 'react';
 import { Tab, Tabs } from '@mui/material';
 
+import router, { ROUTES } from '../../../../constants/routerConstants';
+
 import { IProps } from './ProfileTabs.types';
 
-const ProfileTabs: FC<IProps> = ({ tab, setTab }) => {
+const ProfileTabs: FC<IProps> = ({ value }) => {
     const handleChange = useCallback(
-        (event: SyntheticEvent, value: string) => setTab(value),
-        [setTab],
+        (event: SyntheticEvent, nextLocation: string) => {
+            router.navigate(`${ROUTES.PROFILE}/${nextLocation}`);
+        },
+        [],
     );
 
     return (
@@ -14,9 +18,8 @@ const ProfileTabs: FC<IProps> = ({ tab, setTab }) => {
             onChange={handleChange}
             orientation='vertical'
             sx={{ minWidth: 'max-content', mr: 4 }}
-            value={tab}
+            value={value}
         >
-            <Tab label='Cards' value='cards' />
             <Tab label='Language & Currency' value='localisation' />
             <Tab label='Profile' value='profile' />
             <Tab label='Appearance' value='appearance' />

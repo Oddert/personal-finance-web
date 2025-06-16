@@ -34,6 +34,10 @@ import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
 import Profile from '../pages/Profile';
 import Transactions from '../pages/Transactions/';
+import UserDetails from '../pages/Profile/Tabs/UserDetails';
+import Language from '../pages/Profile/Tabs/Language';
+import Appearance from '../pages/Profile/Tabs/Appearance';
+import Security from '../pages/Profile/Tabs/Security';
 
 export interface INavigationOption {
     label: string;
@@ -68,7 +72,7 @@ export const ROUTES = Object.freeze({
     EDIT_CARD: '/edit-card',
     LOGIN: '/login',
     MANAGE_BUDGETS: '/manage-budgets',
-    MANAGE_CARDS: '/profile',
+    MANAGE_CARDS: '/cards',
     PROFILE: '/user-settings',
     TRANSACTIONS: '/transactions',
 });
@@ -199,11 +203,59 @@ const router = createBrowserRouter([
     },
     {
         path: `${ROUTES.PROFILE}`,
-        element: (
-            <Layout requiresAuth>
-                <Profile />
-            </Layout>
-        ),
+        children: [
+            {
+                index: true,
+                path: '',
+                element: (
+                    <Layout requiresAuth>
+                        <Profile value='localisation'>
+                            <Language />
+                        </Profile>
+                    </Layout>
+                ),
+            },
+            {
+                path: 'profile',
+                element: (
+                    <Layout requiresAuth>
+                        <Profile value='profile'>
+                            <UserDetails />
+                        </Profile>
+                    </Layout>
+                ),
+            },
+            {
+                path: 'localisation',
+                element: (
+                    <Layout requiresAuth>
+                        <Profile value='localisation'>
+                            <Language />
+                        </Profile>
+                    </Layout>
+                ),
+            },
+            {
+                path: 'appearance',
+                element: (
+                    <Layout requiresAuth>
+                        <Profile value='appearance'>
+                            <Appearance />
+                        </Profile>
+                    </Layout>
+                ),
+            },
+            {
+                path: 'security',
+                element: (
+                    <Layout requiresAuth>
+                        <Profile value='security'>
+                            <Security />
+                        </Profile>
+                    </Layout>
+                ),
+            },
+        ],
     },
     {
         path: `${ROUTES.LOGIN}`,

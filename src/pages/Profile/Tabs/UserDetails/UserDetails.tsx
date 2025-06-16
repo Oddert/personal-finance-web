@@ -1,23 +1,211 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Typography } from '@mui/material';
+import {
+    Box,
+    Button,
+    FormControlLabel,
+    Paper,
+    TextField,
+    Typography,
+} from '@mui/material';
+
+import {
+    useAppDispatch,
+    useAppSelector,
+} from '../../../../hooks/ReduxHookWrappers';
+
+import {
+    getUserEmail,
+    getUserFirstName,
+    getUserLastName,
+} from '../../../../redux/selectors/authSelectors';
+import { updateUserDetails } from '../../../../redux/thunks/authThunks';
 
 const UserDetails: FC = () => {
     const { t } = useTranslation();
+
+    const dispatch = useAppDispatch();
+
+    const [editing, setEditing] = useState(false);
+    const [internalFirstName, setInternalFirstName] = useState('');
+    const [internalLastName, setInternalLastName] = useState('');
+    const [internalEmail, setInternalEmail] = useState('');
+
+    const firstName = useAppSelector(getUserFirstName);
+    const lastName = useAppSelector(getUserLastName);
+    const email = useAppSelector(getUserEmail);
+
+    const reset = () => {
+        setInternalFirstName(firstName || '');
+        setInternalLastName(lastName || '');
+        setInternalEmail(email || '');
+        setEditing(false);
+    };
+
+    const handleSubmit = () => {
+        dispatch(updateUserDetails({ email, firstName, lastName }));
+        setEditing(false);
+    };
+
+    useEffect(() => setInternalFirstName(firstName || ''), [firstName]);
+    useEffect(() => setInternalLastName(lastName || ''), [lastName]);
+    useEffect(() => setInternalEmail(email || ''), [email]);
+
+    const title = (
+        <Typography sx={{ margin: '32px 0', textAlign: 'left' }} variant='h2'>
+            {t('pageTitles.profile')}
+        </Typography>
+    );
+
+    if (editing) {
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gridGap: '16px',
+                    padding: '0 0 64px 0',
+                    mb: 2,
+                    width: '100%',
+                }}
+            >
+                {title}
+                <Paper sx={{ display: 'flex', gridGap: 16, px: 4, py: 4 }}>
+                    <FormControlLabel
+                        control={
+                            <TextField
+                                fullWidth
+                                placeholder='First name'
+                                onChange={(event) =>
+                                    setInternalFirstName(event.target.value)
+                                }
+                                value={internalFirstName}
+                            />
+                        }
+                        label='First name'
+                        labelPlacement='top'
+                        slotProps={{
+                            typography: {
+                                sx: { alignSelf: 'flex-start', mb: 1 },
+                            },
+                        }}
+                        sx={{ width: '100%', m: 0 }}
+                    />
+                    <FormControlLabel
+                        control={
+                            <TextField
+                                fullWidth
+                                placeholder='Last name'
+                                onChange={(event) =>
+                                    setInternalLastName(event.target.value)
+                                }
+                                value={internalLastName}
+                            />
+                        }
+                        label='Last name'
+                        labelPlacement='top'
+                        slotProps={{
+                            typography: {
+                                sx: { alignSelf: 'flex-start', mb: 1 },
+                            },
+                        }}
+                        sx={{ width: '100%', m: 0 }}
+                    />
+                </Paper>
+                <Paper sx={{ px: 4, py: 4 }}>
+                    <FormControlLabel
+                        control={
+                            <TextField
+                                fullWidth
+                                placeholder='sample@example.com'
+                                onChange={(event) =>
+                                    setInternalEmail(event.target.value)
+                                }
+                                value={internalEmail}
+                            />
+                        }
+                        label='Email'
+                        labelPlacement='top'
+                        slotProps={{
+                            typography: {
+                                sx: { alignSelf: 'flex-start', mb: 1 },
+                            },
+                        }}
+                        sx={{ width: '100%', m: 0 }}
+                    />
+                </Paper>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        gridGap: 24,
+                        mt: 4,
+                    }}
+                >
+                    <Button onClick={reset} size='large' variant='text'>
+                        Cancel
+                    </Button>
+                    <Button
+                        onClick={handleSubmit}
+                        size='large'
+                        variant='contained'
+                    >
+                        Save
+                    </Button>
+                </Box>
+            </Box>
+        );
+    }
     return (
         <Box
             sx={{
-                // display: 'flex',
-                // flexDirection: 'column',
-                // gridGap: '16px',
-                // padding: '0 0 64px 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gridGap: '16px',
+                padding: '0 0 64px 0',
+                width: '100%',
                 mb: 2,
             }}
         >
-            <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                {t('pageTitles.profile')}
-            </Typography>
+            {title}
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button onClick={() => setEditing(true)}>Edit</Button>
+            </Box>
+            <Paper
+                sx={{
+                    px: 4,
+                    py: 2,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
+                <Typography component='h4' textAlign='left' variant='body1'>
+                    Name
+                </Typography>
+                <Box sx={{ display: 'flex', gridGap: 16 }}>
+                    <Typography component='p' variant='h4'>
+                        {firstName} {lastName}
+                    </Typography>
+                </Box>
+            </Paper>
+            <Paper
+                sx={{
+                    px: 4,
+                    py: 2,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
+                <Typography component='h4' textAlign='left' variant='body1'>
+                    Email
+                </Typography>
+                <Typography component='p' textAlign='left' variant='h4'>
+                    {email}
+                </Typography>
+            </Paper>
         </Box>
     );
 };
