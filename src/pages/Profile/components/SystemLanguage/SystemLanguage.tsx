@@ -5,7 +5,7 @@ import locale from 'locale-codes';
 import { Autocomplete, TextField } from '@mui/material';
 
 import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
-import { setActiveLanguage } from '../../../../redux/slices/profileSlice';
+import { updateActiveLanguage } from '../../../../redux/thunks/profileThunks';
 
 import {
     useAppDispatch,
@@ -27,11 +27,9 @@ const SystemLanguage: FC<IProps> = () => {
             onChange={(event, nextValue) => {
                 if (nextValue) {
                     dispatch(
-                        setActiveLanguage({
-                            language: {
-                                displayName: nextValue.name,
-                                code: nextValue.tag,
-                            },
+                        updateActiveLanguage({
+                            displayName: nextValue.name,
+                            code: nextValue.tag,
                         }),
                     );
                 }
