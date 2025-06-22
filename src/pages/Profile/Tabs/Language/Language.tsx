@@ -149,7 +149,7 @@ const Language: FC = () => {
                     </Typography>
                     &rdquo;
                 </Typography>
-                <Tooltip title='Numbers throughout the app are formatted based on language and currency formats.'>
+                <Tooltip title='Numbers throughout the app are formatted based on a combination of language and currency selections.'>
                     <IconInfo />
                 </Tooltip>
             </Box>

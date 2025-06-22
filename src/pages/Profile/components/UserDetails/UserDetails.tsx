@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -16,47 +15,39 @@ import {
 } from '../../../../hooks/ReduxHookWrappers';
 
 import {
-    getUserEmail,
     getUserFirstName,
     getUserLastName,
 } from '../../../../redux/selectors/authSelectors';
 import { updateUserDetails } from '../../../../redux/thunks/authThunks';
 
 const UserDetails: FC = () => {
-    const { t } = useTranslation();
-
     const dispatch = useAppDispatch();
 
     const [editing, setEditing] = useState(false);
     const [internalFirstName, setInternalFirstName] = useState('');
     const [internalLastName, setInternalLastName] = useState('');
-    const [internalEmail, setInternalEmail] = useState('');
 
     const firstName = useAppSelector(getUserFirstName);
     const lastName = useAppSelector(getUserLastName);
-    const email = useAppSelector(getUserEmail);
 
     const reset = () => {
         setInternalFirstName(firstName || '');
         setInternalLastName(lastName || '');
-        setInternalEmail(email || '');
         setEditing(false);
     };
 
     const handleSubmit = () => {
-        dispatch(updateUserDetails({ email, firstName, lastName }));
+        dispatch(
+            updateUserDetails({
+                firstName: internalFirstName,
+                lastName: internalLastName,
+            }),
+        );
         setEditing(false);
     };
 
     useEffect(() => setInternalFirstName(firstName || ''), [firstName]);
     useEffect(() => setInternalLastName(lastName || ''), [lastName]);
-    useEffect(() => setInternalEmail(email || ''), [email]);
-
-    const title = (
-        <Typography sx={{ margin: '32px 0', textAlign: 'left' }} variant='h2'>
-            {t('pageTitles.profile')}
-        </Typography>
-    );
 
     if (editing) {
         return (
@@ -70,7 +61,6 @@ const UserDetails: FC = () => {
                     width: '100%',
                 }}
             >
-                {title}
                 <Paper sx={{ display: 'flex', gridGap: 16, px: 4, py: 4 }}>
                     <FormControlLabel
                         control={
@@ -113,28 +103,6 @@ const UserDetails: FC = () => {
                         sx={{ width: '100%', m: 0 }}
                     />
                 </Paper>
-                <Paper sx={{ px: 4, py: 4 }}>
-                    <FormControlLabel
-                        control={
-                            <TextField
-                                fullWidth
-                                placeholder='sample@example.com'
-                                onChange={(event) =>
-                                    setInternalEmail(event.target.value)
-                                }
-                                value={internalEmail}
-                            />
-                        }
-                        label='Email'
-                        labelPlacement='top'
-                        slotProps={{
-                            typography: {
-                                sx: { alignSelf: 'flex-start', mb: 1 },
-                            },
-                        }}
-                        sx={{ width: '100%', m: 0 }}
-                    />
-                </Paper>
                 <Box
                     sx={{
                         display: 'flex',
@@ -157,6 +125,7 @@ const UserDetails: FC = () => {
             </Box>
         );
     }
+
     return (
         <Box
             sx={{
@@ -168,7 +137,6 @@ const UserDetails: FC = () => {
                 mb: 2,
             }}
         >
-            {title}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button onClick={() => setEditing(true)}>Edit</Button>
             </Box>
@@ -189,22 +157,6 @@ const UserDetails: FC = () => {
                         {firstName} {lastName}
                     </Typography>
                 </Box>
-            </Paper>
-            <Paper
-                sx={{
-                    px: 4,
-                    py: 2,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }}
-            >
-                <Typography component='h4' textAlign='left' variant='body1'>
-                    Email
-                </Typography>
-                <Typography component='p' textAlign='left' variant='h4'>
-                    {email}
-                </Typography>
             </Paper>
         </Box>
     );

@@ -34,7 +34,6 @@ import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
 import Profile from '../pages/Profile';
 import Transactions from '../pages/Transactions/';
-import UserDetails from '../pages/Profile/Tabs/UserDetails';
 import Language from '../pages/Profile/Tabs/Language';
 import Appearance from '../pages/Profile/Tabs/Appearance';
 import Security from '../pages/Profile/Tabs/Security';
@@ -211,16 +210,6 @@ const router = createBrowserRouter([
                     <Layout requiresAuth>
                         <Profile value='localisation'>
                             <Language />
-                        </Profile>
-                    </Layout>
-                ),
-            },
-            {
-                path: 'profile',
-                element: (
-                    <Layout requiresAuth>
-                        <Profile value='profile'>
-                            <UserDetails />
                         </Profile>
                     </Layout>
                 ),

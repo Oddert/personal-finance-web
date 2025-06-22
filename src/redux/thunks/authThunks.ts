@@ -276,6 +276,8 @@ export const updateUserDetails =
         currencies?: string[];
     }) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
+        console.log('firstName', firstName);
+        console.log('lastName', lastName);
         try {
             const state = getState();
             const currentUsername = getUserEmail(state);
@@ -285,6 +287,15 @@ export const updateUserDetails =
             const currentActiveLang = getActiveLanguage(state);
             const currentCurrency = getUserCurrencies(state);
 
+            console.log(
+                email || currentUsername || '',
+                firstName || currentFirstName || '',
+                lastName || currentLastName || '',
+                (languages || currentLang).join(',') || '',
+                activeLang || currentActiveLang.displayName,
+                (currencies || currentCurrency).join(','),
+                (currencies || currentCurrency)[0],
+            );
             const response = await APIService.updateUserDetails(
                 email || currentUsername || '',
                 firstName || currentFirstName || '',

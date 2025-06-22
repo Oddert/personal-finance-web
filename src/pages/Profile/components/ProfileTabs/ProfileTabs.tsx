@@ -21,7 +21,6 @@ const ProfileTabs: FC<IProps> = ({ value }) => {
             value={value}
         >
             <Tab label='Language & Currency' value='localisation' />
-            <Tab label='Profile' value='profile' />
             <Tab label='Appearance' value='appearance' />
             <Tab label='Security' value='security' />
         </Tabs>
