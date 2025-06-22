@@ -20,8 +20,8 @@ import {
 
 import {
     reorderCurrencies,
-    updateCurrencies,
-} from '../../../../redux/slices/profileSlice';
+    updateCurrencyPreferences,
+} from '../../../../redux/thunks/profileThunks';
 
 import {
     useAppDispatch,
@@ -79,9 +79,9 @@ const LanguageSelector: FC<IProps> = () => {
                 onChange={(event, nextValue) => {
                     if (nextValue) {
                         dispatch(
-                            updateCurrencies({
-                                currencies: nextValue.map((curr) => curr[1]),
-                            }),
+                            updateCurrencyPreferences(
+                                nextValue.map((curr) => curr[1]),
+                            ),
                         );
                     }
                 }}
@@ -105,10 +105,7 @@ const LanguageSelector: FC<IProps> = () => {
                                         disabled={idx === 0}
                                         onClick={() =>
                                             dispatch(
-                                                reorderCurrencies({
-                                                    from: idx,
-                                                    to: idx - 1,
-                                                }),
+                                                reorderCurrencies(idx, idx - 1),
                                             )
                                         }
                                         title={t('Move up in sort order')}
@@ -119,10 +116,7 @@ const LanguageSelector: FC<IProps> = () => {
                                         disabled={idx === currencies.length - 1}
                                         onClick={() =>
                                             dispatch(
-                                                reorderCurrencies({
-                                                    from: idx,
-                                                    to: idx + 1,
-                                                }),
+                                                reorderCurrencies(idx, idx + 1),
                                             )
                                         }
                                         title={t('Move down in sort order')}
