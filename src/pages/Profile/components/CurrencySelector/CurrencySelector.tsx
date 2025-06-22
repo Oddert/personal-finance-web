@@ -10,12 +10,14 @@ import {
     Button,
     List,
     ListItem,
+    Paper,
     TextField,
     Typography,
 } from '@mui/material';
 import {
-    KeyboardArrowUp as IconUp,
+    Paid as IconCurrency,
     KeyboardArrowDown as IconDown,
+    KeyboardArrowUp as IconUp,
 } from '@mui/icons-material';
 
 import {
@@ -60,41 +62,49 @@ const LanguageSelector: FC<IProps> = () => {
     );
 
     return (
-        <Box
+        <Paper
             sx={{
+                mt: 2,
+                px: 4,
+                py: 2,
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gridGap: '16px',
-                '& .MuiAccordion-heading': {
-                    background: 'red !important',
-                },
+                gridTemplateColumns: 'auto 1fr 1fr',
+                gridGap: '16px 24px',
+                alignItems: 'center',
             }}
         >
+            <IconCurrency />
+            <Box>
+                <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
+                    Favourite Currencies
+                </Typography>
+                <Typography textAlign='left'>
+                    Select currencies to be highlighted at the top of the
+                    currency selector when adding transaction data.
+                </Typography>
+            </Box>
             <Autocomplete
                 getOptionLabel={(option) =>
                     `${option[0]} (${t('literals.example')}: ${option[1]})`
                 }
                 getOptionKey={(option) => option[0]}
-                multiple
                 onChange={(event, nextValue) => {
                     if (nextValue) {
                         dispatch(
-                            updateCurrencyPreferences(
-                                nextValue.map((curr) => curr[1]),
-                            ),
+                            updateCurrencyPreferences([
+                                ...currencies.map((currency) => currency[1]),
+                                nextValue[1],
+                            ]),
                         );
                     }
                 }}
                 options={currencies}
                 renderInput={(props) => (
-                    <TextField {...props} label={t('Favourite currencies')} />
+                    <TextField {...props} label={t('Add currency')} />
                 )}
-                value={usersCurrencies.map((userCurrency) => [
-                    userCurrency,
-                    currencyLocaliser(3.14, userCurrency),
-                ])}
+                value={null}
             />
-            <Accordion>
+            <Accordion defaultExpanded sx={{ gridColumn: '1 / -1' }}>
                 <AccordionSummary>{t('buttons.changeOrder')}</AccordionSummary>
                 <AccordionDetails>
                     <List>
@@ -133,7 +143,7 @@ const LanguageSelector: FC<IProps> = () => {
                     </List>
                 </AccordionDetails>
             </Accordion>
-        </Box>
+        </Paper>
     );
 };
 

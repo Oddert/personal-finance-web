@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Box, Divider, Paper, Tooltip, Typography } from '@mui/material';
 import {
     Info as IconInfo,
-    Language as IconLanguage,
-    Paid as IconCurrency,
     Translate as IconTranslate,
 } from '@mui/icons-material';
 
@@ -72,63 +70,9 @@ const Language: FC = () => {
                     padding: '0 0 64px 0',
                 }}
             >
-                <Paper
-                    sx={{
-                        mb: 2,
-                        px: 4,
-                        py: 2,
-                        display: 'grid',
-                        gridTemplateColumns: 'auto 1fr 1fr',
-                        gridGap: 24,
-                        alignItems: 'center',
-                    }}
-                >
-                    <IconLanguage sx={{ gridRow: '1 / span 2' }} />
-                    <Box>
-                        <Typography
-                            textAlign='left'
-                            sx={{ mb: 1 }}
-                            variant='h3'
-                        >
-                            Preferred languages
-                        </Typography>
-                        <Typography textAlign='left'>
-                            Select other languages which can be used if your
-                            selected language is not available
-                        </Typography>
-                    </Box>
-                    <Box>
-                        <LanguageSelector />
-                    </Box>
-                </Paper>
+                <LanguageSelector />
                 <Divider />
-                <Paper
-                    sx={{
-                        mt: 2,
-                        px: 4,
-                        py: 2,
-                        display: 'grid',
-                        gridTemplateColumns: 'auto 1fr 1fr',
-                        gridGap: 24,
-                        alignItems: 'center',
-                    }}
-                >
-                    <IconCurrency />
-                    <Box>
-                        <Typography
-                            textAlign='left'
-                            sx={{ mb: 1 }}
-                            variant='h3'
-                        >
-                            Favourite Currencies
-                        </Typography>
-                        <Typography textAlign='left'>
-                            Select currencies to be highlighted at the top of
-                            the currency selector when adding transaction data.
-                        </Typography>
-                    </Box>
-                    <CurrencySelector />
-                </Paper>
+                <CurrencySelector />
             </Box>
             <Box
                 sx={{

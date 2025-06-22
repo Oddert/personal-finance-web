@@ -6,17 +6,20 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    // AccordionSummary,
     Autocomplete,
     Box,
     Button,
     List,
     ListItem,
+    Paper,
     TextField,
     Typography,
 } from '@mui/material';
 import {
-    KeyboardArrowUp as IconUp,
     KeyboardArrowDown as IconDown,
+    Language as IconLanguage,
+    KeyboardArrowUp as IconUp,
 } from '@mui/icons-material';
 
 import {
@@ -47,46 +50,53 @@ const LanguageSelector: FC<IProps> = () => {
     const usersLanguages = useAppSelector(getUserLanguages);
 
     return (
-        <Box
+        <Paper
             sx={{
+                mb: 2,
+                px: 4,
+                py: 2,
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gridGap: '16px',
-                '& .MuiAccordion-heading': {
-                    background: 'red !important',
-                },
+                gridTemplateColumns: 'auto 1fr 1fr',
+                gridGap: '16px 24px',
+                alignItems: 'center',
             }}
         >
+            <IconLanguage sx={{ gridRow: '1 / span 2' }} />
+            <Box>
+                <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
+                    Preferred languages
+                </Typography>
+                <Typography textAlign='left'>
+                    Select other languages which can be used if your selected
+                    language is not available
+                </Typography>
+            </Box>
             <Autocomplete
                 getOptionLabel={(option) => `${option.name} (${option.tag})`}
                 getOptionKey={(option) => option.tag}
-                multiple
                 onChange={(event, nextValue) => {
                     if (nextValue) {
                         dispatch(
-                            updateLanguagePreferences(
-                                nextValue.map((lang) => ({
-                                    displayName: lang.name,
-                                    code: lang.tag,
-                                })),
-                            ),
+                            updateLanguagePreferences([
+                                ...usersLanguages,
+                                {
+                                    displayName: nextValue.name,
+                                    code: nextValue.tag,
+                                },
+                            ]),
                         );
                     }
                 }}
                 options={locale.all}
                 renderInput={(props) => (
-                    <TextField {...props} label={t('Favourite languages')} />
+                    <TextField {...props} label={t('Add language')} />
                 )}
                 sx={{
                     mt: '24px',
                 }}
-                value={usersLanguages.map((lang) => ({
-                    name: lang.displayName,
-                    tag: lang.code,
-                    lcid: 0,
-                }))}
+                value={null}
             />
-            <Accordion>
+            <Accordion defaultExpanded sx={{ gridColumn: '1 / -1' }}>
                 <AccordionSummary>{t('buttons.changeOrder')}</AccordionSummary>
                 <AccordionDetails>
                     <List>
@@ -126,7 +136,7 @@ const LanguageSelector: FC<IProps> = () => {
                     </List>
                 </AccordionDetails>
             </Accordion>
-        </Box>
+        </Paper>
     );
 };
 
