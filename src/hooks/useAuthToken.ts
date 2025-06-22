@@ -7,6 +7,7 @@ import { authenticateUser, writeUserDetails } from '../redux/slices/authSlice';
 import { refreshAuthentication } from '../redux/thunks/authThunks';
 
 import { useAppDispatch } from './ReduxHookWrappers';
+import { writeUserProfile } from '../redux/slices/profileSlice';
 
 const timeoutOffset = 1000 * 60 * 1;
 
@@ -54,6 +55,7 @@ const useAuthToken = () => {
                 user: userDetailsResponse.payload?.user,
             }),
         );
+        dispatch(writeUserProfile({ user: userDetailsResponse.payload?.user }));
 
         return callback ? callback() : null;
     };

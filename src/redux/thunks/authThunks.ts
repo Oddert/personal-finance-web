@@ -27,12 +27,14 @@ import {
     getUserLastName,
 } from '../selectors/authSelectors';
 
-import { intakeError } from './errorThunks';
 import {
     getActiveLanguage,
     getUserCurrencies,
     getUserLanguages,
 } from '../selectors/profileSelectors';
+import { writeUserProfile } from '../slices/profileSlice';
+
+import { intakeError } from './errorThunks';
 
 /**
  * Lower-order thunk to handle the result of a successful login.
@@ -78,6 +80,7 @@ export const handleAuthResponse =
                     user: response.payload.user,
                 }),
             );
+            dispatch(writeUserProfile({ user: response.payload?.user }));
 
             if (callback) {
                 callback();
@@ -283,7 +286,7 @@ export const updateUserDetails =
             const currentUsername = getUserEmail(state);
             const currentFirstName = getUserFirstName(state);
             const currentLastName = getUserLastName(state);
-            const currentLang = getUserLanguages(state);
+            const currentLangs = getUserLanguages(state);
             const currentActiveLang = getActiveLanguage(state);
             const currentCurrency = getUserCurrencies(state);
 
@@ -291,8 +294,10 @@ export const updateUserDetails =
                 email || currentUsername || '',
                 firstName || currentFirstName || '',
                 lastName || currentLastName || '',
-                (languages || currentLang).join(',') || '',
-                activeLang || currentActiveLang.displayName,
+                languages
+                    ? languages.join(',')
+                    : currentLangs.map((lang) => lang.code).join(','),
+                activeLang || currentActiveLang.code,
                 (currencies || currentCurrency).join(','),
                 (currencies || currentCurrency)[0],
             );
@@ -300,13 +305,16 @@ export const updateUserDetails =
                 email || currentUsername || '',
                 firstName || currentFirstName || '',
                 lastName || currentLastName || '',
-                (languages || currentLang).join(',') || '',
-                activeLang || currentActiveLang.displayName,
+                languages
+                    ? languages.join(',')
+                    : currentLangs.map((lang) => lang.code).join(','),
+                activeLang || currentActiveLang.code,
                 (currencies || currentCurrency).join(','),
                 (currencies || currentCurrency)[0],
             );
 
             if (response.payload) {
+                dispatch(writeUserProfile({ user: response.payload?.user }));
                 dispatch(writeUserDetails({ user: response.payload?.user }));
             }
         } catch (error: any) {

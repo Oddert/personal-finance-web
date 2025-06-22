@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import locale from 'locale-codes';
 
 import { ILanguage } from '../../types/Intl.types';
 import { TSidebarMode } from '../../types/Profile.types';
+import { IUser } from '../../types/Auth.types';
 
 export interface IProfileState {
     activeLanguage: ILanguage;
@@ -27,14 +29,6 @@ export const profileSlice = createSlice({
         ) => {
             state.sidebarMode = payload.mode;
         },
-        reorderCurrencies: (
-            state,
-            { payload }: PayloadAction<{ from: number; to: number }>,
-        ) => {
-            const temp = state.currencies[payload.to];
-            state.currencies[payload.to] = state.currencies[payload.from];
-            state.currencies[payload.from] = temp;
-        },
         setActiveLanguage: (
             state,
             { payload }: PayloadAction<{ language: ILanguage }>,
@@ -53,15 +47,33 @@ export const profileSlice = createSlice({
         ) => {
             state.languages = payload.languages;
         },
+        writeUserProfile(state, { payload }: { payload: { user: IUser } }) {
+            state.activeLanguage = {
+                code: payload.user.defaultLang,
+                displayName: locale.getByTag(payload.user.defaultLang).name,
+            };
+            state.languages = payload.user.languages
+                .split(',')
+                .map((langCode) => {
+                    const code = langCode.trim();
+                    return {
+                        code,
+                        displayName: locale.getByTag(code).name,
+                    };
+                });
+            state.currencies = payload.user.languages
+                .split(',')
+                .map((currency) => currency.trim());
+        },
     },
 });
 
 export const {
     changeSidebarMode,
-    reorderCurrencies,
     setActiveLanguage,
     updateCurrencies,
     updateLanguages,
+    writeUserProfile,
 } = profileSlice.actions;
 
 export default profileSlice.reducer;
