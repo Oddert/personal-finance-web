@@ -21,8 +21,8 @@ import {
 
 import {
     reorderLanguages,
-    updateLanguages,
-} from '../../../../redux/slices/profileSlice';
+    updateLanguagePreferences,
+} from '../../../../redux/thunks/profileThunks';
 
 import {
     useAppDispatch,
@@ -64,12 +64,12 @@ const LanguageSelector: FC<IProps> = () => {
                 onChange={(event, nextValue) => {
                     if (nextValue) {
                         dispatch(
-                            updateLanguages({
-                                languages: nextValue.map((lang) => ({
+                            updateLanguagePreferences(
+                                nextValue.map((lang) => ({
                                     displayName: lang.name,
                                     code: lang.tag,
                                 })),
-                            }),
+                            ),
                         );
                     }
                 }}
@@ -97,10 +97,7 @@ const LanguageSelector: FC<IProps> = () => {
                                         disabled={idx === 0}
                                         onClick={() =>
                                             dispatch(
-                                                reorderLanguages({
-                                                    from: idx,
-                                                    to: idx - 1,
-                                                }),
+                                                reorderLanguages(idx, idx - 1),
                                             )
                                         }
                                         title={t('Move up in sort order')}
@@ -113,10 +110,7 @@ const LanguageSelector: FC<IProps> = () => {
                                         }
                                         onClick={() =>
                                             dispatch(
-                                                reorderLanguages({
-                                                    from: idx,
-                                                    to: idx + 1,
-                                                }),
+                                                reorderLanguages(idx, idx + 1),
                                             )
                                         }
                                         title={t('Move down in sort order')}

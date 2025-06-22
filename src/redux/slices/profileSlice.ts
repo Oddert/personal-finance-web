@@ -35,14 +35,6 @@ export const profileSlice = createSlice({
             state.currencies[payload.to] = state.currencies[payload.from];
             state.currencies[payload.from] = temp;
         },
-        reorderLanguages: (
-            state,
-            { payload }: PayloadAction<{ from: number; to: number }>,
-        ) => {
-            const temp = state.languages[payload.to];
-            state.languages[payload.to] = state.languages[payload.from];
-            state.languages[payload.from] = temp;
-        },
         setActiveLanguage: (
             state,
             { payload }: PayloadAction<{ language: ILanguage }>,
@@ -67,7 +59,6 @@ export const profileSlice = createSlice({
 export const {
     changeSidebarMode,
     reorderCurrencies,
-    reorderLanguages,
     setActiveLanguage,
     updateCurrencies,
     updateLanguages,

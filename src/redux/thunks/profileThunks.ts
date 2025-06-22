@@ -1,8 +1,8 @@
 import { ILanguage } from '../../types/Intl.types';
 
-import { AppDispatch } from '../constants/store';
+import { AppDispatch, RootState } from '../constants/store';
 
-import { setActiveLanguage } from '../slices/profileSlice';
+import { setActiveLanguage, updateLanguages } from '../slices/profileSlice';
 import { updateUserDetails } from './authThunks';
 
 import { intakeError } from './errorThunks';
@@ -19,6 +19,49 @@ export const updateActiveLanguage =
             dispatch(setActiveLanguage({ language }));
             dispatch(updateUserDetails({ activeLang: language.code }));
         } catch (error) {
+            console.error(error);
+            dispatch(intakeError(error));
+        }
+    };
+
+/**
+ * Changes the preferred languages and updates the user details on the database.
+ * @category Redux
+ * @subcategory Thunks
+ * @param languages The new languages list.
+ */
+export const updateLanguagePreferences =
+    (languages: ILanguage[]) => async (dispatch: AppDispatch) => {
+        try {
+            dispatch(updateLanguages({ languages }));
+            dispatch(
+                updateUserDetails({
+                    languages: languages.map((language) => language.code),
+                }),
+            );
+        } catch (error) {
+            console.error(error);
+            dispatch(intakeError(error));
+        }
+    };
+
+/**
+ * Changes the order ot the user's preferred language and updates the user details on the database.
+ * @category Redux
+ * @subcategory Thunks
+ * @param languages The new languages list.
+ */
+export const reorderLanguages =
+    (from: number, to: number) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+        try {
+            const state = getState();
+            const languages = [...state.profile.languages];
+            const temp = languages[to];
+            languages[to] = languages[from];
+            languages[from] = temp;
+            dispatch(updateLanguagePreferences(languages));
+        } catch (error: any) {
             console.error(error);
             dispatch(intakeError(error));
         }
