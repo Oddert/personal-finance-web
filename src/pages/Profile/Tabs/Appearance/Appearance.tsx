@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { Box, Typography } from '@mui/material';
+import { Palette as IconAppearance } from '@mui/icons-material';
 
 import SidebarMode from '../../components/SidebarMode';
 import UserDetails from '../../components/UserDetails';
@@ -23,7 +24,7 @@ const Appearance: FC = () => {
             }}
         >
             <Typography sx={{ mb: 4 }} variant='h2'>
-                Appearance & Theme
+                <IconAppearance /> Appearance & Theme
             </Typography>
             <UserDetails />
             <SidebarMode />

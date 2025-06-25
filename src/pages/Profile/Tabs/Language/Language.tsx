@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Divider, Paper, Tooltip, Typography } from '@mui/material';
 import {
     Info as IconInfo,
+    SignLanguage as IconLanguage,
     Translate as IconTranslate,
 } from '@mui/icons-material';
 
@@ -36,7 +37,7 @@ const Language: FC = () => {
                 sx={{ margin: '32px 0', textAlign: 'left' }}
                 variant='h2'
             >
-                Language & Currency
+                <IconLanguage /> Language & Currency
             </Typography>
             <Paper
                 sx={{
