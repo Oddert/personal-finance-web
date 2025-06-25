@@ -7,6 +7,8 @@ import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
 import { getUserEmail } from '../../../../redux/selectors/authSelectors';
 
+import ModalPassword from '../../components/ModalPassword';
+
 const Security: FC = () => {
     const email = useAppSelector(getUserEmail);
 
@@ -59,9 +61,7 @@ const Security: FC = () => {
                 <Typography component='h4' textAlign='left' variant='body1'>
                     Password
                 </Typography>
-                <Button size='large' variant='contained'>
-                    Change password
-                </Button>
+                <ModalPassword />
             </Paper>
         </Box>
     );

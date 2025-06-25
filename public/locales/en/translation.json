@@ -172,12 +172,18 @@
         "xl": "xl"
     },
     "auth": {
+        "changePassword": "Change password",
+        "changePasswordTitle": "Change your password",
         "confirmPassword": "Confirm Password",
+        "confirmNewPassword": "Confirm Password",
         "Login": "Login",
+        "newPassword": "New password",
+        "oldPassword": "Old password",
         "Password": "Password",
         "passwordsDontMatch": "Passwords do not match.",
         "passwordsMustBeXLong": "Passwords must be minimum 5 characters long.",
         "passwordsMustHaveOneNumber": "Passwords must have at least one number character.",
+        "passwordsShouldNoMatch": "The new password cannot be the same as the old password.",
         "signInCTA": "Already have an account?",
         "signUp": "Sign Up",
         "signUpCTA": "Don't yet have an account?",

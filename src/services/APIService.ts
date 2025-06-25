@@ -18,6 +18,27 @@ import type { ITransaction } from '../types/Transaction.d';
 const APIService = Object.freeze({
     // Auth
     /**
+     * Changes the user's password.
+     * @param oldPassword The previous password to confirm request.
+     * @param newPassword The password the user wishes to use.
+     * @returns New auth tokens and the user object.
+     */
+    changePassword: async (oldPassword: string, newPassword: string) => {
+        try {
+            const response: IStandardResponse<{
+                accessToken: string;
+                refreshToken: string;
+                user: IUser;
+            }> = await request.put('/auth/change-password', {
+                oldPassword,
+                newPassword,
+            });
+            return response;
+        } catch (error: any) {
+            return error;
+        }
+    },
+    /**
      * Checks if a username is already taken.
      * @param username The entered username.
      * @returns True if the user already exists, false if the name is available.

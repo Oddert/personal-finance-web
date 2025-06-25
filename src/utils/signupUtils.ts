@@ -1,11 +1,26 @@
 /**
  * Validation function, compares two password strings.
- * @param pwd1 The first password.
- * @param pwd2 The second, validation password.
+ *
+ * By default, returns an error if the passwords do not match.
+ * @param password1 The first password.
+ * @param password2 The second, validation password.
+ * @param shouldNotMatch If true, the function will be 'inverted', requiring the passwords to be distinct.
  * @returns An error message or null.
  */
-export const comparePasswords = (pwd1: string, pwd2: string) => {
-    if (pwd1.trim() !== pwd2.trim()) {
+export const comparePasswords = (
+    password1: string,
+    password2: string,
+    shouldNotMatch?: boolean,
+) => {
+    const pwd1 = password1.trim();
+    const pwd2 = password2.trim();
+    if (shouldNotMatch) {
+        if (pwd1 === pwd2) {
+            return 'auth.passwordsShouldNoMatch';
+        }
+        return null;
+    }
+    if (pwd1 !== pwd2) {
         return 'auth.passwordsDontMatch';
     }
     return null;
