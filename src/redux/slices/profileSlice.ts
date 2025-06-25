@@ -61,6 +61,7 @@ export const profileSlice = createSlice({
                         displayName: locale.getByTag(code).name,
                     };
                 });
+
             state.currencies = payload.user.languages
                 .split(',')
                 .map((currency) => currency.trim());

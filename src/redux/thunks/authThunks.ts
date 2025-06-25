@@ -42,16 +42,15 @@ import { intakeError } from './errorThunks';
  * @subcategory Thunks
  * @param response The API response.
  */
-export const handleAuthResponse =
-    (
-        response: IStandardResponse<{
-            accessToken: string;
-            refreshToken: string;
-            user: IUser;
-        }>,
-        callback?: () => void,
-    ) =>
-    async (dispatch: AppDispatch) => {
+export const handleAuthResponse = (
+    response: IStandardResponse<{
+        accessToken: string;
+        refreshToken: string;
+        user: IUser;
+    }>,
+    callback?: () => void,
+) => {
+    return async (dispatch: AppDispatch) => {
         try {
             if (!response.payload?.accessToken) {
                 throw new Error(
@@ -93,7 +92,7 @@ export const handleAuthResponse =
             }
         }
     };
-
+};
 /**
  * Attempts to log in the user and fetch the user's details.
  * @category Redux
@@ -176,9 +175,8 @@ export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
  * @category Redux
  * @subcategory Thunks
  */
-export const refreshAuthentication =
-    (callback?: () => void) =>
-    async (dispatch: AppDispatch, getState: () => RootState) => {
+export const refreshAuthentication = (callback?: () => void) => {
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const refreshRequestPending = getRefreshTokenPending(getState());
 
@@ -218,6 +216,7 @@ export const refreshAuthentication =
             dispatch(refreshTokenRequestFinished());
         }
     };
+};
 
 /**
  * Checks the current time against the user's auth token expiry and conditionally refreshes the auth.
@@ -279,8 +278,6 @@ export const updateUserDetails =
         currencies?: string[];
     }) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
-        console.log('firstName', firstName);
-        console.log('lastName', lastName);
         try {
             const state = getState();
             const currentUsername = getUserEmail(state);
@@ -290,17 +287,6 @@ export const updateUserDetails =
             const currentActiveLang = getActiveLanguage(state);
             const currentCurrency = getUserCurrencies(state);
 
-            console.log(
-                email || currentUsername || '',
-                firstName || currentFirstName || '',
-                lastName || currentLastName || '',
-                languages
-                    ? languages.join(',')
-                    : currentLangs.map((lang) => lang.code).join(','),
-                activeLang || currentActiveLang.code,
-                (currencies || currentCurrency).join(','),
-                (currencies || currentCurrency)[0],
-            );
             const response = await APIService.updateUserDetails(
                 email || currentUsername || '',
                 firstName || currentFirstName || '',
