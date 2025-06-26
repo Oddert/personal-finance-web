@@ -195,7 +195,7 @@
         "signUp": "Sign Up",
         "signUpCTA": "Don't yet have an account?",
         "Username": "Username",
-        "usernameTaken": "A user with this username already exists"
+        "usernameTaken": "This email address if already in use"
     },
     "budgetPercentageControls": {
         "zoomTitles": {
