@@ -222,7 +222,7 @@
         "includeCreditTitle": "If checked, incoming (negative) values.",
         "includeEmptyCategories": "Include empty categories",
         "largestOverspend": "Largest overspend",
-        "monthSpendTitle": "Budget spend each month",
+        "monthSpendTitle": "Category spend each month",
         "notFound": "Budget not found",
         "notFoundWithId": "No budget found with ID",
         "numCategoriesOverBudget": "Number of categories over budget",

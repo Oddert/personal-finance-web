@@ -1,1 +1,1 @@
-export { default } from './TimeChart';
+export { default } from './AggregateTimeChart';
