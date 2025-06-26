@@ -15,6 +15,7 @@ import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import {
     comparePasswords,
+    emailValidator,
     passwordStrength,
 } from '../../../../utils/signupUtils';
 
@@ -48,7 +49,7 @@ const NewUser: FC = () => {
         values,
     } = useFormik({
         initialValues: {
-            username: '',
+            email: '',
             password: '',
             confPassword: '',
             displayName: '',
@@ -56,16 +57,23 @@ const NewUser: FC = () => {
         validate: (nextValues) => {
             let errorsFound: boolean = false;
             const nextErrors: {
-                username: string;
+                email: string;
                 password: string;
                 confPassword: string;
                 displayName: string;
             } = {
-                username: '',
+                email: '',
                 password: '',
                 confPassword: '',
                 displayName: '',
             };
+
+            const emailValid = emailValidator(nextValues.email);
+            if (emailValid) {
+                nextErrors.email = emailValid;
+                errorsFound = true;
+            }
+
             const passwordComparison = comparePasswords(
                 nextValues.password,
                 nextValues.confPassword,
@@ -74,6 +82,7 @@ const NewUser: FC = () => {
                 nextErrors.confPassword = passwordComparison;
                 errorsFound = true;
             }
+
             const pwdStrength = passwordStrength(nextValues.password);
             if (pwdStrength) {
                 nextErrors.password = pwdStrength;
@@ -88,17 +97,17 @@ const NewUser: FC = () => {
         onSubmit: (nextValues, formikBag) => {
             formikBag.setSubmitting(true);
             try {
-                APIService.checkUserExists(nextValues.username)
+                APIService.checkUserExists(nextValues.email)
                     .then((response) => {
                         if (response.payload?.exists) {
                             formikBag.setFieldError(
-                                'username',
+                                'email',
                                 t('auth.usernameTaken'),
                             );
                         } else {
                             dispatch(
                                 registerUser(
-                                    nextValues.username,
+                                    nextValues.email,
                                     nextValues.password,
                                     nextValues.displayName,
                                     'en-GB',
@@ -116,10 +125,10 @@ const NewUser: FC = () => {
     });
 
     const checkUsernameAvailable = () => {
-        APIService.checkUserExists(values.username)
+        APIService.checkUserExists(values.email)
             .then((response) => {
                 if (response.payload?.exists) {
-                    setFieldError('username', t('auth.usernameTaken'));
+                    setFieldError('email', t('auth.usernameTaken'));
                 }
             })
             .catch((err) => console.error(err));
@@ -130,24 +139,24 @@ const NewUser: FC = () => {
             <Typography variant='h2'>{t('auth.signUp')}</Typography>
             <TextField
                 disabled={isSubmitting}
-                error={Boolean(touched.username && errors.username)}
+                error={Boolean(touched.email && errors.email)}
                 label={t('auth.Username')}
                 onBlur={() => {
                     checkUsernameAvailable();
                     setTouched({
                         ...touched,
-                        username: true,
+                        email: true,
                         displayName: true,
                     });
                 }}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    setFieldValue('username', event.target.value);
+                    setFieldValue('email', event.target.value);
                 }}
-                value={values.username}
+                value={values.email}
                 variant='outlined'
             />
-            {touched.username && errors.username ? (
-                <Typography color='error'>{t(errors.username)}</Typography>
+            {touched.email && errors.email ? (
+                <Typography color='error'>{t(errors.email)}</Typography>
             ) : null}
             <TextField
                 disabled={isSubmitting}
