@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { Security as IconSecurity } from '@mui/icons-material';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
@@ -8,8 +8,12 @@ import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import { getUserEmail } from '../../../../redux/selectors/authSelectors';
 
 import ModalPassword from '../../components/ModalPassword';
+import ModalEmail from '../../components/ModalEmail/ModalEmail';
+import { useTranslation } from 'react-i18next';
 
 const Security: FC = () => {
+    const { t } = useTranslation();
+
     const email = useAppSelector(getUserEmail);
 
     return (
@@ -24,7 +28,7 @@ const Security: FC = () => {
             }}
         >
             <Typography sx={{ mb: 4 }} variant='h2'>
-                <IconSecurity /> Security
+                <IconSecurity /> {t('Security')}
             </Typography>
             <Paper
                 sx={{
@@ -36,7 +40,7 @@ const Security: FC = () => {
                 }}
             >
                 <Typography component='h4' textAlign='left' variant='body1'>
-                    Email
+                    {t('auth.Email')}
                 </Typography>
                 <Box
                     sx={{ display: 'flex', gridGap: 24, alignItems: 'center' }}
@@ -44,9 +48,7 @@ const Security: FC = () => {
                     <Typography component='p' textAlign='left' variant='h4'>
                         {email}
                     </Typography>
-                    <Button size='large' variant='contained'>
-                        Change email
-                    </Button>
+                    <ModalEmail />
                 </Box>
             </Paper>
             <Paper
@@ -59,7 +61,7 @@ const Security: FC = () => {
                 }}
             >
                 <Typography component='h4' textAlign='left' variant='body1'>
-                    Password
+                    {t('auth.Password')}
                 </Typography>
                 <ModalPassword />
             </Paper>

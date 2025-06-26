@@ -43,3 +43,19 @@ export const passwordStrength = (password: string) => {
     }
     return response;
 };
+
+/**
+ * Performs various tests on an email to confirm its validity.
+ * @param email
+ * @returns An error message or null.
+ */
+export const emailValidator = (email: string) => {
+    let response = null;
+    if (email.trim().length < 4) {
+        response = 'auth.emailMustBeXLong';
+    }
+    if (!/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
+        response = 'auth.emailFormatInvalid';
+    }
+    return response;
+};

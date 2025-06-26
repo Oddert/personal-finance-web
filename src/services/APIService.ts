@@ -18,6 +18,25 @@ import type { ITransaction } from '../types/Transaction.d';
 const APIService = Object.freeze({
     // Auth
     /**
+     * Changes the user's email / username.
+     * @param newEmail The email address the user wishes to use.
+     * @returns New auth tokens and the user object.
+     */
+    changeEmail: async (newEmail: string) => {
+        try {
+            const response: IStandardResponse<{
+                accessToken: string;
+                refreshToken: string;
+                user: IUser;
+            }> = await request.put('/auth/change-email', {
+                newEmail,
+            });
+            return response;
+        } catch (error: any) {
+            return error;
+        }
+    },
+    /**
      * Changes the user's password.
      * @param oldPassword The previous password to confirm request.
      * @param newPassword The password the user wishes to use.

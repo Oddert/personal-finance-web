@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
 import {
@@ -22,10 +23,10 @@ import {
     passwordStrength,
 } from '../../../../utils/signupUtils';
 
-import { IProps } from './ModalPassword.styles';
-import { Form, TextField } from '../../../Login/Login.styles';
-import { useTranslation } from 'react-i18next';
 import SubmitButton from '../../../Login/components/SubmitButton';
+import { Form, TextField } from '../../../Login/Login.styles';
+
+import { IProps } from './ModalPassword.types';
 
 const ModalPassword: FC<IProps> = () => {
     const dispatch = useAppDispatch();
@@ -193,7 +194,9 @@ const ModalPassword: FC<IProps> = () => {
                     </Form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClickReset}>Cancel</Button>
+                    <Button onClick={handleClickReset}>
+                        {t('buttons.Cancel')}
+                    </Button>
                     <SubmitButton
                         loading={isSubmitting}
                         onSubmit={() => handleSubmit()}
