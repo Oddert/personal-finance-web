@@ -15,6 +15,7 @@ import { createLoginAddrWithReturn } from '../../utils/routingUtils';
 import {
     authenticateUser,
     clearAuthentication,
+    logoutAuth,
     refreshTokenRequestFinished,
     refreshTokenRequestPending,
     setIncorrectDetails,
@@ -307,3 +308,18 @@ export const updateUserDetails =
             dispatch(intakeError(error));
         }
     };
+
+/**
+ * Logs the user out and clears user details.
+ * @category Redux
+ * @subcategory Thunks
+ */
+export const userLogout = () => async (dispatch: AppDispatch) => {
+    try {
+        AuthLSService.deleteAccessToken();
+        AuthLSService.deleteRefreshToken();
+        dispatch(logoutAuth());
+    } catch (error: any) {
+        dispatch(intakeError(error));
+    }
+};

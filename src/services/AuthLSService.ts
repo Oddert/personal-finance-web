@@ -8,6 +8,28 @@ import {
  */
 export const AuthLSService = Object.freeze({
     /**
+     * Clears the access token key for a logout.
+     */
+    deleteAccessToken: () => {
+        try {
+            localStorage.removeItem(PERSONAL_FINANCE_ACCESS_TOKEN);
+        } catch (error) {
+            return null;
+        }
+    },
+
+    /**
+     * Clears the refresh token key for a logout.
+     */
+    deleteRefreshToken: () => {
+        try {
+            localStorage.removeItem(PERSONAL_FINANCE_REFRESH_TOKEN);
+        } catch (error) {
+            return null;
+        }
+    },
+
+    /**
      * Retrieves the users stored access token if available from a previous session.
      * @returns The stored access token or null.
      */
