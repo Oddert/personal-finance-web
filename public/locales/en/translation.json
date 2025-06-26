@@ -187,7 +187,7 @@
         "oldPassword": "Old password",
         "Password": "Password",
         "passwordsDontMatch": "Passwords do not match.",
-        "passwordsMustBeXLong": "Passwords must be a minimum of 5 characters long.",
+        "passwordsMustBeXLong": "Passwords must be a minimum of 8 characters long.",
         "passwordsMustHaveOneNumber": "Passwords must have at least one number character.",
         "passwordsShouldNoMatch": "The new password cannot be the same as the old password.",
         "Security": "Security",

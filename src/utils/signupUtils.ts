@@ -38,7 +38,7 @@ export const passwordStrength = (password: string) => {
     if (!/[0-9]/g.test(password)) {
         response = 'auth.passwordsMustHaveOneNumber';
     }
-    if (password.trim().length < 5) {
+    if (password.trim().length < 8) {
         response = 'auth.passwordsMustBeXLong';
     }
     return response;
