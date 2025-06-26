@@ -207,7 +207,7 @@
     },
     "Budget": {
         "aggregateSpendChart": "Aggregate spend chart",
-        "aggregateSpendTitle": "Aggregate % Spend Discrepancy",
+        "aggregateSpendTitle": "Aggregate Spend Discrepancy",
         "budgetTable": {
             "diffVal": "Difference (val)",
             "diffPc": "Difference (%)",
