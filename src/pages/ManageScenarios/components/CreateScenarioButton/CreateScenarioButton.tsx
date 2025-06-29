@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
 
-import CreateBudgetMenu from '../CreateBudgetMenu';
+import CreateBudgetMenu from '../CreateScenarioMenu';
 
-import type { IProps } from './CreateBudgetButton.types';
+import type { IProps } from './CreateScenarioButton.types';
 
 /**
- * Displays a button to allow users to navigate to the create-budget page.
+ * Displays a button to allow users to navigate to the create-scenario page.
  * @component
  * @category Pages
- * @subcategory Manage Budgets
+ * @subcategory Manage Scenarios
  */
-const CreateBudgetButton: FC<IProps> = () => {
+const CreateScenarioButton: FC<IProps> = () => {
     const { t } = useTranslation();
 
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -30,11 +30,11 @@ const CreateBudgetButton: FC<IProps> = () => {
     return (
         <Fragment>
             <Button onClick={handleClick} variant='contained'>
-                <IconPlus /> {t('buttons.createNewBudget')}
+                <IconPlus /> {t('buttons.createNewScenario')}
             </Button>
             <CreateBudgetMenu anchorEl={anchorEl} handleClose={handleClose} />
         </Fragment>
     );
 };
 
-export default CreateBudgetButton;
+export default CreateScenarioButton;

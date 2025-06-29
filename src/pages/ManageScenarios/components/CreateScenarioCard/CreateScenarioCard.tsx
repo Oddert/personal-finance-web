@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next';
 import { Button, ListItem } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
 
-import CreateBudgetMenu from '../CreateBudgetMenu';
+import CreateBudgetMenu from '../CreateScenarioMenu';
 
-import type { IProps } from './CreateBudgetCard.types';
+import type { IProps } from './CreateScenarioCard.types';
 
 /**
- * Displays a card component, rendering similarly to the {@link BudgetCard} to allow users to navigate to the create-budget page.
+ * Displays a card component, rendering similarly to the {@link ScenarioCard} to allow users to navigate to the create-scenario page.
  * @component
  * @category Pages
- * @subcategory Manage Budgets
+ * @subcategory Manage Scenario
  */
-const CreateBudgetCard: FC<IProps> = () => {
+const CreateScenarioCard: FC<IProps> = () => {
     const { t } = useTranslation();
 
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -37,7 +37,7 @@ const CreateBudgetCard: FC<IProps> = () => {
                         height: '100%',
                         minHeight: '150px',
                     }}
-                    title={t('Budget.createANewBudget')}
+                    title={t('Scenario.createANewScenario')}
                     variant='outlined'
                 >
                     <IconPlus fontSize='large' />
@@ -48,4 +48,4 @@ const CreateBudgetCard: FC<IProps> = () => {
     );
 };
 
-export default CreateBudgetCard;
+export default CreateScenarioCard;

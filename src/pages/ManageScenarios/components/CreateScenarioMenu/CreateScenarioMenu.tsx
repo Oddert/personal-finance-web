@@ -25,31 +25,31 @@ import router, {
     ROUTES_FACTORY,
 } from '../../../../constants/routerConstants';
 
-import { IBudget } from '../../../../types/Budget.types';
+import { IScenario } from '../../../../types/Scenario.types';
 
-import { getBudgetResponse } from '../../../../redux/selectors/budgetSelectors';
+import { getScenarios } from '../../../../redux/selectors/scenarioSelectors';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 
-import type { IProps } from './CreateBudgetMenu.types';
+import type { IProps } from './CreateScenarioMenu.types';
 
 /**
- * Re-usable menu component to display options to create a new budget (from blank or from template).
+ * Re-usable menu component to display options to create a new scenario (from blank or from template).
  * @component
  * @category Pages
- * @subcategory Manage Budgets
+ * @subcategory Manage Scenario
  */
-const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
+const CreateScenarioMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
     const { t } = useTranslation();
 
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [dialogValue, setDialogValue] = useState<IBudget | null>(null);
+    const [dialogValue, setDialogValue] = useState<IScenario | null>(null);
     const [error, setError] = useState(false);
 
-    const budgets = useAppSelector(getBudgetResponse);
+    const scenarios = useAppSelector(getScenarios);
 
     const handleClickNew = () => {
-        router.navigate(ROUTES.CREATE_BUDGET);
+        router.navigate(ROUTES.CREATE_SCENARIO);
         handleClose();
     };
 
@@ -58,7 +58,7 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
             setError(true);
         } else {
             router.navigate(
-                ROUTES_FACTORY.CREATE_BUDGET(String(dialogValue.id)),
+                ROUTES_FACTORY.CREATE_SCENARIO(String(dialogValue.id)),
             );
             handleClose();
         }
@@ -66,7 +66,7 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
 
     const handleChangeDialog = (
         e: SyntheticEvent,
-        nextValue: IBudget | null,
+        nextValue: IScenario | null,
     ) => {
         setDialogValue(nextValue);
         setError(false);
@@ -92,7 +92,7 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 <ListItemIcon>
                     <CreateFreshIcon fontSize='small' />
                 </ListItemIcon>
-                {t('buttons.newBlankBudget')}
+                {t('buttons.newBlankScenario')}
             </MenuItem>
             <MenuItem onClick={() => setDialogOpen(true)}>
                 <ListItemIcon>
@@ -110,28 +110,28 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 }}
             >
                 <DialogTitle>
-                    {t('modalTitles.createBudgetFromTemplateTitle')}
+                    {t('modalTitles.createScenarioFromTemplateTitle')}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {t('modalMessages.createBudgetFromTemplateTitle')}
+                        {t('modalMessages.createScenarioFromTemplate')}
                     </DialogContentText>
                     <Autocomplete
-                        getOptionLabel={(option) => option.name}
+                        getOptionLabel={(option) => option.title}
                         getOptionKey={(option) => option.id}
                         onChange={handleChangeDialog}
-                        options={budgets}
+                        options={scenarios}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label={t('Budget.templateBudgetLabel')}
+                                label={t('Scenario.templateScenarioLabel')}
                             />
                         )}
                         value={dialogValue}
                     />
                     {error && (
                         <Typography color='error'>
-                            {t('Budget.pleaseSelectABudget')}
+                            {t('Scenario.pleaseSelectAScenario')}
                         </Typography>
                     )}
                 </DialogContent>
@@ -140,7 +140,7 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                         {t('buttons.Cancel')}
                     </Button>
                     <Button onClick={handleClickTemplate} variant='contained'>
-                        {t('buttons.createNewBudget')}
+                        {t('buttons.createNewScenario')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -148,4 +148,4 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
     );
 };
 
-export default CreateBudgetMenu;
+export default CreateScenarioMenu;

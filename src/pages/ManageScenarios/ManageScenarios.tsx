@@ -14,6 +14,8 @@ import { getScenarios } from '../../redux/selectors/scenarioSelectors';
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
 
+import CreateScenarioButton from './components/CreateScenarioButton';
+import CreateScenarioCard from './components/CreateScenarioCard';
 import ScenarioCard from './components/ScenarioCard';
 
 import { IProps } from './ManageScenarios.types';
@@ -35,7 +37,7 @@ const ManageScenarios: FC<IProps> = () => {
                 }}
             >
                 <Typography variant='h2' sx={{ margin: '32px 0' }}>
-                    {t('pageTitles.manageBudgets')}
+                    {t('pageTitles.manageScenarios')}
                 </Typography>
                 <Box
                     sx={{
@@ -45,13 +47,13 @@ const ManageScenarios: FC<IProps> = () => {
                     }}
                 >
                     <LayoutControls layout={layout} setLayout={setLayout} />
-                    {/* <CreateBudgetButton /> */}
+                    <CreateScenarioButton />
                 </Box>
                 <DynamicCardList layout={layout}>
                     {scenarios.map((scenario, idx) => (
                         <ScenarioCard key={idx} scenario={scenario} />
                     ))}
-                    {/* <CreateBudgetCard /> */}
+                    <CreateScenarioCard />
                 </DynamicCardList>
             </Box>
         </ResponsiveContainer>

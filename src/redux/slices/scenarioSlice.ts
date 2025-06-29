@@ -20,6 +20,14 @@ export const scenarioSlice = createSlice({
     name: 'scenario',
     initialState,
     reducers: {
+        addScenario(
+            state,
+            { payload }: PayloadAction<{ scenario: IScenario }>,
+        ) {
+            state.scenarios.push(payload.scenario);
+            state.loaded = true;
+            state.loading = false;
+        },
         scenariosLoading(state) {
             state.loaded = false;
             state.loading = true;
@@ -40,6 +48,7 @@ export const scenarioSlice = createSlice({
     },
 });
 
-export const { scenariosLoading, writeScenarios } = scenarioSlice.actions;
+export const { addScenario, scenariosLoading, writeScenarios } =
+    scenarioSlice.actions;
 
 export default scenarioSlice.reducer;

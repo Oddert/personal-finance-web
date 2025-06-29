@@ -66,6 +66,7 @@
         "Open": "Open",
         "Options": "Options",
         "Out": "Out",
+        "Scenario": "Scenario",
         "Title": "Title",
         "to": "to",
         "Unset": "Unset",
@@ -81,6 +82,7 @@
         "manageBudgets": "Manage Budgets",
         "manageCards": "Manage Cards",
         "manageCategories": "Manage Categories",
+        "manageScenarios": "Manage Scenarios",
         "profile": "Profile and Settings",
         "transactions": "Upload & Edit Transactions"
     },
@@ -121,12 +123,13 @@
         "checkAll": "Check all",
         "clickToEdit": "Click to edit",
         "closeWithoutSaving": "Close without saving changes",
+        "createANewCard": "Create a new card",
         "createBudget": "Save & Create new Budget",
         "createCard": "Create card",
         "createCategory": "Create Category",
         "createFromTemplate": "Create from template",
         "createNewBudget": "Create new budget",
-        "createANewCard": "Create a new card",
+        "createNewScenario": "Create new scenario",
         "Delete": "Delete",
         "deleteBudget": "Delete budget",
         "deleteCard": "Delete card",
@@ -135,6 +138,7 @@
         "editThisMatcher": "Edit this matcher",
         "keepEditing": "Keep editing",
         "newBlankBudget": "New blank budget",
+        "newBlankScenario": "New blank scenario",
         "nextMonth": "Next Month",
         "otherUnset": "Other / unset",
         "prevMonth": "Previous Month",
@@ -151,12 +155,14 @@
         "viewBudgetOverview": "View budget overview"
     },
     "modalTitles": {
-        "createBudgetFromTemplate": "Create new budget from template."
+        "createBudgetFromTemplateTitle": "Create new budget from template.",
+        "createScenarioFromTemplateTitle": "Create new scenario from template."
     },
     "modalMessages": {
         "cannotBeUndone": "This action cannot be undone.",
         "closeWithoutSaving": "Close without saving?",
-        "createBudgetFromTemplate": "Select a budget to use as a starting point for your new budget.",
+        "createBudgetFromTemplate": "Select an existing budget to use as a starting point for your new budget.",
+        "createScenarioFromTemplate": "Select an existing scenario to use as a starting point for your new scenario.",
         "endDateNotBeforeStart": "End date may not be before start date",
         "noServerResponse": "No response received from the server.",
         "sureYouWantToDeleteCategory": "Are you sure you want to delete the Category &ldquo;{{categoryName}}&rdquo;?",
@@ -286,6 +292,17 @@
         "notFound": "Card not found",
         "notFoundWithId": "No card found with ID",
         "returnToAllCards": "Return to all cards"
+    },
+    "Scenario": {
+        "createANewScenario": "Create a new scenario",
+        "createFromTemplate": "Create from template",
+        "description": "Scenario description",
+        "notFound": "Scenario not found",
+        "notFoundWithId": "No scenario found with ID",
+        "pleaseSelectAScenario": "Please select a scenario.",
+        "newBlankScenario": "New blank scenario",
+        "returnToAllScenarios": "Return to all scenarios",
+        "templateScenarioLabel": "Template scenario"
     },
     "Transaction": {
         "bulkEditTransactions": "Bulk edit transactions",

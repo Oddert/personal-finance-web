@@ -46,7 +46,7 @@ const ScenarioCard: FC<IProps> = ({ scenario }) => {
     // };
 
     const handleClickEdit = () => {
-        router.navigate(ROUTES_FACTORY.EDIT_BUDGET(scenario.id));
+        router.navigate(ROUTES_FACTORY.EDIT_SCENARIO(scenario.id));
     };
 
     return (
