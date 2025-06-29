@@ -8,6 +8,7 @@ import router from '../../constants/routerConstants';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 import { refreshCategories } from '../../redux/thunks/categoryThunks';
 import { refreshCards } from '../../redux/thunks/cardThunks';
+import { refreshScenarios } from '../../redux/thunks/scenarioThunks';
 
 import useAuthToken from '../../hooks/useAuthToken';
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
@@ -30,6 +31,7 @@ const App = () => {
             dispatch(refreshCategories());
             dispatch(refreshBudgets());
             dispatch(refreshCards());
+            dispatch(refreshScenarios());
         };
         conditionallyRefreshAuth(loadAppBaseInfo);
     }, []);

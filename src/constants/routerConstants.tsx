@@ -38,6 +38,7 @@ import Transactions from '../pages/Transactions/';
 import Language from '../pages/Profile/Tabs/Language';
 import Appearance from '../pages/Profile/Tabs/Appearance';
 import Security from '../pages/Profile/Tabs/Security';
+import ManageScenarios from '../pages/ManageScenarios/ManageScenarios';
 
 export interface INavigationOption {
     label: string;
@@ -74,6 +75,7 @@ export const ROUTES = Object.freeze({
     LOGOUT: '/login?logout=1',
     MANAGE_BUDGETS: '/manage-budgets',
     MANAGE_CARDS: '/cards',
+    MANAGE_SCENARIOS: '/scenarios',
     PROFILE: '/user-settings',
     TRANSACTIONS: '/transactions',
 });
@@ -203,6 +205,14 @@ const router = createBrowserRouter([
         ),
     },
     {
+        path: ROUTES.MANAGE_SCENARIOS,
+        element: (
+            <Layout requiresAuth>
+                <ManageScenarios />
+            </Layout>
+        ),
+    },
+    {
         path: `${ROUTES.PROFILE}`,
         children: [
             {
@@ -303,6 +313,11 @@ export const navigation: INavigation = {
                     label: 'My Budgets',
                     Icon: IconManageBudget,
                     location: ROUTES.MANAGE_BUDGETS,
+                },
+                {
+                    label: 'Manage Scenarios',
+                    Icon: IconManageBudget,
+                    location: ROUTES.MANAGE_SCENARIOS,
                 },
             ],
         },
