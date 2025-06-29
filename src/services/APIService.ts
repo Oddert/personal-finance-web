@@ -6,6 +6,7 @@ import type { ICard } from '../types/Card.types';
 import type { ICategory } from '../types/Category.d';
 import type { IMatcher } from '../types/Matcher.d';
 import type { IStandardResponse } from '../types/Request.d';
+import { IScenario } from '../types/Scenario.types';
 import type { ITransaction } from '../types/Transaction.d';
 
 /**
@@ -434,6 +435,17 @@ const APIService = Object.freeze({
             `/card/${cardId}`,
             card,
         );
+        return response;
+    },
+
+    // Scenario
+    /**
+     * Returns all scenarios for a user.
+     * @returns The list of Budgets.
+     */
+    getAllScenarios: async () => {
+        const response: IStandardResponse<{ scenarios: IScenario[] }> =
+            await request.get('/scenario');
         return response;
     },
 });
