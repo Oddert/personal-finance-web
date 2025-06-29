@@ -440,12 +440,48 @@ const APIService = Object.freeze({
 
     // Scenario
     /**
+     * Creates a new scenario.
+     * @returns The updated scenario.
+     */
+    createSingleScenario: async (scenario: IScenario) => {
+        const response: IStandardResponse<{ scenario: IScenario }> =
+            await request.post('/scenario', scenario);
+        return response;
+    },
+    /**
+     * Deletes a scenario.
+     */
+    deleteSingleScenario: async (scenarioId: string) => {
+        const response: IStandardResponse<{}> = await request.delete(
+            `/scenario/${scenarioId}`,
+        );
+        return response;
+    },
+    /**
      * Returns all scenarios for a user.
-     * @returns The list of Budgets.
+     * @returns The list of Scenarios.
      */
     getAllScenarios: async () => {
         const response: IStandardResponse<{ scenarios: IScenario[] }> =
             await request.get('/scenario');
+        return response;
+    },
+    /**
+     * Returns all scenario by id.
+     * @returns The Scenario if found.
+     */
+    getSingleScenario: async (scenarioId: string) => {
+        const response: IStandardResponse<{ scenario: IScenario }> =
+            await request.get(`/scenario/${scenarioId}`);
+        return response;
+    },
+    /**
+     * Updates a scenario.
+     * @returns The updated scenario.
+     */
+    updateSingleScenario: async (scenarioId: string, scenario: IScenario) => {
+        const response: IStandardResponse<{ scenario: IScenario }> =
+            await request.put(`/scenario/${scenarioId}`, scenario);
         return response;
     },
 });
