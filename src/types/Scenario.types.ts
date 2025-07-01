@@ -25,10 +25,12 @@ export interface IScheduler {
     id: string;
     createdOn: string;
     updatedOn: string;
-    schedulerCode: string;
+    schedulerCode: TSchedulerCode;
     step: number | null;
     startDate: string | null;
     day: number;
     nthDay: number | null;
     transactorId: string;
 }
+
+export type TSchedulerCode = 'DAY' | 'SCALAR' | 'DAY_OF_WEEK' | 'EVENT';

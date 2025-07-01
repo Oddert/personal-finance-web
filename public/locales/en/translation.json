@@ -134,6 +134,7 @@
         "deleteBudget": "Delete budget",
         "deleteCard": "Delete card",
         "deleteCategory": "Delete Category",
+        "deleteScenario": "Delete scenario",
         "discardChanges": "Discard changes",
         "editThisMatcher": "Edit this matcher",
         "keepEditing": "Keep editing",
@@ -168,6 +169,7 @@
         "sureYouWantToDeleteCategory": "Are you sure you want to delete the Category &ldquo;{{categoryName}}&rdquo;?",
         "sureYouWantToDeleteCard": "Are you sure you want to delete the Card &ldquo;{{cardName}}&rdquo;?",
         "sureYouWantToDeleteBudget": "Are you sure you want to delete the budget &ldquo;{{budgetName}}&rdquo;?",
+        "sureYouWantToDeleteScenario": "Are you sure you want to delete the scenario &ldquo;{{scenarioName}}&rdquo;?",
         "unsavedChangesWillBeLost": "You have unsaved changes that will be lost."
     },
     "zoom": {

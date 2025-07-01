@@ -28,9 +28,28 @@ export const scenarioSlice = createSlice({
             state.loaded = true;
             state.loading = false;
         },
+        deleteScenario(
+            state,
+            { payload }: PayloadAction<{ scenarioId: IScenario['id'] }>,
+        ) {
+            state.scenarios = state.scenarios.filter(
+                (scenario) => scenario.id !== payload.scenarioId,
+            );
+        },
         scenariosLoading(state) {
             state.loaded = false;
             state.loading = true;
+        },
+        updateScenario(
+            state,
+            { payload }: PayloadAction<{ scenario: IScenario }>,
+        ) {
+            state.scenarios = state.scenarios.map((scenario) => {
+                if (scenario.id === payload.scenario.id) {
+                    return payload.scenario;
+                }
+                return scenario;
+            });
         },
         writeScenarios(
             state,
@@ -48,7 +67,12 @@ export const scenarioSlice = createSlice({
     },
 });
 
-export const { addScenario, scenariosLoading, writeScenarios } =
-    scenarioSlice.actions;
+export const {
+    addScenario,
+    deleteScenario,
+    scenariosLoading,
+    updateScenario,
+    writeScenarios,
+} = scenarioSlice.actions;
 
 export default scenarioSlice.reducer;
