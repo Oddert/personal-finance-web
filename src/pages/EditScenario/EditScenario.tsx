@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 
 import {
     Box,
@@ -15,13 +16,13 @@ import {
     Save as IconSave,
 } from '@mui/icons-material';
 
-import { IScenario, ITransactor } from '../../types/Scenario.types';
+import { IScenario } from '../../types/Scenario.types';
 
 import router, { ROUTES } from '../../constants/routerConstants';
 
 import APIService from '../../services/APIService';
 
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import {
     addScenario,
@@ -32,6 +33,7 @@ import {
     intakeError,
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
+import { getActiveCardId } from '../../redux/selectors/cardSelectors';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
@@ -42,7 +44,9 @@ import TransactorRow from './components/TransactorRow';
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
 
 const emptyScenario = () => ({
-    id: '',
+    id: uuid(),
+    userId: '',
+    cardId: '',
     startDate: '',
     endDate: '',
     createdOn: '',
@@ -58,9 +62,12 @@ const EditScenario: FC<IProps> = () => {
     const [transactors, setTransactors] = useState<ITransactorRowEditable[]>(
         [],
     );
+    console.log(scenario);
 
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+
+    const cardId = useAppSelector(getActiveCardId);
 
     const { t } = useTranslation();
 
@@ -78,7 +85,7 @@ const EditScenario: FC<IProps> = () => {
                 if (isEdit) {
                     const response = await APIService.updateSingleScenario(
                         scenario.id,
-                        scenario,
+                        { ...scenario, transactors },
                     );
                     if (!response || !response.payload) {
                         throw new Error(t('modalMessages.noServerResponse'));
@@ -87,8 +94,11 @@ const EditScenario: FC<IProps> = () => {
                         updateScenario({ scenario: response.payload.scenario }),
                     );
                 } else {
-                    const response =
-                        await APIService.createSingleScenario(scenario);
+                    const response = await APIService.createSingleScenario({
+                        ...scenario,
+                        cardId: cardId || '',
+                        transactors,
+                    });
                     if (!response || !response.payload) {
                         throw new Error(t('modalMessages.noServerResponse'));
                     }
@@ -96,6 +106,7 @@ const EditScenario: FC<IProps> = () => {
                         addScenario({ scenario: response.payload.scenario }),
                     );
                 }
+                setLoading(false);
                 router.navigate(ROUTES.MANAGE_SCENARIOS);
             };
             request();
@@ -202,9 +213,9 @@ const EditScenario: FC<IProps> = () => {
                     value={scenario.description}
                 />
                 <DynamicCardList layout='list'>
-                    {transactors.map((datum, idx) => (
+                    {transactors.map((datum) => (
                         <TransactorRow
-                            key={idx}
+                            key={datum.id}
                             setTransactors={setTransactors}
                             transactor={datum}
                             transactors={transactors}
@@ -212,22 +223,21 @@ const EditScenario: FC<IProps> = () => {
                     ))}
                     <Button
                         onClick={() =>
-                            setScenario({
-                                ...scenario,
-                                transactors: [
-                                    ...scenario.transactors,
-                                    {
-                                        createdOn: '',
-                                        description: '',
-                                        id: '',
-                                        isAddition: true,
-                                        scenarioId: '',
-                                        schedulers: [],
-                                        updatedOn: '',
-                                        value: 0,
-                                    } as ITransactor,
-                                ],
-                            })
+                            setTransactors([
+                                ...transactors,
+                                {
+                                    createdOn: '',
+                                    description: '',
+                                    id: uuid(),
+                                    isAddition: true,
+                                    scenarioId: '',
+                                    schedulers: [],
+                                    updatedOn: '',
+                                    value: 0,
+                                    staged: true,
+                                    deleted: false,
+                                } as ITransactorRowEditable,
+                            ])
                         }
                     >
                         <IconPlus /> {t('buttons.addBudgetRow')}

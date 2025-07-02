@@ -1,5 +1,6 @@
 import { ChangeEvent, FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuid } from 'uuid';
 
 import {
     Accordion,
@@ -7,6 +8,7 @@ import {
     AccordionSummary,
     Box,
     Button,
+    List,
     ListItem,
     MenuItem,
     Paper,
@@ -22,18 +24,20 @@ import {
     DeleteForever as IconUnDelete,
 } from '@mui/icons-material';
 
-import type { IProps } from './TransactorRow.types';
-import SchedulerRow from '../SchedulerRow';
 import { IScheduler } from '../../../../types/Scenario.types';
+
+import SchedulerRow from '../SchedulerRow';
+
+import type { IProps } from './TransactorRow.types';
 
 const TextFieldStyled = styled(TextField)({});
 
 const inputProps = {
-    sx: {
-        '& input': {
-            py: '10px',
-        },
-    },
+    // sx: {
+    //     '& input': {
+    //         py: '10px',
+    //     },
+    // },
 };
 
 /**
@@ -168,7 +172,7 @@ const TransactorRow: FC<IProps> = ({
                     schedulers: [
                         ...transactorRow.schedulers,
                         {
-                            id: '',
+                            id: uuid(),
                             createdOn: '',
                             updatedOn: '',
                             schedulerCode: 'DAY',
@@ -260,7 +264,7 @@ const TransactorRow: FC<IProps> = ({
                             : 'Schedule this event'}
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box>
+                        <List>
                             {transactor.schedulers.map((scheduler, idx) => (
                                 <SchedulerRow
                                     handleClickDeleteScheduler={handleClickDeleteScheduler(
@@ -276,7 +280,7 @@ const TransactorRow: FC<IProps> = ({
                             <Button onClick={handleClickAddScheduler}>
                                 <IconCreate /> Add schedule
                             </Button>
-                        </Box>
+                        </List>
                     </AccordionDetails>
                 </Accordion>
             </Paper>

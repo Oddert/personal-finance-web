@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
-    Box,
     Button,
+    ListItem,
     MenuItem,
     Select,
     SelectChangeEvent,
@@ -123,7 +123,7 @@ const SchedulerRow: FC<IProps> = ({
     };
 
     return (
-        <Box sx={{ display: 'flex', gridGap: '16px' }}>
+        <ListItem sx={{ display: 'flex', gridGap: '16px' }}>
             <Select
                 onChange={(event: SelectChangeEvent<TSchedulerCode>) =>
                     handleChangeScheduler({
@@ -149,7 +149,7 @@ const SchedulerRow: FC<IProps> = ({
                     <IconDelete />
                 </Button>
             </Tooltip>
-        </Box>
+        </ListItem>
     );
 };
 

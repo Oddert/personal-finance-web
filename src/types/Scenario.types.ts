@@ -1,5 +1,7 @@
 export interface IScenario {
     id: string;
+    cardId: string;
+    userId: string;
     startDate: string;
     endDate: string;
     createdOn: string;
