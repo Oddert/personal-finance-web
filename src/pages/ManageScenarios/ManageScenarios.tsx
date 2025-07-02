@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { TDynamicCardLayoutModes } from '../../types/Common.types';
 
@@ -9,7 +9,10 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
-import { getScenarios } from '../../redux/selectors/scenarioSelectors';
+import {
+    getScenarios,
+    getScenariosLoading,
+} from '../../redux/selectors/scenarioSelectors';
 
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
@@ -26,6 +29,8 @@ const ManageScenarios: FC<IProps> = () => {
     const [layout, setLayout] = useState<TDynamicCardLayoutModes>('standard');
 
     const scenarios = useAppSelector(getScenarios);
+    const loading = useAppSelector(getScenariosLoading);
+
     return (
         <ResponsiveContainer>
             <Box
@@ -49,12 +54,18 @@ const ManageScenarios: FC<IProps> = () => {
                     <LayoutControls layout={layout} setLayout={setLayout} />
                     <CreateScenarioButton />
                 </Box>
-                <DynamicCardList layout={layout}>
-                    {scenarios.map((scenario, idx) => (
-                        <ScenarioCard key={idx} scenario={scenario} />
-                    ))}
-                    <CreateScenarioCard />
-                </DynamicCardList>
+                {loading ? (
+                    <Box sx={{ py: 8 }}>
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    <DynamicCardList layout={layout}>
+                        {scenarios.map((scenario, idx) => (
+                            <ScenarioCard key={idx} scenario={scenario} />
+                        ))}
+                        <CreateScenarioCard />
+                    </DynamicCardList>
+                )}
             </Box>
         </ResponsiveContainer>
     );

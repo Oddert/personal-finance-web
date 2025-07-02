@@ -23,7 +23,7 @@ export const getScenarios = createSelector(
  * @category Redux
  * @subcategory Selectors
  */
-export const getBudgetLoading = createSelector(
+export const getScenariosLoading = createSelector(
     getScenarioState,
     (scenarioState) => scenarioState.loading,
 );
@@ -33,7 +33,7 @@ export const getBudgetLoading = createSelector(
  * @category Redux
  * @subcategory Selectors
  */
-export const getBudgetLoaded = createSelector(
+export const getScenariosLoaded = createSelector(
     getScenarioState,
     (scenarioState) => scenarioState.loaded,
 );

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
+    Box,
     Button,
     ListItem,
     MenuItem,
@@ -30,7 +31,7 @@ const SchedulerRow: FC<IProps> = ({
 
     const inputDayOfMonth = (
         <TextField
-            label='Day of month'
+            label='Day'
             onChange={(event) => {
                 const num = Number(event.target.value);
                 if (num >= 0 && num <= 31) {
@@ -123,27 +124,35 @@ const SchedulerRow: FC<IProps> = ({
     };
 
     return (
-        <ListItem sx={{ display: 'flex', gridGap: '16px' }}>
-            <Select
-                onChange={(event: SelectChangeEvent<TSchedulerCode>) =>
-                    handleChangeScheduler({
-                        ...scheduler,
-                        // @ts-expect-error For some reason TSchedulerCode not being picked up here
-                        schedulerCode: event.target.value,
-                    })
-                }
-                value={scheduler.schedulerCode}
-            >
-                <MenuItem value='DAY'>Repeat a day of the month</MenuItem>
-                <MenuItem value='SCALAR'>Repeating event</MenuItem>
-                <MenuItem value='DAY_OF_WEEK'>
-                    Repeat on a day of the week
-                </MenuItem>
-                <MenuItem value='EVENT'>
-                    Schedule for a specific date (one time)
-                </MenuItem>
-            </Select>
-            {switchLayout()}
+        <ListItem
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gridGap: '16px',
+            }}
+        >
+            <Box sx={{ display: 'flex', gridGap: '16px' }}>
+                <Select
+                    onChange={(event: SelectChangeEvent<TSchedulerCode>) =>
+                        handleChangeScheduler({
+                            ...scheduler,
+                            // @ts-expect-error For some reason TSchedulerCode not being picked up here
+                            schedulerCode: event.target.value,
+                        })
+                    }
+                    value={scheduler.schedulerCode}
+                >
+                    <MenuItem value='DAY'>Repeat a day of the month</MenuItem>
+                    <MenuItem value='SCALAR'>Repeating event</MenuItem>
+                    <MenuItem value='DAY_OF_WEEK'>
+                        Repeat on a day of the week
+                    </MenuItem>
+                    <MenuItem value='EVENT'>
+                        Schedule for a specific date (one time)
+                    </MenuItem>
+                </Select>
+                {switchLayout()}
+            </Box>
             <Tooltip title='Delete Schedule'>
                 <Button onClick={handleClickDeleteScheduler}>
                     <IconDelete />
