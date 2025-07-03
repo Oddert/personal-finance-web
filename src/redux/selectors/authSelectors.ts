@@ -40,11 +40,38 @@ export const getRefreshTokenPending = createSelector(
 );
 
 /**
- * Returns the logged in user's first name.
+ * Returns the logged in user's details.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getUser = createSelector(
+    getAuthState,
+    (authState) => authState.user,
+);
+
+/**
+ * Returns the logged in user's primary name.
  * @category Redux
  * @subcategory Selectors
  */
 export const getUserFirstName = createSelector(
-    getAuthState,
-    (authState) => authState.user?.fistName,
+    getUser,
+    (user) => user?.firstName,
 );
+
+/**
+ * Returns the logged in user's secondary name.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getUserLastName = createSelector(
+    getUser,
+    (user) => user?.lastName,
+);
+
+/**
+ * Returns the logged in user's primary email.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getUserEmail = createSelector(getUser, (user) => user?.username);

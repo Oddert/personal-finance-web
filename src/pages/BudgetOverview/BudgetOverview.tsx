@@ -37,9 +37,8 @@ import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import CandleStickChart from './components/CandleStickChart';
 import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
+import TotalDiscrepancyChart from './components/TotalDiscrepancyChart/TotalDiscrepancyChart';
 import TimeChart from './components/TimeChart';
-
-import TotalDiscrepancyChart from './components/TotalDiscrepancyChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 import { ChartPaper } from './BudgetOverview.styles';

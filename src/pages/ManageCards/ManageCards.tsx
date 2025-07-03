@@ -37,7 +37,7 @@ const ManageCards: FC<IProps> = () => {
     const cards = useAppSelector(getCardResponse);
 
     useEffect(() => {
-        dispatch(refreshBudgets(true));
+        dispatch(refreshBudgets(t, true));
         // TODO: re-enable react-hooks/exhaustive-deps
     }, []);
 

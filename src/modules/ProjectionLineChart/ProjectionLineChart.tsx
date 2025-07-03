@@ -4,6 +4,7 @@ import {
     SyntheticEvent,
     useCallback,
     useEffect,
+    useMemo,
     useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,12 +33,16 @@ import { getFromLocalStore, setToLocalStore } from '../../common/localstore';
 
 import {
     normaliseDateStamp,
+    ScheduleByDayOfWeek,
     ScheduleByEvent,
+    ScheduleByScalarTime,
+    ScheduleBySpecificDay,
 } from '../../utils/schedulerUtils';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
+import { getScenarios } from '../../redux/selectors/scenarioSelectors';
 import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 
 import type { ITransaction } from '../../types/Transaction.d';
@@ -47,14 +52,37 @@ import {
     defaultEnd,
     defaultStart,
     MODULE_PROJECTION_PAST_BALLANCE,
-    scenarioOptions,
-    scenarios,
 } from './ProjectionLineChartUtils';
 
 dayjs.extend(localizedFormat);
 
-interface Props {
+interface IProps {
     compact?: boolean;
+}
+
+interface IActiveScenario {
+    id: string;
+    cardId: string;
+    userId: string;
+    startDate: string;
+    endDate: string;
+    createdOn: string;
+    updatedOn: string;
+    title: string;
+    description: string;
+    startBallance: number;
+    transactors: {
+        annotation: string;
+        startDate: string;
+        description: string;
+        action: (value: number) => number;
+        schedulers: (
+            | ScheduleByEvent
+            | ScheduleByDayOfWeek
+            | ScheduleByScalarTime
+            | ScheduleBySpecificDay
+        )[];
+    }[];
 }
 
 /**
@@ -64,19 +92,26 @@ interface Props {
  * @component
  * @param props.compact If true, displays as a card module for composition with other modules.
  */
-const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
+const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
     const { t } = useTranslation();
+
+    const [scenarioOptions, setScenarioOptions] = useState<
+        { id: string; label: string }[]
+    >([]);
 
     /**
      * Holds value for the currently selected option(s) for the scenario selector.
      */
-    const [activeScenariosOpt, setActiveScenariosOpt] =
-        useState<{ label: string; id: number }[]>(scenarioOptions);
+    const [activeScenariosOpt, setActiveScenariosOpt] = useState<
+        { label: string; id: string }[]
+    >([]);
 
     /**
      * Holds a filtered list of scenarios used to project the chart.
      */
-    const [activeScenarios, setActiveScenarios] = useState(scenarios);
+    const [activeScenarios, setActiveScenarios] = useState<IActiveScenario[]>(
+        [],
+    );
 
     const [startDate, setStartDate] = useState<Dayjs>(dayjs(defaultStart));
     const [endDate, setEndDate] = useState<Dayjs>(dayjs(defaultEnd));
@@ -94,16 +129,74 @@ const ProjectionLineChart: FC<Props> = ({ compact = false }) => {
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
     const language = useAppSelector(getActiveLanguageCode);
+    const scenarios = useAppSelector(getScenarios);
+
+    const parsedScenarios = useMemo(
+        () =>
+            scenarios.map((scenario) => ({
+                id: '',
+                cardId: '',
+                userId: '',
+                startDate: '',
+                endDate: '',
+                createdOn: '',
+                updatedOn: '',
+                title: '',
+                description: '',
+                startBallance: 0,
+                transactors: scenario.transactors.map((transactor) => ({
+                    annotation: '',
+                    startDate: '',
+                    description: '',
+                    action: (value: number) =>
+                        transactor.isAddition
+                            ? value + transactor.value
+                            : value - transactor.value,
+                    schedulers: transactor.schedulers.map((scheduler) => {
+                        switch (scheduler.schedulerCode) {
+                            case 'DAY':
+                                return new ScheduleBySpecificDay(scheduler.day);
+                            case 'DAY_OF_WEEK':
+                                return new ScheduleByDayOfWeek(
+                                    scheduler.day,
+                                    scheduler.nthDay || undefined,
+                                );
+                            case 'EVENT':
+                                return new ScheduleByEvent(
+                                    scheduler.startDate || new Date(),
+                                );
+                            case 'SCALAR':
+                            default:
+                                return new ScheduleByScalarTime(
+                                    scheduler.step || 1,
+                                    scheduler.startDate || new Date(),
+                                );
+                        }
+                    }),
+                })),
+            })),
+        [scenarios],
+    );
+
+    useEffect(() => {
+        setActiveScenarios(parsedScenarios);
+        setScenarioOptions(
+            parsedScenarios.map((scenario) => ({
+                id: scenario.id,
+                label: scenario.title,
+            })),
+        );
+    }, [parsedScenarios]);
 
     const handleScenarioSelection = (
         event: SyntheticEvent<Element, Event>,
         value: {
             label: string;
-            id: number;
+            id: string;
         }[],
     ) => {
         const ids = value.map(({ id }) => id);
-        const filteredScenarios = scenarios.filter((scenario) => {
+        const filteredScenarios = parsedScenarios.filter((scenario) => {
             return ids.includes(scenario.id);
         });
         setActiveScenarios(filteredScenarios);

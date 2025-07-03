@@ -5,9 +5,10 @@ import { Box, Container, Paper } from '@mui/material';
 
 import router, { ROUTES } from '../../constants/routerConstants';
 
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import { getIsAuthenticated } from '../../redux/selectors/authSelectors';
+import { userLogout } from '../../redux/thunks/authThunks';
 
 import ExistingUser from './components/ExistingUser';
 import Header from './components/Header';
@@ -21,23 +22,34 @@ import SwitchMode from './components/SwitchMode';
  * @subcategory Login
  */
 const Login: FC = () => {
+    const dispatch = useAppDispatch();
+
     const [search] = useSearchParams();
+
     const [isExistingUser, setIsExistingUser] = useState(true);
 
     const isAuth = useAppSelector(getIsAuthenticated);
     console.log('[pages/Login] isAuth', isAuth);
 
     if (isAuth) {
-        const redirectAddr = search.get('redirect');
-        console.log('[pages/Login] redirectAddr', redirectAddr);
-        if (redirectAddr) {
-            console.log('[pages/Login] redirecting to custom addr...');
-            router.navigate(redirectAddr);
+        const logout = search.get('logout');
+
+        if (logout === '1') {
+            console.log('[pages/Login] logout requested');
+            dispatch(userLogout());
+            router.navigate(ROUTES.LOGIN);
+        } else {
+            const redirectAddr = search.get('redirect');
+            console.log('[pages/Login] redirectAddr', redirectAddr);
+            if (redirectAddr) {
+                console.log('[pages/Login] redirecting to custom addr...');
+                router.navigate(redirectAddr);
+                return null;
+            }
+            console.log('[pages/Login] redirecting home...');
+            router.navigate(ROUTES.HOME);
             return null;
         }
-        console.log('[pages/Login] redirecting home...');
-        router.navigate(ROUTES.HOME);
-        return null;
     }
 
     return (

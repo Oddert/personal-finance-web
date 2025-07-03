@@ -11,18 +11,20 @@ import {
     Button,
     List,
     ListItem,
+    Paper,
     TextField,
     Typography,
 } from '@mui/material';
 import {
-    KeyboardArrowUp as IconUp,
     KeyboardArrowDown as IconDown,
+    Language as IconLanguage,
+    KeyboardArrowUp as IconUp,
 } from '@mui/icons-material';
 
 import {
     reorderLanguages,
-    updateLanguages,
-} from '../../../../redux/slices/profileSlice';
+    updateLanguagePreferences,
+} from '../../../../redux/thunks/profileThunks';
 
 import {
     useAppDispatch,
@@ -47,46 +49,52 @@ const LanguageSelector: FC<IProps> = () => {
     const usersLanguages = useAppSelector(getUserLanguages);
 
     return (
-        <Box
+        <Paper
             sx={{
+                mb: 2,
+                px: 4,
+                py: 2,
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gridGap: '16px',
-                '& .MuiAccordion-heading': {
-                    background: 'red !important',
-                },
+                gridTemplateColumns: 'auto 1fr 1fr',
+                gridGap: '16px 24px',
+                alignItems: 'center',
             }}
         >
+            <IconLanguage sx={{ gridRow: '1 / span 2' }} />
+            <Box>
+                <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
+                    {t('Profile.preferredLanguageTitle')}
+                </Typography>
+                <Typography textAlign='left'>
+                    {t('Profile.preferredLanguageDesc')}
+                </Typography>
+            </Box>
             <Autocomplete
                 getOptionLabel={(option) => `${option.name} (${option.tag})`}
                 getOptionKey={(option) => option.tag}
-                multiple
                 onChange={(event, nextValue) => {
                     if (nextValue) {
                         dispatch(
-                            updateLanguages({
-                                languages: nextValue.map((lang) => ({
-                                    displayName: lang.name,
-                                    code: lang.tag,
-                                })),
-                            }),
+                            updateLanguagePreferences([
+                                ...usersLanguages,
+                                {
+                                    displayName: nextValue.name,
+                                    code: nextValue.tag,
+                                },
+                            ]),
                         );
                     }
                 }}
                 options={locale.all}
                 renderInput={(props) => (
-                    <TextField {...props} label={t('Favourite languages')} />
+                    <TextField {...props} label={t('Add language')} />
                 )}
                 sx={{
                     mt: '24px',
                 }}
-                value={usersLanguages.map((lang) => ({
-                    name: lang.displayName,
-                    tag: lang.code,
-                    lcid: 0,
-                }))}
+                value={null}
             />
-            <Accordion>
+            <Accordion defaultExpanded sx={{ gridColumn: '1 / -1' }}>
                 <AccordionSummary>{t('buttons.changeOrder')}</AccordionSummary>
                 <AccordionDetails>
                     <List>
@@ -97,10 +105,7 @@ const LanguageSelector: FC<IProps> = () => {
                                         disabled={idx === 0}
                                         onClick={() =>
                                             dispatch(
-                                                reorderLanguages({
-                                                    from: idx,
-                                                    to: idx - 1,
-                                                }),
+                                                reorderLanguages(idx, idx - 1),
                                             )
                                         }
                                         title={t('Move up in sort order')}
@@ -113,10 +118,7 @@ const LanguageSelector: FC<IProps> = () => {
                                         }
                                         onClick={() =>
                                             dispatch(
-                                                reorderLanguages({
-                                                    from: idx,
-                                                    to: idx + 1,
-                                                }),
+                                                reorderLanguages(idx, idx + 1),
                                             )
                                         }
                                         title={t('Move down in sort order')}
@@ -132,7 +134,7 @@ const LanguageSelector: FC<IProps> = () => {
                     </List>
                 </AccordionDetails>
             </Accordion>
-        </Box>
+        </Paper>
     );
 };
 

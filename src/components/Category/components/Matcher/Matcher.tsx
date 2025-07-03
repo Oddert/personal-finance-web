@@ -49,7 +49,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                     matcher.id,
                 );
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(
                     categorySlice.actions.updateSingleMatcher({

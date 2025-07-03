@@ -7,6 +7,7 @@ import cardReducer from '../slices/cardSlice';
 import errorReducer from '../slices/errorSlice';
 import categoryReducer from '../slices/categorySlice';
 import profileReducer from '../slices/profileSlice';
+import scenarioReducer from '../slices/scenarioSlice';
 import transactionReducer from '../slices/transactionsSlice';
 
 import rootSaga from './rootSaga';
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     category: categoryReducer,
     error: errorReducer,
     profile: profileReducer,
+    scenario: scenarioReducer,
     transaction: transactionReducer,
 });
 

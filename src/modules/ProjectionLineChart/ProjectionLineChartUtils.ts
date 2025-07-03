@@ -1,13 +1,5 @@
 import { ApexOptions } from 'apexcharts';
 
-// temp file used for privacy, swap for ../../constants/projectionConstants.ts
-import {
-    defaultScenario2,
-    newBike,
-    scenarioTrimFat,
-    bonus,
-} from '../../constants/projectionConstants.temp';
-
 import theme from '../../theme';
 
 import { largeValueFormatter } from '../../utils/chartUtils';
@@ -19,13 +11,8 @@ export const defaultStart = new Date();
 const defaultEndConstructor = new Date();
 defaultEndConstructor.setMonth(defaultEndConstructor.getMonth() + 3);
 defaultEndConstructor.setDate(0);
-export const defaultEnd = new Date(defaultEndConstructor);
 
-export const scenarios = [defaultScenario2, scenarioTrimFat, newBike, bonus];
-export const scenarioOptions = scenarios.map((scenario) => ({
-    label: scenario.title,
-    id: scenario.id,
-}));
+export const defaultEnd = new Date(defaultEndConstructor);
 
 export const chart1BaseOptions = (
     compact: boolean,

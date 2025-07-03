@@ -65,6 +65,14 @@ export const authSlice = createSlice({
         clearIncorrectDetails(state) {
             state.incorrectDetails = false;
         },
+        logoutAuth(state) {
+            state.accessToken = null;
+            state.accessTokenExpires = 0;
+            state.authenticated = false;
+            state.refreshToken = null;
+            state.refreshTokenExpires = 0;
+            state.user = null;
+        },
         refreshTokenRequestFinished(state) {
             state.refreshRequestInProgress = false;
         },
@@ -91,6 +99,7 @@ export const {
     authenticateUser,
     clearAuthentication,
     clearIncorrectDetails,
+    logoutAuth,
     refreshTokenRequestFinished,
     refreshTokenRequestPending,
     setIncorrectDetails,

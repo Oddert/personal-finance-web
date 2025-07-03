@@ -1,7 +1,10 @@
-import APIService from '../../services/APIService';
-import { IBudget } from '../../types/Budget.types';
+import { TFunction } from 'i18next';
 
 import { AppDispatch, RootState } from '../constants/store';
+
+import APIService from '../../services/APIService';
+
+import { IBudget } from '../../types/Budget.types';
 
 import { budgetLoading, writeBudgets } from '../slices/budgetSlice';
 
@@ -16,7 +19,7 @@ import { intakeError } from './errorThunks';
  * @param override If true, a refresh will be forced.
  */
 export const refreshBudgets =
-    (override?: boolean) =>
+    (t: TFunction<'translation', undefined>, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const state = getState();
@@ -30,7 +33,7 @@ export const refreshBudgets =
                 dispatch(budgetLoading());
                 const response = await APIService.getAllBudgets();
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    throw new Error(t('modalMessages.noServerResponse'));
                 }
                 if (response?.status === 200) {
                     dispatch(
