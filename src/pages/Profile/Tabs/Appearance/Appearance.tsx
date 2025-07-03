@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 import { Palette as IconAppearance } from '@mui/icons-material';
@@ -6,12 +7,16 @@ import { Palette as IconAppearance } from '@mui/icons-material';
 import SidebarMode from '../../components/SidebarMode';
 import UserDetails from '../../components/UserDetails';
 
+/**
+ * Displays non-critical user details and app layout options.
+ *
+ * Allows the user to update these preferences.
+ * @component
+ * @category Pages
+ * @subcategory Profile
+ */
 const Appearance: FC = () => {
-    // const title = (
-    //     <Typography sx={{ margin: '32px 0', textAlign: 'left' }} variant='h2'>
-    //         {t('pageTitles.profile')}
-    //     </Typography>
-    // );
+    const { t } = useTranslation();
     return (
         <Box
             sx={{
@@ -24,7 +29,7 @@ const Appearance: FC = () => {
             }}
         >
             <Typography sx={{ mb: 4 }} variant='h2'>
-                <IconAppearance /> Appearance & Theme
+                <IconAppearance /> {t('pageTitles.profile.appearance')}
             </Typography>
             <UserDetails />
             <SidebarMode />

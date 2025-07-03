@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     Box,
@@ -20,8 +21,15 @@ import {
 } from '../../../../redux/selectors/authSelectors';
 import { updateUserDetails } from '../../../../redux/thunks/authThunks';
 
+/**
+ * Allows the user to change their display name(s).
+ * @component
+ * @category Pages
+ * @subcategory Profile
+ */
 const UserDetails: FC = () => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
 
     const [editing, setEditing] = useState(false);
     const [internalFirstName, setInternalFirstName] = useState('');
@@ -66,14 +74,14 @@ const UserDetails: FC = () => {
                         control={
                             <TextField
                                 fullWidth
-                                placeholder='First name'
+                                placeholder={t('Profile.firstName')}
                                 onChange={(event) =>
                                     setInternalFirstName(event.target.value)
                                 }
                                 value={internalFirstName}
                             />
                         }
-                        label='First name'
+                        label={t('Profile.firstName')}
                         labelPlacement='top'
                         slotProps={{
                             typography: {
@@ -86,14 +94,14 @@ const UserDetails: FC = () => {
                         control={
                             <TextField
                                 fullWidth
-                                placeholder='Last name'
+                                placeholder={t('Profile.lastName')}
                                 onChange={(event) =>
                                     setInternalLastName(event.target.value)
                                 }
                                 value={internalLastName}
                             />
                         }
-                        label='Last name'
+                        label={t('Profile.lastName')}
                         labelPlacement='top'
                         slotProps={{
                             typography: {
@@ -112,14 +120,14 @@ const UserDetails: FC = () => {
                     }}
                 >
                     <Button onClick={reset} size='large' variant='text'>
-                        Cancel
+                        {t('buttons.Cancel')}
                     </Button>
                     <Button
                         onClick={handleSubmit}
                         size='large'
                         variant='contained'
                     >
-                        Save
+                        {t('buttons.Save')}
                     </Button>
                 </Box>
             </Box>
@@ -150,7 +158,7 @@ const UserDetails: FC = () => {
                 }}
             >
                 <Typography component='h4' textAlign='left' variant='body1'>
-                    Name
+                    {t('Profile.name')}
                 </Typography>
                 <Box sx={{ display: 'flex', gridGap: 16 }}>
                     <Typography component='p' variant='h4'>

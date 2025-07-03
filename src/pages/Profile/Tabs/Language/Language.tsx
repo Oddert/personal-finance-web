@@ -14,10 +14,16 @@ import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 import CurrencySelector from '../../components/CurrencySelector';
 import LanguageSelector from '../../components/LanguageSelector';
+import SystemLanguage from '../../components/SystemLanguage';
 
 import { FC } from 'react';
-import SystemLanguage from '../../components/SystemLanguage/SystemLanguage';
 
+/**
+ * Presents the user with language, currency, and other localisation settings.
+ * @component
+ * @category Pages
+ * @category Profile
+ */
 const Language: FC = () => {
     const { t } = useTranslation();
     const usersCurrencies = useAppSelector(getUserCurrencies);
@@ -37,7 +43,7 @@ const Language: FC = () => {
                 sx={{ margin: '32px 0', textAlign: 'left' }}
                 variant='h2'
             >
-                <IconLanguage /> Language & Currency
+                <IconLanguage /> {t('pageTitles.profile.language')}
             </Typography>
             <Paper
                 sx={{
@@ -52,17 +58,14 @@ const Language: FC = () => {
                 <IconTranslate sx={{ gridRow: '1 / span 2' }} />
                 <Box>
                     <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
-                        Display Language
+                        {t('Profile.displayLanguageTitle')}
                     </Typography>
                     <Typography textAlign='left'>
-                        Choose the main language to be used by the app.
+                        {t('Profile.displayLanguageDesc')}
                     </Typography>
                 </Box>
                 <SystemLanguage />
             </Paper>
-            {/* <Box
-                sx={{ display: 'grid', gridTemplateColumns: '2fr 1fr', mt: 4 }}
-            > */}
             <Box
                 sx={{
                     display: 'flex',
@@ -84,21 +87,14 @@ const Language: FC = () => {
                 }}
             >
                 <Typography component='p' variant='h3'>
-                    {t('Example number formatting:')} &ldquo;
-                    <Typography
-                        component='span'
-                        sx={{ fontWeight: 'bold' }}
-                        variant='h3'
-                    >
-                        {currencyLocaliser(19482.25, usersCurrencies[0])}
-                    </Typography>
-                    &rdquo;
+                    {t('Example number formatting:', {
+                        number: currencyLocaliser(19482.25, usersCurrencies[0]),
+                    })}
                 </Typography>
-                <Tooltip title='Numbers throughout the app are formatted based on a combination of language and currency selections.'>
+                <Tooltip title={t('Profile.numberFormatExplanation')}>
                     <IconInfo />
                 </Tooltip>
             </Box>
-            {/* </Box> */}
         </Box>
     );
 };

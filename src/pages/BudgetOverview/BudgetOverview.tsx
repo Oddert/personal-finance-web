@@ -78,7 +78,6 @@ const BudgetOverview: FC<IProps> = () => {
     const monthBudget = useAppSelector(getActiveBudget);
 
     const chartList = useMemo(() => {
-        console.log('regenerate chart list');
         if (monthBudget) {
             let sDate = dayjs(startDate);
 

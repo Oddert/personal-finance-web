@@ -6,7 +6,6 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
-    // AccordionSummary,
     Autocomplete,
     Box,
     Button,
@@ -64,11 +63,10 @@ const LanguageSelector: FC<IProps> = () => {
             <IconLanguage sx={{ gridRow: '1 / span 2' }} />
             <Box>
                 <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
-                    Preferred languages
+                    {t('Profile.preferredLanguageTitle')}
                 </Typography>
                 <Typography textAlign='left'>
-                    Select other languages which can be used if your selected
-                    language is not available
+                    {t('Profile.preferredLanguageDesc')}
                 </Typography>
             </Box>
             <Autocomplete

@@ -14,6 +14,12 @@ import {
 
 import { IProps } from './SystemLanguage.styles';
 
+/**
+ * Allows the user to select their main (system) language.
+ * @component
+ * @category Pages
+ * @subcategory Profile
+ */
 const SystemLanguage: FC<IProps> = () => {
     const { t } = useTranslation();
 

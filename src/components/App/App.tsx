@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RouterProvider } from 'react-router-dom';
 
 import { Box, CssBaseline } from '@mui/material';
@@ -24,14 +25,16 @@ import './App.css';
 const App = () => {
     const dispatch = useAppDispatch();
 
+    const { t } = useTranslation();
+
     const { conditionallyRefreshAuth } = useAuthToken();
 
     useEffect(() => {
         const loadAppBaseInfo = () => {
-            dispatch(refreshCategories());
-            dispatch(refreshBudgets());
-            dispatch(refreshCards());
-            dispatch(refreshScenarios());
+            dispatch(refreshCategories(t));
+            dispatch(refreshBudgets(t));
+            dispatch(refreshCards(t));
+            dispatch(refreshScenarios(t));
         };
         conditionallyRefreshAuth(loadAppBaseInfo);
     }, []);

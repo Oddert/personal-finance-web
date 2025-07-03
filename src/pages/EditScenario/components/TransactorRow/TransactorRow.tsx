@@ -14,7 +14,6 @@ import {
     Paper,
     Select,
     SelectChangeEvent,
-    styled,
     TextField,
     Tooltip,
 } from '@mui/material';
@@ -30,21 +29,11 @@ import SchedulerRow from '../SchedulerRow';
 
 import type { IProps } from './TransactorRow.types';
 
-const TextFieldStyled = styled(TextField)({});
-
-const inputProps = {
-    // sx: {
-    //     '& input': {
-    //         py: '10px',
-    //     },
-    // },
-};
-
 /**
  * Displays a single transactor row, representing one type of transaction.
  * @component
  * @category Pages
- * @subcategory Home
+ * @subcategory Edit Scenario
  */
 const TransactorRow: FC<IProps> = ({
     setTransactors,
@@ -203,13 +192,10 @@ const TransactorRow: FC<IProps> = ({
                         gridGap: '16px',
                     }}
                 >
-                    <TextFieldStyled
+                    <TextField
                         disabled={transactor.deleted}
-                        label={'Description'}
+                        label={t('literals.Description')}
                         onChange={handleChangeDesc}
-                        slotProps={{
-                            input: inputProps,
-                        }}
                         sx={{
                             '& * ': {
                                 textDecoration: transactor.deleted
@@ -219,13 +205,10 @@ const TransactorRow: FC<IProps> = ({
                         }}
                         value={transactor.description}
                     />
-                    <TextFieldStyled
+                    <TextField
                         disabled={transactor.deleted}
-                        label={'Amount'}
+                        label={t('literals.Amount')}
                         onChange={handleChangeValue}
-                        slotProps={{
-                            input: inputProps,
-                        }}
                         sx={{
                             '& * ': {
                                 textDecoration: transactor.deleted
@@ -240,8 +223,8 @@ const TransactorRow: FC<IProps> = ({
                         onChange={handleChangeIsAddition}
                         value={transactor.isAddition ? 'y' : 'n'}
                     >
-                        <MenuItem value='y'>Add</MenuItem>
-                        <MenuItem value='n'>Subtract</MenuItem>
+                        <MenuItem value='y'>{t('literals.Add')}</MenuItem>
+                        <MenuItem value='n'>{t('literals.Subtract')}</MenuItem>
                     </Select>
                     {transactor.deleted ? (
                         <Tooltip title={t('Budget.rowDeletedCLickToRestore')}>
@@ -260,8 +243,10 @@ const TransactorRow: FC<IProps> = ({
                 <Accordion>
                     <AccordionSummary>
                         {transactor.schedulers.length
-                            ? `Schedules (${transactor.schedulers.length})`
-                            : 'Schedule this event'}
+                            ? t('Scenario.numSchedules', {
+                                  num: transactor.schedulers.length,
+                              })
+                            : t('Scenario.scheduleThisEvent')}
                     </AccordionSummary>
                     <AccordionDetails>
                         <List>
@@ -278,7 +263,7 @@ const TransactorRow: FC<IProps> = ({
                                 />
                             ))}
                             <Button onClick={handleClickAddScheduler}>
-                                <IconCreate /> Add schedule
+                                <IconCreate /> {t('Scenario.addSchedule')}
                             </Button>
                         </List>
                     </AccordionDetails>

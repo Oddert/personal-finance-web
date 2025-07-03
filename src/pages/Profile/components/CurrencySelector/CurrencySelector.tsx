@@ -76,16 +76,18 @@ const LanguageSelector: FC<IProps> = () => {
             <IconCurrency />
             <Box>
                 <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
-                    Favourite Currencies
+                    {t('Profile.currencyTitle')}
                 </Typography>
                 <Typography textAlign='left'>
-                    Select currencies to be highlighted at the top of the
-                    currency selector when adding transaction data.
+                    {t('Profile.currencyDesc')}
                 </Typography>
             </Box>
             <Autocomplete
                 getOptionLabel={(option) =>
-                    `${option[0]} (${t('literals.example')}: ${option[1]})`
+                    t('literals.example', {
+                        label: option[0],
+                        example: option[1],
+                    })
                 }
                 getOptionKey={(option) => option[0]}
                 onChange={(event, nextValue) => {

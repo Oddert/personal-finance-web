@@ -38,6 +38,8 @@ import type { IProps } from './CreateScenarioMenu.types';
  * @component
  * @category Pages
  * @subcategory Manage Scenario
+ * @param props.anchorEl The element to anchor the modal to. If null the modal will be closed.
+ * @param props.handleClose Callback function to close the modal.
  */
 const CreateScenarioMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
     const { t } = useTranslation();
@@ -82,9 +84,6 @@ const CreateScenarioMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
         <Menu
             anchorEl={anchorEl}
             id='basic-menu'
-            MenuListProps={{
-                'aria-labelledby': 'basic-button',
-            }}
             onClose={handleClose}
             open={open}
         >

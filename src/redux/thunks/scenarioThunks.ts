@@ -1,3 +1,5 @@
+import { TFunction } from 'i18next';
+
 import APIService from '../../services/APIService';
 
 import { AppDispatch, RootState } from '../constants/store';
@@ -15,7 +17,7 @@ import { intakeError } from './errorThunks';
  * @param override If true, a refresh will be forced.
  */
 export const refreshScenarios =
-    (override?: boolean) =>
+    (t: TFunction<'translation', undefined>, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const state = getState();
@@ -30,7 +32,7 @@ export const refreshScenarios =
                 dispatch(scenariosLoading());
                 const response = await APIService.getAllScenarios();
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    throw new Error(t('modalMessages.noServerResponse'));
                 }
                 if (response?.status === 200) {
                     dispatch(

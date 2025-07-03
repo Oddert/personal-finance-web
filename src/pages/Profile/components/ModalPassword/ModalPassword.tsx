@@ -28,6 +28,12 @@ import { Form, TextField } from '../../../Login/Login.styles';
 
 import { IProps } from './ModalPassword.types';
 
+/**
+ * Presents the user with a form to change their password.
+ * @component
+ * @category Pages
+ * @subcategory Profile
+ */
 const ModalPassword: FC<IProps> = () => {
     const dispatch = useAppDispatch();
 

@@ -9,7 +9,7 @@
     "Discrepancy val": "Discrepancy (val)",
     "End date": "End date",
     "Example currency display": "Example currency display",
-    "Example number formatting:": "Example number formatting:",
+    "Example number formatting:": "Example number formatting: \"{{number}}\"",
     "Add currency": "Add currency",
     "Add language": "Add language",
     "Filter view by month:": "Filter view by month:",
@@ -34,6 +34,7 @@
     "literals": {
         "above": "above",
         "Actual": "Actual",
+        "Add": "Add",
         "Amount": "Amount",
         "Background": "Background",
         "bellow": "bellow",
@@ -67,6 +68,7 @@
         "Options": "Options",
         "Out": "Out",
         "Scenario": "Scenario",
+        "Subtract": "Subtract",
         "Title": "Title",
         "to": "to",
         "Unset": "Unset",
@@ -83,7 +85,12 @@
         "manageCards": "Manage Cards",
         "manageCategories": "Manage Categories",
         "manageScenarios": "Manage Scenarios",
-        "profile": "Profile and Settings",
+        "profile": {
+            "appearance": "Appearance & Theme",
+            "language": "Language & Currency",
+            "main": "Profile and Settings",
+            "security": "Security"
+        },
         "transactions": "Upload & Edit Transactions"
     },
     "dragDrop": {
@@ -189,6 +196,7 @@
         "Email": "Email",
         "emailFormatInvalid": "The email submitted is not a valid format.",
         "emailMustBeXLong": "Email must be a minimum of 4 characters long.",
+        "incorrectEmailPassword": "Incorrect email or password, please check and try again.",
         "Login": "Login",
         "newEmailLabel": "New email",
         "newPassword": "New password",
@@ -295,15 +303,41 @@
         "notFoundWithId": "No card found with ID",
         "returnToAllCards": "Return to all cards"
     },
+    "Profile": {
+        "currencyDesc": "Select currencies to be highlighted at the top of the currency selector when adding transaction data.",
+        "currencyTitle": "Favourite Currencies",
+        "displayLanguageDesc": "Choose the main language to be used by the app.",
+        "displayLanguageTitle": "Display Language",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "name": "Name",
+        "preferredLanguageDesc": "Select other languages which can be used if your selected language is not available.",
+        "preferredLanguageTitle": "Preferred languages",
+        "exampleLabel": "{{label}} (example: {{example}})",
+        "numberFormatExplanation": "Numbers throughout the app are formatted based on a combination of language and currency selections."
+    },
     "Scenario": {
+        "addSchedule": "Add schedule",
         "createANewScenario": "Create a new scenario",
         "createFromTemplate": "Create from template",
         "description": "Scenario description",
         "notFound": "Scenario not found",
-        "notFoundWithId": "No scenario found with ID",
+        "notFoundWithId": "No scenario found with ID \"{{scenarioId}}\".",
         "pleaseSelectAScenario": "Please select a scenario.",
         "newBlankScenario": "New blank scenario",
+        "numSchedules": "{{num}} schedules",
         "returnToAllScenarios": "Return to all scenarios",
+        "scheduleThisEvent": "Schedule this event",
+        "Scheduler": {
+            "deleteSchedule": "Delete Schedule",
+            "descriptionDay": "Repeat a day of the month",
+            "descriptionDayOfWeek": "Repeating on a day of the week",
+            "descriptionEvent": "Schedule for a specific date (one time)",
+            "descriptionScalar": "Repeating event",
+            "labelDay": "Day",
+            "labelNthDay": "Every nth day (optional)",
+            "labelStep": "Step"
+        },
         "templateScenarioLabel": "Template scenario"
     },
     "Transaction": {

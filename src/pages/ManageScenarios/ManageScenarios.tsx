@@ -23,6 +23,12 @@ import ScenarioCard from './components/ScenarioCard';
 
 import { IProps } from './ManageScenarios.types';
 
+/**
+ * Displays all Scenarios with links to edit.
+ * @component
+ * @category Pages
+ * @subcategory Manage Scenarios
+ */
 const ManageScenarios: FC<IProps> = () => {
     const { t } = useTranslation();
 

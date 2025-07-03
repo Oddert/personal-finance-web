@@ -27,7 +27,7 @@ import type { IProps } from './DeleteScenario.types';
  * Modal component to allow the user to delete an entire scenario.
  * @component
  * @category Pages
- * @subcategory Home
+ * @subcategory Edit Scenario
  */
 const DeleteScenario: FC<IProps> = ({ scenario }) => {
     const { t } = useTranslation();

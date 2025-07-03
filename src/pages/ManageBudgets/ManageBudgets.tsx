@@ -36,7 +36,7 @@ const ManageBudgets: FC<IProps> = () => {
     const budgets = useAppSelector(getBudgetResponse);
 
     useEffect(() => {
-        dispatch(refreshBudgets(true));
+        dispatch(refreshBudgets(t, true));
         // TODO: re-enable react-hooks/exhaustive-deps
     }, []);
 

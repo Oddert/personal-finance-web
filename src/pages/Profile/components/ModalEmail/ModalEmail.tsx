@@ -25,6 +25,12 @@ import { Form, TextField } from '../../../Login/Login.styles';
 
 import { IProps } from './ModalEmail.types';
 
+/**
+ * Presents the user with a form to change their email / username login.
+ * @component
+ * @category Pages
+ * @subcategory Profile
+ */
 const ModalEmail: FC<IProps> = () => {
     const dispatch = useAppDispatch();
 

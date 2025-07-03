@@ -22,6 +22,15 @@ import { IProps } from './SchedulerRow.types';
 
 dayjs.extend(localizedFormat);
 
+/**
+ * Displays a single Schedule to edit.
+ * @category Pages
+ * @subcategory Edit Scenario
+ * @component
+ * @param props.handleChangeScheduler Callback function to edit this row.
+ * @param props.handleClickDeleteScheduler Callback function to delete this row.
+ * @param props.scheduler The scheduler to edit.
+ */
 const SchedulerRow: FC<IProps> = ({
     handleChangeScheduler,
     handleClickDeleteScheduler,
@@ -31,7 +40,7 @@ const SchedulerRow: FC<IProps> = ({
 
     const inputDayOfMonth = (
         <TextField
-            label='Day'
+            label={t('Scenario.Scheduler.labelDay')}
             onChange={(event) => {
                 const num = Number(event.target.value);
                 if (num >= 0 && num <= 31) {
@@ -48,7 +57,7 @@ const SchedulerRow: FC<IProps> = ({
 
     const inputNthDay = (
         <TextField
-            label='Every nth day (optional)'
+            label={t('Scenario.Scheduler.labelNthDay')}
             onChange={(event) =>
                 handleChangeScheduler({
                     ...scheduler,
@@ -86,7 +95,7 @@ const SchedulerRow: FC<IProps> = ({
 
     const inputStep = (
         <TextField
-            label='Step'
+            label={t('Scenario.Scheduler.labelStep')}
             onChange={(event) =>
                 handleChangeScheduler({
                     ...scheduler,
@@ -142,18 +151,22 @@ const SchedulerRow: FC<IProps> = ({
                     }
                     value={scheduler.schedulerCode}
                 >
-                    <MenuItem value='DAY'>Repeat a day of the month</MenuItem>
-                    <MenuItem value='SCALAR'>Repeating event</MenuItem>
+                    <MenuItem value='DAY'>
+                        {t('Scenario.Scheduler.descriptionDay')}
+                    </MenuItem>
+                    <MenuItem value='SCALAR'>
+                        {t('Scenario.Scheduler.descriptionScalar')}
+                    </MenuItem>
                     <MenuItem value='DAY_OF_WEEK'>
-                        Repeat on a day of the week
+                        {t('Scenario.Scheduler.descriptionDayOfWeek')}
                     </MenuItem>
                     <MenuItem value='EVENT'>
-                        Schedule for a specific date (one time)
+                        {t('Scenario.Scheduler.descriptionEvent')}
                     </MenuItem>
                 </Select>
                 {switchLayout()}
             </Box>
-            <Tooltip title='Delete Schedule'>
+            <Tooltip title={t('Scenario.Scheduler.deleteSchedule')}>
                 <Button onClick={handleClickDeleteScheduler}>
                     <IconDelete />
                 </Button>

@@ -39,6 +39,7 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import DynamicCardList from '../../components/DynamicCardList';
 
+import DeleteScenario from './components/DeleteScenario';
 import TransactorRow from './components/TransactorRow';
 
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
@@ -57,12 +58,17 @@ const emptyScenario = () => ({
     transactors: [],
 });
 
+/**
+ * Displays a page to edit or create a new Scenario.
+ * @category Pages
+ * @subcategory Edit Scenario
+ * @component
+ */
 const EditScenario: FC<IProps> = () => {
     const [scenario, setScenario] = useState<IScenario>(emptyScenario());
     const [transactors, setTransactors] = useState<ITransactorRowEditable[]>(
         [],
     );
-    console.log(scenario);
 
     const [loading, setLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -111,7 +117,6 @@ const EditScenario: FC<IProps> = () => {
             };
             request();
         } catch (error) {
-            console.error(error);
             setLoading(false);
             dispatch(intakeError(error));
         }
@@ -120,7 +125,6 @@ const EditScenario: FC<IProps> = () => {
     useEffect(() => {
         try {
             const fetchScenario = async (scenarioId: string) => {
-                console.log(scenarioId);
                 const response = await APIService.getSingleScenario(scenarioId);
                 if (!response || !response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
@@ -147,7 +151,7 @@ const EditScenario: FC<IProps> = () => {
                     dispatch(
                         writeErrorBoundary({
                             title: t('Scenario.notFound'),
-                            message: `${t('Scenario.notFoundWithId')} "${scenario.id}".`,
+                            message: `${t('Scenario.notFoundWithId', { scenarioId: scenario.id })}`,
                             error: t('errors.notFound'),
                         }),
                     );
@@ -161,7 +165,6 @@ const EditScenario: FC<IProps> = () => {
                 }
             }
         } catch (error: any) {
-            console.error(error);
             dispatch(intakeError(error));
         }
     }, [t]);
@@ -257,7 +260,7 @@ const EditScenario: FC<IProps> = () => {
                         ? t('buttons.saveChanges')
                         : t('buttons.createNewScenario')}
                 </Button>
-                {/* {isEdit && <DeleteBudget scenario={scenario} />} */}
+                {isEdit && <DeleteScenario scenario={scenario} />}
             </Box>
         </ResponsiveContainer>
     );

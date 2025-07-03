@@ -106,7 +106,7 @@ const ExistingUser: FC = () => {
             />
             {incorrectDetails && (
                 <Typography color='error'>
-                    Incorrect email or password, please check and try again.
+                    {t('auth.incorrectEmailPassword')}
                 </Typography>
             )}
         </Form>
