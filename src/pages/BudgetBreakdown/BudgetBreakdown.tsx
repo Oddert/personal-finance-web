@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, CircularProgress, Paper, Typography } from '@mui/material';
 
 import type { ICategoryBreakdown } from '../../types/Category.d';
 
@@ -23,6 +23,7 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
+import { getTransactionsLoading } from '../../redux/selectors/transactionsSelectors';
 
 import ActiveBudget from '../../components/ActiveBudget';
 import ActiveCard from '../../components/ActiveCard/ActiveCard';
@@ -76,6 +77,7 @@ const BudgetBreakdown: FC = () => {
         });
 
     const { transactions } = useTransactions(startDate, endDate);
+    const transactionsLoading = useAppSelector(getTransactionsLoading);
     const categories = useAppSelector(getCategoryOrderedDataById);
     const monthBudget = useAppSelector(getActiveBudget);
 
@@ -113,6 +115,44 @@ const BudgetBreakdown: FC = () => {
             }
         }
     }, []);
+
+    if (transactionsLoading) {
+        return (
+            <ResponsiveContainer>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gridGap: '16px',
+                        padding: '0 0 64px 0',
+                    }}
+                >
+                    <Typography variant='h2' sx={{ margin: '32px 0' }}>
+                        {t('pageTitles.budgetBreakdown')}
+                    </Typography>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            py: 5,
+                        }}
+                    >
+                        <CircularProgress />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography>{t('Transaction.loading')}</Typography>
+                    </Box>
+                </Box>
+            </ResponsiveContainer>
+        );
+    }
 
     return (
         <ResponsiveContainer>

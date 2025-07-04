@@ -350,6 +350,7 @@
         "filterUncategorised": "Filter un-categorised",
         "filterUnchecked": "Filter un-checked",
         "lengthRows": "{{count}} rows",
+        "loading": "Transactions loading...",
         "mapCSVHeadersTitle": "Map CSV headers to columns",
         "mapCSVHeadersDesc": "Map CSV headers to columns",
         "showingCountOfRows": "Showing {{count}} of {{transactions}}",
