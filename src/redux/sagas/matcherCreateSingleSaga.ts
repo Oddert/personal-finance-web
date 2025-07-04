@@ -7,10 +7,11 @@ import type { ICategory } from '../../types/Category.d';
 import type { IMatcher } from '../../types/Matcher.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
+import { retry } from '../../utils/requestUtils';
+
 import { createSingleMatcher } from '../slices/categorySlice';
 
 import { intakeError } from '../thunks/errorThunks';
-import { retry } from '../../utils/requestUtils';
 
 /**
  * Adds a single matcher and updates it in state.

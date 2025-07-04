@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import {
     Accordion,
@@ -27,11 +27,27 @@ import { IProps } from './SubMenu.types';
  * @param props.permanent If true, the onClose function is disabled; the component renders assuming the menu is fixed.
  */
 const SubMenu: FC<IProps> = ({ navItem, onClose, onOpen, open, permanent }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    const handleClickExpand = () => {
+        if (!open) {
+            setExpanded(true);
+            onOpen();
+        } else {
+            setExpanded(!expanded);
+            if (!expanded) {
+                onOpen();
+            }
+        }
+    };
+
     return (
         <Accordion
             defaultExpanded={navItem.defaultExpanded}
             elevation={0}
+            expanded={open && expanded}
             onChange={onOpen}
+            onClick={handleClickExpand}
         >
             <Tooltip placement='right' title={navItem.label}>
                 <AccordionSummary
