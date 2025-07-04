@@ -125,7 +125,7 @@ const BudgetOverview: FC<IProps> = () => {
                 endDate: endDate.toISOString(),
             }),
         );
-    }, [endDate, startDate]);
+    }, [startDate, endDate]);
 
     useEffect(() => {
         const start = navigation[0].get('startDate');
@@ -138,7 +138,7 @@ const BudgetOverview: FC<IProps> = () => {
                 setEndDate(toEndMonthDayjs(start));
             }
         }
-    }, [navigation]);
+    }, []);
 
     return (
         <ResponsiveContainer>
