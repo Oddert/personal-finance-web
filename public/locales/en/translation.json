@@ -238,6 +238,7 @@
         "includeCreditTitle": "If checked, incoming (negative) values.",
         "includeEmptyCategories": "Include empty categories",
         "largestOverspend": "Largest overspend",
+        "loading": "Categories loading...",
         "monthSpendTitle": "Budget spend each month",
         "notFound": "Budget not found",
         "notFoundWithId": "No budget found with ID",
@@ -274,6 +275,7 @@
         "deleteMatcher": "delete this matcher",
         "descriptionPlaceholder": "Click to add a description.",
         "ignoresCase": "ignores case",
+        "loading": "Categories loading...",
         "matcherLabel": "Match",
         "matchTypeLabel": "Match Type",
         "matchTypes": {

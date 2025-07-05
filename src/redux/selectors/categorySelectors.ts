@@ -20,6 +20,16 @@ export const getCategoryResponse = createSelector(
 );
 
 /**
+ * The loading state of the user's Categories.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getCategoriesLoading = createSelector(
+    getCategoryState,
+    (category) => category.loading,
+);
+
+/**
  * Gets all categories ordered by ID and Label.
  *
  * See also {@link getCategoryOrderedDataById} and {@link getCategoryOrderedDataByLabel}.
