@@ -7,6 +7,10 @@ import { getServerURL } from '../utils/requestUtils';
 import store from '../redux/constants/store';
 import { refreshAuthentication } from '../redux/thunks/authThunks';
 
+/**
+ * Creates an Axios client with authentication headers and minimal logging.
+ * @returns An Axios instance.
+ */
 export const createBlankRequest = () => {
     const baseURL = getServerURL();
 
@@ -35,6 +39,9 @@ export const createBlankRequest = () => {
     return requestClient;
 };
 
+/**
+ * Standard API request client including automatic re-authentication on failed requests.
+ */
 const request = createBlankRequest();
 
 request.interceptors.response.use(
@@ -52,5 +59,7 @@ request.interceptors.response.use(
         return error;
     },
 );
+
+export const blankRequest = createBlankRequest();
 
 export default request;

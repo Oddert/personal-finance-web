@@ -39,6 +39,7 @@ import BudgetRow from './components/BudgetRow';
 import DeleteBudget from './components/DeleteBudget';
 
 import { IBudgetRowEditable, IProps } from './EditBudget.types';
+import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 /**
  * Creates a blank Budget Row.
@@ -77,38 +78,47 @@ const EditBudget: FC<IProps> = () => {
     const search = useSearchParams();
 
     const handleClickSave = () => {
+        const request = async () => {
+            if (isEdit) {
+                const response = await APIService.updateSingleBudget(
+                    { ...budget, budgetRows },
+                    budget.id,
+                );
+
+                if (!response || !response.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                dispatch(addBudget({ budget: response.payload.budget }));
+            } else {
+                const response = await APIService.createSingleBudget({
+                    ...budget,
+                    budgetRows,
+                });
+
+                if (!response || !response.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                dispatch(addBudget({ budget: response.payload.budget }));
+            }
+            router.navigate(ROUTES.MANAGE_BUDGETS);
+        };
+
         try {
             setLoading(true);
             dispatch(budgetLoading());
-            const request = async () => {
-                if (isEdit) {
-                    const response = await APIService.updateSingleBudget(
-                        { ...budget, budgetRows },
-                        budget.id,
-                    );
-
-                    if (!response || !response.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    dispatch(addBudget({ budget: response.payload.budget }));
-                } else {
-                    const response = await APIService.createSingleBudget({
-                        ...budget,
-                        budgetRows,
-                    });
-
-                    if (!response || !response.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    dispatch(addBudget({ budget: response.payload.budget }));
-                }
-                router.navigate(ROUTES.MANAGE_BUDGETS);
-            };
             request();
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-            dispatch(intakeError(error));
+        } catch (error1: any) {
+            if (error1.status === 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    setLoading(false);
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                setLoading(false);
+                dispatch(intakeError(error1));
+            }
         }
     };
 

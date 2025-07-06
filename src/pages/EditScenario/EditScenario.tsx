@@ -34,6 +34,7 @@ import {
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
 import { getActiveCardId } from '../../redux/selectors/cardSelectors';
+import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
@@ -83,42 +84,50 @@ const EditScenario: FC<IProps> = () => {
     const search = useSearchParams();
 
     const handleClickSave = () => {
+        const request = async () => {
+            dispatch(scenariosLoading());
+            if (isEdit) {
+                const response = await APIService.updateSingleScenario(
+                    scenario.id,
+                    { ...scenario, transactors },
+                );
+                if (!response || !response.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                dispatch(
+                    updateScenario({ scenario: response.payload.scenario }),
+                );
+            } else {
+                const response = await APIService.createSingleScenario({
+                    ...scenario,
+                    cardId: cardId || '',
+                    transactors,
+                });
+                if (!response || !response.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                dispatch(addScenario({ scenario: response.payload.scenario }));
+            }
+            setLoading(false);
+            router.navigate(ROUTES.MANAGE_SCENARIOS);
+        };
+
         try {
             setLoading(true);
             dispatch(scenariosLoading());
-            const request = async () => {
-                dispatch(scenariosLoading());
-                if (isEdit) {
-                    const response = await APIService.updateSingleScenario(
-                        scenario.id,
-                        { ...scenario, transactors },
-                    );
-                    if (!response || !response.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    dispatch(
-                        updateScenario({ scenario: response.payload.scenario }),
-                    );
-                } else {
-                    const response = await APIService.createSingleScenario({
-                        ...scenario,
-                        cardId: cardId || '',
-                        transactors,
-                    });
-                    if (!response || !response.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    dispatch(
-                        addScenario({ scenario: response.payload.scenario }),
-                    );
-                }
-                setLoading(false);
-                router.navigate(ROUTES.MANAGE_SCENARIOS);
-            };
             request();
-        } catch (error) {
-            setLoading(false);
-            dispatch(intakeError(error));
+        } catch (error1: any) {
+            if (error1.status == 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    setLoading(false);
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                setLoading(false);
+                dispatch(intakeError(error1));
+            }
         }
     };
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice';
+import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
 
 import EditableText from '../../../EditableText';
 
@@ -23,8 +23,8 @@ const Title: FC<IProps> = ({ category }) => {
     const handleChange = useCallback(
         (value: string) => {
             dispatch(
-                initUpdateSingleCategory({
-                    category: {
+                categoryUpdateAction(
+                    {
                         ...category,
                         matchers:
                             category?.matchers?.map((matcher) => ({
@@ -33,7 +33,8 @@ const Title: FC<IProps> = ({ category }) => {
                             })) || [],
                         label: value,
                     },
-                }),
+                    true,
+                ),
             );
         },
         [category, dispatch],

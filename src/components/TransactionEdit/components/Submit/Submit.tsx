@@ -19,6 +19,7 @@ import {
 } from '../../../../hooks/ReduxHookWrappers';
 
 import { requestTransactions } from '../../../../redux/slices/transactionsSlice';
+import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
 import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
@@ -117,25 +118,34 @@ const Submit: FC<IProps> = ({ onClose }) => {
             return formattedTransaction;
         });
 
+        const request = async () => {
+            const response =
+                mode === 'upload'
+                    ? await APIService.createManyTransactions(stagedTemp)
+                    : await APIService.updateManyTransactions(stagedTemp);
+            setLoading(false);
+            if (response.status === 201) {
+                onClose();
+                const date = dayjs().startOf('month').startOf('date');
+                const startDate = date.format('YYYY-MM-DD');
+                const endDate = dayjs().format('YYYY-MM-DD');
+                appDispatch(requestTransactions({ startDate, endDate }));
+            }
+        };
+
         try {
-            const request = async () => {
-                const response =
-                    mode === 'upload'
-                        ? await APIService.createManyTransactions(stagedTemp)
-                        : await APIService.updateManyTransactions(stagedTemp);
-                setLoading(false);
-                if (response.status === 201) {
-                    onClose();
-                    const date = dayjs().startOf('month').startOf('date');
-                    const startDate = date.format('YYYY-MM-DD');
-                    const endDate = dayjs().format('YYYY-MM-DD');
-                    appDispatch(requestTransactions({ startDate, endDate }));
-                }
-            };
-            setLoading(true);
             request();
-        } catch (error) {
-            appDispatch(intakeError(error));
+        } catch (error1: any) {
+            try {
+                if (error1.status === 401) {
+                    appDispatch(refreshAuthentication(request));
+                } else {
+                    appDispatch(intakeError(error1));
+                }
+            } catch (error2: any) {
+                appDispatch(intakeError(error1));
+                setLoading(true);
+            }
         }
     };
 

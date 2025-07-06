@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice';
+import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
 
 import ColourEdit from '../../../ColourEdit';
 
@@ -23,8 +23,8 @@ const Colour: FC<IProps> = ({ category }) => {
     const handleSubmit = useCallback(
         (editedColour: string) => {
             dispatch(
-                initUpdateSingleCategory({
-                    category: {
+                categoryUpdateAction(
+                    {
                         ...category,
                         matchers:
                             category?.matchers?.map((matcher) => ({
@@ -33,7 +33,8 @@ const Colour: FC<IProps> = ({ category }) => {
                             })) || [],
                         colour: editedColour,
                     },
-                }),
+                    true,
+                ),
             );
         },
         [category, dispatch],

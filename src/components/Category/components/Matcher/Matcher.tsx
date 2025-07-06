@@ -9,11 +9,9 @@ import {
     FontDownloadOutlined as IconMatchNegative,
 } from '@mui/icons-material';
 
-import {
-    categorySlice,
-    initDeleteSingleMatcher,
-} from '../../../../redux/slices/categorySlice';
+import { categorySlice } from '../../../../redux/slices/categorySlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
+import { matcherDeleteAction } from '../../../../redux/thunks/categoryThunks';
 
 import APIService from '../../../../services/APIService';
 
@@ -24,6 +22,7 @@ import { IMatcher } from '../../../../types/Matcher.d';
 import EditMatcher from '../EditMatcher';
 
 import type { IProps } from './Matcher.types';
+import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
 
 const iconWidth = 50;
 
@@ -41,40 +40,47 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
 
     const [open, setOpen] = useState<boolean>(false);
 
+    // TODO: move to an action
     const handleSubmit = (_matcher: Partial<IMatcher>) => {
         const request = async () => {
-            try {
-                const response = await APIService.updateSingleMatcher(
-                    { ..._matcher },
-                    matcher.id,
-                );
-                if (!response || !response.payload) {
-                    throw new Error(t('modalMessages.noServerResponse'));
-                }
-                dispatch(
-                    categorySlice.actions.updateSingleMatcher({
-                        categoryId,
-                        matcher: {
-                            ...response.payload.matcher,
-                            case_sensitive: Boolean(
-                                response.payload.matcher.case_sensitive,
-                            ),
-                        },
-                    }),
-                );
-                setOpen(false);
-            } catch (error) {
-                console.error(error);
-                dispatch(intakeError(error));
+            const response = await APIService.updateSingleMatcher(
+                { ..._matcher },
+                matcher.id,
+            );
+            if (!response || !response.payload) {
+                throw new Error(t('modalMessages.noServerResponse'));
             }
+            dispatch(
+                categorySlice.actions.updateSingleMatcher({
+                    categoryId,
+                    matcher: {
+                        ...response.payload.matcher,
+                        case_sensitive: Boolean(
+                            response.payload.matcher.case_sensitive,
+                        ),
+                    },
+                }),
+            );
         };
-        request();
+
+        try {
+            request();
+            setOpen(false);
+        } catch (error1: any) {
+            if (error1.status === 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                dispatch(intakeError(error1));
+            }
+        }
     };
 
     const handleDelete = useCallback(() => {
-        dispatch(
-            initDeleteSingleMatcher({ matcherId: matcher.id, categoryId }),
-        );
+        dispatch(matcherDeleteAction(matcher.id, true));
     }, [dispatch, categoryId, matcher.id]);
 
     const matchTypeTitle = useMemo(() => {

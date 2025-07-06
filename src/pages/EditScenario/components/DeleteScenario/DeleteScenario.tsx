@@ -22,6 +22,7 @@ import { deleteScenario } from '../../../../redux/slices/scenarioSlice';
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import type { IProps } from './DeleteScenario.types';
+import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
 
 /**
  * Modal component to allow the user to delete an entire scenario.
@@ -37,15 +38,24 @@ const DeleteScenario: FC<IProps> = ({ scenario }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickDelete = () => {
+        const request = async () => {
+            await APIService.deleteSingleScenario(scenario.id);
+            dispatch(deleteScenario({ scenarioId: scenario.id }));
+            router.navigate(ROUTES.MANAGE_SCENARIOS);
+        };
+
         try {
-            const request = async () => {
-                await APIService.deleteSingleScenario(scenario.id);
-                dispatch(deleteScenario({ scenarioId: scenario.id }));
-                router.navigate(ROUTES.MANAGE_SCENARIOS);
-            };
             request();
-        } catch (error) {
-            dispatch(intakeError(error));
+        } catch (error1: any) {
+            if (error1.status === 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                dispatch(intakeError(error1));
+            }
         }
     };
 

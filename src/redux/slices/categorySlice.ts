@@ -79,6 +79,9 @@ export const categorySlice = createSlice({
             state.orderedData.byLabel[category.label] = category;
             state.loading = false;
         },
+        /**
+         * @deprecated
+         */
         initUpdateSingleCategory: (
             state,
             {
@@ -115,6 +118,9 @@ export const categorySlice = createSlice({
             state.loading = false;
             state.queried = true;
         },
+        /**
+         * @deprecated
+         */
         initDeleteSingleCategory: (
             state,
             {
@@ -144,6 +150,9 @@ export const categorySlice = createSlice({
             delete state.orderedData.byId[categoryId];
             state.loading = false;
         },
+        /**
+         * @deprecated
+         */
         initCreateSingleMatcher: (
             state,
             {
@@ -184,6 +193,9 @@ export const categorySlice = createSlice({
 
             state.loading = false;
         },
+        /**
+         * @deprecated
+         */
         initUpdateSingleMatcher: (
             state,
             {
@@ -229,6 +241,9 @@ export const categorySlice = createSlice({
 
             state.loading = false;
         },
+        /**
+         * @deprecated
+         */
         initDeleteSingleMatcher: (
             state,
             {

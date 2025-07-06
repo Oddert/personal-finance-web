@@ -9,6 +9,7 @@ import { intakeError } from './errorThunks';
 
 dayjs.extend(localizedFormat);
 
+// TODO: annotations
 export const conditionallyRefreshTransactions =
     (startDate?: number, endDate?: number, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {

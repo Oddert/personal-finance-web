@@ -15,6 +15,7 @@ import { intakeError } from '../thunks/errorThunks';
 
 /**
  * Adds a single matcher and updates it in state.
+ * @deprecated
  */
 export default function* matcherCreateSingleSaga({
     payload,

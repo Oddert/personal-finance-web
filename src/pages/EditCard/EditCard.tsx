@@ -39,6 +39,7 @@ import DeleteCard from './components/DeleteCard';
 import EditImageIcon from './components/EditImageIcon';
 
 import { IProps } from './EditCard.types';
+import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 /**
  * Creates a blank Budget Row.
@@ -81,37 +82,46 @@ const EditBudget: FC<IProps> = () => {
     const search = useSearchParams();
 
     const handleClickSave = () => {
+        const request = async () => {
+            if (isEdit) {
+                const response = await APIService.updateSingleCard(
+                    { ...card },
+                    card.id,
+                );
+
+                if (!response || !response.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                dispatch(updateCard({ card: response.payload.card }));
+            } else {
+                const response = await APIService.createSingleCard({
+                    ...card,
+                });
+
+                if (!response || !response.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                dispatch(addCard({ card: response.payload.card }));
+            }
+            router.navigate(ROUTES.MANAGE_CARDS);
+        };
+
         try {
             setLoading(true);
             dispatch(budgetLoading());
-            const request = async () => {
-                if (isEdit) {
-                    const response = await APIService.updateSingleCard(
-                        { ...card },
-                        card.id,
-                    );
-
-                    if (!response || !response.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    dispatch(updateCard({ card: response.payload.card }));
-                } else {
-                    const response = await APIService.createSingleCard({
-                        ...card,
-                    });
-
-                    if (!response || !response.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    dispatch(addCard({ card: response.payload.card }));
-                }
-                router.navigate(ROUTES.MANAGE_CARDS);
-            };
             request();
-        } catch (error) {
-            console.error(error);
-            setLoading(false);
-            dispatch(intakeError(error));
+        } catch (error1: any) {
+            if (error1.status === 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    setLoading(false);
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                setLoading(false);
+                dispatch(intakeError(error1));
+            }
         }
     };
 
