@@ -114,7 +114,7 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {t('modalMessages.createBudgetFromTemplateTitle')}
+                        {t('modalMessages.createBudgetFromTemplate')}
                     </DialogContentText>
                     <Autocomplete
                         getOptionLabel={(option) => option.name}

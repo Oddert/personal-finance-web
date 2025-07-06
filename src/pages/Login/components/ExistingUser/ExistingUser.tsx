@@ -29,7 +29,7 @@ const ExistingUser: FC = () => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
 
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [loadingState, setLoadingState] = useState<
@@ -42,10 +42,10 @@ const ExistingUser: FC = () => {
     const incorrectDetails = useAppSelector(getIncorrectAuthDetails);
 
     /**
-     * Change handler for the username field.
+     * Change handler for the email field.
      */
     const handleChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
+        setEmail(event.target.value);
         if (incorrectDetails) {
             dispatch(clearIncorrectDetails());
         }
@@ -65,7 +65,7 @@ const ExistingUser: FC = () => {
         event.preventDefault();
         setLoadingState('loading');
         try {
-            dispatch(loginUser(username, password));
+            dispatch(loginUser(email, password));
             setLoadingState('idle');
         } catch (error) {
             setLoadingState('idle');
@@ -77,8 +77,8 @@ const ExistingUser: FC = () => {
      * Disables the submit button on a number of conditions.
      */
     const submitDisabled = useMemo(
-        () => Boolean(!password.length || !username.length || loading),
-        [password, username, loading],
+        () => Boolean(!password.length || !email.length || loading),
+        [password, email, loading],
     );
 
     return (
@@ -87,7 +87,7 @@ const ExistingUser: FC = () => {
             <TextField
                 label={t('auth.Username')}
                 onChange={handleChangeUsername}
-                value={username}
+                value={email}
                 variant='outlined'
             />
             <TextField
@@ -106,7 +106,7 @@ const ExistingUser: FC = () => {
             />
             {incorrectDetails && (
                 <Typography color='error'>
-                    Incorrect username or password, please check and try again.
+                    {t('auth.incorrectEmailPassword')}
                 </Typography>
             )}
         </Form>

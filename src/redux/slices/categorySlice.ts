@@ -32,35 +32,6 @@ export const categorySlice = createSlice({
     name: 'category',
     initialState,
     reducers: {
-        requestCategories: (state) => {
-            state.loading = true;
-            state.queried = true;
-        },
-        writeCategories: (
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                categories: ICategory[];
-                orderedData: CategoryState['orderedData'];
-            }>,
-        ) => {
-            state.response = payload.categories;
-            state.orderedData = payload.orderedData;
-            state.loading = false;
-            state.queried = true;
-        },
-        initCreateCategory: (
-            state,
-            {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                payload,
-            }: PayloadAction<{
-                category: Partial<ICategory>;
-            }>,
-        ) => {
-            state.loading = true;
-        },
         createCategory: (
             state,
             {
@@ -75,83 +46,7 @@ export const categorySlice = createSlice({
             state.orderedData.byLabel[category.label] = category;
             state.loading = false;
         },
-        initUpdateSingleCategory: (
-            state,
-            {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                payload,
-            }: PayloadAction<{
-                category: Partial<ICategory>;
-            }>,
-        ) => {
-            state.loading = true;
-        },
-        updateSingleCategory: (
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                category: ICategory;
-            }>,
-        ) => {
-            state.orderedData.byId[payload.category.id] = {
-                ...state.orderedData.byId[payload.category.id],
-                ...payload.category,
-            };
-            state.orderedData.byLabel[payload.category.label] =
-                payload.category;
 
-            state.response = state.response.map((category) => {
-                if (category.id === payload?.category.id) {
-                    return payload.category;
-                }
-                return category;
-            });
-
-            state.loading = false;
-            state.queried = true;
-        },
-        initDeleteSingleCategory: (
-            state,
-            {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                payload,
-            }: PayloadAction<{
-                categoryId: ICategory['id'];
-            }>,
-        ) => {
-            state.loading = true;
-        },
-        deleteSingleCategory: (
-            state,
-            {
-                payload,
-            }: PayloadAction<{
-                categoryId: ICategory['id'];
-            }>,
-        ) => {
-            const categoryId = payload.categoryId;
-            state.response = state.response.filter(
-                (category) => category.id !== categoryId,
-            );
-            delete state.orderedData.byLabel[
-                state.orderedData.byId[categoryId].label
-            ];
-            delete state.orderedData.byId[categoryId];
-            state.loading = false;
-        },
-        initCreateSingleMatcher: (
-            state,
-            {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                payload,
-            }: PayloadAction<{
-                categoryId: ICategory['id'];
-                matcher: Partial<IMatcher>;
-            }>,
-        ) => {
-            state.loading = true;
-        },
         createSingleMatcher: (
             state,
             {
@@ -180,6 +75,127 @@ export const categorySlice = createSlice({
 
             state.loading = false;
         },
+        deleteSingleCategory: (
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                categoryId: ICategory['id'];
+            }>,
+        ) => {
+            const categoryId = payload.categoryId;
+            state.response = state.response.filter(
+                (category) => category.id !== categoryId,
+            );
+            delete state.orderedData.byLabel[
+                state.orderedData.byId[categoryId].label
+            ];
+            delete state.orderedData.byId[categoryId];
+            state.loading = false;
+        },
+        deleteSingleMatcher: (
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                categoryId: ICategory['id'];
+                matcherId: IMatcher['id'];
+            }>,
+        ) => {
+            const updatedMatchers = state.orderedData.byId[
+                payload.categoryId
+            ].matchers.filter((matcher) => matcher.id !== payload.matcherId);
+            const updatedCategory = {
+                ...state.orderedData.byId[payload.categoryId],
+                matchers: updatedMatchers,
+            };
+
+            state.response = state.response.map((category) => {
+                if (category.id === payload.categoryId) {
+                    return updatedCategory;
+                }
+                return category;
+            });
+            state.orderedData.byId[payload.categoryId] = updatedCategory;
+            state.orderedData.byLabel[updatedCategory.label] = updatedCategory;
+
+            state.loading = false;
+        },
+        /**
+         * @deprecated
+         */
+        initCreateCategory: (
+            state,
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
+                category: Partial<ICategory>;
+            }>,
+        ) => {
+            state.loading = true;
+        },
+        /**
+         * @deprecated
+         */
+        initCreateSingleMatcher: (
+            state,
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
+                categoryId: ICategory['id'];
+                matcher: Partial<IMatcher>;
+            }>,
+        ) => {
+            state.loading = true;
+        },
+        /**
+         * @deprecated
+         */
+        initDeleteSingleCategory: (
+            state,
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
+                categoryId: ICategory['id'];
+            }>,
+        ) => {
+            state.loading = true;
+        },
+        /**
+         * @deprecated
+         */
+        initDeleteSingleMatcher: (
+            state,
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
+                matcherId: IMatcher['id'];
+                categoryId: ICategory['id'];
+            }>,
+        ) => {
+            state.loading = true;
+        },
+        /**
+         * @deprecated
+         */
+        initUpdateSingleCategory: (
+            state,
+            {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                payload,
+            }: PayloadAction<{
+                category: Partial<ICategory>;
+            }>,
+        ) => {
+            state.loading = true;
+        },
+        /**
+         * @deprecated
+         */
         initUpdateSingleMatcher: (
             state,
             {
@@ -191,6 +207,35 @@ export const categorySlice = createSlice({
             }>,
         ) => {
             state.loading = true;
+        },
+        requestCategories: (state) => {
+            state.loading = true;
+            state.queried = true;
+        },
+        updateSingleCategory: (
+            state,
+            {
+                payload,
+            }: PayloadAction<{
+                category: ICategory;
+            }>,
+        ) => {
+            state.orderedData.byId[payload.category.id] = {
+                ...state.orderedData.byId[payload.category.id],
+                ...payload.category,
+            };
+            state.orderedData.byLabel[payload.category.label] =
+                payload.category;
+
+            state.response = state.response.map((category) => {
+                if (category.id === payload?.category.id) {
+                    return payload.category;
+                }
+                return category;
+            });
+
+            state.loading = false;
+            state.queried = true;
         },
         updateSingleMatcher: (
             state,
@@ -225,45 +270,19 @@ export const categorySlice = createSlice({
 
             state.loading = false;
         },
-        initDeleteSingleMatcher: (
-            state,
-            {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                payload,
-            }: PayloadAction<{
-                matcherId: IMatcher['id'];
-                categoryId: ICategory['id'];
-            }>,
-        ) => {
-            state.loading = true;
-        },
-        deleteSingleMatcher: (
+        writeCategories: (
             state,
             {
                 payload,
             }: PayloadAction<{
-                categoryId: ICategory['id'];
-                matcherId: IMatcher['id'];
+                categories: ICategory[];
+                orderedData: CategoryState['orderedData'];
             }>,
         ) => {
-            const updatedMatchers = state.orderedData.byId[
-                payload.categoryId
-            ].matchers.filter((matcher) => matcher.id !== payload.matcherId);
-            const updatedCategory = {
-                ...state.orderedData.byId[payload.categoryId],
-                matchers: updatedMatchers,
-            };
-
-            state.response = state.response.map((category) => {
-                if (category.id === payload.categoryId) {
-                    return updatedCategory;
-                }
-                return category;
-            });
-            state.orderedData.byId[payload.categoryId] = updatedCategory;
-            state.orderedData.byLabel[updatedCategory.label] = updatedCategory;
-
+            state.response = payload.categories;
+            state.orderedData = payload.orderedData;
             state.loading = false;
+            state.queried = true;
         },
     },
 });

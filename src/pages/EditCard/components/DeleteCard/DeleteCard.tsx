@@ -22,6 +22,7 @@ import { deleteCard } from '../../../../redux/slices/cardSlice';
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import type { IProps } from './DeleteCard.types';
+import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
 
 /**
  * Modal component to allow the user to delete a card.
@@ -37,15 +38,24 @@ const DeleteBudget: FC<IProps> = ({ card }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickDelete = () => {
+        const request = async () => {
+            await APIService.deleteSingleCard(card.id);
+            dispatch(deleteCard({ cardId: card.id }));
+            router.navigate(ROUTES.MANAGE_CARDS);
+        };
+
         try {
-            const request = async () => {
-                await APIService.deleteSingleCard(card.id);
-                dispatch(deleteCard({ cardId: card.id }));
-                router.navigate(ROUTES.MANAGE_CARDS);
-            };
             request();
-        } catch (error) {
-            dispatch(intakeError(error));
+        } catch (error1: any) {
+            if (error1.status === 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                dispatch(intakeError(error1));
+            }
         }
     };
 

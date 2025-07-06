@@ -12,9 +12,10 @@ import {
     TextField,
 } from '@mui/material';
 
-import { initCreateCategory } from '../../redux/slices/categorySlice';
+import { ICategory } from '../../types/Category.d';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
+import { categoryCreateAction } from '../../redux/thunks/categoryThunks';
 
 import ColourEdit from '../ColourEdit';
 
@@ -76,7 +77,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
             colour,
             matchers: [],
         };
-        dispatch(initCreateCategory({ category: payload }));
+        dispatch(categoryCreateAction(payload as Partial<ICategory>, true));
         setLabel('');
         setDescription('');
         setColour('#bec3c7');

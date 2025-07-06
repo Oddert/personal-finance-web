@@ -9,12 +9,12 @@
     "Discrepancy val": "Discrepancy (val)",
     "End date": "End date",
     "Example currency display": "Example currency display",
-    "Example number formatting:": "Example number formatting:",
-    "Favourite currencies": "Favourite currencies",
-    "Favourite languages": "Favourite languages",
+    "Example number formatting:": "Example number formatting: \"{{number}}\"",
+    "Add currency": "Add currency",
+    "Add language": "Add language",
     "Filter view by month:": "Filter view by month:",
     "Future Scenario Projection": "Future Scenario Projection",
-    "Language selected": "Language selected",
+    "Language": "Language",
     "Last updated:": "Last updated:",
     "List layout": "List layout",
     "Load data": "Load data",
@@ -34,6 +34,7 @@
     "literals": {
         "above": "above",
         "Actual": "Actual",
+        "Add": "Add",
         "Amount": "Amount",
         "Background": "Background",
         "bellow": "bellow",
@@ -66,6 +67,8 @@
         "Open": "Open",
         "Options": "Options",
         "Out": "Out",
+        "Scenario": "Scenario",
+        "Subtract": "Subtract",
         "Title": "Title",
         "to": "to",
         "Unset": "Unset",
@@ -81,7 +84,13 @@
         "manageBudgets": "Manage Budgets",
         "manageCards": "Manage Cards",
         "manageCategories": "Manage Categories",
-        "profile": "Profile and Settings",
+        "manageScenarios": "Manage Scenarios",
+        "profile": {
+            "appearance": "Appearance & Theme",
+            "language": "Language & Currency",
+            "main": "Profile and Settings",
+            "security": "Security"
+        },
         "transactions": "Upload & Edit Transactions"
     },
     "dragDrop": {
@@ -121,20 +130,23 @@
         "checkAll": "Check all",
         "clickToEdit": "Click to edit",
         "closeWithoutSaving": "Close without saving changes",
+        "createANewCard": "Create a new card",
         "createBudget": "Save & Create new Budget",
         "createCard": "Create card",
         "createCategory": "Create Category",
         "createFromTemplate": "Create from template",
         "createNewBudget": "Create new budget",
-        "createANewCard": "Create a new card",
+        "createNewScenario": "Create new scenario",
         "Delete": "Delete",
         "deleteBudget": "Delete budget",
         "deleteCard": "Delete card",
         "deleteCategory": "Delete Category",
+        "deleteScenario": "Delete scenario",
         "discardChanges": "Discard changes",
         "editThisMatcher": "Edit this matcher",
         "keepEditing": "Keep editing",
         "newBlankBudget": "New blank budget",
+        "newBlankScenario": "New blank scenario",
         "nextMonth": "Next Month",
         "otherUnset": "Other / unset",
         "prevMonth": "Previous Month",
@@ -151,17 +163,20 @@
         "viewBudgetOverview": "View budget overview"
     },
     "modalTitles": {
-        "createBudgetFromTemplate": "Create new budget from template."
+        "createBudgetFromTemplateTitle": "Create new budget from template.",
+        "createScenarioFromTemplateTitle": "Create new scenario from template."
     },
     "modalMessages": {
         "cannotBeUndone": "This action cannot be undone.",
         "closeWithoutSaving": "Close without saving?",
-        "createBudgetFromTemplate": "Select a budget to use as a starting point for your new budget.",
+        "createBudgetFromTemplate": "Select an existing budget to use as a starting point for your new budget.",
+        "createScenarioFromTemplate": "Select an existing scenario to use as a starting point for your new scenario.",
         "endDateNotBeforeStart": "End date may not be before start date",
         "noServerResponse": "No response received from the server.",
         "sureYouWantToDeleteCategory": "Are you sure you want to delete the Category &ldquo;{{categoryName}}&rdquo;?",
         "sureYouWantToDeleteCard": "Are you sure you want to delete the Card &ldquo;{{cardName}}&rdquo;?",
         "sureYouWantToDeleteBudget": "Are you sure you want to delete the budget &ldquo;{{budgetName}}&rdquo;?",
+        "sureYouWantToDeleteScenario": "Are you sure you want to delete the scenario &ldquo;{{scenarioName}}&rdquo;?",
         "unsavedChangesWillBeLost": "You have unsaved changes that will be lost."
     },
     "zoom": {
@@ -172,17 +187,31 @@
         "xl": "xl"
     },
     "auth": {
+        "changeEmail": "Change email",
+        "changeEmailTitle": "Change your login and recovery email",
+        "changePassword": "Change password",
+        "changePasswordTitle": "Change your password",
         "confirmPassword": "Confirm Password",
+        "confirmNewPassword": "Confirm Password",
+        "Email": "Email",
+        "emailFormatInvalid": "The email submitted is not a valid format.",
+        "emailMustBeXLong": "Email must be a minimum of 4 characters long.",
+        "incorrectEmailPassword": "Incorrect email or password, please check and try again.",
         "Login": "Login",
+        "newEmailLabel": "New email",
+        "newPassword": "New password",
+        "oldPassword": "Old password",
         "Password": "Password",
         "passwordsDontMatch": "Passwords do not match.",
-        "passwordsMustBeXLong": "Passwords must be minimum 5 characters long.",
+        "passwordsMustBeXLong": "Passwords must be a minimum of 8 characters long.",
         "passwordsMustHaveOneNumber": "Passwords must have at least one number character.",
+        "passwordsShouldNoMatch": "The new password cannot be the same as the old password.",
+        "Security": "Security",
         "signInCTA": "Already have an account?",
         "signUp": "Sign Up",
         "signUpCTA": "Don't yet have an account?",
         "Username": "Username",
-        "usernameTaken": "A user with this username already exists"
+        "usernameTaken": "This email address if already in use"
     },
     "budgetPercentageControls": {
         "zoomTitles": {
@@ -194,7 +223,7 @@
     },
     "Budget": {
         "aggregateSpendChart": "Aggregate spend chart",
-        "aggregateSpendTitle": "Aggregate % Spend Discrepancy",
+        "aggregateSpendTitle": "Aggregate Spend Discrepancy",
         "budgetTable": {
             "diffVal": "Difference (val)",
             "diffPc": "Difference (%)",
@@ -209,6 +238,7 @@
         "includeCreditTitle": "If checked, incoming (negative) values.",
         "includeEmptyCategories": "Include empty categories",
         "largestOverspend": "Largest overspend",
+        "loading": "Categories loading...",
         "monthSpendTitle": "Budget spend each month",
         "notFound": "Budget not found",
         "notFoundWithId": "No budget found with ID",
@@ -245,6 +275,7 @@
         "deleteMatcher": "delete this matcher",
         "descriptionPlaceholder": "Click to add a description.",
         "ignoresCase": "ignores case",
+        "loading": "Categories loading...",
         "matcherLabel": "Match",
         "matchTypeLabel": "Match Type",
         "matchTypes": {
@@ -274,6 +305,43 @@
         "notFoundWithId": "No card found with ID",
         "returnToAllCards": "Return to all cards"
     },
+    "Profile": {
+        "currencyDesc": "Select currencies to be highlighted at the top of the currency selector when adding transaction data.",
+        "currencyTitle": "Favourite Currencies",
+        "displayLanguageDesc": "Choose the main language to be used by the app.",
+        "displayLanguageTitle": "Display Language",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "name": "Name",
+        "preferredLanguageDesc": "Select other languages which can be used if your selected language is not available.",
+        "preferredLanguageTitle": "Preferred languages",
+        "exampleLabel": "{{label}} (example: {{example}})",
+        "numberFormatExplanation": "Numbers throughout the app are formatted based on a combination of language and currency selections."
+    },
+    "Scenario": {
+        "addSchedule": "Add schedule",
+        "createANewScenario": "Create a new scenario",
+        "createFromTemplate": "Create from template",
+        "description": "Scenario description",
+        "notFound": "Scenario not found",
+        "notFoundWithId": "No scenario found with ID \"{{scenarioId}}\".",
+        "pleaseSelectAScenario": "Please select a scenario.",
+        "newBlankScenario": "New blank scenario",
+        "numSchedules": "{{num}} schedules",
+        "returnToAllScenarios": "Return to all scenarios",
+        "scheduleThisEvent": "Schedule this event",
+        "Scheduler": {
+            "deleteSchedule": "Delete Schedule",
+            "descriptionDay": "Repeat a day of the month",
+            "descriptionDayOfWeek": "Repeating on a day of the week",
+            "descriptionEvent": "Schedule for a specific date (one time)",
+            "descriptionScalar": "Repeating event",
+            "labelDay": "Day",
+            "labelNthDay": "Every nth day (optional)",
+            "labelStep": "Step"
+        },
+        "templateScenarioLabel": "Template scenario"
+    },
     "Transaction": {
         "bulkEditTransactions": "Bulk edit transactions",
         "cardSlashAccount": "Card / Account",
@@ -284,6 +352,7 @@
         "filterUncategorised": "Filter un-categorised",
         "filterUnchecked": "Filter un-checked",
         "lengthRows": "{{count}} rows",
+        "loading": "Transactions loading...",
         "mapCSVHeadersTitle": "Map CSV headers to columns",
         "mapCSVHeadersDesc": "Map CSV headers to columns",
         "showingCountOfRows": "Showing {{count}} of {{transactions}}",

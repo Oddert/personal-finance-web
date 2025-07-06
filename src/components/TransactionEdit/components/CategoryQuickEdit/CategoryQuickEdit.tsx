@@ -1,9 +1,12 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Box, Drawer, Typography } from '@mui/material';
 
 import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
+import { checkAuth } from '../../../../redux/thunks/authThunks';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import {
     TransactionEditContext,
@@ -20,6 +23,8 @@ import Option from './components/Option';
  * @component
  */
 const CategoryQuickEdit = () => {
+    const reduxDispatch = useAppDispatch();
+
     const {
         dispatch,
         state: { sideBarOpen },
@@ -28,6 +33,10 @@ const CategoryQuickEdit = () => {
     const { t } = useTranslation();
 
     const categories = useSelector(getCategoryResponse);
+
+    useEffect(() => {
+        reduxDispatch(checkAuth());
+    }, []);
 
     const toggleDrawer = (toOpen?: boolean) => {
         const callback = (event: React.KeyboardEvent | React.MouseEvent) => {

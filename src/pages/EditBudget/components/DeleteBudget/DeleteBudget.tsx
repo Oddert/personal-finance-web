@@ -22,6 +22,7 @@ import { intakeError } from '../../../../redux/thunks/errorThunks';
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import type { IProps } from './DeleteBudget.types';
+import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
 
 /**
  * Modal component to allow the user to delete an entire budget.
@@ -37,15 +38,24 @@ const DeleteBudget: FC<IProps> = ({ budget }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickDelete = () => {
+        const request = async () => {
+            await APIService.deleteSingleBudget(budget.id);
+            dispatch(deleteBudget({ budgetId: budget.id }));
+            router.navigate(ROUTES.MANAGE_BUDGETS);
+        };
+
         try {
-            const request = async () => {
-                await APIService.deleteSingleBudget(budget.id);
-                dispatch(deleteBudget({ budgetId: budget.id }));
-                router.navigate(ROUTES.MANAGE_BUDGETS);
-            };
             request();
-        } catch (error) {
-            dispatch(intakeError(error));
+        } catch (error1: any) {
+            if (error1.status === 401) {
+                try {
+                    dispatch(refreshAuthentication(request));
+                } catch (error2: any) {
+                    dispatch(intakeError(error1));
+                }
+            } else {
+                dispatch(intakeError(error1));
+            }
         }
     };
 

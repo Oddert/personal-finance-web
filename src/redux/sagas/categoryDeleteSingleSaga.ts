@@ -14,6 +14,7 @@ import { deleteSingleCategory } from '../slices/categorySlice';
 
 /**
  * Deletes a category and updates the state.
+ * @deprecated
  */
 export default function* categoryDeleteSingleSaga({
     payload,

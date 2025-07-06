@@ -14,7 +14,7 @@ import {
 import { MoreVert as IconDots } from '@mui/icons-material';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-import { initDeleteSingleCategory } from '../../../../redux/slices/categorySlice';
+import { categoryDeleteAction } from '../../../../redux/thunks/categoryThunks';
 
 import type { IProps } from './HamburgerMenu.types';
 
@@ -48,7 +48,7 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
     const handleDelete = () => {
         handleClose();
         setDeleteModalOpen(false);
-        dispatch(initDeleteSingleCategory({ categoryId: category.id }));
+        dispatch(categoryDeleteAction(category.id, true));
     };
 
     const open = Boolean(anchorEl);

@@ -8,7 +8,7 @@ import type { IMatcher } from '../../../../types/Matcher.d';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initCreateSingleMatcher } from '../../../../redux/slices/categorySlice';
+import { matcherCreateAction } from '../../../../redux/thunks/categoryThunks';
 
 import EditMatcher from '../EditMatcher';
 
@@ -42,12 +42,7 @@ const AddMatcher: FC<IProps> = ({
     const handleSubmit = useCallback(
         (nextMatcher: Partial<IMatcher>) => {
             const addMatcher = async () => {
-                dispatch(
-                    initCreateSingleMatcher({
-                        matcher: nextMatcher,
-                        categoryId,
-                    }),
-                );
+                dispatch(matcherCreateAction(nextMatcher, categoryId, true));
                 setOpen(false);
             };
             addMatcher();

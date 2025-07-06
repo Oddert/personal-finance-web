@@ -7,30 +7,42 @@ import { getServerURL } from '../utils/requestUtils';
 import store from '../redux/constants/store';
 import { refreshAuthentication } from '../redux/thunks/authThunks';
 
-const baseURL = getServerURL();
+/**
+ * Creates an Axios client with authentication headers and minimal logging.
+ * @returns An Axios instance.
+ */
+export const createBlankRequest = () => {
+    const baseURL = getServerURL();
+
+    /**
+     * Re-usable Axios request object.
+     *
+     * NOTE: Interceptors used will attempt to return `response.data`, not `AxiosResponse<any, any>>` as suggested.
+     */
+    const requestClient = axios.create({
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    requestClient.interceptors.request.use((config) => {
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[request]', config.url);
+        }
+        const token = AuthLSService.getAccessToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    });
+    return requestClient;
+};
 
 /**
- * Re-usable Axios request object.
- *
- * NOTE: Interceptors used will attempt to return `response.data`, not `AxiosResponse<any, any>>` as suggested.
+ * Standard API request client including automatic re-authentication on failed requests.
  */
-const request = axios.create({
-    baseURL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-request.interceptors.request.use((config) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.log('[request]', config.url);
-    }
-    const token = AuthLSService.getAccessToken();
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
+const request = createBlankRequest();
 
 request.interceptors.response.use(
     (response) => {
@@ -47,5 +59,7 @@ request.interceptors.response.use(
         return error;
     },
 );
+
+export const blankRequest = createBlankRequest();
 
 export default request;

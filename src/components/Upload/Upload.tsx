@@ -18,8 +18,11 @@ import {
     tecWriteTransactions,
 } from '../../contexts/transactionEditContext';
 
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
+
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
 import { getUserCurrencies } from '../../redux/selectors/profileSelectors';
+import { checkAuth } from '../../redux/thunks/authThunks';
 
 import TransactionEdit from '../TransactionEdit';
 import DropZone from '../DropZone';
@@ -31,6 +34,8 @@ import DropZone from '../DropZone';
  * @component
  */
 const Upload = () => {
+    const reduxDispatch = useAppDispatch();
+
     const [state, dispatch] = useReducer(
         transactionEditReducer,
         transactionEditInitialState,
@@ -78,6 +83,7 @@ const Upload = () => {
                     };
                     reader.readAsText(file);
                 });
+                reduxDispatch(checkAuth());
                 setModalOpen(true);
             }
         },

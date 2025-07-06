@@ -2,7 +2,7 @@ import { FC, useCallback } from 'react';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
-import { initUpdateSingleCategory } from '../../../../redux/slices/categorySlice';
+import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
 
 import TitleBase from '../TitleBase/TitleBase';
 
@@ -22,8 +22,8 @@ const Title: FC<IProps> = ({ category, small = false }) => {
     const handleChange = useCallback(
         (value: string) => {
             dispatch(
-                initUpdateSingleCategory({
-                    category: {
+                categoryUpdateAction(
+                    {
                         ...category,
                         matchers:
                             category?.matchers?.map((matcher) => ({
@@ -32,7 +32,8 @@ const Title: FC<IProps> = ({ category, small = false }) => {
                             })) || [],
                         label: value,
                     },
-                }),
+                    true,
+                ),
             );
         },
         [category, dispatch],

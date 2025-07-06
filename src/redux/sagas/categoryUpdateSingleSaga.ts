@@ -11,6 +11,7 @@ import { updateSingleCategory } from '../slices/categorySlice';
 
 /**
  * Updates a category.
+ * @deprecated
  */
 export default function* categoryUpdateSingleSaga({
     payload,

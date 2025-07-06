@@ -7,6 +7,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import {
     Box,
     Checkbox,
+    CircularProgress,
     Divider,
     FormControlLabel,
     Typography,
@@ -21,7 +22,10 @@ import {
 
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
-import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
+import {
+    getTransactionsLoading,
+    getTransactionsOrderedByDate,
+} from '../../redux/selectors/transactionsSelectors';
 import { requestTransactions } from '../../redux/slices/transactionsSlice';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
@@ -37,9 +41,8 @@ import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import CandleStickChart from './components/CandleStickChart';
 import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
+import TotalDiscrepancyChart from './components/TotalDiscrepancyChart/TotalDiscrepancyChart';
 import TimeChart from './components/TimeChart';
-
-import TotalDiscrepancyChart from './components/TotalDiscrepancyChart';
 
 import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
 import { ChartPaper } from './BudgetOverview.styles';
@@ -75,6 +78,7 @@ const BudgetOverview: FC<IProps> = () => {
     const [showFullDateRange, setShowFullDateRange] = useState(true);
 
     const transactions = useAppSelector(getTransactionsOrderedByDate);
+    const transactionsLoading = useAppSelector(getTransactionsLoading);
     const categories = useAppSelector(getCategoryOrderedDataById);
     const monthBudget = useAppSelector(getActiveBudget);
 
@@ -126,7 +130,7 @@ const BudgetOverview: FC<IProps> = () => {
                 endDate: endDate.toISOString(),
             }),
         );
-    }, [endDate, startDate]);
+    }, [startDate, endDate]);
 
     useEffect(() => {
         const start = navigation[0].get('startDate');
@@ -139,7 +143,45 @@ const BudgetOverview: FC<IProps> = () => {
                 setEndDate(toEndMonthDayjs(start));
             }
         }
-    }, [navigation]);
+    }, []);
+
+    if (transactionsLoading) {
+        return (
+            <ResponsiveContainer>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gridGap: '16px',
+                        padding: '0 0 64px 0',
+                    }}
+                >
+                    <Typography variant='h2' sx={{ margin: '32px 0' }}>
+                        {t('pageTitles.budgetOverview')}
+                    </Typography>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            py: 5,
+                        }}
+                    >
+                        <CircularProgress />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography>{t('Transaction.loading')}</Typography>
+                    </Box>
+                </Box>
+            </ResponsiveContainer>
+        );
+    }
 
     return (
         <ResponsiveContainer>

@@ -6,6 +6,7 @@ import type { ICard } from '../types/Card.types';
 import type { ICategory } from '../types/Category.d';
 import type { IMatcher } from '../types/Matcher.d';
 import type { IStandardResponse } from '../types/Request.d';
+import { IScenario } from '../types/Scenario.types';
 import type { ITransaction } from '../types/Transaction.d';
 
 /**
@@ -17,6 +18,46 @@ import type { ITransaction } from '../types/Transaction.d';
  */
 const APIService = Object.freeze({
     // Auth
+    /**
+     * Changes the user's email / username.
+     * @param newEmail The email address the user wishes to use.
+     * @returns New auth tokens and the user object.
+     */
+    changeEmail: async (newEmail: string) => {
+        try {
+            const response: IStandardResponse<{
+                accessToken: string;
+                refreshToken: string;
+                user: IUser;
+            }> = await request.put('/auth/change-email', {
+                newEmail,
+            });
+            return response;
+        } catch (error: any) {
+            return error;
+        }
+    },
+    /**
+     * Changes the user's password.
+     * @param oldPassword The previous password to confirm request.
+     * @param newPassword The password the user wishes to use.
+     * @returns New auth tokens and the user object.
+     */
+    changePassword: async (oldPassword: string, newPassword: string) => {
+        try {
+            const response: IStandardResponse<{
+                accessToken: string;
+                refreshToken: string;
+                user: IUser;
+            }> = await request.put('/auth/change-password', {
+                oldPassword,
+                newPassword,
+            });
+            return response;
+        } catch (error: any) {
+            return error;
+        }
+    },
     /**
      * Checks if a username is already taken.
      * @param username The entered username.
@@ -82,6 +123,33 @@ const APIService = Object.freeze({
             displayName,
             languages,
         });
+        return response;
+    },
+    /**
+     * Updates non-security user details.
+     * @returns The user details.
+     */
+    updateUserDetails: async (
+        username: string,
+        firstName: string,
+        lastName: string,
+        languages: string,
+        defaultLang: string,
+        currencies: string,
+        defaultCurrency: string,
+    ) => {
+        const response: IStandardResponse<{ user: IUser }> = await request.put(
+            '/auth/user',
+            {
+                username,
+                firstName,
+                lastName,
+                languages,
+                defaultLang,
+                currencies,
+                defaultCurrency,
+            },
+        );
         return response;
     },
     /**
@@ -367,6 +435,53 @@ const APIService = Object.freeze({
             `/card/${cardId}`,
             card,
         );
+        return response;
+    },
+
+    // Scenario
+    /**
+     * Creates a new scenario.
+     * @returns The updated scenario.
+     */
+    createSingleScenario: async (scenario: IScenario) => {
+        const response: IStandardResponse<{ scenario: IScenario }> =
+            await request.post('/scenario', scenario);
+        return response;
+    },
+    /**
+     * Deletes a scenario.
+     */
+    deleteSingleScenario: async (scenarioId: string) => {
+        const response: IStandardResponse<{}> = await request.delete(
+            `/scenario/${scenarioId}`,
+        );
+        return response;
+    },
+    /**
+     * Returns all scenarios for a user.
+     * @returns The list of Scenarios.
+     */
+    getAllScenarios: async () => {
+        const response: IStandardResponse<{ scenarios: IScenario[] }> =
+            await request.get('/scenario');
+        return response;
+    },
+    /**
+     * Returns all scenario by id.
+     * @returns The Scenario if found.
+     */
+    getSingleScenario: async (scenarioId: string) => {
+        const response: IStandardResponse<{ scenario: IScenario }> =
+            await request.get(`/scenario/${scenarioId}`);
+        return response;
+    },
+    /**
+     * Updates a scenario.
+     * @returns The updated scenario.
+     */
+    updateSingleScenario: async (scenarioId: string, scenario: IScenario) => {
+        const response: IStandardResponse<{ scenario: IScenario }> =
+            await request.put(`/scenario/${scenarioId}`, scenario);
         return response;
     },
 });

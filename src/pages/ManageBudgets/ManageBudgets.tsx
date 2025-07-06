@@ -1,11 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
-import { getBudgetResponse } from '../../redux/selectors/budgetSelectors';
+import {
+    getBudgetLoading,
+    getBudgetResponse,
+} from '../../redux/selectors/budgetSelectors';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
@@ -34,11 +37,60 @@ const ManageBudgets: FC<IProps> = () => {
     const [layout, setLayout] = useState<TDynamicCardLayoutModes>('standard');
 
     const budgets = useAppSelector(getBudgetResponse);
+    const loading = useAppSelector(getBudgetLoading);
 
     useEffect(() => {
-        dispatch(refreshBudgets(true));
+        dispatch(refreshBudgets(t, true));
         // TODO: re-enable react-hooks/exhaustive-deps
     }, []);
+
+    if (loading) {
+        return (
+            <ResponsiveContainer>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gridGap: '16px',
+                        padding: '0 0 64px 0',
+                    }}
+                >
+                    <Typography variant='h2' sx={{ margin: '32px 0' }}>
+                        {t('pageTitles.manageBudgets')}
+                    </Typography>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            padding: '0 8px',
+                        }}
+                    >
+                        <LayoutControls layout={layout} setLayout={setLayout} />
+                        <CreateBudgetButton />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            py: 5,
+                        }}
+                    >
+                        <CircularProgress />
+                    </Box>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Typography>{t('Budget.loading')}</Typography>
+                    </Box>
+                </Box>
+            </ResponsiveContainer>
+        );
+    }
 
     return (
         <ResponsiveContainer>

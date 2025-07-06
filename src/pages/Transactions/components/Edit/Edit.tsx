@@ -26,9 +26,13 @@ import {
     getActiveLanguageCode,
     getUserCurrencies,
 } from '../../../../redux/selectors/profileSelectors';
+import { checkAuth } from '../../../../redux/thunks/authThunks';
 
 import useTransactions from '../../../../hooks/useTransactions';
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import {
+    useAppDispatch,
+    useAppSelector,
+} from '../../../../hooks/ReduxHookWrappers';
 
 import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
 
@@ -41,6 +45,8 @@ import type { IProps } from './Edit.types';
  * @subcategory Transactions
  */
 const Edit: FC<IProps> = () => {
+    const reduxDispatch = useAppDispatch();
+
     const { t } = useTranslation();
 
     const {
@@ -99,7 +105,10 @@ const Edit: FC<IProps> = () => {
                 }}
             >
                 <Button
-                    onClick={() => setOpen(true)}
+                    onClick={() => {
+                        reduxDispatch(checkAuth());
+                        setOpen(true);
+                    }}
                     sx={{
                         display: 'flex',
                         alignItems: 'center',

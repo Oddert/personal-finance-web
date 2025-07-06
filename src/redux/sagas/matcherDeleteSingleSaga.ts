@@ -14,6 +14,7 @@ import { retry } from '../../utils/requestUtils';
 
 /**
  * Deletes a matcher and updates the Category in state.
+ * @deprecated
  */
 export default function* matcherDeleteSingleSaga({
     payload,

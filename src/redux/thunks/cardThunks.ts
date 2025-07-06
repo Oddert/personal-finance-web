@@ -1,3 +1,4 @@
+import { TFunction } from 'i18next';
 import APIService from '../../services/APIService';
 
 import { ICard } from '../../types/Card.types';
@@ -18,7 +19,7 @@ import { conditionallyRefreshTransactions } from './transactionThunks';
  * @param override If true, a refresh will be forced.
  */
 export const refreshCards =
-    (override?: boolean) =>
+    (t: TFunction<'translation', undefined>, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const state = getState();
@@ -32,7 +33,7 @@ export const refreshCards =
                 dispatch(cardsLoading());
                 const response = await APIService.getAllCards();
                 if (!response || !response.payload) {
-                    throw new Error('No response received from the server.');
+                    throw new Error(t('modalMessages.noServerResponse'));
                 }
                 if (response?.status === 200) {
                     dispatch(

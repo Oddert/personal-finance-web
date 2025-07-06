@@ -15,12 +15,25 @@ import { createLoginAddrWithReturn } from '../../utils/routingUtils';
 import {
     authenticateUser,
     clearAuthentication,
+    logoutAuth,
     refreshTokenRequestFinished,
     refreshTokenRequestPending,
     setIncorrectDetails,
     writeUserDetails,
 } from '../slices/authSlice';
-import { getRefreshTokenPending } from '../selectors/authSelectors';
+import {
+    getRefreshTokenPending,
+    getUserEmail,
+    getUserFirstName,
+    getUserLastName,
+} from '../selectors/authSelectors';
+
+import {
+    getActiveLanguage,
+    getUserCurrencies,
+    getUserLanguages,
+} from '../selectors/profileSelectors';
+import { writeUserProfile } from '../slices/profileSlice';
 
 import { intakeError } from './errorThunks';
 
@@ -30,16 +43,15 @@ import { intakeError } from './errorThunks';
  * @subcategory Thunks
  * @param response The API response.
  */
-export const handleAuthResponse =
-    (
-        response: IStandardResponse<{
-            accessToken: string;
-            refreshToken: string;
-            user: IUser;
-        }>,
-        callback?: () => void,
-    ) =>
-    async (dispatch: AppDispatch) => {
+export const handleAuthResponse = (
+    response: IStandardResponse<{
+        accessToken: string;
+        refreshToken: string;
+        user: IUser;
+    }>,
+    callback?: () => void,
+) => {
+    return async (dispatch: AppDispatch) => {
         try {
             if (!response.payload?.accessToken) {
                 throw new Error(
@@ -68,6 +80,7 @@ export const handleAuthResponse =
                     user: response.payload.user,
                 }),
             );
+            dispatch(writeUserProfile({ user: response.payload?.user }));
 
             if (callback) {
                 callback();
@@ -80,7 +93,7 @@ export const handleAuthResponse =
             }
         }
     };
-
+};
 /**
  * Attempts to log in the user and fetch the user's details.
  * @category Redux
@@ -163,9 +176,8 @@ export const userUnauthenticated = () => async (dispatch: AppDispatch) => {
  * @category Redux
  * @subcategory Thunks
  */
-export const refreshAuthentication =
-    (callback?: () => void) =>
-    async (dispatch: AppDispatch, getState: () => RootState) => {
+export const refreshAuthentication = (callback?: () => void) => {
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const refreshRequestPending = getRefreshTokenPending(getState());
 
@@ -205,6 +217,7 @@ export const refreshAuthentication =
             dispatch(refreshTokenRequestFinished());
         }
     };
+};
 
 /**
  * Checks the current time against the user's auth token expiry and conditionally refreshes the auth.
@@ -214,7 +227,7 @@ export const refreshAuthentication =
  * By default it will attempt to refresh if the token if the current token is less than 1 minute from expiry. This can be overridden by the `margin` argument.
  * @category Redux
  * @subcategory Thunks
- * @param margin Minimum time in milliseconds to the token's expiry.
+ * @param margin Minimum time in milliseconds to the token's expiry. (default 120_000ms)
  */
 export const checkAuth =
     (margin?: number) =>
@@ -223,7 +236,7 @@ export const checkAuth =
             const state = getState();
             if (
                 state.auth.accessTokenExpires <=
-                new Date().getTime() - (margin || 60_000)
+                new Date().getTime() - (margin || 120_000)
             ) {
                 dispatch(refreshAuthentication());
             }
@@ -238,3 +251,75 @@ export const checkAuth =
             }
         }
     };
+
+/**
+ * Updates non-security related user details such as email, languages, display name etc.
+ *
+ * Will populate any omitted fields using the stored redux state values.
+ *
+ * Will use empty strings to satisfy type safety requirements. Expect an error to be thrown if any values are not present or valid in the state.
+ * @category Redux
+ * @subcategory Thunks
+ * @param margin Minimum time in milliseconds to the token's expiry.
+ */
+export const updateUserDetails =
+    ({
+        email,
+        firstName,
+        lastName,
+        languages,
+        activeLang,
+        currencies,
+    }: {
+        email?: string;
+        firstName?: string;
+        lastName?: string;
+        languages?: string[];
+        activeLang?: string;
+        currencies?: string[];
+    }) =>
+    async (dispatch: AppDispatch, getState: () => RootState) => {
+        try {
+            const state = getState();
+            const currentUsername = getUserEmail(state);
+            const currentFirstName = getUserFirstName(state);
+            const currentLastName = getUserLastName(state);
+            const currentLangs = getUserLanguages(state);
+            const currentActiveLang = getActiveLanguage(state);
+            const currentCurrency = getUserCurrencies(state);
+
+            const response = await APIService.updateUserDetails(
+                email || currentUsername || '',
+                firstName || currentFirstName || '',
+                lastName || currentLastName || '',
+                languages
+                    ? languages.join(',')
+                    : currentLangs.map((lang) => lang.code).join(','),
+                activeLang || currentActiveLang.code,
+                (currencies || currentCurrency).join(','),
+                (currencies || currentCurrency)[0],
+            );
+
+            if (response.payload) {
+                dispatch(writeUserProfile({ user: response.payload?.user }));
+                dispatch(writeUserDetails({ user: response.payload?.user }));
+            }
+        } catch (error: any) {
+            dispatch(intakeError(error));
+        }
+    };
+
+/**
+ * Logs the user out and clears user details.
+ * @category Redux
+ * @subcategory Thunks
+ */
+export const userLogout = () => async (dispatch: AppDispatch) => {
+    try {
+        AuthLSService.deleteAccessToken();
+        AuthLSService.deleteRefreshToken();
+        dispatch(logoutAuth());
+    } catch (error: any) {
+        dispatch(intakeError(error));
+    }
+};
