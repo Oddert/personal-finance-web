@@ -14,6 +14,7 @@ import { createCategory } from '../slices/categorySlice';
 
 /**
  * Creates a category and adds it to the state.
+ * @deprecated
  */
 export default function* categoryCreateSaga({
     payload,
@@ -30,7 +31,7 @@ export default function* categoryCreateSaga({
         } else {
             yield put(createCategory({ category: response.payload.category }));
         }
-    } catch (error) {
+    } catch (error: any) {
         yield put(intakeError(error));
     }
 }

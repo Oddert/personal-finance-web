@@ -28,6 +28,7 @@ const initialState: CategoryState = {
     },
 };
 
+// TODO: alphabetise
 export const categorySlice = createSlice({
     name: 'category',
     initialState,
@@ -50,6 +51,9 @@ export const categorySlice = createSlice({
             state.loading = false;
             state.queried = true;
         },
+        /**
+         * @deprecated
+         */
         initCreateCategory: (
             state,
             {

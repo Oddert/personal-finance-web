@@ -1,4 +1,4 @@
-import request from '../common/request';
+import request, { createBlankRequest } from '../common/request';
 
 import type { IUser } from '../types/Auth.types';
 import type { IBudget } from '../types/Budget.types';
@@ -216,12 +216,14 @@ const APIService = Object.freeze({
     // Categories
     /**
      * Creates a single Category.
+     *
+     * Does not include a re-authentication catch on failed requests.
      * @param category The partial Category to create.
      * @returns The created Category.
      */
     createCategory: async (category: Partial<ICategory>) => {
         const response: IStandardResponse<{ category: ICategory }> =
-            await request.post(`/category`, category);
+            await createBlankRequest().post(`/category`, category);
         return response;
     },
     /**

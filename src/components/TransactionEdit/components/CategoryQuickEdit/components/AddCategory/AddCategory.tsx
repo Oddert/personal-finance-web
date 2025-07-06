@@ -10,9 +10,10 @@ import {
     TextField,
 } from '@mui/material';
 
-import { initCreateCategory } from '../../../../../../redux/slices/categorySlice';
+import { ICategory } from '../../../../../../types/Category.d';
 
 import { useAppDispatch } from '../../../../../../hooks/ReduxHookWrappers';
+import { categoryCreateAction } from '../../../../../../redux/thunks/categoryThunks';
 
 // import ColourEdit from '../../../../ColourEdit';
 
@@ -58,7 +59,7 @@ const AddCategory: FC = () => {
             description: '',
             matchers: [],
         };
-        dispatch(initCreateCategory({ category: payload }));
+        dispatch(categoryCreateAction(payload as Partial<ICategory>));
         setLabel('');
         setColour('#bec3c7');
         setTitleError(false);

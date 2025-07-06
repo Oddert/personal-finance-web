@@ -1,14 +1,21 @@
 import { TFunction } from 'i18next';
 
+import { ICategory } from '../../types/Category.d';
+
 import { AppDispatch, RootState } from '../constants/store';
 
 import APIService from '../../services/APIService';
 
 import { sortCategories } from '../../utils/categoryUtils';
 
-import { requestCategories, writeCategories } from '../slices/categorySlice';
+import {
+    createCategory,
+    requestCategories,
+    writeCategories,
+} from '../slices/categorySlice';
 
 import { intakeError } from './errorThunks';
+import { refreshAuthentication } from './authThunks';
 
 /**
  * Conditional re-requests the category state from the server.
@@ -43,5 +50,38 @@ export const refreshCategories =
         } catch (error) {
             console.error(error);
             dispatch(intakeError(error));
+        }
+    };
+
+/**
+ * Creates a new Category and updates the held list.
+ * @param category The new Category.
+ * @param allowReRequest If true a re-request will be tried if the authentication expires.
+ */
+export const categoryCreateAction =
+    (category: Partial<ICategory>, allowReRequest: boolean = false) =>
+    async (dispatch: AppDispatch) => {
+        try {
+            const response = await APIService.createCategory(category);
+
+            if (!response.error && response.payload) {
+                dispatch(
+                    createCategory({ category: response.payload.category }),
+                );
+            }
+        } catch (error1: any) {
+            try {
+                if (error1.status === 401 && allowReRequest) {
+                    dispatch(
+                        refreshAuthentication(() => {
+                            dispatch(categoryCreateAction(category));
+                        }),
+                    );
+                } else {
+                    dispatch(intakeError(error1, '4'));
+                }
+            } catch (error2: any) {
+                dispatch(intakeError(error2, '5'));
+            }
         }
     };

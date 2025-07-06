@@ -227,7 +227,7 @@ export const refreshAuthentication = (callback?: () => void) => {
  * By default it will attempt to refresh if the token if the current token is less than 1 minute from expiry. This can be overridden by the `margin` argument.
  * @category Redux
  * @subcategory Thunks
- * @param margin Minimum time in milliseconds to the token's expiry.
+ * @param margin Minimum time in milliseconds to the token's expiry. (default 120_000ms)
  */
 export const checkAuth =
     (margin?: number) =>
@@ -236,7 +236,7 @@ export const checkAuth =
             const state = getState();
             if (
                 state.auth.accessTokenExpires <=
-                new Date().getTime() - (margin || 60_000)
+                new Date().getTime() - (margin || 120_000)
             ) {
                 dispatch(refreshAuthentication());
             }

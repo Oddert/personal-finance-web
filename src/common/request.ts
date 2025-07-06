@@ -7,30 +7,35 @@ import { getServerURL } from '../utils/requestUtils';
 import store from '../redux/constants/store';
 import { refreshAuthentication } from '../redux/thunks/authThunks';
 
-const baseURL = getServerURL();
+export const createBlankRequest = () => {
+    const baseURL = getServerURL();
 
-/**
- * Re-usable Axios request object.
- *
- * NOTE: Interceptors used will attempt to return `response.data`, not `AxiosResponse<any, any>>` as suggested.
- */
-const request = axios.create({
-    baseURL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+    /**
+     * Re-usable Axios request object.
+     *
+     * NOTE: Interceptors used will attempt to return `response.data`, not `AxiosResponse<any, any>>` as suggested.
+     */
+    const requestClient = axios.create({
+        baseURL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 
-request.interceptors.request.use((config) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.log('[request]', config.url);
-    }
-    const token = AuthLSService.getAccessToken();
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
+    requestClient.interceptors.request.use((config) => {
+        if (process.env.NODE_ENV === 'development') {
+            console.log('[request]', config.url);
+        }
+        const token = AuthLSService.getAccessToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    });
+    return requestClient;
+};
+
+const request = createBlankRequest();
 
 request.interceptors.response.use(
     (response) => {
