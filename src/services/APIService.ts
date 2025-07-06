@@ -216,12 +216,22 @@ const APIService = Object.freeze({
     // Categories
     /**
      * Creates a single Category.
+     * @param category The partial Category to create.
+     * @returns The created Category.
+     */
+    createCategory: async (category: Partial<ICategory>) => {
+        const response: IStandardResponse<{ category: ICategory }> =
+            await request.post(`/category`, category);
+        return response;
+    },
+    /**
+     * Creates a single Category.
      *
      * Does not include a re-authentication catch on failed requests.
      * @param category The partial Category to create.
      * @returns The created Category.
      */
-    createCategory: async (category: Partial<ICategory>) => {
+    createCategoryNoInterceptor: async (category: Partial<ICategory>) => {
         const response: IStandardResponse<{ category: ICategory }> =
             await createBlankRequest().post(`/category`, category);
         return response;

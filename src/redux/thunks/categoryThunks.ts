@@ -62,7 +62,8 @@ export const categoryCreateAction =
     (category: Partial<ICategory>, allowReRequest: boolean = false) =>
     async (dispatch: AppDispatch) => {
         try {
-            const response = await APIService.createCategory(category);
+            const response =
+                await APIService.createCategoryNoInterceptor(category);
 
             if (!response.error && response.payload) {
                 dispatch(
