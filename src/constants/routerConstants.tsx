@@ -38,8 +38,8 @@ import Transactions from '../pages/Transactions/';
 import Language from '../pages/Profile/Tabs/Language';
 import Appearance from '../pages/Profile/Tabs/Appearance';
 import Security from '../pages/Profile/Tabs/Security';
-import ManageScenarios from '../pages/ManageScenarios/ManageScenarios';
-import EditScenario from '../pages/EditScenario/EditScenario';
+import ManageScenarios from '../pages/ManageScenarios';
+import EditScenario from '../pages/EditScenario';
 
 export interface INavigationOption {
     label: string;
