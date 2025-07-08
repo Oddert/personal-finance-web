@@ -45,6 +45,16 @@ const downloadCsv = (fileData: string, fileName?: string) => {
     aTag.remove();
 };
 
+const downloadCsvNoSuffix = (fileData: string, fileName?: string) => {
+    const blob = new Blob([fileData], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const aTag = document.createElement('a');
+    aTag.href = url;
+    aTag.download = fileName?.length ? fileName : url;
+    aTag.click();
+    aTag.remove();
+};
+
 const downloadJson = (fileData: object | any[], fileName?: string) => {
     const blob = new Blob([JSON.stringify(fileData)], { type: 'text/json' });
     const url = URL.createObjectURL(blob);
@@ -79,19 +89,17 @@ const ExportTransactions: FC<IProps> = () => {
 
     useEffect(() => {
         const getCount = async () => {
-            console.log('getCount()');
             try {
                 const res = await APIService.getTransactionCount(
                     startDate.valueOf(),
                     endDate.valueOf(),
                     activeCardId,
                 );
-                console.log(res);
+
                 if (
                     res?.payload?.count &&
                     typeof res?.payload?.count === 'number'
                 ) {
-                    console.log('set count: ', res.payload.count);
                     setPreviewCount(res.payload.count);
                 }
             } catch (error: any) {
@@ -133,6 +141,9 @@ const ExportTransactions: FC<IProps> = () => {
                 if (dlFormat === 'csv') {
                     const converted = json2csv(withCategories);
                     downloadCsv(converted, dlName);
+                } else if (dlFormat === 'txt') {
+                    const converted = json2csv(withCategories);
+                    downloadCsvNoSuffix(converted, dlName);
                 } else {
                     downloadJson(withCategories, dlName);
                 }
@@ -214,6 +225,7 @@ const ExportTransactions: FC<IProps> = () => {
                         value={dlFormat}
                     >
                         <MenuItem value='csv'>CSV (Excel compatible)</MenuItem>
+                        <MenuItem value='txt'>CSV as a .txt file</MenuItem>
                         <MenuItem value='json'>JSON</MenuItem>
                     </Select>
                 </DialogContent>
