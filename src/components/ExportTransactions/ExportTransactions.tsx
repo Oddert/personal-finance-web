@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslation } from 'react-i18next';
 import { json2csv } from 'json-2-csv';
@@ -24,6 +24,13 @@ import {
 
 import APIService from '../../services/APIService';
 
+import {
+    createStandardTransactionDlName,
+    downloadCsv,
+    downloadCsvNoSuffix,
+    downloadJson,
+} from '../../utils/exportUtils';
+
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 
 import { intakeError } from '../../redux/thunks/errorThunks';
@@ -33,40 +40,6 @@ import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelect
 import { IProps } from './ExportTransactions.types';
 
 dayjs.extend(localizedFormat);
-
-const createStandardTransactionDlName = (startDate: Dayjs, endDate: Dayjs) => {
-    return `pf-transaction-data-${startDate.toISOString()}-to-${endDate.toISOString()}`;
-};
-
-const downloadCsv = (fileData: string, fileName?: string) => {
-    const blob = new Blob([fileData], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const aTag = document.createElement('a');
-    aTag.href = `${url}.csv`;
-    aTag.download = fileName?.length ? fileName : url;
-    aTag.click();
-    aTag.remove();
-};
-
-const downloadCsvNoSuffix = (fileData: string, fileName?: string) => {
-    const blob = new Blob([fileData], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const aTag = document.createElement('a');
-    aTag.href = url;
-    aTag.download = fileName?.length ? fileName : url;
-    aTag.click();
-    aTag.remove();
-};
-
-const downloadJson = (fileData: object | any[], fileName?: string) => {
-    const blob = new Blob([JSON.stringify(fileData)], { type: 'text/json' });
-    const url = URL.createObjectURL(blob);
-    const aTag = document.createElement('a');
-    aTag.href = `${url}.json`;
-    aTag.download = fileName?.length ? fileName : url;
-    aTag.click();
-    aTag.remove();
-};
 
 /**
  * Allows the user to export all transactions within a selected range.
