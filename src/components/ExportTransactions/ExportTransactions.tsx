@@ -126,7 +126,7 @@ const ExportTransactions: FC<IProps> = ({
                     downloadCsv(converted, dlName);
                 } else if (dlFormat === 'txt') {
                     const converted = json2csv(withCategories);
-                    downloadCsvNoSuffix(converted, dlName);
+                    downloadCsvNoSuffix(converted, `${dlName}.txt`);
                 } else {
                     downloadJson(withCategories, dlName);
                 }
