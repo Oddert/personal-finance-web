@@ -8,7 +8,6 @@ import {
     TransactionRange,
 } from '../../contexts/transactionRangeContext';
 
-import ExportTransactions from '../../components/ExportTransactions';
 import Upload from '../../components/Upload';
 
 import RangeControls from './components/RangeControls';
@@ -44,7 +43,6 @@ const Transactions = () => {
                 >
                     <Upload />
                     <RequestControls />
-                    <ExportTransactions />
                 </Box>
                 <Paper elevation={0} sx={{ padding: '16px 64px' }}>
                     <RangeControls />

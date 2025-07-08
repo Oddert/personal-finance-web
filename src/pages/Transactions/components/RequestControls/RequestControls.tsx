@@ -21,6 +21,7 @@ import {
 } from '../../../../hooks/ReduxHookWrappers';
 
 import CardSelector from '../../../../components/CardSelector';
+import ExportTransactions from '../../../../components/ExportTransactions';
 
 dayjs.extend(localizedFormat);
 
@@ -155,6 +156,10 @@ const RequestControls = () => {
                 >
                     {t('buttons.Refresh')} <IconRefresh />
                 </Button>
+                <ExportTransactions
+                    defaultEndDate={endDate}
+                    defaultStartDate={startDate}
+                />
             </Box>
         </Box>
     );

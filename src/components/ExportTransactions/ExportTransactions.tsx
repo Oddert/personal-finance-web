@@ -1,4 +1,6 @@
 import { FC, useEffect, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslation } from 'react-i18next';
 import { json2csv } from 'json-2-csv';
 
@@ -29,7 +31,8 @@ import { getActiveCardId } from '../../redux/selectors/cardSelectors';
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 
 import { IProps } from './ExportTransactions.types';
-import { Dayjs } from 'dayjs';
+
+dayjs.extend(localizedFormat);
 
 const createStandardTransactionDlName = (startDate: Dayjs, endDate: Dayjs) => {
     return `pf-transaction-data-${startDate.toISOString()}-to-${endDate.toISOString()}`;
@@ -71,7 +74,10 @@ const downloadJson = (fileData: object | any[], fileName?: string) => {
  * @category Components
  * @subcategory Export Transactions
  */
-const ExportTransactions: FC<IProps> = () => {
+const ExportTransactions: FC<IProps> = ({
+    defaultEndDate,
+    defaultStartDate,
+}) => {
     const { t } = useTranslation();
 
     const dispatch = useAppDispatch();
@@ -79,9 +85,13 @@ const ExportTransactions: FC<IProps> = () => {
     const [open, setOpen] = useState(false);
     const [previewCount, setPreviewCount] = useState(0);
     const [startDate, setStartDate] = useState(
-        toBeginningMonthDayjs(new Date()),
+        defaultStartDate
+            ? dayjs(defaultStartDate)
+            : toBeginningMonthDayjs(new Date()),
     );
-    const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
+    const [endDate, setEndDate] = useState(
+        defaultEndDate ? dayjs(defaultEndDate) : toEndMonthDayjs(new Date()),
+    );
     const [dlFormat, setDlFormat] = useState('csv');
 
     const activeCardId = useAppSelector(getActiveCardId);
