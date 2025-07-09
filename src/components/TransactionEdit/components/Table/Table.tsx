@@ -49,6 +49,7 @@ const Table = () => {
                 accessorKey: [
                     'assignedCategory',
                     'selected',
+                    'deleted',
                     'currency',
                 ].includes(header.accessorKey)
                     ? header.accessorKey

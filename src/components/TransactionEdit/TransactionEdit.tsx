@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     CircularProgress,
@@ -18,7 +19,6 @@ import Submit from './components/Submit';
 import Table from './components/Table';
 
 import type { IProps } from './TransactionEdit.types';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Allows the user to edit and submit / save transactions.

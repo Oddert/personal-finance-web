@@ -21,13 +21,14 @@ const TransactionEditActionTypes = {
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
     setLoading: 'setLoading',
+    tecWriteTransactions: 'tecWriteTransactions',
+    toggleDeleted: 'toggleDeleted',
     toggleSideBarOpen: 'toggleSideBarOpen',
     uncheckAll: 'uncheckAll',
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     updateNumericValue: 'updateNumericValue',
     writeHeaders: 'writeHeaders',
-    tecWriteTransactions: 'tecWriteTransactions',
 };
 
 export const transactionEditInitialState: TransactionEditState = {
@@ -49,6 +50,7 @@ export const transactionEditInitialState: TransactionEditState = {
 
 export type TAccessorKey =
     | 'selected'
+    | 'deleted'
     | 'date'
     | 'description'
     | 'debit'
@@ -98,6 +100,10 @@ export const defaultColumns: IColumnDef[] = [
         header: 'Category',
         accessorKey: 'assignedCategory',
     },
+    {
+        header: 'Delete',
+        accessorKey: 'deleted',
+    },
 ];
 
 const initialValue: {
@@ -144,6 +150,15 @@ export const transactionEditReducer = (
             return {
                 ...state,
                 mode: action?.payload?.mode,
+            };
+        case TransactionEditActionTypes.toggleDeleted:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? { ...transaction, deleted: !transaction.deleted }
+                        : transaction,
+                ),
             };
         case TransactionEditActionTypes.toggleSideBarOpen:
             return {
@@ -238,6 +253,11 @@ export const setLoading = (loading: TransactionEditState['loading']) => ({
 export const setMode = (mode: TransactionEditState['mode']) => ({
     type: TransactionEditActionTypes.setMode,
     payload: { mode },
+});
+
+export const toggleDeleted = (uid: string) => ({
+    type: TransactionEditActionTypes.toggleDeleted,
+    payload: { uid },
 });
 
 export const toggleSideBar = (

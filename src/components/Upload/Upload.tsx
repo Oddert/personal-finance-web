@@ -68,16 +68,15 @@ const Upload = () => {
                                 transactions,
                                 categories,
                             );
-                            const withSelected = withCategories.map(
-                                (datum) => ({
-                                    ...datum,
-                                    selected: 1,
-                                    tecTempId: uuid(),
-                                    currency: currencies[0],
-                                }),
-                            );
+                            const withPresets = withCategories.map((datum) => ({
+                                ...datum,
+                                selected: 1,
+                                deleted: 0,
+                                tecTempId: uuid(),
+                                currency: currencies[0],
+                            }));
                             dispatch(writeHeaders(headers));
-                            dispatch(tecWriteTransactions(withSelected));
+                            dispatch(tecWriteTransactions(withPresets));
                             dispatch(setLoading(false));
                         }
                     };
