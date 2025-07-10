@@ -1,5 +1,7 @@
 import { Fragment, useCallback, useEffect, useReducer, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 
 import { v4 as uuid } from 'uuid';
 
@@ -26,7 +28,6 @@ import { checkAuth } from '../../redux/thunks/authThunks';
 
 import TransactionEdit from '../TransactionEdit';
 import DropZone from '../DropZone';
-import { Button } from '@mui/material';
 
 /**
  * Allows the user to upload new transactions.
@@ -41,6 +42,8 @@ const Upload = () => {
         transactionEditReducer,
         transactionEditInitialState,
     );
+
+    const { t } = useTranslation();
 
     const categories = useSelector(getCategoryResponse);
     const currencies = useSelector(getUserCurrencies);
@@ -108,7 +111,7 @@ const Upload = () => {
         <Fragment>
             <DropZone onSuccess={handleChange} />
             <Button onClick={() => setModalOpen(true)}>
-                Enter transactions manually
+                {t('Transaction.enterTransactionsManually')}
             </Button>
             <TransactionEditContext.Provider value={{ state, dispatch }}>
                 <TransactionEdit

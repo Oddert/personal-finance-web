@@ -119,7 +119,7 @@ const Table = () => {
                     onClick={() => dispatch(addRow(currencies[0] || ''))}
                     variant='outlined'
                 >
-                    <IconAdd /> New row
+                    <IconAdd /> {t('buttons.newRow')}
                 </Button>
             </Box>
             <Button onClick={handleClickCheckAll}>

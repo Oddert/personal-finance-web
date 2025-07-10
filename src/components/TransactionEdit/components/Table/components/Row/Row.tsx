@@ -84,7 +84,11 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
         }
     };
 
-    return <TableRow key={idx}>{columns.map(switchComponents)}</TableRow>;
+    return (
+        <TableRow key={idx} sx={{ opacity: transaction.deleted ? 0.5 : 1 }}>
+            {columns.map(switchComponents)}
+        </TableRow>
+    );
 };
 
 export default Row;
