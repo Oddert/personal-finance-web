@@ -12,13 +12,19 @@ import {
     Button,
     Box,
 } from '@mui/material';
+import { Add as IconAdd } from '@mui/icons-material';
 
 import {
+    addRow,
     checkAll,
     defaultColumns,
     TransactionEditContext,
     uncheckAll,
 } from '../../../../contexts/transactionEditContext';
+
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+
+import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
 
 import Row from './components/Row';
 
@@ -38,6 +44,8 @@ const Table = () => {
         dispatch,
         state: { columnMap, transactions },
     } = useContext(TransactionEditContext);
+
+    const currencies = useAppSelector(getUserCurrencies);
 
     const handleClickCheckAll = () => dispatch(checkAll());
     const handleClickUnCheckAll = () => dispatch(uncheckAll());
@@ -105,6 +113,14 @@ const Table = () => {
                     }
                     label={t('Transaction.filterUnchecked')}
                 />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                    onClick={() => dispatch(addRow(currencies[0] || ''))}
+                    variant='outlined'
+                >
+                    <IconAdd /> New row
+                </Button>
             </Box>
             <Button onClick={handleClickCheckAll}>
                 {t('buttons.checkAll')}

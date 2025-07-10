@@ -26,6 +26,7 @@ import { checkAuth } from '../../redux/thunks/authThunks';
 
 import TransactionEdit from '../TransactionEdit';
 import DropZone from '../DropZone';
+import { Button } from '@mui/material';
 
 /**
  * Allows the user to upload new transactions.
@@ -106,6 +107,9 @@ const Upload = () => {
     return (
         <Fragment>
             <DropZone onSuccess={handleChange} />
+            <Button onClick={() => setModalOpen(true)}>
+                Enter transactions manually
+            </Button>
             <TransactionEditContext.Provider value={{ state, dispatch }}>
                 <TransactionEdit
                     open={modalOpen}

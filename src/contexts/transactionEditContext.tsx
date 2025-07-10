@@ -1,5 +1,6 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuid } from 'uuid';
 
 export interface ITECTransaction {
     [key: string]: string | number | null;
@@ -16,6 +17,7 @@ export interface TransactionEditState {
 }
 
 const TransactionEditActionTypes = {
+    addRow: 'addRow',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
     setColumnMap: 'setColumnMap',
@@ -119,6 +121,24 @@ export const transactionEditReducer = (
     action: PayloadAction<any>,
 ) => {
     switch (action.type) {
+        case TransactionEditActionTypes.addRow:
+            return {
+                ...state,
+                transactions: [
+                    {
+                        ballance: 0,
+                        categoryId: null,
+                        date: new Date().toString(),
+                        description: '',
+                        transactionType: 'DEB',
+                        selected: 1,
+                        deleted: 0,
+                        tecTempId: uuid(),
+                        currency: action.payload.currency,
+                    },
+                    ...state.transactions,
+                ],
+            };
         case TransactionEditActionTypes.changeSelected:
             return {
                 ...state,
@@ -229,6 +249,11 @@ export const transactionEditReducer = (
             return state;
     }
 };
+
+export const addRow = (currency: string) => ({
+    type: TransactionEditActionTypes.addRow,
+    payload: { currency },
+});
 
 export const changeSingleSelected = (uid: string, selected: boolean) => ({
     type: TransactionEditActionTypes.changeSelected,
