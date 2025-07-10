@@ -18,8 +18,10 @@ import {
     addRow,
     checkAll,
     defaultColumns,
+    deleteAll,
     TransactionEditContext,
     uncheckAll,
+    unDeleteAll,
 } from '../../../../contexts/transactionEditContext';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
@@ -49,6 +51,8 @@ const Table = () => {
 
     const handleClickCheckAll = () => dispatch(checkAll());
     const handleClickUnCheckAll = () => dispatch(uncheckAll());
+    const handleClickDeleteAll = () => dispatch(deleteAll());
+    const handleClickUnDeleteAll = () => dispatch(unDeleteAll());
 
     const columns: { accessorKey: string; header: string }[] = useMemo(() => {
         return defaultColumns.map((header) => {
@@ -114,7 +118,7 @@ const Table = () => {
                     label={t('Transaction.filterUnchecked')}
                 />
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
                 <Button
                     onClick={() => dispatch(addRow(currencies[0] || ''))}
                     variant='outlined'
@@ -122,12 +126,24 @@ const Table = () => {
                     <IconAdd /> {t('buttons.newRow')}
                 </Button>
             </Box>
-            <Button onClick={handleClickCheckAll}>
-                {t('buttons.checkAll')}
-            </Button>
-            <Button onClick={handleClickUnCheckAll}>
-                {t('buttons.uncheckAll')}
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box>
+                    <Button onClick={handleClickCheckAll}>
+                        {t('buttons.checkAll')}
+                    </Button>
+                    <Button onClick={handleClickUnCheckAll}>
+                        {t('buttons.uncheckAll')}
+                    </Button>
+                </Box>
+                <Box>
+                    <Button onClick={handleClickDeleteAll}>
+                        {t('buttons.deleteAll')}
+                    </Button>
+                    <Button onClick={handleClickUnDeleteAll}>
+                        {t('buttons.unDeleteAll')}
+                    </Button>
+                </Box>
+            </Box>
             <MuiTable
                 sx={{
                     width: '100%',

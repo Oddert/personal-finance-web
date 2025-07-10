@@ -20,6 +20,7 @@ const TransactionEditActionTypes = {
     addRow: 'addRow',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
+    deleteAll: 'deleteAll',
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
     setLoading: 'setLoading',
@@ -27,6 +28,7 @@ const TransactionEditActionTypes = {
     toggleDeleted: 'toggleDeleted',
     toggleSideBarOpen: 'toggleSideBarOpen',
     uncheckAll: 'uncheckAll',
+    unDeleteAll: 'unDeleteAll',
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     updateNumericValue: 'updateNumericValue',
@@ -153,7 +155,15 @@ export const transactionEditReducer = (
                 ...state,
                 transactions: state.transactions.map((transaction) => ({
                     ...transaction,
-                    selected: true,
+                    selected: 1,
+                })),
+            };
+        case TransactionEditActionTypes.deleteAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    deleted: 1,
                 })),
             };
         case TransactionEditActionTypes.setColumnMap:
@@ -194,7 +204,15 @@ export const transactionEditReducer = (
                 ...state,
                 transactions: state.transactions.map((transaction) => ({
                     ...transaction,
-                    selected: false,
+                    selected: 0,
+                })),
+            };
+        case TransactionEditActionTypes.unDeleteAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    deleted: 0,
                 })),
             };
         case TransactionEditActionTypes.updateDescription:
@@ -265,6 +283,11 @@ export const checkAll = () => ({
     payload: {},
 });
 
+export const deleteAll = () => ({
+    type: TransactionEditActionTypes.deleteAll,
+    payload: {},
+});
+
 export const setColumnMap = (columnMap: TransactionEditState['columnMap']) => ({
     type: TransactionEditActionTypes.setColumnMap,
     payload: { columnMap },
@@ -295,6 +318,11 @@ export const toggleSideBar = (
 
 export const uncheckAll = () => ({
     type: TransactionEditActionTypes.uncheckAll,
+    payload: {},
+});
+
+export const unDeleteAll = () => ({
+    type: TransactionEditActionTypes.unDeleteAll,
     payload: {},
 });
 
