@@ -187,6 +187,7 @@ const APIService = Object.freeze({
      * Gets a list of all Transactions between two dates.
      * @param startDate The start of the transaction query range.
      * @param endDate The end of the transaction query range.
+     * @param activeCard The card ID to query transactions from.
      * @returns Transactions within the date range.
      */
     getAllTransactionsWithinRange: async (
@@ -199,6 +200,33 @@ const APIService = Object.freeze({
         const activeCard = activeCardId ? `&cardId=${activeCardId}` : '';
         const response: IStandardResponse<{ transactions: ITransaction[] }> =
             await request.get(`/transaction${from}${to}${activeCard}`);
+        return response;
+    },
+    /**
+     * Gets a list of all Transactions between two dates.
+     * @param startDate The start of the transaction query range.
+     * @param endDate The end of the transaction query range.
+     * @param activeCard The card ID to query transactions from.
+     * @returns Transactions within the date range.
+     */
+    getTransactionCount: async (
+        startDate: number,
+        endDate: number,
+        activeCardId: string | null,
+    ) => {
+        let starDateParsed = '';
+        let endDateParsed = '';
+        try {
+            starDateParsed = new Date(startDate).toISOString();
+            endDateParsed = new Date(endDate).toISOString();
+        } catch (error: any) {
+            return null;
+        }
+        const from = `?from=${starDateParsed}`;
+        const to = `&to=${endDateParsed}`;
+        const activeCard = activeCardId ? `&cardId=${activeCardId}` : '';
+        const response: IStandardResponse<{ count: number }> =
+            await request.get(`/transaction/count${from}${to}${activeCard}`);
         return response;
     },
     /**

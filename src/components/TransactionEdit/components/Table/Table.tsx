@@ -12,13 +12,21 @@ import {
     Button,
     Box,
 } from '@mui/material';
+import { Add as IconAdd } from '@mui/icons-material';
 
 import {
+    addRow,
     checkAll,
     defaultColumns,
+    deleteAll,
     TransactionEditContext,
     uncheckAll,
+    unDeleteAll,
 } from '../../../../contexts/transactionEditContext';
+
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+
+import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
 
 import Row from './components/Row';
 
@@ -39,8 +47,12 @@ const Table = () => {
         state: { columnMap, transactions },
     } = useContext(TransactionEditContext);
 
+    const currencies = useAppSelector(getUserCurrencies);
+
     const handleClickCheckAll = () => dispatch(checkAll());
     const handleClickUnCheckAll = () => dispatch(uncheckAll());
+    const handleClickDeleteAll = () => dispatch(deleteAll());
+    const handleClickUnDeleteAll = () => dispatch(unDeleteAll());
 
     const columns: { accessorKey: string; header: string }[] = useMemo(() => {
         return defaultColumns.map((header) => {
@@ -49,6 +61,7 @@ const Table = () => {
                 accessorKey: [
                     'assignedCategory',
                     'selected',
+                    'deleted',
                     'currency',
                 ].includes(header.accessorKey)
                     ? header.accessorKey
@@ -105,12 +118,32 @@ const Table = () => {
                     label={t('Transaction.filterUnchecked')}
                 />
             </Box>
-            <Button onClick={handleClickCheckAll}>
-                {t('buttons.checkAll')}
-            </Button>
-            <Button onClick={handleClickUnCheckAll}>
-                {t('buttons.uncheckAll')}
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                <Button
+                    onClick={() => dispatch(addRow(currencies[0] || ''))}
+                    variant='outlined'
+                >
+                    <IconAdd /> {t('buttons.newRow')}
+                </Button>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box>
+                    <Button onClick={handleClickCheckAll}>
+                        {t('buttons.checkAll')}
+                    </Button>
+                    <Button onClick={handleClickUnCheckAll}>
+                        {t('buttons.uncheckAll')}
+                    </Button>
+                </Box>
+                <Box>
+                    <Button onClick={handleClickDeleteAll}>
+                        {t('buttons.deleteAll')}
+                    </Button>
+                    <Button onClick={handleClickUnDeleteAll}>
+                        {t('buttons.unDeleteAll')}
+                    </Button>
+                </Box>
+            </Box>
             <MuiTable
                 sx={{
                     width: '100%',

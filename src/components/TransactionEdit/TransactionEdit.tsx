@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     CircularProgress,
@@ -18,7 +19,6 @@ import Submit from './components/Submit';
 import Table from './components/Table';
 
 import type { IProps } from './TransactionEdit.types';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Allows the user to edit and submit / save transactions.
@@ -35,7 +35,7 @@ const TransactionEdit: FC<IProps> = ({
     showMapping = false,
 }) => {
     const {
-        state: { loading },
+        state: { loading, mode },
     } = useContext(TransactionEditContext);
 
     const { t } = useTranslation();
@@ -51,7 +51,9 @@ const TransactionEdit: FC<IProps> = ({
                     }}
                 >
                     <Typography variant='h2'>
-                        {t('Transaction.bulkEditTransactions')}
+                        {mode === 'upload'
+                            ? t('Transaction.bulkUploadTransactions')
+                            : t('Transaction.bulkEditTransactions')}
                     </Typography>
                     {loading ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center' }}>

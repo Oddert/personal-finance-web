@@ -28,6 +28,8 @@ import type { IProps } from './Submit.types';
 
 dayjs.extend(localizedFormat);
 
+type ITransactionWithDeleted = ITransaction & { deleted: number };
+
 /**
  * Button to submit / save the transactions.
  *
@@ -51,13 +53,18 @@ const Submit: FC<IProps> = ({ onClose }) => {
 
     const handleClick = () => {
         // Filter only for items which are checked.
-        const filteredTransactions = transactions.filter(
+        const filterSeleted = transactions.filter(
             (transaction) => transaction.selected,
         );
 
+        const filterDelted =
+            mode === 'upload'
+                ? filterSeleted.filter((transaction) => !transaction.deleted)
+                : filterSeleted;
+
         // Convert the keys from the user's proprietary CSV format to our transaction format.
-        const stagedTemp = filteredTransactions.map((transaction) => {
-            const formattedTransaction: Partial<ITransaction> = {
+        const stagedTemp = filterDelted.map((transaction) => {
+            const formattedTransaction: Partial<ITransactionWithDeleted> = {
                 assignedCategory:
                     (transaction[
                         columnMap.assignedCategory
@@ -94,6 +101,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
                     (transaction[columnMap.transactionType] as string) ||
                     (transaction.transactionType as string) ||
                     'DEB',
+                deleted: Number(transaction.deleted) || 0,
             };
 
             // Handle number values separately as they are expected to be string (though not limited to).

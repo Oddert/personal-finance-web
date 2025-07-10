@@ -8,10 +8,11 @@ import {
     TransactionRange,
 } from '../../contexts/transactionRangeContext';
 
+import Upload from '../../components/Upload';
+
 import RangeControls from './components/RangeControls';
 import RequestControls from './components/RequestControls';
 import Table from './components/Table';
-import Upload from '../../components/Upload';
 
 import Edit from './components/Edit';
 

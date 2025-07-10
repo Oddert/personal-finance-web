@@ -6,6 +6,7 @@ import { TransactionEditContext } from '../../../../../../contexts/transactionEd
 
 import CategorySelector from '../CategorySelector';
 import CurrencySelector from '../CurrencySelector';
+import DeleteOption from '../DeleteOption/DeleteOption';
 import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
@@ -68,6 +69,8 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                 );
             case 'selected':
                 return <SelectOption key={key} transaction={transaction} />;
+            case 'deleted':
+                return <DeleteOption key={key} transaction={transaction} />;
             case 'assignedCategory':
                 return <CategorySelector key={key} transaction={transaction} />;
             case 'currency':
@@ -81,7 +84,11 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
         }
     };
 
-    return <TableRow key={idx}>{columns.map(switchComponents)}</TableRow>;
+    return (
+        <TableRow key={idx} sx={{ opacity: transaction.deleted ? 0.5 : 1 }}>
+            {columns.map(switchComponents)}
+        </TableRow>
+    );
 };
 
 export default Row;

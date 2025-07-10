@@ -77,6 +77,7 @@ const Edit: FC<IProps> = () => {
             categoryId: transaction.categoryId || 0,
             assignedCategory: transaction.categoryId || 0,
             selected: 1,
+            deleted: 0,
             tecTempId: uuid(),
             currency: currencies[0],
         }));

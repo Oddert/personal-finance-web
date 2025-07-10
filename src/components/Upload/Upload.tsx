@@ -1,5 +1,7 @@
 import { Fragment, useCallback, useEffect, useReducer, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
 
 import { v4 as uuid } from 'uuid';
 
@@ -41,6 +43,8 @@ const Upload = () => {
         transactionEditInitialState,
     );
 
+    const { t } = useTranslation();
+
     const categories = useSelector(getCategoryResponse);
     const currencies = useSelector(getUserCurrencies);
 
@@ -68,16 +72,15 @@ const Upload = () => {
                                 transactions,
                                 categories,
                             );
-                            const withSelected = withCategories.map(
-                                (datum) => ({
-                                    ...datum,
-                                    selected: 1,
-                                    tecTempId: uuid(),
-                                    currency: currencies[0],
-                                }),
-                            );
+                            const withPresets = withCategories.map((datum) => ({
+                                ...datum,
+                                selected: 1,
+                                deleted: 0,
+                                tecTempId: uuid(),
+                                currency: currencies[0],
+                            }));
                             dispatch(writeHeaders(headers));
-                            dispatch(tecWriteTransactions(withSelected));
+                            dispatch(tecWriteTransactions(withPresets));
                             dispatch(setLoading(false));
                         }
                     };
@@ -107,6 +110,9 @@ const Upload = () => {
     return (
         <Fragment>
             <DropZone onSuccess={handleChange} />
+            <Button onClick={() => setModalOpen(true)}>
+                {t('Transaction.enterTransactionsManually')}
+            </Button>
             <TransactionEditContext.Provider value={{ state, dispatch }}>
                 <TransactionEdit
                     open={modalOpen}

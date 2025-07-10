@@ -1,5 +1,6 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuid } from 'uuid';
 
 export interface ITECTransaction {
     [key: string]: string | number | null;
@@ -16,18 +17,22 @@ export interface TransactionEditState {
 }
 
 const TransactionEditActionTypes = {
+    addRow: 'addRow',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
+    deleteAll: 'deleteAll',
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
     setLoading: 'setLoading',
+    tecWriteTransactions: 'tecWriteTransactions',
+    toggleDeleted: 'toggleDeleted',
     toggleSideBarOpen: 'toggleSideBarOpen',
     uncheckAll: 'uncheckAll',
+    unDeleteAll: 'unDeleteAll',
     updateDescription: 'updateDescription',
     updateCategory: 'updateCategory',
     updateNumericValue: 'updateNumericValue',
     writeHeaders: 'writeHeaders',
-    tecWriteTransactions: 'tecWriteTransactions',
 };
 
 export const transactionEditInitialState: TransactionEditState = {
@@ -49,6 +54,7 @@ export const transactionEditInitialState: TransactionEditState = {
 
 export type TAccessorKey =
     | 'selected'
+    | 'deleted'
     | 'date'
     | 'description'
     | 'debit'
@@ -98,6 +104,10 @@ export const defaultColumns: IColumnDef[] = [
         header: 'Category',
         accessorKey: 'assignedCategory',
     },
+    {
+        header: 'Delete',
+        accessorKey: 'deleted',
+    },
 ];
 
 const initialValue: {
@@ -113,6 +123,24 @@ export const transactionEditReducer = (
     action: PayloadAction<any>,
 ) => {
     switch (action.type) {
+        case TransactionEditActionTypes.addRow:
+            return {
+                ...state,
+                transactions: [
+                    {
+                        ballance: 0,
+                        categoryId: null,
+                        date: new Date().toString(),
+                        description: '',
+                        transactionType: 'DEB',
+                        selected: 1,
+                        deleted: 0,
+                        tecTempId: uuid(),
+                        currency: action.payload.currency,
+                    },
+                    ...state.transactions,
+                ],
+            };
         case TransactionEditActionTypes.changeSelected:
             return {
                 ...state,
@@ -127,7 +155,15 @@ export const transactionEditReducer = (
                 ...state,
                 transactions: state.transactions.map((transaction) => ({
                     ...transaction,
-                    selected: true,
+                    selected: 1,
+                })),
+            };
+        case TransactionEditActionTypes.deleteAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    deleted: 1,
                 })),
             };
         case TransactionEditActionTypes.setColumnMap:
@@ -145,6 +181,15 @@ export const transactionEditReducer = (
                 ...state,
                 mode: action?.payload?.mode,
             };
+        case TransactionEditActionTypes.toggleDeleted:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) =>
+                    transaction.tecTempId === action.payload.uid
+                        ? { ...transaction, deleted: !transaction.deleted }
+                        : transaction,
+                ),
+            };
         case TransactionEditActionTypes.toggleSideBarOpen:
             return {
                 ...state,
@@ -159,7 +204,15 @@ export const transactionEditReducer = (
                 ...state,
                 transactions: state.transactions.map((transaction) => ({
                     ...transaction,
-                    selected: false,
+                    selected: 0,
+                })),
+            };
+        case TransactionEditActionTypes.unDeleteAll:
+            return {
+                ...state,
+                transactions: state.transactions.map((transaction) => ({
+                    ...transaction,
+                    deleted: 0,
                 })),
             };
         case TransactionEditActionTypes.updateDescription:
@@ -215,6 +268,11 @@ export const transactionEditReducer = (
     }
 };
 
+export const addRow = (currency: string) => ({
+    type: TransactionEditActionTypes.addRow,
+    payload: { currency },
+});
+
 export const changeSingleSelected = (uid: string, selected: boolean) => ({
     type: TransactionEditActionTypes.changeSelected,
     payload: { uid, selected },
@@ -222,6 +280,11 @@ export const changeSingleSelected = (uid: string, selected: boolean) => ({
 
 export const checkAll = () => ({
     type: TransactionEditActionTypes.checkAll,
+    payload: {},
+});
+
+export const deleteAll = () => ({
+    type: TransactionEditActionTypes.deleteAll,
     payload: {},
 });
 
@@ -240,6 +303,11 @@ export const setMode = (mode: TransactionEditState['mode']) => ({
     payload: { mode },
 });
 
+export const toggleDeleted = (uid: string) => ({
+    type: TransactionEditActionTypes.toggleDeleted,
+    payload: { uid },
+});
+
 export const toggleSideBar = (
     open?: TransactionEditState['sideBarOpen'],
     match?: string,
@@ -250,6 +318,11 @@ export const toggleSideBar = (
 
 export const uncheckAll = () => ({
     type: TransactionEditActionTypes.uncheckAll,
+    payload: {},
+});
+
+export const unDeleteAll = () => ({
+    type: TransactionEditActionTypes.unDeleteAll,
     payload: {},
 });
 
