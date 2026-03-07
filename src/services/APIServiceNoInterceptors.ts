@@ -27,9 +27,11 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The list of created Transactions.
      */
     createManyTransactions: async (transactions: Partial<ITransaction>[]) => {
-        const response: IStandardResponse<{
-            createdTransactions: ITransaction[];
-        }> = await blankRequest.post(`/transaction/create-many`, {
+        const response = await blankRequest.post<
+            IStandardResponse<{
+                createdTransactions: ITransaction[];
+            }>
+        >(`/transaction/create-many`, {
             transactions,
         });
         return response;
@@ -42,9 +44,11 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The list of updated Transactions.
      */
     updateManyTransactions: async (transactions: Partial<ITransaction>[]) => {
-        const response: IStandardResponse<{
-            updatedTransactions: ITransaction[];
-        }> = await blankRequest.put(`/transaction/update-many`, {
+        const response = await blankRequest.put<
+            IStandardResponse<{
+                updatedTransactions: ITransaction[];
+            }>
+        >(`/transaction/update-many`, {
             transactions,
         });
         return response;
@@ -59,8 +63,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The created Category.
      */
     createCategory: async (category: Partial<ICategory>) => {
-        const response: IStandardResponse<{ category: ICategory }> =
-            await blankRequest.post(`/category`, category);
+        const response = await blankRequest.post<
+            IStandardResponse<{ category: ICategory }>
+        >(`/category`, category);
         return response;
     },
     /**
@@ -71,8 +76,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The Category ID confirming the delete.
      */
     deleteSingleCategory: async (categoryId: ICategory['id']) => {
-        const response: IStandardResponse<{ deleted: number }> =
-            await blankRequest.delete(`/category/${categoryId}`);
+        const response = await blankRequest.delete<
+            IStandardResponse<{ deleted: number }>
+        >(`/category/${categoryId}`);
         return response;
     },
     /**
@@ -83,8 +89,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The updated Category.
      */
     updateCategory: async (category: Partial<ICategory>) => {
-        const response: IStandardResponse<{ category: ICategory }> =
-            await blankRequest.put(`/category/${category.id}`, category);
+        const response = await blankRequest.put<
+            IStandardResponse<{ category: ICategory }>
+        >(`/category/${category.id}`, category);
         return response;
     },
 
@@ -101,8 +108,9 @@ const APIServiceNoInterceptors = Object.freeze({
         matcher: Partial<IMatcher>,
         categoryId: ICategory['id'],
     ) => {
-        const response: IStandardResponse<{ matcher: IMatcher }> =
-            await blankRequest.post(`/matcher/`, { ...matcher, categoryId });
+        const response = await blankRequest.post<
+            IStandardResponse<{ matcher: IMatcher }>
+        >(`/matcher/`, { ...matcher, categoryId });
         return response;
     },
     /**
@@ -113,8 +121,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The ID of the Matcher, confirming the delete.
      */
     deleteSingleMatcher: async (matcherId: string) => {
-        const response: IStandardResponse<{ deleted: number }> =
-            await blankRequest.delete(`/matcher/${matcherId}`);
+        const response = await blankRequest.delete<
+            IStandardResponse<{ deleted: number }>
+        >(`/matcher/${matcherId}`);
         return response;
     },
     /**
@@ -129,8 +138,9 @@ const APIServiceNoInterceptors = Object.freeze({
         matcher: Partial<IMatcher>,
         matcherId: IMatcher['id'],
     ) => {
-        const response: IStandardResponse<{ matcher: IMatcher }> =
-            await blankRequest.put(`/matcher/${matcherId}`, matcher);
+        const response = await blankRequest.put<
+            IStandardResponse<{ matcher: IMatcher }>
+        >(`/matcher/${matcherId}`, matcher);
         return response;
     },
 
@@ -143,8 +153,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The created Budget.
      */
     createSingleBudget: async (budget: IBudget) => {
-        const response: IStandardResponse<{ budget: IBudget }> =
-            await blankRequest.post(`/budget`, budget);
+        const response = await blankRequest.post<
+            IStandardResponse<{ budget: IBudget }>
+        >(`/budget`, budget);
         return response;
     },
     /**
@@ -155,7 +166,7 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The ID of the budget, confirming the delete.
      */
     deleteSingleBudget: async (budgetId: string) => {
-        const response: IStandardResponse<null> = await blankRequest.delete(
+        const response = await blankRequest.delete<IStandardResponse<null>>(
             `/budget/${budgetId}`,
         );
         return response;
@@ -169,8 +180,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The updated Budget.
      */
     updateSingleBudget: async (budget: IBudget, budgetId: string) => {
-        const response: IStandardResponse<{ budget: IBudget }> =
-            await blankRequest.put(`/budget/${budgetId}`, budget);
+        const response = await blankRequest.put<
+            IStandardResponse<{ budget: IBudget }>
+        >(`/budget/${budgetId}`, budget);
         return response;
     },
 
@@ -183,8 +195,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The created Card.
      */
     createSingleCard: async (card: ICard) => {
-        const response: IStandardResponse<{ card: ICard }> =
-            await blankRequest.post(`/card`, card);
+        const response = await blankRequest.post<
+            IStandardResponse<{ card: ICard }>
+        >(`/card`, card);
         return response;
     },
     /**
@@ -195,7 +208,7 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The ID of the card, confirming the delete.
      */
     deleteSingleCard: async (cardId: string) => {
-        const response: IStandardResponse<null> = await blankRequest.delete(
+        const response = await blankRequest.delete<IStandardResponse<null>>(
             `/card/${cardId}`,
         );
         return response;
@@ -209,8 +222,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The updated Card.
      */
     updateSingleCard: async (card: ICard, cardId: string) => {
-        const response: IStandardResponse<{ card: ICard }> =
-            await blankRequest.put(`/card/${cardId}`, card);
+        const response = await blankRequest.put<
+            IStandardResponse<{ card: ICard }>
+        >(`/card/${cardId}`, card);
         return response;
     },
 
@@ -222,8 +236,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The updated scenario.
      */
     createSingleScenario: async (scenario: IScenario) => {
-        const response: IStandardResponse<{ scenario: IScenario }> =
-            await blankRequest.post('/scenario', scenario);
+        const response = await blankRequest.post<
+            IStandardResponse<{ scenario: IScenario }>
+        >('/scenario', scenario);
         return response;
     },
     /**
@@ -232,7 +247,7 @@ const APIServiceNoInterceptors = Object.freeze({
      * Does not include a re-authentication catch on failed requests.
      */
     deleteSingleScenario: async (scenarioId: string) => {
-        const response: IStandardResponse<{}> = await blankRequest.delete(
+        const response = await blankRequest.delete<IStandardResponse<{}>>(
             `/scenario/${scenarioId}`,
         );
         return response;
@@ -244,8 +259,9 @@ const APIServiceNoInterceptors = Object.freeze({
      * @returns The updated scenario.
      */
     updateSingleScenario: async (scenarioId: string, scenario: IScenario) => {
-        const response: IStandardResponse<{ scenario: IScenario }> =
-            await blankRequest.put(`/scenario/${scenarioId}`, scenario);
+        const response = await blankRequest.put<
+            IStandardResponse<{ scenario: IScenario }>
+        >(`/scenario/${scenarioId}`, scenario);
         return response;
     },
 });
