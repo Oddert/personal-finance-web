@@ -71,25 +71,27 @@ const ExportTransactions: FC<IProps> = ({
     const categoriesById = useAppSelector(getCategoryOrderedDataById);
 
     useEffect(() => {
-        const getCount = async () => {
-            try {
-                const res = await APIService.getTransactionCount(
-                    startDate.valueOf(),
-                    endDate.valueOf(),
-                    activeCardId,
-                );
+        if (activeCardId) {
+            const getCount = async () => {
+                try {
+                    const res = await APIService.getTransactionCount(
+                        startDate.valueOf(),
+                        endDate.valueOf(),
+                        activeCardId,
+                    );
 
-                if (
-                    res?.payload?.count &&
-                    typeof res?.payload?.count === 'number'
-                ) {
-                    setPreviewCount(res.payload.count);
+                    if (
+                        res?.payload?.count &&
+                        typeof res?.payload?.count === 'number'
+                    ) {
+                        setPreviewCount(res.payload.count);
+                    }
+                } catch (error: any) {
+                    dispatch(intakeError(error));
                 }
-            } catch (error: any) {
-                dispatch(intakeError(error));
-            }
-        };
-        getCount();
+            };
+            getCount();
+        }
     }, [activeCardId, endDate, startDate]);
 
     const handleClickExport = () => {
