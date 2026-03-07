@@ -326,7 +326,7 @@ export const unDeleteAll = () => ({
     payload: {},
 });
 
-export const updateCategory = (uid: string, assignedCategory: number) => ({
+export const updateCategory = (uid: string, assignedCategory: string) => ({
     type: TransactionEditActionTypes.updateCategory,
     payload: { uid, assignedCategory },
 });
