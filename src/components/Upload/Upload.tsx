@@ -28,6 +28,7 @@ import { checkAuth } from '../../redux/thunks/authThunks';
 
 import TransactionEdit from '../TransactionEdit';
 import DropZone from '../DropZone';
+import { refreshCategories } from '../../redux/thunks/categoryThunks';
 
 /**
  * Allows the user to upload new transactions.
@@ -43,6 +44,8 @@ const Upload = () => {
         transactionEditInitialState,
     );
 
+    const appDispatch = useAppDispatch();
+
     const { t } = useTranslation();
 
     const categories = useSelector(getCategoryResponse);
@@ -50,8 +53,13 @@ const Upload = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
 
+    useEffect(() => {
+        appDispatch(refreshCategories(t));
+    }, [appDispatch, t]);
+
     const handleChange = useCallback(
         (files: File[] | null) => {
+            console.log('categories', categories);
             dispatch(setLoading(true));
             if (files) {
                 const transactions: { [key: string]: string | number }[] = [];
@@ -90,7 +98,7 @@ const Upload = () => {
                 setModalOpen(true);
             }
         },
-        [categories, currencies],
+        [categories, currencies, dispatch],
     );
 
     useEffect(() => {
