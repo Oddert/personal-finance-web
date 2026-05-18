@@ -38,14 +38,12 @@ import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
-import DynamicCardList from '../../components/DynamicCardList';
-
 import DeleteScenario from './components/DeleteScenario';
-import TransactorRow from './components/TransactorRow';
 
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
 import { TAggregateDatapoints } from '../../types/Transaction.d';
 import ProjectionLineChart from '../../modules/ProjectionLineChart';
+import TransactorTable from './components/TransactorTable/TransactorTable';
 
 const emptyScenario = () => ({
     id: uuid(),
@@ -241,37 +239,31 @@ const EditScenario: FC<IProps> = () => {
                     value={scenario.description}
                 />
                 <ProjectionLineChart />
-                <DynamicCardList layout='list'>
-                    {transactors.map((datum) => (
-                        <TransactorRow
-                            key={datum.id}
-                            setTransactors={setTransactors}
-                            transactor={datum}
-                            transactors={transactors}
-                        />
-                    ))}
-                    <Button
-                        onClick={() =>
-                            setTransactors([
-                                ...transactors,
-                                {
-                                    createdOn: '',
-                                    description: '',
-                                    id: uuid(),
-                                    isAddition: true,
-                                    scenarioId: '',
-                                    schedulers: [],
-                                    updatedOn: '',
-                                    value: 0,
-                                    staged: true,
-                                    deleted: false,
-                                } as ITransactorRowEditable,
-                            ])
-                        }
-                    >
-                        <IconPlus /> {t('buttons.addBudgetRow')}
-                    </Button>
-                </DynamicCardList>
+                <TransactorTable
+                    setTransactors={setTransactors}
+                    transactors={transactors}
+                />
+                <Button
+                    onClick={() =>
+                        setTransactors([
+                            ...transactors,
+                            {
+                                createdOn: '',
+                                description: '',
+                                id: uuid(),
+                                isAddition: true,
+                                scenarioId: '',
+                                schedulers: [],
+                                updatedOn: '',
+                                value: 0,
+                                staged: true,
+                                deleted: false,
+                            } as ITransactorRowEditable,
+                        ])
+                    }
+                >
+                    <IconPlus /> {t('buttons.addBudgetRow')}
+                </Button>
                 <Button
                     onClick={handleClickSave}
                     sx={{
