@@ -50,6 +50,7 @@ const SchedulerRow: FC<IProps> = ({
                     });
                 }
             }}
+            size='small'
             type='number'
             value={scheduler.day}
         />
@@ -64,6 +65,7 @@ const SchedulerRow: FC<IProps> = ({
                     nthDay: Number(event.target.value),
                 })
             }
+            size='small'
             type='number'
             value={scheduler.nthDay}
         />
@@ -102,6 +104,7 @@ const SchedulerRow: FC<IProps> = ({
                     step: Number(event.target.value),
                 })
             }
+            size='small'
             type='number'
             value={scheduler.step}
         />

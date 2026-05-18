@@ -196,6 +196,7 @@ const TransactorRow: FC<IProps> = ({
                         disabled={transactor.deleted}
                         label={t('literals.Description')}
                         onChange={handleChangeDesc}
+                        size='small'
                         sx={{
                             '& * ': {
                                 textDecoration: transactor.deleted
@@ -209,6 +210,7 @@ const TransactorRow: FC<IProps> = ({
                         disabled={transactor.deleted}
                         label={t('literals.Amount')}
                         onChange={handleChangeValue}
+                        size='small'
                         sx={{
                             '& * ': {
                                 textDecoration: transactor.deleted
@@ -221,6 +223,7 @@ const TransactorRow: FC<IProps> = ({
                     />
                     <Select
                         onChange={handleChangeIsAddition}
+                        size='small'
                         value={transactor.isAddition ? 'y' : 'n'}
                     >
                         <MenuItem value='y'>{t('literals.Add')}</MenuItem>

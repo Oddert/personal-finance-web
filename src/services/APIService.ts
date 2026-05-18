@@ -192,11 +192,14 @@ const APIService = Object.freeze({
      * The response is grouped by a date code (YYYY-MM) unless pivotOnCategory is set to true, in which case the response is grouped by category ID.
      * @returns Transactions within the date range.
      */
-    getAllTransactionsAggregated: async (pivotOnCategory?: boolean) => {
+    getAllTransactionsAggregated: async (
+        cardId: string,
+        pivotOnCategory?: boolean,
+    ) => {
         const response: IStandardResponse<{
             transactions: TAggregateDatapoints;
         }> = await request.get(
-            `/transaction/aggregated?pivot=${pivotOnCategory ? 'category' : 'time'}`,
+            `/transaction/aggregated?cardId=${cardId}&pivot=${pivotOnCategory ? 'category' : 'time'}`,
         );
         return response;
     },

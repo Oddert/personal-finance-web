@@ -45,6 +45,7 @@ import TransactorRow from './components/TransactorRow';
 
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
 import { TAggregateDatapoints } from '../../types/Transaction.d';
+import ProjectionLineChart from '../../modules/ProjectionLineChart';
 
 const emptyScenario = () => ({
     id: uuid(),
@@ -139,7 +140,7 @@ const EditScenario: FC<IProps> = () => {
                 const scenarioResponse =
                     await APIService.getSingleScenario(scenarioId);
                 const pastDataResponse =
-                    await APIService.getAllTransactionsAggregated();
+                    await APIService.getAllTransactionsAggregated(cardId ?? '');
                 if (
                     !scenarioResponse ||
                     !scenarioResponse.payload ||
@@ -189,7 +190,7 @@ const EditScenario: FC<IProps> = () => {
         } catch (error: any) {
             dispatch(intakeError(error));
         }
-    }, [t]);
+    }, [t, cardId]);
 
     console.log(pastData);
 
@@ -239,6 +240,7 @@ const EditScenario: FC<IProps> = () => {
                     }
                     value={scenario.description}
                 />
+                <ProjectionLineChart />
                 <DynamicCardList layout='list'>
                     {transactors.map((datum) => (
                         <TransactorRow
