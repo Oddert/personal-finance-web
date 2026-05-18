@@ -72,7 +72,8 @@ const EditScenario: FC<IProps> = () => {
         [],
     );
 
-    const [loading, setLoading] = useState(false);
+    const [scenarioLoading, setScenarioLoading] = useState(false);
+    const [pastDataLoading, setPastDataLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
 
     const cardId = useAppSelector(getActiveCardId);
@@ -109,12 +110,12 @@ const EditScenario: FC<IProps> = () => {
                 }
                 dispatch(addScenario({ scenario: response.payload.scenario }));
             }
-            setLoading(false);
+            setScenarioLoading(false);
             router.navigate(ROUTES.MANAGE_SCENARIOS);
         };
 
         try {
-            setLoading(true);
+            setScenarioLoading(true);
             dispatch(scenariosLoading());
             request();
         } catch (error1: any) {
@@ -122,11 +123,11 @@ const EditScenario: FC<IProps> = () => {
                 try {
                     dispatch(refreshAuthentication(request));
                 } catch (error2: any) {
-                    setLoading(false);
+                    setScenarioLoading(false);
                     dispatch(intakeError(error1));
                 }
             } else {
-                setLoading(false);
+                setScenarioLoading(false);
                 dispatch(intakeError(error1));
             }
         }
@@ -137,14 +138,7 @@ const EditScenario: FC<IProps> = () => {
             const fetchScenario = async (scenarioId: string) => {
                 const scenarioResponse =
                     await APIService.getSingleScenario(scenarioId);
-                const pastDataResponse =
-                    await APIService.getAllTransactionsAggregated(cardId ?? '');
-                if (
-                    !scenarioResponse ||
-                    !scenarioResponse.payload ||
-                    !pastDataResponse ||
-                    !pastDataResponse.payload
-                ) {
+                if (!scenarioResponse || !scenarioResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setScenario(scenarioResponse.payload.scenario);
@@ -157,8 +151,7 @@ const EditScenario: FC<IProps> = () => {
                         }),
                     ),
                 );
-                setPastData(pastDataResponse.payload.transactions);
-                setLoading(false);
+                setScenarioLoading(false);
             };
             if ('scenarioId' in params) {
                 fetchScenario(String(params.scenarioId));
@@ -182,15 +175,36 @@ const EditScenario: FC<IProps> = () => {
                     fetchScenario(String(templateId));
                     setIsEdit(false);
                 } else {
-                    setLoading(false);
+                    setScenarioLoading(false);
                 }
             }
         } catch (error: any) {
             dispatch(intakeError(error));
         }
+    }, [t]);
+
+    useEffect(() => {
+        try {
+            setPastDataLoading(true);
+            const fetchPastData = async () => {
+                const pastDataResponse =
+                    await APIService.getAllTransactionsAggregated(cardId ?? '');
+                if (!pastDataResponse || !pastDataResponse.payload) {
+                    throw new Error(t('modalMessages.noServerResponse'));
+                }
+                setPastData(pastDataResponse.payload.transactions);
+                setPastDataLoading(false);
+            };
+            fetchPastData();
+        } catch (error: any) {
+            dispatch(intakeError(error));
+            setPastDataLoading(false);
+        }
     }, [t, cardId]);
 
     console.log(pastData);
+
+    const loading = scenarioLoading || pastDataLoading;
 
     if (loading) {
         return (
