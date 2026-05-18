@@ -11,9 +11,9 @@ import { readCsv } from '../../utils/commonUtils';
 import { autoMatchCategories } from '../../utils/uploadUtils';
 
 import {
+    createTECReducer,
     transactionEditInitialState,
     TransactionEditContext,
-    transactionEditReducer,
     writeHeaders,
     setColumnMap,
     setLoading,
@@ -40,7 +40,7 @@ const Upload = () => {
     const reduxDispatch = useAppDispatch();
 
     const [state, dispatch] = useReducer(
-        transactionEditReducer,
+        createTECReducer(true),
         transactionEditInitialState,
     );
 
