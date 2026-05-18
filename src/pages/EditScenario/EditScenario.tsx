@@ -184,21 +184,25 @@ const EditScenario: FC<IProps> = () => {
     }, [t]);
 
     useEffect(() => {
-        try {
-            setPastDataLoading(true);
-            const fetchPastData = async () => {
-                const pastDataResponse =
-                    await APIService.getAllTransactionsAggregated(cardId ?? '');
-                if (!pastDataResponse || !pastDataResponse.payload) {
-                    throw new Error(t('modalMessages.noServerResponse'));
-                }
-                setPastData(pastDataResponse.payload.transactions);
+        if (cardId?.length) {
+            try {
+                setPastDataLoading(true);
+                const fetchPastData = async () => {
+                    const pastDataResponse =
+                        await APIService.getAllTransactionsAggregated(
+                            cardId ?? '',
+                        );
+                    if (!pastDataResponse || !pastDataResponse.payload) {
+                        throw new Error(t('modalMessages.noServerResponse'));
+                    }
+                    setPastData(pastDataResponse.payload.transactions);
+                    setPastDataLoading(false);
+                };
+                fetchPastData();
+            } catch (error: any) {
+                dispatch(intakeError(error));
                 setPastDataLoading(false);
-            };
-            fetchPastData();
-        } catch (error: any) {
-            dispatch(intakeError(error));
-            setPastDataLoading(false);
+            }
         }
     }, [t, cardId]);
 

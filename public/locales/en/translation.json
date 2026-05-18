@@ -68,7 +68,9 @@
         "Open": "Open",
         "Options": "Options",
         "Out": "Out",
+        "Repeat": "Repeat",
         "Scenario": "Scenario",
+        "Step": "Step",
         "Subtract": "Subtract",
         "Title": "Title",
         "to": "to",
@@ -346,7 +348,8 @@
             "labelDay": "Day",
             "labelNthDay": "Every nth day (optional)",
             "labelStep": "Step",
-            "numberOfSchedulers": "number of schedulers"
+            "numberOfSchedulers": "number of schedulers",
+            "schedulerType": "Scheduler type"
         },
         "templateScenarioLabel": "Template scenario"
     },

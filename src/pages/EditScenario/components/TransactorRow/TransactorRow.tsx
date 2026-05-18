@@ -6,11 +6,13 @@ import {
     Button,
     Collapse,
     IconButton,
-    List,
     MenuItem,
     Select,
     SelectChangeEvent,
+    Table,
+    TableBody,
     TableCell,
+    TableHead,
     TableRow,
     TextField,
     Tooltip,
@@ -269,29 +271,52 @@ const TransactorRow: FC<IProps> = ({
                     )}
                 </TableCell>
             </TableRow>
-            <Collapse in={expanded} unmountOnExit>
-                <TableRow>
-                    <TableCell colSpan={6}>
-                        <List>
-                            {transactor.schedulers.map((scheduler, idx) => (
-                                <SchedulerRow
-                                    handleClickDeleteScheduler={handleClickDeleteScheduler(
-                                        scheduler.id,
-                                    )}
-                                    handleChangeScheduler={handleChangeScheduler(
-                                        scheduler.id,
-                                    )}
-                                    key={idx}
-                                    scheduler={scheduler}
-                                />
-                            ))}
-                            <Button onClick={handleClickAddScheduler}>
-                                <IconCreate /> {t('Scenario.addSchedule')}
-                            </Button>
-                        </List>
-                    </TableCell>
-                </TableRow>
-            </Collapse>
+            <TableRow>
+                <TableCell
+                    colSpan={6}
+                    sx={{ py: 0, px: 8, borderBottom: 'none' }}
+                >
+                    <Collapse in={expanded} unmountOnExit>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        {t('Scenario.Scheduler.schedulerType')}
+                                    </TableCell>
+                                    <TableCell>
+                                        {t('literals.Options')}
+                                    </TableCell>
+                                    <TableCell>{t('buttons.Delete')}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {transactor.schedulers.map((scheduler, idx) => (
+                                    <SchedulerRow
+                                        handleClickDeleteScheduler={handleClickDeleteScheduler(
+                                            scheduler.id,
+                                        )}
+                                        handleChangeScheduler={handleChangeScheduler(
+                                            scheduler.id,
+                                        )}
+                                        key={idx}
+                                        scheduler={scheduler}
+                                    />
+                                ))}
+                                <TableRow>
+                                    <TableCell colSpan={6} align='center'>
+                                        <Button
+                                            onClick={handleClickAddScheduler}
+                                        >
+                                            <IconCreate />{' '}
+                                            {t('Scenario.addSchedule')}
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
         </Fragment>
     );
 };
