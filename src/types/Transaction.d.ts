@@ -31,3 +31,13 @@ export type TTransactionKeys =
     | 'debit'
     | 'description'
     | 'transactionType';
+
+export interface IAggregateDatapoint {
+    categoryId: string;
+    month: Date;
+    totalCredit: number;
+    totalDebit: number;
+    categoryName: string;
+}
+
+export type TAggregateDatapoints = Record<string, IAggregateDatapoint[]>;

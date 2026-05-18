@@ -44,6 +44,7 @@ import DeleteScenario from './components/DeleteScenario';
 import TransactorRow from './components/TransactorRow';
 
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
+import { TAggregateDatapoints } from '../../types/Transaction.d';
 
 const emptyScenario = () => ({
     id: uuid(),
@@ -66,6 +67,7 @@ const emptyScenario = () => ({
  * @component
  */
 const EditScenario: FC<IProps> = () => {
+    const [pastData, setPastData] = useState<TAggregateDatapoints>({});
     const [scenario, setScenario] = useState<IScenario>(emptyScenario());
     const [transactors, setTransactors] = useState<ITransactorRowEditable[]>(
         [],
@@ -134,18 +136,29 @@ const EditScenario: FC<IProps> = () => {
     useEffect(() => {
         try {
             const fetchScenario = async (scenarioId: string) => {
-                const response = await APIService.getSingleScenario(scenarioId);
-                if (!response || !response.payload) {
+                const scenarioResponse =
+                    await APIService.getSingleScenario(scenarioId);
+                const pastDataResponse =
+                    await APIService.getAllTransactionsAggregated();
+                if (
+                    !scenarioResponse ||
+                    !scenarioResponse.payload ||
+                    !pastDataResponse ||
+                    !pastDataResponse.payload
+                ) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
-                setScenario(response.payload.scenario);
+                setScenario(scenarioResponse.payload.scenario);
                 setTransactors(
-                    response.payload.scenario.transactors.map((transactor) => ({
-                        ...transactor,
-                        staged: false,
-                        deleted: false,
-                    })),
+                    scenarioResponse.payload.scenario.transactors.map(
+                        (transactor) => ({
+                            ...transactor,
+                            staged: false,
+                            deleted: false,
+                        }),
+                    ),
                 );
+                setPastData(pastDataResponse.payload.transactions);
                 setLoading(false);
             };
             if ('scenarioId' in params) {
@@ -177,6 +190,8 @@ const EditScenario: FC<IProps> = () => {
             dispatch(intakeError(error));
         }
     }, [t]);
+
+    console.log(pastData);
 
     if (loading) {
         return (
