@@ -1,9 +1,11 @@
 import { createContext, Dispatch } from 'react';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
+import { setToLocalStore } from '../common/localstore';
+import { PERSONAL_FINANCE_UPLOAD_RECOVERY } from '../constants/appConstants';
 
 export interface ITECTransaction {
-    [key: string]: string | number | null;
+    [key: string]: string | number | boolean | null;
 }
 
 export interface TransactionEditState {
@@ -21,6 +23,7 @@ const TransactionEditActionTypes = {
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
     deleteAll: 'deleteAll',
+    restoreState: 'restoreState',
     setColumnMap: 'setColumnMap',
     setMode: 'setMode',
     setLoading: 'setLoading',
@@ -110,6 +113,10 @@ export const defaultColumns: IColumnDef[] = [
     },
 ];
 
+export const updateLocalStoreTEC = (state: TransactionEditState) => {
+    setToLocalStore(PERSONAL_FINANCE_UPLOAD_RECOVERY, JSON.stringify(state));
+};
+
 const initialValue: {
     state: TransactionEditState;
     dispatch: Dispatch<{ payload: any; type: string }>;
@@ -118,154 +125,241 @@ const initialValue: {
     dispatch: () => {},
 };
 
-export const transactionEditReducer = (
-    state: TransactionEditState,
-    action: PayloadAction<any>,
-) => {
-    switch (action.type) {
-        case TransactionEditActionTypes.addRow:
-            return {
-                ...state,
-                transactions: [
-                    {
-                        ballance: 0,
-                        categoryId: null,
-                        date: new Date().toString(),
-                        description: '',
-                        transactionType: 'DEB',
-                        selected: 1,
-                        deleted: 0,
-                        tecTempId: uuid(),
-                        currency: action.payload.currency,
-                    },
-                    ...state.transactions,
-                ],
-            };
-        case TransactionEditActionTypes.changeSelected:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) =>
-                    transaction.tecTempId === action.payload.uid
-                        ? { ...transaction, selected: action.payload.selected }
-                        : transaction,
-                ),
-            };
-        case TransactionEditActionTypes.checkAll:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) => ({
-                    ...transaction,
-                    selected: 1,
-                })),
-            };
-        case TransactionEditActionTypes.deleteAll:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) => ({
-                    ...transaction,
-                    deleted: 1,
-                })),
-            };
-        case TransactionEditActionTypes.setColumnMap:
-            return {
-                ...state,
-                columnMap: action?.payload?.columnMap,
-            };
-        case TransactionEditActionTypes.setLoading:
-            return {
-                ...state,
-                loading: action?.payload?.loading,
-            };
-        case TransactionEditActionTypes.setMode:
-            return {
-                ...state,
-                mode: action?.payload?.mode,
-            };
-        case TransactionEditActionTypes.toggleDeleted:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) =>
-                    transaction.tecTempId === action.payload.uid
-                        ? { ...transaction, deleted: !transaction.deleted }
-                        : transaction,
-                ),
-            };
-        case TransactionEditActionTypes.toggleSideBarOpen:
-            return {
-                ...state,
-                sideBarOpen:
-                    action?.payload?.open === 'undefined'
-                        ? !state.sideBarOpen
-                        : action?.payload?.open,
-                match: action?.payload?.match,
-            };
-        case TransactionEditActionTypes.uncheckAll:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) => ({
-                    ...transaction,
-                    selected: 0,
-                })),
-            };
-        case TransactionEditActionTypes.unDeleteAll:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) => ({
-                    ...transaction,
-                    deleted: 0,
-                })),
-            };
-        case TransactionEditActionTypes.updateDescription:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) =>
-                    transaction.tecTempId === action.payload.uid
-                        ? {
-                              ...transaction,
-                              [state.columnMap.description]:
-                                  action.payload.description,
-                          }
-                        : transaction,
-                ),
-            };
-        case TransactionEditActionTypes.updateCategory:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) =>
-                    transaction.tecTempId === action.payload.uid
-                        ? {
-                              ...transaction,
-                              assignedCategory: action.payload.assignedCategory,
-                          }
-                        : transaction,
-                ),
-            };
-        case TransactionEditActionTypes.updateNumericValue:
-            return {
-                ...state,
-                transactions: state.transactions.map((transaction) =>
-                    transaction.tecTempId === action.payload.uid
-                        ? {
-                              ...transaction,
-                              [state.columnMap[action.payload.field]]:
-                                  action.payload.value,
-                          }
-                        : transaction,
-                ),
-            };
-        case TransactionEditActionTypes.writeHeaders:
-            return {
-                ...state,
-                headers: action?.payload?.headers,
-            };
-        case TransactionEditActionTypes.tecWriteTransactions:
-            return {
-                ...state,
-                transactions: action?.payload?.transactions,
-            };
-        default:
-            return state;
-    }
+export const createTECReducer = (uploadMode: boolean = false) => {
+    const transactionEditReducer = (
+        state: TransactionEditState,
+        action: PayloadAction<any>,
+    ) => {
+        const generateNextState = (): [TransactionEditState, boolean] => {
+            switch (action.type) {
+                case TransactionEditActionTypes.addRow:
+                    return [
+                        {
+                            ...state,
+                            transactions: [
+                                {
+                                    ballance: 0,
+                                    categoryId: null,
+                                    date: new Date().toString(),
+                                    description: '',
+                                    transactionType: 'DEB',
+                                    selected: 1,
+                                    deleted: 0,
+                                    tecTempId: uuid(),
+                                    currency: action.payload.currency,
+                                },
+                                ...state.transactions,
+                            ],
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.changeSelected:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) =>
+                                    transaction.tecTempId === action.payload.uid
+                                        ? {
+                                              ...transaction,
+                                              selected: action.payload.selected,
+                                          }
+                                        : transaction,
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.checkAll:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => ({
+                                    ...transaction,
+                                    selected: 1,
+                                }),
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.deleteAll:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => ({
+                                    ...transaction,
+                                    deleted: 1,
+                                }),
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.restoreState:
+                    return [{ ...state, ...action?.payload?.state }, false];
+                case TransactionEditActionTypes.setColumnMap:
+                    return [
+                        {
+                            ...state,
+                            columnMap: action?.payload?.columnMap,
+                        },
+                        false,
+                    ];
+                case TransactionEditActionTypes.setLoading:
+                    return [
+                        {
+                            ...state,
+                            loading: action?.payload?.loading,
+                        },
+                        false,
+                    ];
+                case TransactionEditActionTypes.setMode:
+                    return [
+                        {
+                            ...state,
+                            mode: action?.payload?.mode,
+                        },
+                        false,
+                    ];
+                case TransactionEditActionTypes.toggleDeleted:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => {
+                                    if (
+                                        transaction.tecTempId ===
+                                        action.payload.uid
+                                    ) {
+                                        return {
+                                            ...transaction,
+                                            deleted: !transaction.deleted,
+                                        };
+                                    }
+                                    return transaction;
+                                },
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.toggleSideBarOpen:
+                    return [
+                        {
+                            ...state,
+                            sideBarOpen:
+                                action?.payload?.open === 'undefined'
+                                    ? !state.sideBarOpen
+                                    : action?.payload?.open,
+                            match: action?.payload?.match,
+                        },
+                        false,
+                    ];
+                case TransactionEditActionTypes.uncheckAll:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => ({
+                                    ...transaction,
+                                    selected: 0,
+                                }),
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.unDeleteAll:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => ({
+                                    ...transaction,
+                                    deleted: 0,
+                                }),
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.updateDescription:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) =>
+                                    transaction.tecTempId === action.payload.uid
+                                        ? {
+                                              ...transaction,
+                                              [state.columnMap.description]:
+                                                  action.payload.description,
+                                          }
+                                        : transaction,
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.updateCategory:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) =>
+                                    transaction.tecTempId === action.payload.uid
+                                        ? {
+                                              ...transaction,
+                                              assignedCategory:
+                                                  action.payload
+                                                      .assignedCategory,
+                                          }
+                                        : transaction,
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.updateNumericValue:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) =>
+                                    transaction.tecTempId === action.payload.uid
+                                        ? {
+                                              ...transaction,
+                                              [state.columnMap[
+                                                  action.payload.field
+                                              ]]: action.payload.value,
+                                          }
+                                        : transaction,
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.writeHeaders:
+                    return [
+                        {
+                            ...state,
+                            headers: action?.payload?.headers,
+                        },
+                        false,
+                    ];
+                case TransactionEditActionTypes.tecWriteTransactions:
+                    return [
+                        {
+                            ...state,
+                            transactions: action?.payload?.transactions,
+                        },
+                        true,
+                    ];
+                default:
+                    return [state, false];
+            }
+        };
+        const nextState = generateNextState();
+        if (uploadMode && nextState[1]) {
+            updateLocalStoreTEC(nextState[0]);
+        }
+        return nextState[0];
+    };
+    return transactionEditReducer;
 };
 
 export const addRow = (currency: string) => ({
@@ -286,6 +380,11 @@ export const checkAll = () => ({
 export const deleteAll = () => ({
     type: TransactionEditActionTypes.deleteAll,
     payload: {},
+});
+
+export const restoreState = (state: Partial<TransactionEditState>) => ({
+    type: TransactionEditActionTypes.restoreState,
+    payload: { state },
 });
 
 export const setColumnMap = (columnMap: TransactionEditState['columnMap']) => ({
