@@ -5,7 +5,7 @@ import { setToLocalStore } from '../common/localstore';
 import { PERSONAL_FINANCE_UPLOAD_RECOVERY } from '../constants/appConstants';
 
 export interface ITECTransaction {
-    [key: string]: string | number | boolean | null;
+    [key: string]: string | number | null;
 }
 
 export interface TransactionEditState {
@@ -233,7 +233,9 @@ export const createTECReducer = (uploadMode: boolean = false) => {
                                     ) {
                                         return {
                                             ...transaction,
-                                            deleted: !transaction.deleted,
+                                            deleted: String(
+                                                !Boolean(transaction.deleted),
+                                            ),
                                         };
                                     }
                                     return transaction;
