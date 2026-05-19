@@ -145,7 +145,6 @@ const SchedulerRow: FC<IProps> = ({
                     onChange={(event: SelectChangeEvent<TSchedulerCode>) =>
                         handleChangeScheduler({
                             ...scheduler,
-                            // @ts-expect-error For some reason TSchedulerCode not being picked up here
                             schedulerCode: event.target.value,
                         })
                     }

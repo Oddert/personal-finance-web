@@ -41,6 +41,9 @@ export const chart1BaseOptions = (
         curve: 'smooth',
         width: 2,
     },
+    tooltip: {
+        shared: true,
+    },
     // tooltip: {
     //     custom: ({ series, seriesIndex, dataPointIndex, w }) => {
     //         const datum = w.globals.initialSeries[seriesIndex].data[dataPointIndex]

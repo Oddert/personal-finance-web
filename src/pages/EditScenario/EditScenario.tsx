@@ -8,12 +8,17 @@ import {
     Button,
     CircularProgress,
     TextField,
+    ToggleButton,
+    ToggleButtonGroup,
     Typography,
 } from '@mui/material';
 import {
     Add as IconPlus,
     ArrowBack as IconArrowLeft,
     Save as IconSave,
+    WebAssetOff as IconPreviewOff,
+    ShowChart as IconPreviewTotal,
+    SsidChart as IconPreviewCategory,
 } from '@mui/icons-material';
 
 import { IScenario } from '../../types/Scenario.types';
@@ -41,9 +46,9 @@ import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 import DeleteScenario from './components/DeleteScenario';
 
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
-import { TAggregateDatapoints } from '../../types/Transaction.d';
-import ProjectionLineChart from '../../modules/ProjectionLineChart';
 import TransactorTable from './components/TransactorTable/TransactorTable';
+import { ffBlankTransactorRowEditable } from '../../utils/factoryFunctions';
+import ProjectionChart from './components/ProjectionChart';
 
 const emptyScenario = () => ({
     id: uuid(),
@@ -59,6 +64,8 @@ const emptyScenario = () => ({
     transactors: [],
 });
 
+type TPreviewMode = 'off' | 'total' | 'category';
+
 /**
  * Displays a page to edit or create a new Scenario.
  * @category Pages
@@ -66,15 +73,14 @@ const emptyScenario = () => ({
  * @component
  */
 const EditScenario: FC<IProps> = () => {
-    const [pastData, setPastData] = useState<TAggregateDatapoints>({});
     const [scenario, setScenario] = useState<IScenario>(emptyScenario());
     const [transactors, setTransactors] = useState<ITransactorRowEditable[]>(
         [],
     );
 
     const [scenarioLoading, setScenarioLoading] = useState(false);
-    const [pastDataLoading, setPastDataLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [previewMode, setPreviewMode] = useState<TPreviewMode>('off');
 
     const cardId = useAppSelector(getActiveCardId);
 
@@ -183,32 +189,7 @@ const EditScenario: FC<IProps> = () => {
         }
     }, [t]);
 
-    useEffect(() => {
-        if (cardId?.length) {
-            try {
-                setPastDataLoading(true);
-                const fetchPastData = async () => {
-                    const pastDataResponse =
-                        await APIService.getAllTransactionsAggregated(
-                            cardId ?? '',
-                        );
-                    if (!pastDataResponse || !pastDataResponse.payload) {
-                        throw new Error(t('modalMessages.noServerResponse'));
-                    }
-                    setPastData(pastDataResponse.payload.transactions);
-                    setPastDataLoading(false);
-                };
-                fetchPastData();
-            } catch (error: any) {
-                dispatch(intakeError(error));
-                setPastDataLoading(false);
-            }
-        }
-    }, [t, cardId]);
-
-    console.log(pastData);
-
-    const loading = scenarioLoading || pastDataLoading;
+    const loading = scenarioLoading;
 
     if (loading) {
         return (
@@ -256,7 +237,29 @@ const EditScenario: FC<IProps> = () => {
                     }
                     value={scenario.description}
                 />
-                <ProjectionLineChart />
+                <Typography component='label' htmlFor='preview-control'>
+                    Preview mode
+                </Typography>
+                <ToggleButtonGroup
+                    exclusive
+                    id='preview-control'
+                    onChange={(_, value) => {
+                        setPreviewMode(value as TPreviewMode);
+                    }}
+                    size='small'
+                    value={previewMode}
+                >
+                    <ToggleButton key='off' value='off'>
+                        <IconPreviewOff /> off
+                    </ToggleButton>
+                    <ToggleButton key='total' value='total'>
+                        <IconPreviewTotal /> total value
+                    </ToggleButton>
+                    <ToggleButton key='category' value='category'>
+                        <IconPreviewCategory /> value by category
+                    </ToggleButton>
+                </ToggleButtonGroup>
+                <ProjectionChart />
                 <TransactorTable
                     setTransactors={setTransactors}
                     transactors={transactors}
@@ -265,18 +268,7 @@ const EditScenario: FC<IProps> = () => {
                     onClick={() =>
                         setTransactors([
                             ...transactors,
-                            {
-                                createdOn: '',
-                                description: '',
-                                id: uuid(),
-                                isAddition: true,
-                                scenarioId: '',
-                                schedulers: [],
-                                updatedOn: '',
-                                value: 0,
-                                staged: true,
-                                deleted: false,
-                            } as ITransactorRowEditable,
+                            ffBlankTransactorRowEditable(),
                         ])
                     }
                 >
@@ -284,6 +276,7 @@ const EditScenario: FC<IProps> = () => {
                 </Button>
                 <Button
                     onClick={handleClickSave}
+                    startIcon={<IconSave />}
                     sx={{
                         position: 'fixed',
                         right: '16px',
@@ -291,7 +284,6 @@ const EditScenario: FC<IProps> = () => {
                     }}
                     variant='contained'
                 >
-                    <IconSave />{' '}
                     {isEdit
                         ? t('buttons.saveChanges')
                         : t('buttons.createNewScenario')}
