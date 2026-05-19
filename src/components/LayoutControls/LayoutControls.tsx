@@ -48,7 +48,9 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                         <Radio
                             checkedIcon={<IconLayoutStandard />}
                             icon={<IconLayoutStandard />}
-                            inputProps={{ 'aria-label': t('Standard layout') }}
+                            slotProps={{
+                                input: { 'aria-label': t('Standard layout') },
+                            }}
                         />
                     }
                     value='standard'
@@ -58,7 +60,9 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                         <Radio
                             checkedIcon={<IconLayoutCompact />}
                             icon={<IconLayoutCompact />}
-                            inputProps={{ 'aria-label': t('Compact layout') }}
+                            slotProps={{
+                                input: { 'aria-label': t('Compact layout') },
+                            }}
                         />
                     }
                     label=''
@@ -69,7 +73,9 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                         <Radio
                             checkedIcon={<IconLayoutList />}
                             icon={<IconLayoutList />}
-                            inputProps={{ 'aria-label': t('List layout') }}
+                            slotProps={{
+                                input: { 'aria-label': t('List layout') },
+                            }}
                         />
                     }
                     label=''

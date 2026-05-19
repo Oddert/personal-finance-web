@@ -80,11 +80,13 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
             <Menu
                 id='hamburger-menu'
                 anchorEl={anchorEl}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }}
                 onClose={handleClose}
                 open={open}
+                slotProps={{
+                    list: {
+                        'aria-labelledby': 'basic-button',
+                    },
+                }}
             >
                 <MenuItem onClick={handleDeleteOptionClick}>
                     {t('buttons.Delete')}

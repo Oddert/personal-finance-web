@@ -157,7 +157,7 @@ const UserDetails: FC = () => {
                     alignItems: 'center',
                 }}
             >
-                <Typography component='h4' textAlign='left' variant='body1'>
+                <Typography component='h4' align='left' variant='body1'>
                     {t('Profile.name')}
                 </Typography>
                 <Box sx={{ display: 'flex', gridGap: 16 }}>
