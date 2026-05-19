@@ -1,14 +1,13 @@
-import { FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
+import { useTranslation } from 'react-i18next';
 
 import { Box } from '@mui/material';
 
+import type { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
 import type { IBudgetDatum } from '../../types/Budget.types';
 
 import useLocalisedNumber from '../../hooks/useLocalisedNumber';
-
-import type { IProps, ISeriesDatum } from './BudgetPercentageChart.types';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Vertical bar chart showing positive and negative discrepancies for a list of budget spend items.
@@ -83,7 +82,11 @@ const BudgetPercentageChart: FC<IProps> = ({
                             show: false,
                         },
                         events: {
-                            dataPointSelection: (event, chartContext, opts) => {
+                            dataPointSelection: (
+                                _event,
+                                _chartContext,
+                                opts,
+                            ) => {
                                 if (dataPointCallback && opts) {
                                     dataPointCallback(
                                         categoryIdsOrdered[opts.dataPointIndex],
@@ -133,7 +136,7 @@ const BudgetPercentageChart: FC<IProps> = ({
                                     const budgetDatum =
                                         seriesRef[opts.dataPointIndex];
                                     return `
-                                        <p>${t('Discrepancy pc')}: ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
+                                        <p>${t('Discrepancy pc')}: ${value >= 0 ? `+${String(value)}%` : `${String(value)}%`}</p>
                                         <p>${t('Discrepancy val')}: ${budgetDatum.diffFloat < 0 ? `-${currencyLocaliser(Math.abs(budgetDatum.diffFloat))}` : `+${currencyLocaliser(budgetDatum.diffFloat)}`}</p>
                                         <p>${t('literals.Expected')}: ${currencyLocaliser(budgetDatum.budget)}</p>
                                         <p>${t('literals.Actual')}: ${currencyLocaliser(budgetDatum.spend)}</p>

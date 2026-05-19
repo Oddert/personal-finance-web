@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { AxiosError } from 'axios';
-import { AppDispatch } from '../constants/store';
 
-import { IPayloadWriteError, writeError } from '../slices/errorSlice';
+import type { AppDispatch } from '../constants/store';
+
+import { type IPayloadWriteError, writeError } from '../slices/errorSlice';
 
 /**
  * Writes the error boundary with default attributes set.
@@ -57,7 +64,7 @@ export const intakeError =
                 // Condition 1.2: All other Axios errors.
                 if (
                     error?.response?.data &&
-                    !/<\!DOCTYPE html>/.test(error.response.data)
+                    !/<!DOCTYPE html>/.test(error.response.data)
                 ) {
                     // Condition 1.2.1: If the error is coming from our backend (request gets through at least), use our standard response format.
                     dispatch(

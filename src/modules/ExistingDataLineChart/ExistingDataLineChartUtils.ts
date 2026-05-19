@@ -1,4 +1,4 @@
-import { ApexOptions } from 'apexcharts';
+import type { ApexOptions } from 'apexcharts';
 
 export const chart1BaseOptions = (language: string): ApexOptions => ({
     chart: {
@@ -38,11 +38,13 @@ export const chart1BaseOptions = (language: string): ApexOptions => ({
                 colors: '#fff',
             },
             formatter: (number) => {
-                if (number === null || isNaN(number)) {
+                if (isNaN(number)) {
                     return String(number);
                 }
                 const str = number.toString().split('.');
                 if (str[0].length >= 4) {
+                    // WARNING: unsafe regexp requires review
+                    // eslint-disable-next-line security/detect-unsafe-regex
                     str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
                 }
                 if (str[1] && str[1].length >= 4) {

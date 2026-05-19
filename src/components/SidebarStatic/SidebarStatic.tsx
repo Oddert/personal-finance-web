@@ -1,14 +1,15 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { IconButton, useTheme } from '@mui/material';
 import {
     ChevronLeft as IconChevronLeft,
     ChevronRight as IconChevronRight,
 } from '@mui/icons-material';
+import { IconButton, useTheme } from '@mui/material';
+
+import type { IProps } from './SidebarStatic.types';
 
 import SidebarOptions from '../SidebarOptions';
 
-import type { IProps } from './SidebarStatic.types';
 import { Drawer, DrawerHeader } from './SidebarStatic.styles';
 
 const placeholderPermOpen = false;
@@ -23,17 +24,13 @@ const placeholderPermOpen = false;
  * @param props.onClose Callback function invoked when the component requests to close.
  * @param props.open If true, the drawer is open.
  */
-const SidebarStatic: FC<IProps> = ({
-    onClose = () => {},
-    onOpen = () => {},
-    onToggle = () => {},
-    open = false,
-}) => {
+const SidebarStatic: FC<IProps> = ({ onClose, onOpen, onToggle, open }) => {
     const theme = useTheme();
 
     return (
         <Drawer onClose={onClose} open={open} variant='permanent'>
             <DrawerHeader>
+                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                 {placeholderPermOpen ? null : (
                     <IconButton
                         color='inherit'

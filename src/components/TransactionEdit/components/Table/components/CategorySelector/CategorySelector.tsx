@@ -1,19 +1,16 @@
-import { FC, useContext, useMemo } from 'react';
+import { type FC, useContext, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
 import { Circle as IconDot } from '@mui/icons-material';
+import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
 
-import type { ICategory } from '../../../../../../types/Category.d';
-
-import { getCategoryOrderedDataById } from '../../../../../../redux/selectors/categorySelectors';
+import type { IProps } from './CategorySelector.types';
 
 import {
     TransactionEditContext,
     updateCategory,
 } from '../../../../../../contexts/transactionEditContext';
-
-import { IProps } from './CategorySelector.types';
+import { getCategoryOrderedDataById } from '../../../../../../redux/selectors/categorySelectors';
 
 const marginTopBottom = '4px';
 
@@ -24,9 +21,9 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
 
     const value = useMemo(() => {
         return transaction.assignedCategory
-            ? categories[transaction.assignedCategory]
+            ? transaction.assignedCategory in categories
                 ? {
-                      id: String(categories[transaction.assignedCategory].id),
+                      id: categories[transaction.assignedCategory].id,
                       label: categories[transaction.assignedCategory].label,
                   }
                 : null
@@ -35,12 +32,10 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
 
     const options = useMemo(
         () =>
-            Object.entries(categories as { [id: string]: ICategory }).map(
-                ([id, category]) => ({
-                    id,
-                    label: category.label,
-                }),
-            ),
+            Object.entries(categories).map(([id, category]) => ({
+                id,
+                label: category.label,
+            })),
         [categories],
     );
 
@@ -56,7 +51,7 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
                     autoHighlight
                     disablePortal
                     isOptionEqualToValue={(option) => option.id === value?.id}
-                    onChange={(event, category) => {
+                    onChange={(_, category) => {
                         if (!category) {
                             return;
                         }

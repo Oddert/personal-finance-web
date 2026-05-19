@@ -1,6 +1,11 @@
-import { FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+    KeyboardArrowDown as IconDown,
+    KeyboardArrowUp as IconUp,
+    Paid as IconCurrency,
+} from '@mui/icons-material';
 import {
     Accordion,
     AccordionDetails,
@@ -14,27 +19,19 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import {
-    Paid as IconCurrency,
-    KeyboardArrowDown as IconDown,
-    KeyboardArrowUp as IconUp,
-} from '@mui/icons-material';
 
-import {
-    reorderCurrencies,
-    updateCurrencyPreferences,
-} from '../../../../redux/thunks/profileThunks';
+import type { IProps } from './CurrencySelector.types';
 
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
-import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
-
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
-import { IProps } from './CurrencySelector.types';
+import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
+import {
+    reorderCurrencies,
+    updateCurrencyPreferences,
+} from '../../../../redux/thunks/profileThunks';
 
 /**
  * Presents controls for the user to select their preferred languages and priority order.
@@ -53,7 +50,6 @@ const LanguageSelector: FC<IProps> = () => {
 
     const currencies: string[][] = useMemo(
         () =>
-            // @ts-ignore
             Intl.supportedValuesOf('currency').map((currencyCode) => [
                 currencyCode,
                 currencyLocaliser(3.14, currencyCode),
@@ -90,7 +86,7 @@ const LanguageSelector: FC<IProps> = () => {
                     })
                 }
                 getOptionKey={(option) => option[0]}
-                onChange={(event, nextValue) => {
+                onChange={(_, nextValue) => {
                     if (nextValue) {
                         dispatch(
                             updateCurrencyPreferences([
@@ -115,22 +111,22 @@ const LanguageSelector: FC<IProps> = () => {
                                 <Box>
                                     <Button
                                         disabled={idx === 0}
-                                        onClick={() =>
+                                        onClick={() => {
                                             dispatch(
                                                 reorderCurrencies(idx, idx - 1),
-                                            )
-                                        }
+                                            );
+                                        }}
                                         title={t('Move up in sort order')}
                                     >
                                         <IconUp />
                                     </Button>
                                     <Button
                                         disabled={idx === currencies.length - 1}
-                                        onClick={() =>
+                                        onClick={() => {
                                             dispatch(
                                                 reorderCurrencies(idx, idx + 1),
-                                            )
-                                        }
+                                            );
+                                        }}
                                         title={t('Move down in sort order')}
                                     >
                                         <IconDown />

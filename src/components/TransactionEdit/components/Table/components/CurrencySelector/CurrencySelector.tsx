@@ -1,14 +1,13 @@
-import { FC, useContext, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { type FC, useContext, useMemo } from 'react';
 
 import { Autocomplete, Box, TableCell, TextField } from '@mui/material';
 
+import type { IProps } from './CurrencySelector.types';
+
 import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
-
-import { getUserCurrencies } from '../../../../../../redux/selectors/profileSelectors';
-
 import { useAppSelector } from '../../../../../../hooks/ReduxHookWrappers';
-
-import { IProps } from './CurrencySelector.types';
+import { getUserCurrencies } from '../../../../../../redux/selectors/profileSelectors';
 
 const marginTopBottom = '4px';
 
@@ -28,7 +27,6 @@ const CurrencySelector: FC<IProps> = ({ transaction }) => {
     const allOptionsOrdered = useMemo(
         () => [
             ...currencies,
-            // @ts-ignore
             ...Intl.supportedValuesOf('currency').filter(
                 (intlCurrency: string) => !currencies.includes(intlCurrency),
             ),
@@ -68,8 +66,8 @@ const CurrencySelector: FC<IProps> = ({ transaction }) => {
                         },
                     }}
                     value={
-                        (transaction[columnMap.currency] as string) ||
-                        (transaction?.currency as string) ||
+                        (transaction[columnMap.currency] as string) ??
+                        (transaction.currency as string) ??
                         null
                     }
                 />

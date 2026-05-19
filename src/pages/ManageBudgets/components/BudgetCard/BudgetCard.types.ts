@@ -1,4 +1,4 @@
-import { IBudget } from '../../../../types/Budget.types';
+import type { IBudget } from '../../../../types/Budget.types';
 
 export interface IProps {
     budget: IBudget;

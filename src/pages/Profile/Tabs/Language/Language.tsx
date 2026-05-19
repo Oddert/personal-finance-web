@@ -1,22 +1,19 @@
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Divider, Paper, Tooltip, Typography } from '@mui/material';
 import {
     Info as IconInfo,
     SignLanguage as IconLanguage,
     Translate as IconTranslate,
 } from '@mui/icons-material';
-
-import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
+import { Box, Divider, Paper, Tooltip, Typography } from '@mui/material';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
+import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
 import CurrencySelector from '../../components/CurrencySelector';
 import LanguageSelector from '../../components/LanguageSelector';
 import SystemLanguage from '../../components/SystemLanguage';
-
-import { FC } from 'react';
 
 /**
  * Presents the user with language, currency, and other localisation settings.

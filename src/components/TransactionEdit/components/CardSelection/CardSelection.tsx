@@ -1,22 +1,20 @@
-import { FC, SyntheticEvent } from 'react';
+import type { FC, SyntheticEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Autocomplete, Box, FormControlLabel, TextField } from '@mui/material';
 
-import { ICard } from '../../../../types/Card.types';
-
-import {
-    getActiveCard,
-    getCardResponse,
-} from '../../../../redux/selectors/cardSelectors';
-import { setActiveCard } from '../../../../redux/slices/cardSlice';
+import type { IProps } from './CardSelection.types';
+import type { ICard } from '../../../../types/Card.types';
 
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
-import { IProps } from './CardSelection.types';
+import {
+    getActiveCard,
+    getCardResponse,
+} from '../../../../redux/selectors/cardSelectors';
+import { setActiveCard } from '../../../../redux/slices/cardSlice';
 
 const CardSelection: FC<IProps> = () => {
     const { t } = useTranslation();
@@ -25,7 +23,7 @@ const CardSelection: FC<IProps> = () => {
     const cards = useAppSelector(getCardResponse);
     const activeCard = useAppSelector(getActiveCard);
 
-    const handleChange = (event: SyntheticEvent, card: ICard | null) => {
+    const handleChange = (_: SyntheticEvent, card: ICard | null) => {
         if (card) {
             dispatch(setActiveCard({ card }));
         }

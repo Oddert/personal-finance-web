@@ -1,6 +1,5 @@
-import { ChangeEvent, FC, Fragment, useState } from 'react';
+import { type ChangeEvent, type FC, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFormik } from 'formik';
 
 import {
     Button,
@@ -11,19 +10,17 @@ import {
     Typography,
 } from '@mui/material';
 
-import APIService from '../../../../services/APIService';
+import { useFormik } from 'formik';
+
+import type { IProps } from './ModalEmail.types';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
 import { handleAuthResponse } from '../../../../redux/thunks/authThunks';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
-
+import APIService from '../../../../services/APIService';
 import { emailValidator } from '../../../../utils/signupUtils';
-
-import SubmitButton from '../../../Login/components/SubmitButton';
 import { Form, TextField } from '../../../Login/Login.styles';
-
-import { IProps } from './ModalEmail.types';
+import SubmitButton from '../../../Login/components/SubmitButton';
 
 /**
  * Presents the user with a form to change their email / username login.
@@ -52,7 +49,7 @@ const ModalEmail: FC<IProps> = () => {
             email: '',
         },
         validate: (nextValues) => {
-            let errorsFound: boolean = false;
+            let errorsFound = false;
             const nextErrors: {
                 email: string;
             } = {
@@ -76,10 +73,13 @@ const ModalEmail: FC<IProps> = () => {
             try {
                 APIService.changeEmail(nextValues.email)
                     .then((response) => {
+                        // @ts-expect-error refactor later
                         dispatch(handleAuthResponse(response));
                         formikBag.setSubmitting(false);
                     })
-                    .catch((err) => console.error(err));
+                    .catch((err: unknown) => {
+                        console.error(err);
+                    });
             } catch (error) {
                 dispatch(intakeError(error));
                 formikBag.setSubmitting(false);
@@ -107,13 +107,20 @@ const ModalEmail: FC<IProps> = () => {
     return (
         <Fragment>
             <Button
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    setOpen(!open);
+                }}
                 size='large'
                 variant='contained'
             >
                 {t('auth.changeEmail')}
             </Button>
-            <Dialog onClose={() => setOpen(false)} open={open}>
+            <Dialog
+                onClose={() => {
+                    setOpen(false);
+                }}
+                open={open}
+            >
                 <DialogTitle>{t('auth.changeEmailTitle')}</DialogTitle>
                 <DialogContent>
                     <Form>
@@ -139,7 +146,9 @@ const ModalEmail: FC<IProps> = () => {
                     </Button>
                     <SubmitButton
                         loading={isSubmitting}
-                        onSubmit={() => handleSubmit()}
+                        onSubmit={() => {
+                            handleSubmit();
+                        }}
                         submitDisabled={isSubmitting}
                         success={false}
                         text={t('auth.changeEmail')}

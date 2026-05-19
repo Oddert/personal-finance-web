@@ -1,17 +1,16 @@
-import { FC, useContext } from 'react';
+import { type FC, useContext } from 'react';
 
 import { TableCell, TableRow } from '@mui/material';
 
-import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
+import type { IProps } from './Row.types';
 
+import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
 import CategorySelector from '../CategorySelector';
 import CurrencySelector from '../CurrencySelector';
 import DeleteOption from '../DeleteOption/DeleteOption';
 import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
-
-import { IProps } from './Row.types';
 
 /**
  * Displays a single table row.
@@ -34,7 +33,7 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
         },
         columnIdx: number,
     ) => {
-        const key = idx + '_' + columnIdx;
+        const key = `${String(idx)}_${String(columnIdx)}`;
         switch (column.accessorKey) {
             case columnMap.description:
                 return (

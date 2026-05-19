@@ -1,6 +1,6 @@
-import { BreakpointsOptions } from '@mui/material/styles/';
+import type { ThemeOptions } from '@mui/material';
 
-const breakpoints: BreakpointsOptions = {
+const breakpoints: ThemeOptions['breakpoints'] = {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],
     values: {
         xs: 0,

@@ -1,20 +1,19 @@
 import { useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { Box, Container, Paper, Typography } from '@mui/material';
 
+import Upload from '../../components/Upload';
 import {
+    TransactionRange,
     initialState,
     transactionRangeReducer,
-    TransactionRange,
 } from '../../contexts/transactionRangeContext';
 
-import Upload from '../../components/Upload';
-
+import Edit from './components/Edit';
 import RangeControls from './components/RangeControls';
 import RequestControls from './components/RequestControls';
 import Table from './components/Table';
-
-import Edit from './components/Edit';
 
 /**
  * Page component to display transactions within a range and upload new transactions.

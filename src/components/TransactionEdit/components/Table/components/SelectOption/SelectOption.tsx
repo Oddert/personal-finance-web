@@ -1,13 +1,13 @@
-import { FC, useContext } from 'react';
+import { type FC, useContext } from 'react';
 
 import { Checkbox, TableCell } from '@mui/material';
 
-import {
-    changeSingleSelected,
-    TransactionEditContext,
-} from '../../../../../../contexts/transactionEditContext';
+import type { IProps } from './SelectOption.types';
 
-import { IProps } from './SelectOption.types';
+import {
+    TransactionEditContext,
+    changeSingleSelected,
+} from '../../../../../../contexts/transactionEditContext';
 
 /**
  * Renders the selected checkbox.
@@ -24,14 +24,14 @@ const SelectOption: FC<IProps> = ({ transaction }) => {
         <TableCell>
             <Checkbox
                 checked={Boolean(transaction.selected)}
-                onChange={(event) =>
+                onChange={(event) => {
                     dispatch(
                         changeSingleSelected(
                             transaction.tecTempId as string,
                             event.target.checked,
                         ),
-                    )
-                }
+                    );
+                }}
             />
         </TableCell>
     );

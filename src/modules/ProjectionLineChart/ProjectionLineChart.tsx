@@ -1,18 +1,17 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import {
-    ChangeEvent,
-    FC,
-    SyntheticEvent,
+    type ChangeEvent,
+    type FC,
+    type SyntheticEvent,
     useCallback,
     useEffect,
     useMemo,
     useState,
 } from 'react';
-import { useTranslation } from 'react-i18next';
 import Chart from 'react-apexcharts';
+import { useTranslation } from 'react-i18next';
 
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-
+import { ExpandMore as IconExpand } from '@mui/icons-material';
 import {
     Accordion,
     AccordionActions,
@@ -26,32 +25,31 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { ExpandMore as IconExpand } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { getFromLocalStore, setToLocalStore } from '../../common/localstore';
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
+import type { ITransaction } from '../../types/Transaction.d';
+
+import { getFromLocalStore, setToLocalStore } from '../../common/localstore';
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
+import { getScenarios } from '../../redux/selectors/scenarioSelectors';
+import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
 import {
-    normaliseDateStamp,
     ScheduleByDayOfWeek,
     ScheduleByEvent,
     ScheduleByScalarTime,
     ScheduleBySpecificDay,
+    normaliseDateStamp,
 } from '../../utils/schedulerUtils';
 
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
-import { getScenarios } from '../../redux/selectors/scenarioSelectors';
-import { getTransactionsOrderedByDate } from '../../redux/selectors/transactionsSelectors';
-
-import type { ITransaction } from '../../types/Transaction.d';
-
 import {
+    MODULE_PROJECTION_PAST_BALLANCE,
     chart1BaseOptions,
     defaultEnd,
     defaultStart,
-    MODULE_PROJECTION_PAST_BALLANCE,
 } from './ProjectionLineChartUtils';
 
 dayjs.extend(localizedFormat);
@@ -159,17 +157,17 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
                             case 'DAY_OF_WEEK':
                                 return new ScheduleByDayOfWeek(
                                     scheduler.day,
-                                    scheduler.nthDay || undefined,
+                                    scheduler.nthDay ?? undefined,
                                 );
                             case 'EVENT':
                                 return new ScheduleByEvent(
-                                    scheduler.startDate || new Date(),
+                                    scheduler.startDate ?? new Date(),
                                 );
                             case 'SCALAR':
                             default:
                                 return new ScheduleByScalarTime(
-                                    scheduler.step || 1,
-                                    scheduler.startDate || new Date(),
+                                    scheduler.step ?? 1,
+                                    scheduler.startDate ?? new Date(),
                                 );
                         }
                     }),
@@ -189,7 +187,7 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
     }, [parsedScenarios]);
 
     const handleScenarioSelection = (
-        event: SyntheticEvent<Element, Event>,
+        _: SyntheticEvent,
         value: {
             label: string;
             id: string;
@@ -220,7 +218,7 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
         if (previousStartBallance) {
             setStartingBallance(Number(previousStartBallance));
         }
-    }, []);
+    }, [scenarioOptions]);
 
     useEffect(() => {
         const monthSets = Object.values(transactions).reduce(
@@ -234,7 +232,7 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
             .slice(-3)
             .reduce((acc, monthSet) => [...acc, ...monthSet], []);
         const sampledDataObj = sampledData.reduce(
-            (acc: { [key: number]: { x: number; y: number } }, datum) => {
+            (acc: Record<number, { x: number; y: number }>, datum) => {
                 acc[datum.date] = {
                     x: datum.date,
                     y: datum.ballance,
@@ -260,13 +258,11 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
         const ranges = [];
 
         for (const scenario of activeScenarios) {
-            const actions: { [key: number]: ProjectionTransactionT[] } = {};
+            const actions: Record<number, ProjectionTransactionT[]> = {};
 
             for (const transactor of scenario.transactors) {
                 for (const scheduler of transactor.schedulers) {
                     const range = scheduler.getRange(startObj, endObj);
-                    if (scheduler instanceof ScheduleByEvent) {
-                    }
                     for (const date of range) {
                         // const date = new Date(d).toString()
                         if (!(date in actions)) {
@@ -277,15 +273,13 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
                             label: transactor.description,
                             annotation: transactor.annotation,
                         });
-                        if (scheduler instanceof ScheduleByEvent) {
-                        }
                     }
                 }
             }
             const length = Math.abs(
                 (startObj.getTime() - endObj.getTime()) / 86400000,
             );
-            let runningBallance = Number(startingBallance);
+            let runningBallance = startingBallance;
 
             const range = Array.from({ length }, (_, idx) => {
                 const localDate = new Date(startObj);
@@ -343,9 +337,9 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
                     control={
                         <Checkbox
                             name='show-historical'
-                            onChange={(evt) =>
-                                setShowHistorical(evt.target.checked)
-                            }
+                            onChange={(evt) => {
+                                setShowHistorical(evt.target.checked);
+                            }}
                             value={showHistorical}
                         />
                     }

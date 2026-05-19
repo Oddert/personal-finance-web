@@ -1,14 +1,13 @@
-import { FC } from 'react';
+/* eslint-disable no-console */
+import type { FC } from 'react';
 
 import { Box } from '@mui/material';
 
-import { getIsAuthenticated } from '../../redux/selectors/authSelectors';
+import type { IProps } from './Layout.types';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-
+import { getIsAuthenticated } from '../../redux/selectors/authSelectors';
 import Header from '../Header/Header';
-
-import { IProps } from './Layout.types';
 
 /**
  * Adds the nav bar and any other common attributes to a page.

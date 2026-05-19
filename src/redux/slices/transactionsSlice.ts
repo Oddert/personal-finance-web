@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction } from '@reduxjs/toolkit';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
@@ -18,14 +18,8 @@ export interface TransactionState {
     loading: boolean;
     loaded: boolean;
     orderedData: {
-        byDate: {
-            [year: string]: {
-                [month: number]: ITransaction[];
-            };
-        };
-        byCategory: {
-            [category: number]: ITransaction[];
-        };
+        byDate: Record<string, Record<number, ITransaction[]>>;
+        byCategory: Record<number, ITransaction[]>;
     };
     startDate: number;
     startDateReadable: string | null;

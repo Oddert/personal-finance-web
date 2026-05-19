@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IBudget } from '../../types/Budget.types';
+import type { IBudget } from '../../types/Budget.types';
 
 /**
  * Redux state key for 'budget'
@@ -77,7 +77,7 @@ export const budgetSlice = createSlice({
                 const foundActive = payload.budgets.find(
                     (budget) => budget.isDefault,
                 );
-                state.activeBudget = foundActive || payload.budgets[0];
+                state.activeBudget = foundActive ?? payload.budgets[0];
             }
         },
     },

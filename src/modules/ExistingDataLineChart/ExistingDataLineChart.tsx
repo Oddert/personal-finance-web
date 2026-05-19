@@ -1,11 +1,8 @@
-import { FC, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { type FC, useEffect, useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
-import { ApexOptions } from 'apexcharts';
+import { useTranslation } from 'react-i18next';
 
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-
+import { ExpandMore as IconExpand } from '@mui/icons-material';
 import {
     Accordion,
     AccordionActions,
@@ -15,14 +12,16 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import { ExpandMore as IconExpand } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
 import type { ITransaction } from '../../types/Transaction.d';
+import type { ApexOptions } from 'apexcharts';
 
-import useTransactions from '../../hooks/useTransactions';
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-
+import useTransactions from '../../hooks/useTransactions';
 import { getActiveLanguageCode } from '../../redux/selectors/profileSelectors';
 
 import {
@@ -115,6 +114,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 debitTransactions: [],
             },
         );
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setDebitMax(sorted.debitMax);
         setDebitTransactions(sorted.debitTransactions);
         setBallanceData(sorted.ballance);
@@ -123,6 +123,7 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
     }, [endDate, startDate, transactions]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setChart1Options(chart1BaseOptions(language));
         const chart2Default = chart2BaseOptions(language);
         setChart2Options({
@@ -132,11 +133,12 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 y: {
                     formatter: (val, opts) =>
                         opts
-                            ? `${debitTransactions[opts.dataPointIndex].description} : ${val}`
+                            ? `${debitTransactions[opts.dataPointIndex].description} : ${String(val)}`
                             : String(val),
                 },
             },
             yaxis: {
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
                 ...chart2Default.yaxis,
                 max: debitMax,
             },

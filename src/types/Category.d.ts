@@ -1,4 +1,4 @@
-import { IMatcher } from './Matcher.d';
+import type { IMatcher } from './Matcher.d';
 
 /**
  * A single Category definition.
@@ -32,6 +32,4 @@ export interface ICategoryBDValue {
  * Used on the category list component on Budget Breakdown.
  * @category Global Types
  */
-export interface ICategoryBreakdown {
-    [key: number | string]: ICategoryBDValue;
-}
+export type ICategoryBreakdown = Record<number | string, ICategoryBDValue>;

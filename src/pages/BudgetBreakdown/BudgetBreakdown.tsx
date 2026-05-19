@@ -1,44 +1,40 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, CircularProgress, Paper, Typography } from '@mui/material';
 
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
 import type { ICategoryBreakdown } from '../../types/Category.d';
-
-import {
-    createBudgetChartData,
-    createCategoryBreakdown,
-    DATE_FORMAT,
-    toBeginningMonthDayjs,
-    toEndMonthDayjs,
-} from '../../utils/budgetUtils';
-
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-import useTransactions from '../../hooks/useTransactions';
-
-import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-
-import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
-import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
-import { getTransactionsLoading } from '../../redux/selectors/transactionsSelectors';
 
 import ActiveBudget from '../../components/ActiveBudget';
 import ActiveCard from '../../components/ActiveCard/ActiveCard';
 import BudgetPageToggle from '../../components/BudgetPageToggle';
+import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import useTransactions from '../../hooks/useTransactions';
+import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
+import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
+import { getTransactionsLoading } from '../../redux/selectors/transactionsSelectors';
+import {
+    DATE_FORMAT,
+    createBudgetChartData,
+    createCategoryBreakdown,
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
+} from '../../utils/budgetUtils';
 
+import { ChartPaper } from './BudgetBreakdown.styles';
+import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
 import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import BudgetTable from './components/BudgetTable';
 import DateRange from './components/DateRange';
-import PercentageChart from './components/PercentageChart';
 import GlanceCards from './components/GlanceCards';
+import PercentageChart from './components/PercentageChart';
 import RadialChart from './components/RadialChart';
 import TimeChart from './components/TimeChart';
-
-import { formatNumMonths, formatReadableDate } from './BudgetBreakdownUtils';
-import { ChartPaper } from './BudgetBreakdown.styles';
 
 dayjs.extend(localizedFormat);
 
@@ -94,6 +90,7 @@ const BudgetBreakdown: FC = () => {
     }, [categoryBreakdown, monthBudget, numMonths]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setNumMonths(endDate.diff(startDate, 'month') + 1);
 
         const nextCategoryBreakdown = createCategoryBreakdown(
@@ -107,6 +104,7 @@ const BudgetBreakdown: FC = () => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setStartDate(toBeginningMonthDayjs(start));
             if (end) {
                 setEndDate(toEndMonthDayjs(end));
@@ -114,7 +112,7 @@ const BudgetBreakdown: FC = () => {
                 setEndDate(toEndMonthDayjs(start));
             }
         }
-    }, []);
+    }, [navigation]);
 
     if (transactionsLoading) {
         return (

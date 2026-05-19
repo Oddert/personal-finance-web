@@ -1,19 +1,20 @@
-import { FC, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { type FC, useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
+import { useTranslation } from 'react-i18next';
+
+import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+
 import ApexCharts from 'apexcharts';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import type { IProps } from './TimeChart.types';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 // import useContentWidth from '../../../../hooks/useContentWidth';
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 
-import type { IProps } from './TimeChart.types';
 import { generateTimeChartSeries } from './TimeChartUtils';
 
 const breakdownTimeChart = 'breakdown-time-chart';
@@ -54,6 +55,7 @@ const TimeChart: FC<IProps> = ({
 
     const handleClickToggle = () => {
         series.forEach((value) =>
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             ApexCharts.exec(breakdownTimeChart, 'toggleSeries', value.name),
         );
     };
@@ -64,9 +66,9 @@ const TimeChart: FC<IProps> = ({
                 control={
                     <Checkbox
                         checked={includeCredit}
-                        onChange={(event) =>
-                            setIncludeCredit(event.target.checked)
-                        }
+                        onChange={(event) => {
+                            setIncludeCredit(event.target.checked);
+                        }}
                     />
                 }
                 label={t('Budget.includeCreditLabel')}

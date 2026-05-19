@@ -1,5 +1,13 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { takeEvery } from 'redux-saga/effects';
 
+import categoryCreateSaga from '../sagas/categoryCreateSaga';
+import categoryDeleteSingleSaga from '../sagas/categoryDeleteSingleSaga';
+import categoryUpdateSingleSaga from '../sagas/categoryUpdateSingleSaga';
+import categoryWriteSaga from '../sagas/categoryWriteSaga';
+import matcherCreateSingleSaga from '../sagas/matcherCreateSingleSaga';
+import matcherDeleteSingleSaga from '../sagas/matcherDeleteSingleSaga';
+import transactionsWriteSaga from '../sagas/transactionsWriteSaga';
 import {
     initCreateCategory,
     initCreateSingleMatcher,
@@ -9,14 +17,6 @@ import {
     requestCategories,
 } from '../slices/categorySlice';
 import { requestTransactions } from '../slices/transactionsSlice';
-
-import categoryCreateSaga from '../sagas/categoryCreateSaga';
-import categoryDeleteSingleSaga from '../sagas/categoryDeleteSingleSaga';
-import categoryUpdateSingleSaga from '../sagas/categoryUpdateSingleSaga';
-import categoryWriteSaga from '../sagas/categoryWriteSaga';
-import matcherCreateSingleSaga from '../sagas/matcherCreateSingleSaga';
-import matcherDeleteSingleSaga from '../sagas/matcherDeleteSingleSaga';
-import transactionsWriteSaga from '../sagas/transactionsWriteSaga';
 
 export default function* rootSaga() {
     yield takeEvery(requestTransactions({}).type, transactionsWriteSaga);

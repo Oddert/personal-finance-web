@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
     Box,
     Button,
@@ -12,11 +13,10 @@ import {
 import type { SelectChangeEvent } from '@mui/material';
 
 import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../../constants/appConstants';
-
 import {
+    TransactionEditContext,
     defaultColumns,
     setColumnMap,
-    TransactionEditContext,
 } from '../../../../contexts/transactionEditContext';
 
 /**
@@ -34,22 +34,25 @@ const ColumnMapping = () => {
     } = useContext(TransactionEditContext);
 
     const [open, setOpen] = useState(false);
-    const [localColumnMap, setLocalColumnMap] = useState<{
-        [key: string]: string;
-    }>({});
+    const [localColumnMap, setLocalColumnMap] = useState<
+        Record<string, string>
+    >({});
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLocalColumnMap(columnMap);
     }, [columnMap]);
 
-    const handleChange = (event: SelectChangeEvent<string>) => {
+    const handleChange = (event: SelectChangeEvent) => {
         setLocalColumnMap({
             ...localColumnMap,
             [event.target.name]: event.target.value,
         });
     };
 
-    const handleClickOpen = () => setOpen(true);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
     const handleClickCancel = useCallback(() => {
         setLocalColumnMap(columnMap);

@@ -1,6 +1,7 @@
-import { FC, Fragment, MouseEvent, useState } from 'react';
+import { type FC, Fragment, type MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { MoreVert as IconDots } from '@mui/icons-material';
 import {
     Button,
     Dialog,
@@ -11,12 +12,11 @@ import {
     Menu,
     MenuItem,
 } from '@mui/material';
-import { MoreVert as IconDots } from '@mui/icons-material';
+
+import type { IProps } from './HamburgerMenu.types';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 import { categoryDeleteAction } from '../../../../redux/thunks/categoryThunks';
-
-import type { IProps } from './HamburgerMenu.types';
 
 /**
  * Additional Category actions including delete.
@@ -36,14 +36,18 @@ const HamburgerMenu: FC<IProps> = ({ category }) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => setAnchorEl(null);
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleDeleteOptionClick = () => {
         handleClose();
         setDeleteModalOpen(true);
     };
 
-    const handleDeleteModalClose = () => setDeleteModalOpen(false);
+    const handleDeleteModalClose = () => {
+        setDeleteModalOpen(false);
+    };
 
     const handleDelete = () => {
         handleClose();

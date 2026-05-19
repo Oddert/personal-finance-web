@@ -1,5 +1,12 @@
-import { ChangeEvent, FC, Fragment, useCallback, useState } from 'react';
+import {
+    type ChangeEvent,
+    type FC,
+    Fragment,
+    useCallback,
+    useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
     Button,
     Dialog,
@@ -12,14 +19,12 @@ import {
     TextField,
 } from '@mui/material';
 
-import { ICategory } from '../../types/Category.d';
+import type { IProps } from './CategoryAdd.types';
+import type { ICategory } from '../../types/Category.d';
 
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import { categoryCreateAction } from '../../redux/thunks/categoryThunks';
-
 import ColourEdit from '../ColourEdit';
-
-import type { IProps } from './CategoryAdd.types';
 
 /**
  * Dialog component to add a new category.
@@ -83,9 +88,7 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
         setColour('#bec3c7');
         setLabelError(false);
         setDescError(false);
-        if (handleClose) {
-            handleClose(payload);
-        }
+        handleClose(payload);
     }, [colour, description, dispatch, handleClose, label]);
 
     const handleReset = useCallback(() => {
@@ -95,18 +98,14 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
         setLabelError(false);
         setDescError(false);
         setSaveModalOpen(false);
-        if (handleClose) {
-            handleClose();
-        }
+        handleClose();
     }, [handleClose]);
 
     const handleConditionalClose = useCallback(() => {
-        if (label?.length || description?.length) {
+        if (label.length || description.length) {
             setSaveModalOpen(true);
         } else {
-            if (handleClose) {
-                handleClose(null);
-            }
+            handleClose(null);
         }
     }, [description, handleClose, label]);
 
@@ -219,7 +218,9 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
             </Dialog>
             <Dialog
                 open={saveModalOpen}
-                onClose={() => setSaveModalOpen(false)}
+                onClose={() => {
+                    setSaveModalOpen(false);
+                }}
                 aria-labelledby='alert-dialog-title'
                 aria-describedby='alert-dialog-description'
             >
@@ -237,7 +238,11 @@ const CategoryAdd: FC<IProps> = ({ handleClose, open }) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setSaveModalOpen(false)}>
+                    <Button
+                        onClick={() => {
+                            setSaveModalOpen(false);
+                        }}
+                    >
                         {t('buttons.keepEditing')}
                     </Button>
                     <Button autoFocus onClick={handleReset}>

@@ -1,6 +1,7 @@
-import { FC, Fragment, useState } from 'react';
+import { type FC, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Delete as IconDelete } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -10,19 +11,15 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import { Delete as IconDelete } from '@mui/icons-material';
-
-import router, { ROUTES } from '../../../../constants/routerConstants';
-
-import APIService from '../../../../services/APIService';
-
-import { intakeError } from '../../../../redux/thunks/errorThunks';
-import { deleteScenario } from '../../../../redux/slices/scenarioSlice';
-
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import type { IProps } from './DeleteScenario.types';
+
+import router, { ROUTES } from '../../../../constants/routerConstants';
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { deleteScenario } from '../../../../redux/slices/scenarioSlice';
 import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
+import APIService from '../../../../services/APIService';
 
 /**
  * Modal component to allow the user to delete an entire scenario.
@@ -46,10 +43,14 @@ const DeleteScenario: FC<IProps> = ({ scenario }) => {
 
         try {
             request();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error1: any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (error1.status === 401) {
                 try {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     dispatch(refreshAuthentication(request));
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
                 } catch (error2: any) {
                     dispatch(intakeError(error1));
                 }
@@ -64,7 +65,9 @@ const DeleteScenario: FC<IProps> = ({ scenario }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
                     color='error'
-                    onClick={() => setOpen(true)}
+                    onClick={() => {
+                        setOpen(true);
+                    }}
                     sx={{
                         mt: '64px',
                         maxWidth: '300px',
@@ -86,7 +89,12 @@ const DeleteScenario: FC<IProps> = ({ scenario }) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpen(false)} variant='contained'>
+                    <Button
+                        onClick={() => {
+                            setOpen(false);
+                        }}
+                        variant='contained'
+                    >
                         {t('buttons.Cancel')}
                     </Button>
                     <Button color='error' onClick={handleClickDelete}>

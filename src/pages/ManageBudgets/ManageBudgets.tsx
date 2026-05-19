@@ -1,27 +1,24 @@
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
 
+import type { IProps } from './ManageBudgets.types';
 import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
+import DynamicCardList from '../../components/DynamicCardList';
+import LayoutControls from '../../components/LayoutControls';
+import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 import {
     getBudgetLoading,
     getBudgetResponse,
 } from '../../redux/selectors/budgetSelectors';
 import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 
-import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import DynamicCardList from '../../components/DynamicCardList';
-import LayoutControls from '../../components/LayoutControls';
-
 import BudgetCard from './components/BudgetCard';
 import CreateBudgetButton from './components/CreateBudgetButton';
 import CreateBudgetCard from './components/CreateBudgetCard';
-
-import type { IProps } from './ManageBudgets.types';
 
 /**
  * Page component to display all budgets.
@@ -42,7 +39,7 @@ const ManageBudgets: FC<IProps> = () => {
     useEffect(() => {
         dispatch(refreshBudgets(t, true));
         // TODO: re-enable react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch, t]);
 
     if (loading) {
         return (

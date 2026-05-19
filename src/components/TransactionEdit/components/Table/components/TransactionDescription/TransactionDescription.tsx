@@ -1,5 +1,5 @@
 import {
-    FC,
+    type FC,
     Fragment,
     useCallback,
     useContext,
@@ -8,16 +8,16 @@ import {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button, TableCell, TextField } from '@mui/material';
 import { Edit as IconEdit } from '@mui/icons-material';
+import { Button, TableCell, TextField } from '@mui/material';
+
+import type { IProps } from './TransactionDescription.types';
 
 import {
-    toggleSideBar,
     TransactionEditContext,
+    toggleSideBar,
     updateDescription,
 } from '../../../../../../contexts/transactionEditContext';
-
-import { IProps } from './TransactionDescription.types';
 
 /**
  * Renders the description column as a button to activate the Category Quick Add and with edit capabilities.
@@ -37,6 +37,7 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
     const [internalValue, setInternalValue] = useState('');
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setInternalValue(transaction[columnMap.description] as string);
     }, [columnMap, transaction]);
 
@@ -66,9 +67,9 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                     <TextField
                         label={t('Transaction.transactionDescriptionLabel')}
                         name='description'
-                        onChange={(event) =>
-                            setInternalValue(event.target.value)
-                        }
+                        onChange={(event) => {
+                            setInternalValue(event.target.value);
+                        }}
                         value={internalValue}
                     />
                     <Button
@@ -100,7 +101,9 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
             ) : (
                 <Fragment>
                     <Button
-                        onClick={() => handleClickTitle(title)}
+                        onClick={() => {
+                            handleClickTitle(title);
+                        }}
                         title={t('Transaction.clickToAddMatcher')}
                         variant='text'
                     >
@@ -108,7 +111,9 @@ const TransactionDescription: FC<IProps> = ({ transaction }) => {
                     </Button>
                     <Button
                         className='transaction_description_edit'
-                        onClick={() => setEditOpen(true)}
+                        onClick={() => {
+                            setEditOpen(true);
+                        }}
                         title={t('Transaction.clickToEditDescription')}
                     >
                         <IconEdit />

@@ -1,7 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-deprecated */
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { ICategory } from '../../types/Category.d';
-import { IMatcher } from '../../types/Matcher.d';
+import type { ICategory } from '../../types/Category.d';
+import type { IMatcher } from '../../types/Matcher.d';
 
 /**
  * Redux state key for 'category'
@@ -13,8 +15,8 @@ export interface CategoryState {
     queried: boolean;
     response: ICategory[];
     orderedData: {
-        byId: { [id: string]: ICategory };
-        byLabel: { [label: string]: ICategory };
+        byId: Record<string, ICategory>;
+        byLabel: Record<string, ICategory>;
     };
 }
 
@@ -228,7 +230,7 @@ export const categorySlice = createSlice({
                 payload.category;
 
             state.response = state.response.map((category) => {
-                if (category.id === payload?.category.id) {
+                if (category.id === payload.category.id) {
                     return payload.category;
                 }
                 return category;

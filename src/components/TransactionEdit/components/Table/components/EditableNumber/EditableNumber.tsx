@@ -1,13 +1,13 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { type FC, useCallback, useContext, useEffect, useState } from 'react';
 
 import { Box, Button, TableCell, TextField } from '@mui/material';
+
+import type { IProps } from './EditableNumber.types';
 
 import {
     TransactionEditContext,
     updateNumericValue,
 } from '../../../../../../contexts/transactionEditContext';
-
-import { IProps } from './EditableNumber.types';
 
 /**
  * Generic editable field used for numeric columns.
@@ -26,7 +26,7 @@ const EditableNumber: FC<IProps> = ({ colMapKey, transaction }) => {
     const [open, setOpen] = useState(false);
     const [internalValue, setInternalValue] = useState('0');
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         dispatch(
             updateNumericValue(
                 transaction.tecTempId as string,
@@ -35,27 +35,33 @@ const EditableNumber: FC<IProps> = ({ colMapKey, transaction }) => {
             ),
         );
         setOpen(false);
-    };
+    }, [colMapKey, dispatch, internalValue, transaction.tecTempId]);
 
-    const handleEnter = (event: KeyboardEvent) => {
-        if (event.code === 'Enter') {
-            event.preventDefault();
-            handleClose();
-        }
-    };
+    const handleEnter = useCallback(
+        (event: KeyboardEvent) => {
+            if (event.code === 'Enter') {
+                event.preventDefault();
+                handleClose();
+            }
+        },
+        [handleClose],
+    );
 
     useEffect(() => {
         const value =
             colMapKey in columnMap
                 ? (transaction[columnMap[colMapKey]] as string)
                 : (transaction[colMapKey] as string);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setInternalValue(value);
     }, [columnMap, colMapKey, transaction]);
 
     useEffect(() => {
         document.addEventListener('keypress', handleEnter);
-        return () => document.removeEventListener('keypress', handleEnter);
-    }, []);
+        return () => {
+            document.removeEventListener('keypress', handleEnter);
+        };
+    }, [handleEnter]);
 
     return (
         <TableCell>
@@ -68,9 +74,9 @@ const EditableNumber: FC<IProps> = ({ colMapKey, transaction }) => {
                 {open ? (
                     <TextField
                         onBlur={handleClose}
-                        onChange={(event) =>
-                            setInternalValue(event.target.value)
-                        }
+                        onChange={(event) => {
+                            setInternalValue(event.target.value);
+                        }}
                         size='small'
                         sx={{ '& input': { width: '100px' } }}
                         type='number'
@@ -78,7 +84,9 @@ const EditableNumber: FC<IProps> = ({ colMapKey, transaction }) => {
                     />
                 ) : (
                     <Button
-                        onClick={() => setOpen(true)}
+                        onClick={() => {
+                            setOpen(true);
+                        }}
                         sx={{ textAlign: 'left' }}
                     >
                         {!internalValue || internalValue === '0'

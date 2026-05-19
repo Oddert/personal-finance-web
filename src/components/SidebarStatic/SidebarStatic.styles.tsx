@@ -1,4 +1,9 @@
-import { Drawer as MuiDrawer, styled, Theme, CSSObject } from '@mui/material';
+import {
+    type CSSObject,
+    Drawer as MuiDrawer,
+    type Theme,
+    styled,
+} from '@mui/material';
 
 import { headerDrawerOpenWidth } from '../../constants/appConstants';
 

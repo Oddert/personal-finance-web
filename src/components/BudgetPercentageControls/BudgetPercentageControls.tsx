@@ -1,6 +1,10 @@
-import { FC, useMemo, useState } from 'react';
+import { type FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+    ZoomIn as IconZoomPlus,
+    ZoomOut as IconZoomMinus,
+} from '@mui/icons-material';
 import {
     Box,
     Checkbox,
@@ -9,10 +13,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import {
-    ZoomIn as IconZoomPlus,
-    ZoomOut as IconZoomMinus,
-} from '@mui/icons-material';
 
 import type { IProps, IZoomLevel } from './BudgetPercentageControls.types';
 
@@ -100,7 +100,9 @@ const BudgetPercentageControls: FC<IProps> = ({
                 control={
                     <Checkbox
                         checked={useFloat}
-                        onClick={() => setUseFloat(!useFloat)}
+                        onClick={() => {
+                            setUseFloat(!useFloat);
+                        }}
                     />
                 }
                 label={t('budgetPercentageControls.useFloatLabel')}

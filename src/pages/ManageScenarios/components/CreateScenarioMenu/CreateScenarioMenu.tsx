@@ -1,6 +1,10 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { type FC, type SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+    CopyAll as FromCopyIcon,
+    NoteAdd as CreateFreshIcon,
+} from '@mui/icons-material';
 import {
     Autocomplete,
     Button,
@@ -15,23 +19,16 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import {
-    CopyAll as FromCopyIcon,
-    NoteAdd as CreateFreshIcon,
-} from '@mui/icons-material';
+
+import type { IProps } from './CreateScenarioMenu.types';
+import type { IScenario } from '../../../../types/Scenario.types';
 
 import router, {
     ROUTES,
     ROUTES_FACTORY,
 } from '../../../../constants/routerConstants';
-
-import { IScenario } from '../../../../types/Scenario.types';
-
-import { getScenarios } from '../../../../redux/selectors/scenarioSelectors';
-
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import type { IProps } from './CreateScenarioMenu.types';
+import { getScenarios } from '../../../../redux/selectors/scenarioSelectors';
 
 /**
  * Re-usable menu component to display options to create a new scenario (from blank or from template).
@@ -59,15 +56,13 @@ const CreateScenarioMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
         if (!dialogValue?.id) {
             setError(true);
         } else {
-            router.navigate(
-                ROUTES_FACTORY.CREATE_SCENARIO(String(dialogValue.id)),
-            );
+            router.navigate(ROUTES_FACTORY.CREATE_SCENARIO(dialogValue.id));
             handleClose();
         }
     };
 
     const handleChangeDialog = (
-        e: SyntheticEvent,
+        _: SyntheticEvent,
         nextValue: IScenario | null,
     ) => {
         setDialogValue(nextValue);
@@ -93,7 +88,11 @@ const CreateScenarioMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 </ListItemIcon>
                 {t('buttons.newBlankScenario')}
             </MenuItem>
-            <MenuItem onClick={() => setDialogOpen(true)}>
+            <MenuItem
+                onClick={() => {
+                    setDialogOpen(true);
+                }}
+            >
                 <ListItemIcon>
                     <FromCopyIcon fontSize='small' />
                 </ListItemIcon>
@@ -101,7 +100,9 @@ const CreateScenarioMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
             </MenuItem>
             <Dialog
                 open={dialogOpen}
-                onClose={() => setDialogOpen(false)}
+                onClose={() => {
+                    setDialogOpen(false);
+                }}
                 sx={{
                     '& .MuiPaper-root': {
                         p: 3,

@@ -1,10 +1,8 @@
-import { TFunction } from 'i18next';
+import type { ICard } from '../../types/Card.types';
+import type { AppDispatch, RootState } from '../constants/store';
+import type { TFunction } from 'i18next';
+
 import APIService from '../../services/APIService';
-
-import { ICard } from '../../types/Card.types';
-
-import { AppDispatch, RootState } from '../constants/store';
-
 import { cardsLoading, setActiveCard, writeCards } from '../slices/cardSlice';
 
 import { intakeError } from './errorThunks';
@@ -19,7 +17,7 @@ import { conditionallyRefreshTransactions } from './transactionThunks';
  * @param override If true, a refresh will be forced.
  */
 export const refreshCards =
-    (t: TFunction<'translation', undefined>, override?: boolean) =>
+    (t: TFunction, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const state = getState();
@@ -32,13 +30,13 @@ export const refreshCards =
             ) {
                 dispatch(cardsLoading());
                 const response = await APIService.getAllCards();
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
-                if (response?.status === 200) {
+                if (response.status === 200) {
                     dispatch(
                         writeCards({
-                            cards: (response?.payload.cards || []) as ICard[],
+                            cards: response.payload.cards,
                         }),
                     );
                 }

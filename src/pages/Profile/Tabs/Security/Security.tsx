@@ -1,13 +1,11 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Paper, Typography } from '@mui/material';
 import { Security as IconSecurity } from '@mui/icons-material';
+import { Box, Paper, Typography } from '@mui/material';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
 import { getUserEmail } from '../../../../redux/selectors/authSelectors';
-
 import ModalEmail from '../../components/ModalEmail';
 import ModalPassword from '../../components/ModalPassword';
 

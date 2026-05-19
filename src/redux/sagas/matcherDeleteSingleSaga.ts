@@ -1,16 +1,15 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { put } from 'redux-saga/effects';
-
-import APIService from '../../services/APIService';
 
 import type { ICategory } from '../../types/Category.d';
 import type { IMatcher } from '../../types/Matcher.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
-import { deleteSingleMatcher } from '../slices/categorySlice';
-
-import { intakeError } from '../thunks/errorThunks';
+import APIService from '../../services/APIService';
 import { retry } from '../../utils/requestUtils';
+import { deleteSingleMatcher } from '../slices/categorySlice';
+import { intakeError } from '../thunks/errorThunks';
 
 /**
  * Deletes a matcher and updates the Category in state.
@@ -28,7 +27,6 @@ export default function* matcherDeleteSingleSaga({
         }>(() => APIService.deleteSingleMatcher(payload.matcherId));
 
         if (response.error) {
-            console.error(response?.payload?.error);
             yield put(intakeError(response.error));
         } else {
             yield put(deleteSingleMatcher(payload));

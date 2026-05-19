@@ -1,9 +1,9 @@
-import { FC, Fragment, useMemo } from 'react';
+import { type FC, Fragment, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Divider, Typography } from '@mui/material';
 
-import { IProps } from './SwitchMode.types';
+import type { IProps } from './SwitchMode.types';
 
 /**
  * Displays the bottom section of the Login / Sign Up modal with buttons to switch to the other mode.
@@ -34,7 +34,9 @@ const SwitchMode: FC<IProps> = ({ isExisting, setIsExistingUser }) => {
             <Typography sx={{ mt: 3 }}>
                 {state.question}{' '}
                 <Button
-                    onClick={() => setIsExistingUser(!isExisting)}
+                    onClick={() => {
+                        setIsExistingUser(!isExisting);
+                    }}
                     variant='text'
                 >
                     {state.buttonText}

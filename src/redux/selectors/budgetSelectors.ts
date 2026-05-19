@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from '../constants/store';
+import type { RootState } from '../constants/store';
 
 /**
  * Returns the 'budget' section of the redux state.
@@ -56,5 +56,5 @@ export const getActiveBudget = createSelector(
  */
 export const getActiveBudgetId = createSelector(
     getActiveBudget,
-    (budgetState) => budgetState?.id || null,
+    (budgetState) => budgetState?.id ?? null,
 );

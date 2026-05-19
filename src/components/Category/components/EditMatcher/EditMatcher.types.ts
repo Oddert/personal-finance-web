@@ -1,4 +1,4 @@
-import { IMatcher } from '../../../../types/Matcher.d';
+import type { IMatcher } from '../../../../types/Matcher.d';
 
 export interface IProps {
     clearOnBlur?: boolean;

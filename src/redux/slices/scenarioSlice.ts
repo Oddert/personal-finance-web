@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IScenario } from '../../types/Scenario.types';
+import type { IScenario } from '../../types/Scenario.types';
 
 export interface IScenarioState {
     scenarios: IScenario[];

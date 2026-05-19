@@ -1,17 +1,16 @@
 import { useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+
 import { Box, Drawer, Typography } from '@mui/material';
-
-import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
-import { checkAuth } from '../../../../redux/thunks/authThunks';
-
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 
 import {
     TransactionEditContext,
     toggleSideBar,
 } from '../../../../contexts/transactionEditContext';
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
+import { checkAuth } from '../../../../redux/thunks/authThunks';
 
 import AddCategory from './components/AddCategory';
 import Option from './components/Option';
@@ -36,7 +35,7 @@ const CategoryQuickEdit = () => {
 
     useEffect(() => {
         reduxDispatch(checkAuth());
-    }, []);
+    }, [reduxDispatch]);
 
     const toggleDrawer = (toOpen?: boolean) => {
         const callback = (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -48,9 +47,7 @@ const CategoryQuickEdit = () => {
                 return;
             }
 
-            dispatch(
-                toggleSideBar(toOpen === undefined ? !sideBarOpen : toOpen),
-            );
+            dispatch(toggleSideBar(toOpen ?? !sideBarOpen));
         };
         return callback;
     };
@@ -83,7 +80,7 @@ const CategoryQuickEdit = () => {
                     justifyContent: 'flex-start',
                 }}
             >
-                {categories?.length ? (
+                {categories.length ? (
                     categories.map((category) => (
                         <Option category={category} key={category.id} />
                     ))

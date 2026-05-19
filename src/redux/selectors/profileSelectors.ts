@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../constants/store';
+
+import type { RootState } from '../constants/store';
 
 const getProfileState = (state: RootState) => state.profile;
 

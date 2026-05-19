@@ -1,14 +1,13 @@
-import { FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ColumnDef } from '@tanstack/react-table';
 
 import { Typography } from '@mui/material';
 
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+import type { IBudgetDatumTable, IProps } from './BudgetTable.types';
+import type { ColumnDef } from '@tanstack/react-table';
 
 import Table from '../../../../components/Table';
-
-import type { IBudgetDatumTable, IProps } from './BudgetTable.types';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 /**
  * Displays all transactions within the selected range.
@@ -71,7 +70,9 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                                 ctx[1] && value >= ctx[1] ? 'error' : 'white'
                             }
                         >
-                            {value >= 0 ? `+${value}%` : `${value}%`}
+                            {value >= 0
+                                ? `+${String(value)}%`
+                                : `${String(value)}%`}
                         </Typography>
                     );
                 },
@@ -81,7 +82,7 @@ const BudgetTable: FC<IProps> = ({ data }) => {
                 accessorKey: 'variance',
                 cell: (cell) => {
                     const value = cell.renderValue<[number, number]>();
-                    return `+${value[0]}% / -${value[1]}%`;
+                    return `+${String(value[0])}% / -${String(value[1])}%`;
                 },
             },
         ],

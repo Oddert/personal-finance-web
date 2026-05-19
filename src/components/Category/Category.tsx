@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
     Accordion,
     AccordionDetails,
@@ -11,16 +12,15 @@ import {
     Typography,
 } from '@mui/material';
 
+import type { IProps } from './Category.types';
 import type { IMatcher } from '../../types/Matcher.d';
 
 import AddMatcher from './components/AddMatcher';
 import Colour from './components/Colour';
 import Description from './components/Description';
+import HamburgerMenu from './components/HamburgerMenu';
 import Matcher from './components/Matcher';
 import Title from './components/Title';
-import HamburgerMenu from './components/HamburgerMenu';
-
-import type { IProps } from './Category.types';
 
 /**
  * Displays a single Category with optional edit capability.
@@ -44,7 +44,7 @@ const Category: FC<IProps> = ({
 
     const CategoryList = (
         <List>
-            {category.matchers?.map((matcher: IMatcher) => (
+            {category.matchers.map((matcher: IMatcher) => (
                 <Matcher
                     categoryId={category.id}
                     key={matcher.id}
@@ -54,7 +54,7 @@ const Category: FC<IProps> = ({
             <AddMatcher
                 categoryId={category.id}
                 defaultOpen={defaultOpenAddNew}
-                matcher={defaultOpenMatcher || undefined}
+                matcher={defaultOpenMatcher ?? undefined}
                 onSubmit={onAddNewSubmit}
             />
         </List>
@@ -67,7 +67,9 @@ const Category: FC<IProps> = ({
             sx={{ fontSize: '16px', fontWeight: 'bold' }}
         >
             {t('literals.Matchers')}
-            {category.matchers?.length ? ` (${category.matchers.length})` : ''}
+            {category.matchers.length
+                ? ` (${String(category.matchers.length)})`
+                : ''}
         </Typography>
     );
 

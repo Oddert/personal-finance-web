@@ -1,12 +1,12 @@
-import { FC, Fragment, MouseEvent, useState } from 'react';
+import { type FC, Fragment, type MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
-
-import CreateBudgetMenu from '../CreateBudgetMenu';
+import { Button } from '@mui/material';
 
 import type { IProps } from './CreateBudgetButton.types';
+
+import CreateBudgetMenu from '../CreateBudgetMenu';
 
 /**
  * Displays a button to allow users to navigate to the create-budget page.

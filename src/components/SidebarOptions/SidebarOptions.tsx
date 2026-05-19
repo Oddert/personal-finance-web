@@ -1,12 +1,12 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Box, List } from '@mui/material';
+
+import type { IProps } from './SidebarOptions.types';
 
 import { navigation } from '../../constants/routerConstants';
 
 import NavItem from './components/NavItem';
-
-import { IProps } from './SidebarOptions.types';
 
 /**
  * Renders the list content shared by the navigation drawers.

@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { ICard } from '../../types/Card.types';
+import type { ICard } from '../../types/Card.types';
 
 /**
  * Redux state key for 'card'
@@ -65,7 +65,7 @@ export const cardSlice = createSlice({
                 const foundActive = payload.cards.find(
                     (card) => card.isDefault,
                 );
-                state.activeCard = foundActive || payload.cards[0];
+                state.activeCard = foundActive ?? payload.cards[0];
             }
         },
     },

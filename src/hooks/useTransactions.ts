@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
+
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { ITransaction } from '../types/Transaction.d';
 
+import { getIsAuthenticated } from '../redux/selectors/authSelectors';
 import {
     getTransactionsEndDate,
     getTransactionsOrderedByDate,
     getTransactionsStartDate,
 } from '../redux/selectors/transactionsSelectors';
-import { getIsAuthenticated } from '../redux/selectors/authSelectors';
-
 import { conditionallyRefreshTransactions } from '../redux/thunks/transactionThunks';
 
 import { useAppDispatch, useAppSelector } from './ReduxHookWrappers';
@@ -35,13 +35,13 @@ const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
     const isAuthenticated = useAppSelector(getIsAuthenticated);
 
     const fromDate = useMemo(
-        () => dayjs(startDate || rangeStartDate),
+        () => dayjs(startDate ?? rangeStartDate),
         [startDate, rangeStartDate],
     );
 
     const toDate = useMemo(
-        () => dayjs(endDate || rangeEndDate),
-        [startDate, rangeStartDate],
+        () => dayjs(endDate ?? rangeEndDate),
+        [endDate, rangeEndDate],
     );
 
     const transactions = useMemo(() => {
@@ -51,28 +51,32 @@ const useTransactions = (startDate?: IMultiDate, endDate?: IMultiDate) => {
         const transactionList: ITransaction[] = [];
         const values: number[] = [];
 
-        dispatch(
-            conditionallyRefreshTransactions(
-                fromDate.valueOf(),
-                toDate.valueOf(),
-            ),
-        );
+        if (isAuthenticated) {
+            dispatch(
+                conditionallyRefreshTransactions(
+                    fromDate.valueOf(),
+                    toDate.valueOf(),
+                ),
+            );
 
-        while (sDate < eDate) {
-            const year = sDate.year();
-            const month = sDate.month();
-            if (year in allTransactions && month in allTransactions[year]) {
-                const transactionBlock = allTransactions[year][month];
-                transactionList.push(...transactionBlock);
-                values.push(
-                    ...transactionBlock.map((transaction) => transaction.debit),
-                );
+            while (sDate < eDate) {
+                const year = sDate.year();
+                const month = sDate.month();
+                if (year in allTransactions && month in allTransactions[year]) {
+                    const transactionBlock = allTransactions[year][month];
+                    transactionList.push(...transactionBlock);
+                    values.push(
+                        ...transactionBlock.map(
+                            (transaction) => transaction.debit,
+                        ),
+                    );
+                }
+                sDate = sDate.add(1, 'month').set('date', 10);
             }
-            sDate = sDate.add(1, 'month').set('date', 10);
         }
 
         return transactionList;
-    }, [allTransactions, fromDate, isAuthenticated, toDate]);
+    }, [allTransactions, dispatch, fromDate, isAuthenticated, toDate]);
 
     return { fromDate, toDate, transactions };
 };

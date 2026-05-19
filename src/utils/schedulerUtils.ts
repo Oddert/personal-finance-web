@@ -139,7 +139,7 @@ export class ScheduleBySpecificDay extends Schedule {
 
 type IShortDay = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 
-const dayToInt: { [key in IShortDay]: number } = {
+const dayToInt: Record<IShortDay, number> = {
     sun: 0,
     mon: 1,
     tue: 2,
@@ -149,7 +149,7 @@ const dayToInt: { [key in IShortDay]: number } = {
     sat: 6,
 };
 
-const intToDay: { [key: number]: IShortDay } = {
+const intToDay: Record<number, IShortDay> = {
     0: 'sun',
     1: 'mon',
     2: 'tue',

@@ -1,12 +1,12 @@
-import { FC, Fragment } from 'react';
+import { type FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
-
-import router, { ROUTES } from '../../../../constants/routerConstants';
+import { Button } from '@mui/material';
 
 import type { IProps } from './CreateCardButton.types';
+
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 /**
  * Displays a button to allow users to navigate to the create-card page.

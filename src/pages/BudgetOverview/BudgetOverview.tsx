@@ -1,8 +1,6 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
     Box,
@@ -13,6 +11,23 @@ import {
     Typography,
 } from '@mui/material';
 
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import type { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
+
+import ActiveBudget from '../../components/ActiveBudget';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
+import BudgetPageToggle from '../../components/BudgetPageToggle';
+import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
+import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
+import {
+    getTransactionsLoading,
+    getTransactionsOrderedByDate,
+} from '../../redux/selectors/transactionsSelectors';
+import { requestTransactions } from '../../redux/slices/transactionsSlice';
 import {
     createBudgetChartData,
     createCategoryBreakdown,
@@ -20,32 +35,14 @@ import {
     toEndMonthDayjs,
 } from '../../utils/budgetUtils';
 
-import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
-import { getActiveBudget } from '../../redux/selectors/budgetSelectors';
-import {
-    getTransactionsLoading,
-    getTransactionsOrderedByDate,
-} from '../../redux/selectors/transactionsSelectors';
-import { requestTransactions } from '../../redux/slices/transactionsSlice';
-
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-
-import ActiveBudget from '../../components/ActiveBudget';
-import ActiveCard from '../../components/ActiveCard/ActiveCard';
-import BudgetPageToggle from '../../components/BudgetPageToggle';
-
+import { ChartPaper } from './BudgetOverview.styles';
 import AggregateTimeChart from './components/AggregateTimeChart';
 import BudgetMonthSpendChart from './components/BudgetMonthSpendChart';
 import CandleStickChart from './components/CandleStickChart';
 import DateRange from './components/DateRange';
 import PercentageCharts from './components/PercentageCharts';
-import TotalDiscrepancyChart from './components/TotalDiscrepancyChart/TotalDiscrepancyChart';
 import TimeChart from './components/TimeChart';
-
-import { IBudgetOverviewChart, IProps } from './BudgetOverview.types';
-import { ChartPaper } from './BudgetOverview.styles';
+import TotalDiscrepancyChart from './components/TotalDiscrepancyChart/TotalDiscrepancyChart';
 
 dayjs.extend(localizedFormat);
 
@@ -103,7 +100,9 @@ const BudgetOverview: FC<IProps> = () => {
                         1,
                     );
                     const chart = {
-                        timestamp: dayjs(`${year}-${month + 1}-02`),
+                        timestamp: dayjs(
+                            `${String(year)}-${String(month + 1)}-02`,
+                        ),
                         data,
                     };
                     charts.push(chart);
@@ -130,12 +129,13 @@ const BudgetOverview: FC<IProps> = () => {
                 endDate: endDate.toISOString(),
             }),
         );
-    }, [startDate, endDate]);
+    }, [startDate, endDate, dispatch]);
 
     useEffect(() => {
         const start = navigation[0].get('startDate');
         const end = navigation[0].get('endDate');
         if (start) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setStartDate(dayjs(start));
             if (end) {
                 setEndDate(dayjs(end));
@@ -143,7 +143,7 @@ const BudgetOverview: FC<IProps> = () => {
                 setEndDate(toEndMonthDayjs(start));
             }
         }
-    }, []);
+    }, [navigation]);
 
     if (transactionsLoading) {
         return (
@@ -218,9 +218,9 @@ const BudgetOverview: FC<IProps> = () => {
                         control={
                             <Checkbox
                                 checked={displayEmptyCats}
-                                onClick={() =>
-                                    setDisplayEmptyCats(!displayEmptyCats)
-                                }
+                                onClick={() => {
+                                    setDisplayEmptyCats(!displayEmptyCats);
+                                }}
                             />
                         }
                         label={t('Budget.includeEmptyCategories')}
@@ -229,9 +229,9 @@ const BudgetOverview: FC<IProps> = () => {
                         control={
                             <Checkbox
                                 checked={showFullDateRange}
-                                onChange={(event) =>
-                                    setShowFullDateRange(event.target.checked)
-                                }
+                                onChange={(event) => {
+                                    setShowFullDateRange(event.target.checked);
+                                }}
                             />
                         }
                         label={t('buttons.showFullDateRange')}

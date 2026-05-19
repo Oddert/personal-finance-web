@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { AppDispatch, RootState } from '../constants/store';
+import type { AppDispatch, RootState } from '../constants/store';
 
 import { requestTransactions } from '../slices/transactionsSlice';
 
@@ -47,7 +47,6 @@ export const conditionallyRefreshTransactions =
                 }
             }
         } catch (error) {
-            console.error(error);
             dispatch(intakeError(error));
         }
     };

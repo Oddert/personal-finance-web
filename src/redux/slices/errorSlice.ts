@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 /**
  * Redux state key for 'error'
@@ -43,11 +43,11 @@ export const errorSlice = createSlice({
         },
         writeError(state, { payload }: PayloadAction<IPayloadWriteError>) {
             state.dialogOpen = true;
-            state.title = payload?.title || 'Something went wrong';
+            state.title = payload.title ?? 'Something went wrong';
             state.message =
-                payload?.message || 'An unexplained error was encountered.';
-            state.error = payload?.error || 'Cause unknown';
-            state.stackTrace = payload.stackTrace || '';
+                payload.message ?? 'An unexplained error was encountered.';
+            state.error = payload.error ?? 'Cause unknown';
+            state.stackTrace = payload.stackTrace ?? '';
             state.timestamp = new Date().getTime();
         },
     },

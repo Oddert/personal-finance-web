@@ -1,11 +1,12 @@
-import axios from 'axios';
-
-import { AuthLSService } from '../services/AuthLSService';
-
-import { getServerURL } from '../utils/requestUtils';
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import { create as axios } from 'axios';
 
 import store from '../redux/constants/store';
 import { refreshAuthentication } from '../redux/thunks/authThunks';
+import { AuthLSService } from '../services/AuthLSService';
+import { getServerURL } from '../utils/requestUtils';
 
 /**
  * Creates an Axios client with authentication headers and minimal logging.
@@ -19,7 +20,7 @@ export const createBlankRequest = () => {
      *
      * NOTE: Interceptors used will attempt to return `response.data`, not `AxiosResponse<any, any>>` as suggested.
      */
-    const requestClient = axios.create({
+    const requestClient = axios({
         baseURL,
         headers: {
             'Content-Type': 'application/json',

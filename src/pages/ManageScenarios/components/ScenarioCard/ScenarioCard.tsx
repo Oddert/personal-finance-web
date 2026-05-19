@@ -1,21 +1,14 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, ListItem, Paper, Typography } from '@mui/material';
 import { ArrowForward as IconRightArrow } from '@mui/icons-material';
-
-import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
-
-// import APIService from '../../../../services/APIService';
-
-import {
-    // useAppDispatch,
-    useAppSelector,
-} from '../../../../hooks/ReduxHookWrappers';
-
-import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
+import { Box, Button, ListItem, Paper, Typography } from '@mui/material';
 
 import type { IProps } from './ScenarioCard.types';
+
+import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 
 /**
  * Displays a single scenario.

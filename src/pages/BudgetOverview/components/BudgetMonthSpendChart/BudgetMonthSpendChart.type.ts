@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { IBudgetOverviewChart } from '../../BudgetOverview.types';
+import type { IBudgetOverviewChart } from '../../BudgetOverview.types';
 
 export interface IProps {
     chartList: IBudgetOverviewChart[];
@@ -9,9 +9,10 @@ export interface IProps {
     startDate: Dayjs;
 }
 
-export interface IAgDataAccumulator {
-    [categoryId: string]: {
+export type IAgDataAccumulator = Record<
+    string,
+    {
         name: string;
         data: { x: number; y: number }[];
-    };
-}
+    }
+>;

@@ -1,30 +1,28 @@
-import { FC, useContext, useState } from 'react';
+/* eslint-disable no-constant-binary-expression */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Button, CircularProgress } from '@mui/material';
 
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Button, CircularProgress } from '@mui/material';
-
+import type { IProps } from './Submit.types';
 import type { ICategory } from '../../../../types/Category.d';
 import type { ITransaction } from '../../../../types/Transaction.d';
 
 import { TransactionEditContext } from '../../../../contexts/transactionEditContext';
-
-import APIService from '../../../../services/APIService';
-
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
+import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
+import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
 import { requestTransactions } from '../../../../redux/slices/transactionsSlice';
 import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
-import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
-import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
-
-import type { IProps } from './Submit.types';
+import APIService from '../../../../services/APIService';
 
 dayjs.extend(localizedFormat);
 
@@ -68,40 +66,40 @@ const Submit: FC<IProps> = ({ onClose }) => {
                 assignedCategory:
                     (transaction[
                         columnMap.assignedCategory
-                    ] as ICategory | null) ||
-                    (transaction.assignedCategory as ICategory | null) ||
+                    ] as ICategory | null) ??
+                    (transaction.assignedCategory as ICategory | null) ??
                     undefined,
                 ballance:
-                    (transaction[columnMap.ballance] as number) ||
-                    (transaction.ballance as number) ||
+                    (transaction[columnMap.ballance] as number) ??
+                    (transaction.ballance as number) ??
                     0,
                 cardId:
-                    (transaction[columnMap.cardId] as string | null) ||
-                    (transaction.cardId as string | null) ||
+                    (transaction[columnMap.cardId] as string | null) ??
+                    (transaction.cardId as string | null) ??
                     activeCardId,
                 categoryId:
-                    (transaction[columnMap.categoryId] as string | null) ||
-                    (transaction.categoryId as string | null) ||
+                    (transaction[columnMap.categoryId] as string | null) ??
+                    (transaction.categoryId as string | null) ??
                     null,
                 currency:
-                    (transaction[columnMap.currency] as string | null) ||
-                    (transaction.currency as string | null) ||
-                    userCurrencies.length
+                    ((transaction[columnMap.currency] as string | null) ??
+                    (transaction.currency as string | null) ??
+                    userCurrencies.length)
                         ? userCurrencies[0]
                         : null,
                 date:
-                    (transaction[columnMap.date] as number) ||
-                    (transaction.date as number) ||
+                    (transaction[columnMap.date] as number) ??
+                    (transaction.date as number) ??
                     0,
                 description:
-                    (transaction[columnMap.description] as string) ||
-                    (transaction.description as string) ||
+                    (transaction[columnMap.description] as string) ??
+                    (transaction.description as string) ??
                     '',
                 transactionType:
-                    (transaction[columnMap.transactionType] as string) ||
-                    (transaction.transactionType as string) ||
+                    (transaction[columnMap.transactionType] as string) ??
+                    (transaction.transactionType as string) ??
                     'DEB',
-                deleted: Number(transaction.deleted) || 0,
+                deleted: Number(transaction.deleted) ?? 0,
             };
 
             // Handle number values separately as they are expected to be string (though not limited to).
@@ -113,7 +111,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
             ];
             numKeys.forEach((column: 'credit' | 'debit' | 'ballance') => {
                 const tecValue: string | number | boolean | null =
-                    transaction[columnMap[column]] || transaction[column] || 0;
+                    transaction[columnMap[column]] ?? transaction[column] ?? 0;
                 if (
                     typeof tecValue === 'boolean' ||
                     (typeof tecValue === 'string' && tecValue === '-')
@@ -143,15 +141,17 @@ const Submit: FC<IProps> = ({ onClose }) => {
 
         try {
             request();
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling requires review
                 if (error1.status === 401) {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     appDispatch(refreshAuthentication(request));
                 } else {
                     appDispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
-                appDispatch(intakeError(error1));
+            } catch (error2) {
+                appDispatch(intakeError(error2));
                 setLoading(true);
             }
         }

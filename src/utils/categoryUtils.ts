@@ -1,6 +1,5 @@
-import type { ICategory } from '../types/Category.d';
-
 import type { CategoryState } from '../redux/slices/categorySlice';
+import type { ICategory } from '../types/Category.d';
 
 /**
  * Sorts a list of categories into lookup objects by ID and label.

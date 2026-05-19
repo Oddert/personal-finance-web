@@ -1,17 +1,24 @@
 import * as jwt from 'jwt-decode';
 
-import APIService from '../../services/APIService';
+import type { IUser } from '../../types/Auth.types';
+import type { IStandardResponse } from '../../types/Request.d';
+import type { AppDispatch, RootState } from '../constants/store';
 
-import { AppDispatch, RootState } from '../constants/store';
 import router, { ROUTES_FACTORY } from '../../constants/routerConstants';
-
-import { IUser } from '../../types/Auth.types';
-import { IStandardResponse } from '../../types/Request.d';
-
+import APIService from '../../services/APIService';
 import { AuthLSService } from '../../services/AuthLSService';
-
 import { createLoginAddrWithReturn } from '../../utils/routingUtils';
-
+import {
+    getRefreshTokenPending,
+    getUserEmail,
+    getUserFirstName,
+    getUserLastName,
+} from '../selectors/authSelectors';
+import {
+    getActiveLanguage,
+    getUserCurrencies,
+    getUserLanguages,
+} from '../selectors/profileSelectors';
 import {
     authenticateUser,
     clearAuthentication,
@@ -21,18 +28,6 @@ import {
     setIncorrectDetails,
     writeUserDetails,
 } from '../slices/authSlice';
-import {
-    getRefreshTokenPending,
-    getUserEmail,
-    getUserFirstName,
-    getUserLastName,
-} from '../selectors/authSelectors';
-
-import {
-    getActiveLanguage,
-    getUserCurrencies,
-    getUserLanguages,
-} from '../selectors/profileSelectors';
 import { writeUserProfile } from '../slices/profileSlice';
 
 import { intakeError } from './errorThunks';
@@ -59,19 +54,17 @@ export const handleAuthResponse = (
                 );
             }
 
-            const accessDecoded = jwt.jwtDecode(response.payload?.accessToken);
-            const refreshDecoded = jwt.jwtDecode(
-                response.payload?.refreshToken,
-            );
+            const accessDecoded = jwt.jwtDecode(response.payload.accessToken);
+            const refreshDecoded = jwt.jwtDecode(response.payload.refreshToken);
 
             AuthLSService.writeAccessToken(response.payload.accessToken);
             AuthLSService.writeRefreshToken(response.payload.refreshToken);
             dispatch(
                 authenticateUser({
-                    accessToken: response.payload?.accessToken,
-                    accessTokenExpires: accessDecoded.exp || 0,
-                    refreshToken: response.payload?.refreshToken,
-                    refreshTokenExpires: refreshDecoded.exp || 0,
+                    accessToken: response.payload.accessToken,
+                    accessTokenExpires: accessDecoded.exp ?? 0,
+                    refreshToken: response.payload.refreshToken,
+                    refreshTokenExpires: refreshDecoded.exp ?? 0,
                 }),
             );
 
@@ -80,12 +73,13 @@ export const handleAuthResponse = (
                     user: response.payload.user,
                 }),
             );
-            dispatch(writeUserProfile({ user: response.payload?.user }));
+            dispatch(writeUserProfile({ user: response.payload.user }));
 
             if (callback) {
                 callback();
             }
-        } catch (error: any) {
+        } catch (error) {
+            // @ts-expect-error error handling logic requires review
             if (error.status === 404) {
                 dispatch(setIncorrectDetails());
             } else {
@@ -111,7 +105,8 @@ export const loginUser =
             } else {
                 dispatch(handleAuthResponse(response));
             }
-        } catch (error: any) {
+        } catch (error) {
+            // @ts-expect-error error handling logic requires review
             if (error.status === 404) {
                 dispatch(setIncorrectDetails());
             } else {
@@ -148,7 +143,8 @@ export const registerUser =
             } else {
                 dispatch(handleAuthResponse(response));
             }
-        } catch (error: any) {
+        } catch (error) {
+            // @ts-expect-error error handling logic requires review
             if (error.status === 404) {
                 dispatch(setIncorrectDetails());
             } else {
@@ -205,10 +201,12 @@ export const refreshAuthentication = (callback?: () => void) => {
             } else {
                 dispatch(handleAuthResponse(response, callback));
             }
-        } catch (error: any) {
+        } catch (error) {
+            // @ts-expect-error error handling logic requires review
             if (error.status === 401 || error.status === 403) {
                 dispatch(userUnauthenticated());
                 router.navigate(createLoginAddrWithReturn());
+                // @ts-expect-error error handling logic requires review
             } else if (error.status === 404) {
                 dispatch(setIncorrectDetails());
             } else {
@@ -236,14 +234,16 @@ export const checkAuth =
             const state = getState();
             if (
                 state.auth.accessTokenExpires <=
-                new Date().getTime() - (margin || 120_000)
+                new Date().getTime() - (margin ?? 120_000)
             ) {
                 dispatch(refreshAuthentication());
             }
-        } catch (error: any) {
+        } catch (error) {
+            // @ts-expect-error error handling logic requires review
             if (error.status === 401 || error.status === 403) {
                 dispatch(userUnauthenticated());
                 router.navigate(createLoginAddrWithReturn());
+                // @ts-expect-error error handling logic requires review
             } else if (error.status === 404) {
                 dispatch(setIncorrectDetails());
             } else {
@@ -289,22 +289,22 @@ export const updateUserDetails =
             const currentCurrency = getUserCurrencies(state);
 
             const response = await APIService.updateUserDetails(
-                email || currentUsername || '',
-                firstName || currentFirstName || '',
-                lastName || currentLastName || '',
+                email ?? currentUsername ?? '',
+                firstName ?? currentFirstName ?? '',
+                lastName ?? currentLastName ?? '',
                 languages
                     ? languages.join(',')
                     : currentLangs.map((lang) => lang.code).join(','),
-                activeLang || currentActiveLang.code,
-                (currencies || currentCurrency).join(','),
-                (currencies || currentCurrency)[0],
+                activeLang ?? currentActiveLang.code,
+                (currencies ?? currentCurrency).join(','),
+                (currencies ?? currentCurrency)[0],
             );
 
             if (response.payload) {
-                dispatch(writeUserProfile({ user: response.payload?.user }));
-                dispatch(writeUserDetails({ user: response.payload?.user }));
+                dispatch(writeUserProfile({ user: response.payload.user }));
+                dispatch(writeUserDetails({ user: response.payload.user }));
             }
-        } catch (error: any) {
+        } catch (error) {
             dispatch(intakeError(error));
         }
     };
@@ -319,7 +319,7 @@ export const userLogout = () => async (dispatch: AppDispatch) => {
         AuthLSService.deleteAccessToken();
         AuthLSService.deleteRefreshToken();
         dispatch(logoutAuth());
-    } catch (error: any) {
+    } catch (error) {
         dispatch(intakeError(error));
     }
 };

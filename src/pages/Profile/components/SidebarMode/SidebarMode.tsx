@@ -1,6 +1,5 @@
-import { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 
-import { IProps } from './SidebarMode.types';
 import {
     FormControl,
     FormControlLabel,
@@ -9,15 +8,15 @@ import {
     RadioGroup,
 } from '@mui/material';
 
-import { getSidebarMode } from '../../../../redux/selectors/profileSelectors';
-import { changeSidebarMode } from '../../../../redux/slices/profileSlice';
+import type { IProps } from './SidebarMode.types';
+import type { TSidebarMode } from '../../../../types/Profile.types';
 
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
-import { TSidebarMode } from '../../../../types/Profile.types';
+import { getSidebarMode } from '../../../../redux/selectors/profileSelectors';
+import { changeSidebarMode } from '../../../../redux/slices/profileSlice';
 
 const SidebarMode: FC<IProps> = () => {
     const dispatch = useAppDispatch();

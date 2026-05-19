@@ -1,24 +1,24 @@
-import { FC, Fragment } from 'react';
+import { type FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
+import { Delete as IconDelete } from '@mui/icons-material';
 import {
     Button,
     MenuItem,
     Select,
-    SelectChangeEvent,
+    type SelectChangeEvent,
     TableCell,
     TableRow,
     TextField,
     Tooltip,
 } from '@mui/material';
-import { Delete as IconDelete } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers';
 
-import { TSchedulerCode } from '../../../../types/Scenario.types';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { IProps } from './SchedulerRow.types';
+import type { IProps } from './SchedulerRow.types';
+import type { TSchedulerCode } from '../../../../types/Scenario.types';
 
 dayjs.extend(localizedFormat);
 
@@ -59,12 +59,12 @@ const SchedulerRow: FC<IProps> = ({
     const inputNthDay = (
         <TextField
             label={t('Scenario.Scheduler.labelNthDay')}
-            onChange={(event) =>
+            onChange={(event) => {
                 handleChangeScheduler({
                     ...scheduler,
                     nthDay: Number(event.target.value),
-                })
-            }
+                });
+            }}
             size='small'
             type='number'
             value={scheduler.nthDay}
@@ -75,12 +75,12 @@ const SchedulerRow: FC<IProps> = ({
         <DatePicker
             label={t('Start date')}
             name='startDate'
-            onChange={(value) =>
+            onChange={(value) => {
                 handleChangeScheduler({
                     ...scheduler,
-                    startDate: value?.toString() || null,
-                })
-            }
+                    startDate: value?.toString() ?? null,
+                });
+            }}
             showDaysOutsideCurrentMonth
             slotProps={{
                 textField: {
@@ -101,12 +101,12 @@ const SchedulerRow: FC<IProps> = ({
     const inputStep = (
         <TextField
             label={t('Scenario.Scheduler.labelStep')}
-            onChange={(event) =>
+            onChange={(event) => {
                 handleChangeScheduler({
                     ...scheduler,
                     step: Number(event.target.value),
-                })
-            }
+                });
+            }}
             size='small'
             type='number'
             value={scheduler.step}
@@ -142,12 +142,12 @@ const SchedulerRow: FC<IProps> = ({
         <TableRow>
             <TableCell>
                 <Select
-                    onChange={(event: SelectChangeEvent<TSchedulerCode>) =>
+                    onChange={(event: SelectChangeEvent<TSchedulerCode>) => {
                         handleChangeScheduler({
                             ...scheduler,
                             schedulerCode: event.target.value,
-                        })
-                    }
+                        });
+                    }}
                     size='small'
                     value={scheduler.schedulerCode}
                 >

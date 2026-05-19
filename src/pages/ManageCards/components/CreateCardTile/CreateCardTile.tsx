@@ -1,12 +1,12 @@
-import { FC, Fragment } from 'react';
+import { type FC, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button, ListItem } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
-
-import router, { ROUTES } from '../../../../constants/routerConstants';
+import { Button, ListItem } from '@mui/material';
 
 import type { IProps } from './CreateCardTile.types';
+
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 /**
  * Displays a card component, rendering similarly to the {@link CardTile} to allow users to navigate to the create-card page.

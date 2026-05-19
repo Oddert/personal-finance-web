@@ -1,14 +1,14 @@
-import { Components } from '@mui/material/styles';
+import type { ThemeOptions } from '@mui/material';
 
 import { ColorTranslator } from 'colortranslator';
 
-const components: Components = {
+const components: ThemeOptions['components'] = {
     MuiAppBar: {
         styleOverrides: {
-            root: ({ theme }: { theme: any }) => {
+            root: ({ theme }) => {
                 const colour = new ColorTranslator(theme.palette.primary.dark);
                 return {
-                    background: `rgba(${colour.R}, ${colour.G}, ${colour.B}, 0.5)`,
+                    background: `rgba(${String(colour.R)}, ${String(colour.G)}, ${String(colour.B)}, 0.5)`,
                     backdropFilter: 'blur(8px)',
                 };
             },
@@ -25,7 +25,7 @@ const components: Components = {
         variants: [
             {
                 props: { variant: 'text' },
-                style: ({ theme }: { theme: any }) => ({
+                style: ({ theme }) => ({
                     color: theme.palette.primary.light,
                 }),
             },
@@ -43,7 +43,7 @@ const components: Components = {
         variants: [
             {
                 props: { checked: true },
-                style: ({ theme }: { theme: any }) => ({
+                style: ({ theme }) => ({
                     color: theme.palette.primary.light,
                 }),
             },

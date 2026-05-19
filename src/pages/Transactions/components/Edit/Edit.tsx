@@ -1,5 +1,5 @@
 import {
-    FC,
+    type FC,
     Fragment,
     useContext,
     useEffect,
@@ -7,40 +7,38 @@ import {
     useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Edit as IconEdit } from '@mui/icons-material';
+import { Box, Button } from '@mui/material';
+
 import { v4 as uuid } from 'uuid';
 
-import { Box, Button } from '@mui/material';
-import { Edit as IconEdit } from '@mui/icons-material';
+import type { IProps } from './Edit.types';
 
+import { getFromLocalStore } from '../../../../common/localstore';
+import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
+import { PERSONAL_FINANCE_UPLOAD_RECOVERY } from '../../../../constants/appConstants';
 import {
+    TransactionEditContext,
+    type TransactionEditState,
     createTECReducer,
     restoreState,
     setColumnMap,
     setMode,
     tecWriteTransactions,
-    TransactionEditContext,
     transactionEditInitialState,
-    TransactionEditState,
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
-
+import {
+    useAppDispatch,
+    useAppSelector,
+} from '../../../../hooks/ReduxHookWrappers';
+import useTransactions from '../../../../hooks/useTransactions';
 import {
     getActiveLanguageCode,
     getUserCurrencies,
 } from '../../../../redux/selectors/profileSelectors';
 import { checkAuth } from '../../../../redux/thunks/authThunks';
-
-import useTransactions from '../../../../hooks/useTransactions';
-import {
-    useAppDispatch,
-    useAppSelector,
-} from '../../../../hooks/ReduxHookWrappers';
-
-import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
-
-import type { IProps } from './Edit.types';
-import { getFromLocalStore } from '../../../../common/localstore';
-import { PERSONAL_FINANCE_UPLOAD_RECOVERY } from '../../../../constants/appConstants';
 
 /**
  * Modal to edit all transactions currently selected in the view.
@@ -63,8 +61,8 @@ const Edit: FC<IProps> = () => {
     );
 
     const { transactions } = useTransactions(
-        rangeValues[value[0]]?.bottom,
-        rangeValues[value[1]]?.top,
+        rangeValues[value[0]].bottom,
+        rangeValues[value[1]].top,
     );
 
     const language = useAppSelector(getActiveLanguageCode);
@@ -78,8 +76,8 @@ const Edit: FC<IProps> = () => {
             date: new Date(transaction.date).toLocaleDateString(language),
             credit: transaction.credit === 0 ? '-' : transaction.credit,
             debit: transaction.debit === 0 ? '-' : transaction.debit,
-            categoryId: transaction.categoryId || 0,
-            assignedCategory: transaction.categoryId || 0,
+            categoryId: transaction.categoryId ?? 0,
+            assignedCategory: transaction.categoryId ?? 0,
             selected: 1,
             deleted: 0,
             tecTempId: uuid(),
@@ -104,7 +102,9 @@ const Edit: FC<IProps> = () => {
     useEffect(() => {
         const recovery = getFromLocalStore(PERSONAL_FINANCE_UPLOAD_RECOVERY);
         if (recovery) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             const nextState: Partial<TransactionEditState> =
+                // @ts-expect-error unknown localstore response
                 JSON.parse(recovery);
             dispatch(restoreState(nextState));
         }
@@ -136,7 +136,9 @@ const Edit: FC<IProps> = () => {
                 <TransactionEditContext.Provider value={{ state, dispatch }}>
                     <TransactionEdit
                         open={open}
-                        onClose={() => setOpen(false)}
+                        onClose={() => {
+                            setOpen(false);
+                        }}
                     />
                 </TransactionEditContext.Provider>
             ) : null}

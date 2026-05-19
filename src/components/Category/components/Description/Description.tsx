@@ -1,13 +1,11 @@
-import { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
-import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
-
-import EditableText from '../../../EditableText';
-
 import type { IProps } from './Description.types';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
+import EditableText from '../../../EditableText';
 
 /**
  * Editable title component for the Category.
@@ -26,11 +24,10 @@ const Title: FC<IProps> = ({ category }) => {
                 categoryUpdateAction(
                     {
                         ...category,
-                        matchers:
-                            category?.matchers?.map((matcher) => ({
-                                ...matcher,
-                                case_sensitive: Boolean(matcher.case_sensitive),
-                            })) || [],
+                        matchers: category.matchers.map((matcher) => ({
+                            ...matcher,
+                            case_sensitive: Boolean(matcher.case_sensitive),
+                        })),
                         label: value,
                     },
                     true,

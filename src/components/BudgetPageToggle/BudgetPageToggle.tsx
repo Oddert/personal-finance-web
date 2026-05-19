@@ -1,13 +1,12 @@
-import { FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Button } from '@mui/material';
 
-import { ROUTES } from '../../constants/routerConstants';
-
-import { DATE_FORMAT } from '../../utils/budgetUtils';
-
 import type { IProps } from './BudgetPageToggle.types';
+
+import { ROUTES } from '../../constants/routerConstants';
+import { DATE_FORMAT } from '../../utils/budgetUtils';
 
 /**
  * Allows the user to switch between the Budget Overview and Budget Breakdown pages, copying the provided date range.

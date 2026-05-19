@@ -1,14 +1,20 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
+/* eslint-disable react-hooks/set-state-in-effect */
+import {
+    type FC,
+    type MouseEventHandler,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
+import { type ColorChangeHandler, SketchPicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
-import { ColorChangeHandler, SketchPicker } from 'react-color';
 
 import { Box, Button, Popover } from '@mui/material';
 
-import { defaultCategoryColours } from '../../constants/categoryConstants';
-
-import ColourBase from '../ColourBase';
-
 import type { IProps } from './ColourEdit.types';
+
+import { defaultCategoryColours } from '../../constants/categoryConstants';
+import ColourBase from '../ColourBase';
 
 /**
  * Displays a Colour square with the ability to edit the colour by clicking an edit button.
@@ -61,11 +67,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
     }, [colour]);
 
     const open = Boolean(anchorEl);
-    const id = open
-        ? popoverId
-            ? popoverId
-            : 'choose-category-colour'
-        : undefined;
+    const id = open ? (popoverId ?? 'choose-category-colour') : undefined;
 
     return (
         <Box
@@ -74,6 +76,7 @@ const ColourEdit: FC<IProps> = ({ colour, onSubmit, popoverId, sx }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
                 ...sx,
             }}
         >

@@ -1,4 +1,4 @@
-import { ITransactor } from '../../types/Scenario.types';
+import type { ITransactor } from '../../types/Scenario.types';
 
 export interface IProps {}
 

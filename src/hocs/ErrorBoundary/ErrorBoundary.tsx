@@ -1,4 +1,5 @@
-import { Component, ErrorInfo, JSX } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, type ErrorInfo, type JSX } from 'react';
 
 interface IProps {
     children: JSX.Element | JSX.Element[] | null;

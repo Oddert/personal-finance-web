@@ -5,14 +5,12 @@ import { RouterProvider } from 'react-router-dom';
 import { Box, CssBaseline } from '@mui/material';
 
 import router from '../../constants/routerConstants';
-
-import { refreshBudgets } from '../../redux/thunks/budgetThunks';
-import { refreshCategories } from '../../redux/thunks/categoryThunks';
-import { refreshCards } from '../../redux/thunks/cardThunks';
-import { refreshScenarios } from '../../redux/thunks/scenarioThunks';
-
-import useAuthToken from '../../hooks/useAuthToken';
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
+import useAuthToken from '../../hooks/useAuthToken';
+import { refreshBudgets } from '../../redux/thunks/budgetThunks';
+import { refreshCards } from '../../redux/thunks/cardThunks';
+import { refreshCategories } from '../../redux/thunks/categoryThunks';
+import { refreshScenarios } from '../../redux/thunks/scenarioThunks';
 
 import './App.css';
 
@@ -37,7 +35,7 @@ const App = () => {
             dispatch(refreshScenarios(t));
         };
         conditionallyRefreshAuth(loadAppBaseInfo);
-    }, []);
+    }, [conditionallyRefreshAuth, dispatch, t]);
 
     return (
         <Box className='App'>

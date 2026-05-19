@@ -1,13 +1,12 @@
 import * as jwt from 'jwt-decode';
 
+import { authenticateUser, writeUserDetails } from '../redux/slices/authSlice';
+import { writeUserProfile } from '../redux/slices/profileSlice';
+import { refreshAuthentication } from '../redux/thunks/authThunks';
 import APIService from '../services/APIService';
 import { AuthLSService } from '../services/AuthLSService';
 
-import { authenticateUser, writeUserDetails } from '../redux/slices/authSlice';
-import { refreshAuthentication } from '../redux/thunks/authThunks';
-
 import { useAppDispatch } from './ReduxHookWrappers';
-import { writeUserProfile } from '../redux/slices/profileSlice';
 
 const timeoutOffset = 1000 * 60 * 1;
 
@@ -27,7 +26,7 @@ const useAuthToken = () => {
      * @returns The result of the callback or null if none provided.
      */
     // We'll allow underscore names to clearly show distinction for internal vs external methods.
-    // eslint-disable-next-line @typescript-eslint/naming-convention
+
     const _authenticate = async (
         accessToken: string,
         accessDecoded: jwt.JwtPayload,
@@ -38,9 +37,9 @@ const useAuthToken = () => {
         dispatch(
             authenticateUser({
                 accessToken,
-                accessTokenExpires: accessDecoded.exp || 0,
+                accessTokenExpires: accessDecoded.exp ?? 0,
                 refreshToken,
-                refreshTokenExpires: refreshDecoded.exp || 0,
+                refreshTokenExpires: refreshDecoded.exp ?? 0,
             }),
         );
 
@@ -52,11 +51,12 @@ const useAuthToken = () => {
 
         dispatch(
             writeUserDetails({
-                user: userDetailsResponse.payload?.user,
+                user: userDetailsResponse.payload.user,
             }),
         );
-        dispatch(writeUserProfile({ user: userDetailsResponse.payload?.user }));
+        dispatch(writeUserProfile({ user: userDetailsResponse.payload.user }));
 
+        // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
         return callback ? callback() : null;
     };
 
@@ -80,17 +80,19 @@ const useAuthToken = () => {
         const accessToken = AuthLSService.getAccessToken();
         const refreshToken = AuthLSService.getRefreshToken();
         if (!accessToken || !refreshToken) {
-            return refreshAuth(callback);
+            refreshAuth(callback);
+            return;
         }
         try {
             const accessDecoded = jwt.jwtDecode(accessToken);
             const refreshDecoded = jwt.jwtDecode(refreshToken);
 
             if (
-                !accessDecoded?.exp ||
+                !accessDecoded.exp ||
                 accessDecoded.exp <= new Date().getTime() + timeoutOffset
             ) {
-                return refreshAuth(callback);
+                refreshAuth(callback);
+                return;
             }
 
             return await _authenticate(
@@ -100,8 +102,10 @@ const useAuthToken = () => {
                 refreshDecoded,
                 callback,
             );
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
-            return refreshAuth(callback);
+            refreshAuth(callback);
+            return;
         }
     };
 

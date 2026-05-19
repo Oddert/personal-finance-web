@@ -1,16 +1,14 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { put } from 'redux-saga/effects';
-
-import APIService from '../../services/APIService';
 
 import type { ICategory } from '../../types/Category.d';
 import type { IMatcher } from '../../types/Matcher.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
+import APIService from '../../services/APIService';
 import { retry } from '../../utils/requestUtils';
-
 import { createSingleMatcher } from '../slices/categorySlice';
-
 import { intakeError } from '../thunks/errorThunks';
 
 /**
@@ -31,7 +29,6 @@ export default function* matcherCreateSingleSaga({
         );
 
         if (response.error || !response.payload) {
-            console.error(response?.error);
             yield put(intakeError(response.error));
         } else {
             yield put(

@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 import locale from 'locale-codes';
 
-import { ILanguage } from '../../types/Intl.types';
-import { TSidebarMode } from '../../types/Profile.types';
-import { IUser } from '../../types/Auth.types';
+import type { IUser } from '../../types/Auth.types';
+import type { ILanguage } from '../../types/Intl.types';
+import type { TSidebarMode } from '../../types/Profile.types';
 
 export interface IProfileState {
     activeLanguage: ILanguage;

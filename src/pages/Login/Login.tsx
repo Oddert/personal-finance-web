@@ -1,12 +1,11 @@
-import { FC, useState } from 'react';
+/* eslint-disable no-console */
+import { type FC, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Box, Container, Paper } from '@mui/material';
 
 import router, { ROUTES } from '../../constants/routerConstants';
-
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
 import { getIsAuthenticated } from '../../redux/selectors/authSelectors';
 import { userLogout } from '../../redux/thunks/authThunks';
 

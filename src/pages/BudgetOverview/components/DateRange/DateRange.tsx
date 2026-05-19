@@ -1,17 +1,18 @@
-import { FC, Fragment, useCallback, useState } from 'react';
+import { type FC, Fragment, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Box, Button, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import type { IProps } from './DateRange.types';
 
 import {
     toBeginningMonthDayjs,
     toEndMonthDayjs,
 } from '../../../../utils/budgetUtils';
-
-import type { IProps } from './DateRange.types';
 
 dayjs.extend(localizedFormat);
 
@@ -186,7 +187,7 @@ const DateRange: FC<IProps> = ({
                     {t('Budget.timeButtons.currentYear')}
                 </Button>
             </Box>
-            <Typography color='error'>{dateError || ''}</Typography>
+            <Typography color='error'>{dateError ?? ''}</Typography>
         </Fragment>
     );
 };

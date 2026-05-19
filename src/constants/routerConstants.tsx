@@ -1,49 +1,47 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { SvgIconTypeMap } from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
-
 import {
-    WaterfallChart as IconAllData,
-    Category as IconCategory,
-    StackedBarChart as IconBudget,
-    DonutSmall as IconBudgetBreakdown,
-    CandlestickChart as IconBudgetOverview,
-    Logout as IconLogout,
     AutoAwesomeMotion as IconManageBudget,
+    CandlestickChart as IconBudgetOverview,
+    Category as IconCategory,
+    DonutSmall as IconBudgetBreakdown,
+    Logout as IconLogout,
     Payments as IconManageCards,
     Person as IconUser,
+    Receipt as IconTransaction,
     // ManageAccounts as IconProfile,
     //  Tune as IconManageBudget,
     //  DeveloperBoard as IconScenarioEdit,
     ReceiptLong as IconTransactions,
-    Receipt as IconTransaction,
     Settings as IconProfile,
+    StackedBarChart as IconBudget,
+    WaterfallChart as IconAllData,
 } from '@mui/icons-material';
+import type { SvgIconTypeMap } from '@mui/material';
+import type { OverridableComponent } from '@mui/material/OverridableComponent';
 
 import Layout from '../components/Layout';
-
 import AllData from '../pages/AllData';
 import BudgetBreakdown from '../pages/BudgetBreakdown';
 import BudgetOverview from '../pages/BudgetOverview';
 import Categories from '../pages/Categories/';
 import EditBudget from '../pages/EditBudget';
 import EditCard from '../pages/EditCard';
+import EditScenario from '../pages/EditScenario';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import ManageBudgets from '../pages/ManageBudgets';
 import ManageCards from '../pages/ManageCards';
-import Profile from '../pages/Profile';
-import Transactions from '../pages/Transactions/';
-import Language from '../pages/Profile/Tabs/Language';
-import Appearance from '../pages/Profile/Tabs/Appearance';
-import Security from '../pages/Profile/Tabs/Security';
 import ManageScenarios from '../pages/ManageScenarios';
-import EditScenario from '../pages/EditScenario';
+import Profile from '../pages/Profile';
+import Appearance from '../pages/Profile/Tabs/Appearance';
+import Language from '../pages/Profile/Tabs/Language';
+import Security from '../pages/Profile/Tabs/Security';
+import Transactions from '../pages/Transactions/';
 
 export interface INavigationOption {
     label: string;
-    Icon: OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+    Icon: OverridableComponent<SvgIconTypeMap> & {
         muiName: string;
     };
     location: string;
@@ -93,15 +91,17 @@ export const ROUTES = Object.freeze({
  */
 export const ROUTES_FACTORY = Object.freeze({
     CREATE_BUDGET: (templateId: string | number) =>
-        `${ROUTES.CREATE_BUDGET}?templateId=${templateId}`,
+        `${ROUTES.CREATE_BUDGET}?templateId=${String(templateId)}`,
     CREATE_SCENARIO: (templateId: string | number) =>
-        `${ROUTES.CREATE_SCENARIO}?templateId=${templateId}`,
+        `${ROUTES.CREATE_SCENARIO}?templateId=${String(templateId)}`,
     EDIT_BUDGET: (budgetId: string | number) =>
-        `${ROUTES.EDIT_BUDGET}/${budgetId}`,
-    EDIT_CARD: (cardId: string | number) => `${ROUTES.EDIT_CARD}/${cardId}`,
+        `${ROUTES.EDIT_BUDGET}/${String(budgetId)}`,
+    EDIT_CARD: (cardId: string | number) =>
+        `${ROUTES.EDIT_CARD}/${String(cardId)}`,
     EDIT_SCENARIO: (scenarioId: string | number) =>
-        `${ROUTES.EDIT_SCENARIO}/${scenarioId}`,
-    LOGIN: (returnAddr?: string) => `${ROUTES.LOGIN}?redirect=${returnAddr}`,
+        `${ROUTES.EDIT_SCENARIO}/${String(scenarioId)}`,
+    LOGIN: (returnAddr?: string) =>
+        `${ROUTES.LOGIN}?redirect=${String(returnAddr)}`,
 });
 
 // export const GO = Object.freeze({
@@ -236,7 +236,7 @@ const router = createBrowserRouter([
         ),
     },
     {
-        path: `${ROUTES.PROFILE}`,
+        path: ROUTES.PROFILE,
         children: [
             {
                 index: true,
@@ -282,7 +282,7 @@ const router = createBrowserRouter([
         ],
     },
     {
-        path: `${ROUTES.LOGIN}`,
+        path: ROUTES.LOGIN,
         element: <Login />,
     },
 ]);

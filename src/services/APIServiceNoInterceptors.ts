@@ -1,12 +1,12 @@
-import { blankRequest } from '../common/request';
-
 import type { IBudget } from '../types/Budget.types';
 import type { ICard } from '../types/Card.types';
 import type { ICategory } from '../types/Category.d';
 import type { IMatcher } from '../types/Matcher.d';
 import type { IStandardResponse } from '../types/Request.d';
-import { IScenario } from '../types/Scenario.types';
+import type { IScenario } from '../types/Scenario.types';
 import type { ITransaction } from '../types/Transaction.d';
+
+import { blankRequest } from '../common/request';
 
 /**
  * Service for interacting with the application API.
@@ -91,7 +91,7 @@ const APIServiceNoInterceptors = Object.freeze({
     updateCategory: async (category: Partial<ICategory>) => {
         const response = await blankRequest.put<
             IStandardResponse<{ category: ICategory }>
-        >(`/category/${category.id}`, category);
+        >(`/category/${String(category.id)}`, category);
         return response;
     },
 

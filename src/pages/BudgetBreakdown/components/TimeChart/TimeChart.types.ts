@@ -1,6 +1,5 @@
-import { Dayjs } from 'dayjs';
-
 import type { ITransaction } from '../../../../types/Transaction.d';
+import type { Dayjs } from 'dayjs';
 
 export interface IProps {
     endDate: Dayjs;
@@ -11,11 +10,7 @@ export interface IProps {
 export interface ISortedByCategoryRow {
     label: string;
     id: string;
-    transactions: {
-        [key: string]: ITransaction[];
-    };
+    transactions: Record<string, ITransaction[]>;
 }
 
-export interface ISortedByCategory {
-    [key: string]: ISortedByCategoryRow;
-}
+export type ISortedByCategory = Record<string, ISortedByCategoryRow>;

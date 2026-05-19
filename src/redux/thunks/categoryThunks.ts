@@ -1,15 +1,11 @@
-import { TFunction } from 'i18next';
-
-import { ICategory } from '../../types/Category.d';
-import { IMatcher } from '../../types/Matcher.d';
-
-import { AppDispatch, RootState } from '../constants/store';
+import type { ICategory } from '../../types/Category.d';
+import type { IMatcher } from '../../types/Matcher.d';
+import type { AppDispatch, RootState } from '../constants/store';
+import type { TFunction } from 'i18next';
 
 import APIService from '../../services/APIService';
 import APIServiceNoInterceptors from '../../services/APIServiceNoInterceptors';
-
 import { sortCategories } from '../../utils/categoryUtils';
-
 import {
     createCategory,
     createSingleMatcher,
@@ -19,8 +15,8 @@ import {
     writeCategories,
 } from '../slices/categorySlice';
 
-import { intakeError } from './errorThunks';
 import { refreshAuthentication } from './authThunks';
+import { intakeError } from './errorThunks';
 
 /**
  * Conditional re-requests the category state from the server.
@@ -29,7 +25,7 @@ import { refreshAuthentication } from './authThunks';
  * @param override If true, a refresh will be forced.
  */
 export const refreshCategories =
-    (t: TFunction<'translation', undefined>, override?: boolean) =>
+    (t: TFunction, override?: boolean) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const state = getState();
@@ -37,10 +33,10 @@ export const refreshCategories =
             if (override || !state.category.queried) {
                 dispatch(requestCategories());
                 const response = await APIService.getAllCategories();
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
-                if (response?.status === 200 && response.payload) {
+                if (response.status === 200) {
                     const orderedData = sortCategories(
                         response.payload.categories,
                     );
@@ -53,7 +49,6 @@ export const refreshCategories =
                 }
             }
         } catch (error) {
-            console.error(error);
             dispatch(intakeError(error));
         }
     };
@@ -64,7 +59,7 @@ export const refreshCategories =
  * @param allowReRequest If true a re-request will be tried if the authentication expires.
  */
 export const categoryCreateAction =
-    (category: Partial<ICategory>, allowReRequest: boolean = false) =>
+    (category: Partial<ICategory>, allowReRequest = false) =>
     async (dispatch: AppDispatch) => {
         try {
             const response =
@@ -77,8 +72,9 @@ export const categoryCreateAction =
                     }),
                 );
             }
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling logic requires review
                 if (error1.status === 401 && allowReRequest) {
                     dispatch(
                         refreshAuthentication(() => {
@@ -88,7 +84,7 @@ export const categoryCreateAction =
                 } else {
                     dispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
+            } catch (error2) {
                 dispatch(intakeError(error2));
             }
         }
@@ -100,7 +96,7 @@ export const categoryCreateAction =
  * @param allowReRequest If true a re-request will be tried if the authentication expires.
  */
 export const categoryUpdateAction =
-    (category: Partial<ICategory>, allowReRequest: boolean = false) =>
+    (category: Partial<ICategory>, allowReRequest = false) =>
     async (dispatch: AppDispatch) => {
         try {
             const response =
@@ -113,8 +109,9 @@ export const categoryUpdateAction =
                     }),
                 );
             }
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling logic requires review
                 if (error1.status === 401 && allowReRequest) {
                     dispatch(
                         refreshAuthentication(() => {
@@ -124,7 +121,7 @@ export const categoryUpdateAction =
                 } else {
                     dispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
+            } catch (error2) {
                 dispatch(intakeError(error2));
             }
         }
@@ -136,7 +133,7 @@ export const categoryUpdateAction =
  * @param allowReRequest If true a re-request will be tried if the authentication expires.
  */
 export const categoryDeleteAction =
-    (categoryId: string, allowReRequest: boolean = false) =>
+    (categoryId: string, allowReRequest = false) =>
     async (dispatch: AppDispatch) => {
         try {
             const response =
@@ -145,8 +142,9 @@ export const categoryDeleteAction =
             if (!response.data.error && response.data.payload) {
                 dispatch(deleteSingleCategory({ categoryId }));
             }
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling logic requires review
                 if (error1.status === 401 && allowReRequest) {
                     dispatch(
                         refreshAuthentication(() => {
@@ -156,7 +154,7 @@ export const categoryDeleteAction =
                 } else {
                     dispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
+            } catch (error2) {
                 dispatch(intakeError(error2));
             }
         }
@@ -171,7 +169,7 @@ export const matcherCreateAction =
     (
         matcher: Partial<IMatcher>,
         categoryId: ICategory['id'],
-        allowReRequest: boolean = false,
+        allowReRequest = false,
     ) =>
     async (dispatch: AppDispatch) => {
         try {
@@ -188,8 +186,9 @@ export const matcherCreateAction =
                     }),
                 );
             }
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling logic requires review
                 if (error1.status === 401 && allowReRequest) {
                     dispatch(
                         refreshAuthentication(() => {
@@ -199,7 +198,7 @@ export const matcherCreateAction =
                 } else {
                     dispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
+            } catch (error2) {
                 dispatch(intakeError(error2));
             }
         }
@@ -211,7 +210,7 @@ export const matcherCreateAction =
  * @param allowReRequest If true a re-request will be tried if the authentication expires.
  */
 export const matcherUpdateAction =
-    (category: Partial<ICategory>, allowReRequest: boolean = false) =>
+    (category: Partial<ICategory>, allowReRequest = false) =>
     async (dispatch: AppDispatch) => {
         try {
             const response =
@@ -224,8 +223,9 @@ export const matcherUpdateAction =
                     }),
                 );
             }
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling logic requires review
                 if (error1.status === 401 && allowReRequest) {
                     dispatch(
                         refreshAuthentication(() => {
@@ -235,7 +235,7 @@ export const matcherUpdateAction =
                 } else {
                     dispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
+            } catch (error2) {
                 dispatch(intakeError(error2));
             }
         }
@@ -247,7 +247,7 @@ export const matcherUpdateAction =
  * @param allowReRequest If true a re-request will be tried if the authentication expires.
  */
 export const matcherDeleteAction =
-    (categoryId: string, allowReRequest: boolean = false) =>
+    (categoryId: string, allowReRequest = false) =>
     async (dispatch: AppDispatch) => {
         try {
             const response =
@@ -256,8 +256,9 @@ export const matcherDeleteAction =
             if (!response.data.error && response.data.payload) {
                 dispatch(deleteSingleCategory({ categoryId }));
             }
-        } catch (error1: any) {
+        } catch (error1) {
             try {
+                // @ts-expect-error error handling logic requires review
                 if (error1.status === 401 && allowReRequest) {
                     dispatch(
                         refreshAuthentication(() => {
@@ -267,7 +268,7 @@ export const matcherDeleteAction =
                 } else {
                     dispatch(intakeError(error1));
                 }
-            } catch (error2: any) {
+            } catch (error2) {
                 dispatch(intakeError(error2));
             }
         }

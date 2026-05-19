@@ -1,27 +1,25 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Refresh as IconRefresh } from '@mui/icons-material';
+import { Box, Button, FormControlLabel, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { Box, Button, FormControlLabel, Typography } from '@mui/material';
-import { Refresh as IconRefresh } from '@mui/icons-material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-import {
-    getTransactionsEndDate,
-    getTransactionsStartDate,
-} from '../../../../redux/selectors/transactionsSelectors';
-
-import { conditionallyRefreshTransactions } from '../../../../redux/thunks/transactionThunks';
-
+import CardSelector from '../../../../components/CardSelector';
+import ExportTransactions from '../../../../components/ExportTransactions';
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
-import CardSelector from '../../../../components/CardSelector';
-import ExportTransactions from '../../../../components/ExportTransactions';
+import {
+    getTransactionsEndDate,
+    getTransactionsStartDate,
+} from '../../../../redux/selectors/transactionsSelectors';
+import { conditionallyRefreshTransactions } from '../../../../redux/thunks/transactionThunks';
 
 dayjs.extend(localizedFormat);
 

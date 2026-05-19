@@ -1,26 +1,22 @@
-import { ChangeEvent, FC, useState } from 'react';
+import { type ChangeEvent, type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Translate as IconTranslate } from '@mui/icons-material';
+import { Autocomplete, Box, Typography } from '@mui/material';
+
 import { useFormik } from 'formik';
 import locale from 'locale-codes';
 
-import { Autocomplete, Box, Typography } from '@mui/material';
-import { Translate as IconTranslate } from '@mui/icons-material';
-
-import APIService from '../../../../services/APIService';
-
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 import { registerUser } from '../../../../redux/thunks/authThunks';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
-
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
+import APIService from '../../../../services/APIService';
 import {
     comparePasswords,
     emailValidator,
     passwordStrength,
 } from '../../../../utils/signupUtils';
-
 import { Form, TextField } from '../../Login.styles';
-
 import SubmitButton from '../SubmitButton';
 
 /**
@@ -55,7 +51,7 @@ const NewUser: FC = () => {
             displayName: '',
         },
         validate: (nextValues) => {
-            let errorsFound: boolean = false;
+            let errorsFound = false;
             const nextErrors: {
                 email: string;
                 password: string;
@@ -97,26 +93,28 @@ const NewUser: FC = () => {
         onSubmit: (nextValues, formikBag) => {
             formikBag.setSubmitting(true);
             try {
-                APIService.checkUserExists(nextValues.email)
-                    .then((response) => {
-                        if (response.payload?.exists) {
-                            formikBag.setFieldError(
-                                'email',
-                                t('auth.usernameTaken'),
-                            );
-                        } else {
-                            dispatch(
-                                registerUser(
-                                    nextValues.email,
-                                    nextValues.password,
-                                    nextValues.displayName,
-                                    'en-GB',
-                                ),
-                            );
-                        }
-                        formikBag.setSubmitting(false);
-                    })
-                    .catch((err) => console.error(err));
+                const request = async () => {
+                    const response = await APIService.checkUserExists(
+                        nextValues.email,
+                    );
+                    if (response.payload?.exists) {
+                        formikBag.setFieldError(
+                            'email',
+                            t('auth.usernameTaken'),
+                        );
+                    } else {
+                        dispatch(
+                            registerUser(
+                                nextValues.email,
+                                nextValues.password,
+                                nextValues.displayName,
+                                'en-GB',
+                            ),
+                        );
+                    }
+                    formikBag.setSubmitting(false);
+                };
+                request();
             } catch (error) {
                 dispatch(intakeError(error));
                 formikBag.setSubmitting(false);
@@ -131,7 +129,9 @@ const NewUser: FC = () => {
                     setFieldError('email', t('auth.usernameTaken'));
                 }
             })
-            .catch((err) => console.error(err));
+            .catch((err: unknown) => {
+                console.error(err);
+            });
     };
 
     return (
@@ -208,7 +208,7 @@ const NewUser: FC = () => {
                         `${option.name} (${option.tag})`
                     }
                     getOptionKey={(option) => option.tag}
-                    onChange={(event, nextValue) => {
+                    onChange={(_, nextValue) => {
                         if (nextValue) {
                             setLanguage(nextValue);
                         }
@@ -225,7 +225,9 @@ const NewUser: FC = () => {
             </Box>
             <SubmitButton
                 loading={isSubmitting}
-                onSubmit={() => handleSubmit()}
+                onSubmit={() => {
+                    handleSubmit();
+                }}
                 submitDisabled={isSubmitting}
                 success={false}
                 text={t('auth.signUp')}

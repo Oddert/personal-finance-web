@@ -1,12 +1,12 @@
-import { FC, useRef, useState } from 'react';
+import { type FC, useRef, useState } from 'react';
 
 import { Box } from '@mui/material';
+
+import type { IProps } from './PercentageChart.types';
 
 import BudgetPercentageChart from '../../../../components/BudgetPercentageChart';
 import BudgetPercentageControls from '../../../../components/BudgetPercentageControls';
 import TransactionPreview from '../../../../components/TransactionPreview';
-
-import type { IProps } from './PercentageChart.types';
 
 const defaultZoomLevel = 1;
 const zoomDimensionsLookup: [
@@ -67,9 +67,12 @@ const PercentageChart: FC<IProps> = ({ data, endDate, startDate }) => {
                 width={zoomDim.width}
             />
             <TransactionPreview
+                // eslint-disable-next-line react-hooks/refs
                 anchorEl={ref.current}
                 categoryId={categoryId}
-                clearAnchorEl={() => setOpen(false)}
+                clearAnchorEl={() => {
+                    setOpen(false);
+                }}
                 endDate={endDate}
                 open={open}
                 startDate={startDate}

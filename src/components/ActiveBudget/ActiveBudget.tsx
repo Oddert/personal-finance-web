@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { Box, FormLabel } from '@mui/material';
 
-import BudgetSelector from '../BudgetSelector/BudgetSelector';
-
 import type { IProps } from './ActiveBudget.types';
+
+import BudgetSelector from '../BudgetSelector/BudgetSelector';
 
 /**
  * Displays a form control for the {@link BudgetSele} with a left-aligned label and some formatting.

@@ -1,7 +1,11 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import locale from 'locale-codes';
 
+import {
+    KeyboardArrowDown as IconDown,
+    KeyboardArrowUp as IconUp,
+    Language as IconLanguage,
+} from '@mui/icons-material';
 import {
     Accordion,
     AccordionDetails,
@@ -15,25 +19,20 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import {
-    KeyboardArrowDown as IconDown,
-    Language as IconLanguage,
-    KeyboardArrowUp as IconUp,
-} from '@mui/icons-material';
 
-import {
-    reorderLanguages,
-    updateLanguagePreferences,
-} from '../../../../redux/thunks/profileThunks';
+import locale from 'locale-codes';
+
+import type { IProps } from './LanguageSelector.types';
 
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
 import { getUserLanguages } from '../../../../redux/selectors/profileSelectors';
-
-import { IProps } from './LanguageSelector.types';
+import {
+    reorderLanguages,
+    updateLanguagePreferences,
+} from '../../../../redux/thunks/profileThunks';
 
 /**
  * Presents controls for the user to select their preferred languages and priority order.
@@ -72,7 +71,7 @@ const LanguageSelector: FC<IProps> = () => {
             <Autocomplete
                 getOptionLabel={(option) => `${option.name} (${option.tag})`}
                 getOptionKey={(option) => option.tag}
-                onChange={(event, nextValue) => {
+                onChange={(_, nextValue) => {
                     if (nextValue) {
                         dispatch(
                             updateLanguagePreferences([
@@ -103,11 +102,11 @@ const LanguageSelector: FC<IProps> = () => {
                                 <Box>
                                     <Button
                                         disabled={idx === 0}
-                                        onClick={() =>
+                                        onClick={() => {
                                             dispatch(
                                                 reorderLanguages(idx, idx - 1),
-                                            )
-                                        }
+                                            );
+                                        }}
                                         title={t('Move up in sort order')}
                                     >
                                         <IconUp />
@@ -116,11 +115,11 @@ const LanguageSelector: FC<IProps> = () => {
                                         disabled={
                                             idx === usersLanguages.length - 1
                                         }
-                                        onClick={() =>
+                                        onClick={() => {
                                             dispatch(
                                                 reorderLanguages(idx, idx + 1),
-                                            )
-                                        }
+                                            );
+                                        }}
                                         title={t('Move down in sort order')}
                                     >
                                         <IconDown />

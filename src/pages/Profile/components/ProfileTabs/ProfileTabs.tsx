@@ -1,10 +1,11 @@
-import { FC, SyntheticEvent, useCallback } from 'react';
+import { type FC, type SyntheticEvent, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { Tab, Tabs } from '@mui/material';
 
-import router, { ROUTES } from '../../../../constants/routerConstants';
+import type { IProps } from './ProfileTabs.types';
 
-import { IProps } from './ProfileTabs.types';
+import router, { ROUTES } from '../../../../constants/routerConstants';
 
 /**
  * Tab selector for the profile page to switch between sub-sections.
@@ -16,7 +17,7 @@ const ProfileTabs: FC<IProps> = ({ value }) => {
     const { t } = useTranslation();
 
     const handleChange = useCallback(
-        (event: SyntheticEvent, nextLocation: string) => {
+        (_: SyntheticEvent, nextLocation: string) => {
             router.navigate(`${ROUTES.PROFILE}/${nextLocation}`);
         },
         [],

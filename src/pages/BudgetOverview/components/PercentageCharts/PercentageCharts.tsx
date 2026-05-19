@@ -1,12 +1,14 @@
-import { FC, useState } from 'react';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { type FC, useState } from 'react';
 
 import { Box, Paper } from '@mui/material';
 
-import BudgetPercentageControls from '../../../../components/BudgetPercentageControls/';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './PercentageCharts.types';
+
+import BudgetPercentageControls from '../../../../components/BudgetPercentageControls/';
+
 import PercentageChartWrapper from './components/PercentageChartWrapper';
 
 const defaultZoomLevel = 1;

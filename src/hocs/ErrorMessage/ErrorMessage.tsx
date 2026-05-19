@@ -1,6 +1,7 @@
-import { FC, Fragment, useCallback } from 'react';
+import { type FC, Fragment, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Error as IconError } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -10,14 +11,12 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-import { Error as IconError } from '@mui/icons-material';
 
-import { getErrorState } from '../../redux/selectors/errorSelectors';
-import { clearError } from '../../redux/slices/errorSlice';
+import type { IProps } from './ErrorMessage.types';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import { IProps } from './ErrorMessage.types';
+import { getErrorState } from '../../redux/selectors/errorSelectors';
+import { clearError } from '../../redux/slices/errorSlice';
 
 /**
  * Error modal to display caught error messages.

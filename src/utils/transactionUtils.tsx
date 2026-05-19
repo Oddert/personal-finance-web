@@ -1,11 +1,10 @@
-import { CellContext, ColumnDef } from '@tanstack/react-table';
-import { TFunction } from 'i18next';
-
 import { Box } from '@mui/material';
 
-import type { ITransaction } from '../types/Transaction.d';
-import type { ICategory } from '../types/Category.d';
 import type { CategoryState } from '../redux/slices/categorySlice';
+import type { ICategory } from '../types/Category.d';
+import type { ITransaction } from '../types/Transaction.d';
+import type { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { TFunction } from 'i18next';
 
 import useLocalisedNumber from '../hooks/useLocalisedNumber';
 
@@ -42,10 +41,8 @@ export const mapCategoriesToTransactions = (
  * @returns The transactions ordered by category and by date (year, month).
  */
 export const orderTransactions = (transactions: ITransaction[]) => {
-    const orderedByDate: {
-        [year: string]: { [month: number]: ITransaction[] };
-    } = {};
-    const orderedByCategory: { [category: number | string]: ITransaction[] } = {
+    const orderedByDate: Record<string, Record<number, ITransaction[]>> = {};
+    const orderedByCategory: Record<number | string, ITransaction[]> = {
         default: [],
     };
 
@@ -53,7 +50,7 @@ export const orderTransactions = (transactions: ITransaction[]) => {
         const date = new Date(transaction.date);
         const year = date.getFullYear();
         const month = date.getMonth();
-        const category = transaction.categoryId || 'default';
+        const category = transaction.categoryId ?? 'default';
 
         if (!(year in orderedByDate)) {
             orderedByDate[year] = {};
@@ -84,6 +81,7 @@ export const orderTransactions = (transactions: ITransaction[]) => {
 export const addCurrencySymbol = (cell: CellContext<ITransaction, unknown>) => {
     const rawValue = createReadableNumber(cell.renderValue(), 0);
     const value = Number(rawValue);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { currencyLocaliser } = useLocalisedNumber();
     return (
         <Box sx={{ textAlign: 'right' }}>
@@ -97,7 +95,7 @@ export const addCurrencySymbol = (cell: CellContext<ITransaction, unknown>) => {
  */
 export const transactionColumns = (
     language: string,
-    t: TFunction<'translation', undefined>,
+    t: TFunction,
 ): ColumnDef<ITransaction>[] => [
     {
         header: t('literals.Date'),
@@ -133,7 +131,9 @@ export const transactionColumns = (
         header: t('literals.Category'),
         accessorKey: 'assignedCategory',
         cell: (cell) => {
+            // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
             const value: ICategory | unknown = cell.renderValue();
+            // eslint-disable-next-line no-console
             console.log('value', value);
             if (value && typeof value === 'object' && 'label' in value) {
                 return value.label;
@@ -158,8 +158,8 @@ export const transactionColumns = (
 export const getRangeKeyEncoding = (year: string, month: string) => {
     const adjustedMonth = Number(month) + 1;
     const stringMonth =
-        adjustedMonth >= 10 ? adjustedMonth : `0${adjustedMonth}`;
-    return `${stringMonth}-${year}`;
+        adjustedMonth >= 10 ? adjustedMonth : `0${String(adjustedMonth)}`;
+    return `${String(stringMonth)}-${year}`;
 };
 
 /**
@@ -171,7 +171,7 @@ export const getRangeKeyEncoding = (year: string, month: string) => {
  */
 const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
     const dateComponents: string[] = rangeKey.split('-');
-    const months: { [month: string]: string } = {
+    const months: Record<string, string> = {
         '01': 'Jan',
         '02': 'Feb',
         '03': 'Mar',
@@ -195,10 +195,7 @@ const getMonthFromRangeKey = (rangeKey: string): [string, string] => {
  * @param keysArray List of date strings encoded with {@link getRangeKeyEncoding}
  * @returns List of values for the Range component.
  */
-export const generateMarks = (
-    keysArray: string[],
-    t: TFunction<'translation', undefined>,
-) => {
+export const generateMarks = (keysArray: string[], t: TFunction) => {
     let markStepSize = 1;
     if (keysArray.length > 47) {
         markStepSize = 6;

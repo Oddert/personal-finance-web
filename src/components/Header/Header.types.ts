@@ -1,4 +1,4 @@
-import { AppBarProps as MuiAppBarProps } from '@mui/material';
+import type { AppBarProps as MuiAppBarProps } from '@mui/material';
 
 export interface AppBarProps extends MuiAppBarProps {
     discreet?: boolean;

@@ -1,20 +1,20 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { CircularProgress, Paper, useTheme } from '@mui/material';
 import { BarChart } from '@mui/x-charts';
 
-import { TAggregateDatapoints } from '../../../../types/Transaction.d';
+import type { IProps } from './ProjectionChart.types';
+import type { TAggregateDatapoints } from '../../../../types/Transaction.d';
+
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
 import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
-import { intakeError } from '../../../../redux/thunks/errorThunks';
-
-import APIService from '../../../../services/APIService';
-
-import { IProps } from './ProjectionChart.types';
-import { CircularProgress, Paper, useTheme } from '@mui/material';
 import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
+import APIService from '../../../../services/APIService';
 
 const ProjectionChart: FC<IProps> = () => {
     const [pastData, setPastData] = useState<TAggregateDatapoints>({});
@@ -32,24 +32,25 @@ const ProjectionChart: FC<IProps> = () => {
             return;
         }
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPastDataLoading(true);
 
         const fetchPastData = async () => {
             try {
                 const pastDataResponse =
                     await APIService.getAllTransactionsAggregated(cardId, true);
-                if (!pastDataResponse || !pastDataResponse.payload) {
+                if (!pastDataResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setPastData(pastDataResponse.payload.transactions);
-            } catch (error: any) {
+            } catch (error) {
                 dispatch(intakeError(error));
             } finally {
                 setPastDataLoading(false);
             }
         };
 
-        void fetchPastData();
+        fetchPastData();
     }, [dispatch, t, cardId]);
 
     const monthKeys = useMemo(() => {

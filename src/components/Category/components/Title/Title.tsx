@@ -1,12 +1,10 @@
-import { FC, useCallback } from 'react';
-
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
-import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
-
-import TitleBase from '../TitleBase/TitleBase';
+import { type FC, useCallback } from 'react';
 
 import type { IProps } from './Title.types';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
+import TitleBase from '../TitleBase/TitleBase';
 
 /**
  * Abstraction for {@link TitleBase} to provide callback props.
@@ -25,11 +23,10 @@ const Title: FC<IProps> = ({ category, small = false }) => {
                 categoryUpdateAction(
                     {
                         ...category,
-                        matchers:
-                            category?.matchers?.map((matcher) => ({
-                                ...matcher,
-                                case_sensitive: Boolean(matcher.case_sensitive),
-                            })) || [],
+                        matchers: category.matchers.map((matcher) => ({
+                            ...matcher,
+                            case_sensitive: Boolean(matcher.case_sensitive),
+                        })),
                         label: value,
                     },
                     true,

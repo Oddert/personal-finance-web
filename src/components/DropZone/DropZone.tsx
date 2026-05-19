@@ -1,11 +1,15 @@
-import { FC, useCallback } from 'react';
+import { type FC, useCallback } from 'react';
+import {
+    type DropEvent,
+    type FileRejection,
+    useDropzone,
+} from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
-import { useDropzone, DropEvent, FileRejection } from 'react-dropzone';
 
-import { Box, Typography } from '@mui/material';
 import { Upload as IconUpload } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 
-import { IProps } from './DropZone.types';
+import type { IProps } from './DropZone.types';
 
 const DropZone: FC<IProps> = ({ onSuccess }) => {
     const { t } = useTranslation();
@@ -16,6 +20,7 @@ const DropZone: FC<IProps> = ({ onSuccess }) => {
             fileRejections: FileRejection[],
             event: DropEvent,
         ) => {
+            // eslint-disable-next-line no-console
             console.log(acceptedFiles, fileRejections, event);
             onSuccess(acceptedFiles);
         },

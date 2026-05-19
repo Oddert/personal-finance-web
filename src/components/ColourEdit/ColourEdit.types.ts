@@ -1,5 +1,4 @@
-import { SxProps } from '@mui/material';
-import { Theme } from '@emotion/react';
+import type { SxProps, Theme } from '@mui/material';
 
 export interface IProps {
     colour?: string;

@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import {
@@ -8,7 +8,7 @@ import {
     Tooltip,
 } from '@mui/material';
 
-import { IProps } from './NavLink.types';
+import type { IProps } from './NavLink.types';
 
 /**
  * Renders a single nav item link.
@@ -31,6 +31,8 @@ const NavLink: FC<IProps> = ({
     const appLocation = useLocation();
 
     const selected = useMemo(() => {
+        // WARNING: vulnerable regex requires replacement
+        // eslint-disable-next-line security/detect-non-literal-regexp
         const re = new RegExp(navItem.location, 'gi');
         const test = re.test(appLocation.pathname);
         return test;

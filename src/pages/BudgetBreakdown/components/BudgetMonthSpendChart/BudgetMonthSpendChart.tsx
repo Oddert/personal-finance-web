@@ -1,21 +1,22 @@
-import { FC, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { type FC, useEffect, useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { useTranslation } from 'react-i18next';
 
 import { Autocomplete, Box, TextField } from '@mui/material';
 
-import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
-import {
+import type {
     IMonthSpendCategory,
     IProps,
     ISeries,
 } from './BudgetMonthSpendChart.type';
+
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
+
 import { generateMonthSpendData } from './BudgetMonthSpendChartUtils';
 
 dayjs.extend(localizedFormat);
@@ -43,6 +44,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({ filteredTransactions }) => {
             filteredTransactions,
         );
         const nextOptions = Object.values(allCategories);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSeries(nextSeries);
         setOptions(nextOptions);
         setValue([nextOptions[0]]);
@@ -50,8 +52,8 @@ const BudgetMonthSpendChart: FC<IProps> = ({ filteredTransactions }) => {
 
     const series = useMemo(() => {
         const valuesLookup = value.reduce(
-            (acc: { [id: string]: boolean }, val) => {
-                if (val?.categoryId) {
+            (acc: Record<string, boolean>, val) => {
+                if (val.categoryId) {
                     acc[val.categoryId] = true;
                 }
                 return acc;
@@ -72,7 +74,9 @@ const BudgetMonthSpendChart: FC<IProps> = ({ filteredTransactions }) => {
                 getOptionKey={(option) => option.categoryId}
                 multiple
                 options={options}
-                onChange={(e, nextValue) => setValue(nextValue)}
+                onChange={(_, nextValue) => {
+                    setValue(nextValue);
+                }}
                 renderInput={(params) => (
                     <TextField {...params} label={t('Categories')} />
                 )}

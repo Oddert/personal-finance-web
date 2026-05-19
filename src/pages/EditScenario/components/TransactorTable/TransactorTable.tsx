@@ -1,15 +1,17 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
+    Paper,
     Table as MuiTable,
     TableBody,
+    TableCell,
     TableHead,
     TableRow,
-    TableCell,
-    Paper,
 } from '@mui/material';
 
-import { IProps } from './TransactorTable.types';
+import type { IProps } from './TransactorTable.types';
+
 import TransactorRow from '../TransactorRow';
 
 const TransactorTable: FC<IProps> = ({ setTransactors, transactors }) => {

@@ -1,9 +1,10 @@
-import { FC, useMemo } from 'react';
-import { Typography, TypographyProps } from '@mui/material';
+import { type FC, useMemo } from 'react';
 
-import EditableText from '../../../EditableText/EditableText';
+import { Typography, type TypographyProps } from '@mui/material';
 
 import type { IProps } from './TitleBase.types';
+
+import EditableText from '../../../EditableText/EditableText';
 
 const sizeMap = {
     xs: '10px',
@@ -26,21 +27,21 @@ const sizeMap = {
  * @param props.size The display size.
  */
 const TitleBase: FC<IProps> = ({
-    colour = '',
-    editable = true,
+    colour,
+    editable,
     handleChange = () => {},
-    text = '',
+    text,
     showBorder = false,
     size = 'md',
 }) => {
-    const headingProps = useMemo(() => {
+    const headingProps: Partial<TypographyProps> = useMemo(() => {
         return {
             sx: {
                 alignSelf: 'stretch',
                 borderBottom: showBorder ? `2px solid ${colour}` : 'none',
                 fontSize: sizeMap[size],
             },
-            variant: 'h3' as TypographyProps['variant'],
+            variant: 'h3',
         };
     }, [colour, size, showBorder]);
 

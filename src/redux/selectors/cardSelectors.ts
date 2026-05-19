@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { RootState } from '../constants/store';
+import type { RootState } from '../constants/store';
 
 /**
  * Returns the 'card' section of the redux state.
@@ -56,5 +56,5 @@ export const getActiveCard = createSelector(
  */
 export const getActiveCardId = createSelector(
     getActiveCard,
-    (activeCard) => activeCard?.id || null,
+    (activeCard) => activeCard?.id ?? null,
 );

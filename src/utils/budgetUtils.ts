@@ -1,11 +1,10 @@
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
+import type { CategoryState } from '../redux/slices/categorySlice';
 import type { IBudget, IBudgetDatum, IBudgetRow } from '../types/Budget.types';
 import type { ICategoryBreakdown } from '../types/Category.d';
 import type { ITransaction } from '../types/Transaction.d';
-
-import { CategoryState } from '../redux/slices/categorySlice';
 
 import { normaliseNum } from './mathsUtils';
 
@@ -141,7 +140,7 @@ export const createBudgetChartData = (
     numMonths = 1,
 ) => {
     const budgetRowsById = budget.budgetRows.reduce(
-        (acc: { [id: string]: IBudgetRow }, each) => {
+        (acc: Record<string, IBudgetRow>, each) => {
             acc[each.categoryId] = each;
             return acc;
         },
@@ -153,7 +152,7 @@ export const createBudgetChartData = (
             const budgetDatum = budgetRowsById[uid];
             const normalisedValue = normaliseNum(categoryBd.value);
 
-            if (budgetDatum?.value) {
+            if (budgetDatum.value) {
                 const budgetValue = numMonths * budgetDatum.value;
                 const diffFloat = normaliseNum(normalisedValue - budgetValue);
                 const diffPc = normaliseNum((diffFloat / budgetValue) * 100);

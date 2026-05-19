@@ -1,6 +1,6 @@
-import { ZIndex } from '@mui/material/styles';
+import type { ThemeOptions } from '@mui/material';
 
-const zIndex: ZIndex = {
+const zIndex: ThemeOptions['zIndex'] = {
     mobileStepper: 1000,
     fab: 1050,
     speedDial: 1050,
