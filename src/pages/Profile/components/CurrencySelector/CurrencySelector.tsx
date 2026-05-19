@@ -75,10 +75,10 @@ const LanguageSelector: FC<IProps> = () => {
         >
             <IconCurrency />
             <Box>
-                <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
+                <Typography align='left' sx={{ mb: 1 }} variant='h3'>
                     {t('Profile.currencyTitle')}
                 </Typography>
-                <Typography textAlign='left'>
+                <Typography align='left' variant='h3'>
                     {t('Profile.currencyDesc')}
                 </Typography>
             </Box>

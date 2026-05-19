@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { Button, CircularProgress } from '@mui/material';
-import { CheckCircleOutline as SuccessIcon } from '@mui/icons-material';
+import { CheckCircle as SuccessIcon } from '@mui/icons-material';
 
 import { IProps } from './SubmitButton.types';
 

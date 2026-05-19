@@ -1,24 +1,27 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
     Button,
-    List,
-    ListItem,
+    Collapse,
+    IconButton,
     MenuItem,
-    Paper,
     Select,
     SelectChangeEvent,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
     TextField,
     Tooltip,
+    Typography,
 } from '@mui/material';
 import {
     Add as IconCreate,
+    ChevronRight as IconExpandClosed,
+    ExpandMore as IconExpandOpen,
     Delete as IconDelete,
     DeleteForever as IconUnDelete,
 } from '@mui/icons-material';
@@ -40,6 +43,8 @@ const TransactorRow: FC<IProps> = ({
     transactor,
     transactors,
 }) => {
+    const [expanded, setExpanded] = useState(false);
+
     const { t } = useTranslation();
 
     const handleChangeValue = (
@@ -179,23 +184,40 @@ const TransactorRow: FC<IProps> = ({
         setTransactors(filteredRows);
     };
 
+    const toggleExpanded = () => setExpanded(!expanded);
+
     return (
-        <ListItem sx={{ p: 0, mb: 1 }}>
-            <Paper title={transactor.deleted ? t('row deleted') : undefined}>
-                <Box
-                    sx={{
-                        width: '100%',
-                        p: '8px 16px',
-                        display: 'grid',
-                        gridTemplateColumns: '3fr 1fr 1fr 100px',
-                        alignItems: 'center',
-                        gridGap: '16px',
-                    }}
-                >
+        <Fragment>
+            <TableRow>
+                <TableCell>
+                    <IconButton
+                        onClick={toggleExpanded}
+                        title={
+                            expanded
+                                ? 'click to collapse schedulers'
+                                : 'click to open schedulers'
+                        }
+                    >
+                        {expanded ? <IconExpandOpen /> : <IconExpandClosed />}
+                    </IconButton>
+                </TableCell>
+                <TableCell>
+                    <Typography>
+                        {transactor.schedulers.length
+                            ? transactor.schedulers.length > 1
+                                ? t('Scenario.numSchedules', {
+                                      num: transactor.schedulers.length,
+                                  })
+                                : t('Scenario.numScheduleSingle')
+                            : t('Scenario.scheduleThisEvent')}
+                    </Typography>
+                </TableCell>
+                <TableCell>
                     <TextField
                         disabled={transactor.deleted}
                         label={t('literals.Description')}
                         onChange={handleChangeDesc}
+                        size='small'
                         sx={{
                             '& * ': {
                                 textDecoration: transactor.deleted
@@ -205,10 +227,13 @@ const TransactorRow: FC<IProps> = ({
                         }}
                         value={transactor.description}
                     />
+                </TableCell>
+                <TableCell>
                     <TextField
                         disabled={transactor.deleted}
                         label={t('literals.Amount')}
                         onChange={handleChangeValue}
+                        size='small'
                         sx={{
                             '& * ': {
                                 textDecoration: transactor.deleted
@@ -219,13 +244,18 @@ const TransactorRow: FC<IProps> = ({
                         type='number'
                         value={transactor.value}
                     />
+                </TableCell>
+                <TableCell>
                     <Select
                         onChange={handleChangeIsAddition}
+                        size='small'
                         value={transactor.isAddition ? 'y' : 'n'}
                     >
                         <MenuItem value='y'>{t('literals.Add')}</MenuItem>
                         <MenuItem value='n'>{t('literals.Subtract')}</MenuItem>
                     </Select>
+                </TableCell>
+                <TableCell>
                     {transactor.deleted ? (
                         <Tooltip title={t('Budget.rowDeletedCLickToRestore')}>
                             <Button onClick={handleClickUndelete}>
@@ -239,37 +269,55 @@ const TransactorRow: FC<IProps> = ({
                             </Button>
                         </Tooltip>
                     )}
-                </Box>
-                <Accordion>
-                    <AccordionSummary>
-                        {transactor.schedulers.length
-                            ? t('Scenario.numSchedules', {
-                                  num: transactor.schedulers.length,
-                              })
-                            : t('Scenario.scheduleThisEvent')}
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <List>
-                            {transactor.schedulers.map((scheduler, idx) => (
-                                <SchedulerRow
-                                    handleClickDeleteScheduler={handleClickDeleteScheduler(
-                                        scheduler.id,
-                                    )}
-                                    handleChangeScheduler={handleChangeScheduler(
-                                        scheduler.id,
-                                    )}
-                                    key={idx}
-                                    scheduler={scheduler}
-                                />
-                            ))}
-                            <Button onClick={handleClickAddScheduler}>
-                                <IconCreate /> {t('Scenario.addSchedule')}
-                            </Button>
-                        </List>
-                    </AccordionDetails>
-                </Accordion>
-            </Paper>
-        </ListItem>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell
+                    colSpan={6}
+                    sx={{ py: 0, px: 8, borderBottom: 'none' }}
+                >
+                    <Collapse in={expanded} unmountOnExit>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>
+                                        {t('Scenario.Scheduler.schedulerType')}
+                                    </TableCell>
+                                    <TableCell>
+                                        {t('literals.Options')}
+                                    </TableCell>
+                                    <TableCell>{t('buttons.Delete')}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {transactor.schedulers.map((scheduler, idx) => (
+                                    <SchedulerRow
+                                        handleClickDeleteScheduler={handleClickDeleteScheduler(
+                                            scheduler.id,
+                                        )}
+                                        handleChangeScheduler={handleChangeScheduler(
+                                            scheduler.id,
+                                        )}
+                                        key={idx}
+                                        scheduler={scheduler}
+                                    />
+                                ))}
+                                <TableRow>
+                                    <TableCell colSpan={6} align='center'>
+                                        <Button
+                                            onClick={handleClickAddScheduler}
+                                        >
+                                            <IconCreate />{' '}
+                                            {t('Scenario.addSchedule')}
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </Fragment>
     );
 };
 

@@ -8,12 +8,17 @@ import {
     Button,
     CircularProgress,
     TextField,
+    ToggleButton,
+    ToggleButtonGroup,
     Typography,
 } from '@mui/material';
 import {
     Add as IconPlus,
     ArrowBack as IconArrowLeft,
     Save as IconSave,
+    WebAssetOff as IconPreviewOff,
+    ShowChart as IconPreviewTotal,
+    SsidChart as IconPreviewCategory,
 } from '@mui/icons-material';
 
 import { IScenario } from '../../types/Scenario.types';
@@ -38,12 +43,12 @@ import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 
-import DynamicCardList from '../../components/DynamicCardList';
-
 import DeleteScenario from './components/DeleteScenario';
-import TransactorRow from './components/TransactorRow';
 
 import { IProps, ITransactorRowEditable } from './EditScenario.types';
+import TransactorTable from './components/TransactorTable/TransactorTable';
+import { ffBlankTransactorRowEditable } from '../../utils/factoryFunctions';
+import ProjectionChart from './components/ProjectionChart';
 
 const emptyScenario = () => ({
     id: uuid(),
@@ -59,6 +64,8 @@ const emptyScenario = () => ({
     transactors: [],
 });
 
+type TPreviewMode = 'off' | 'total' | 'category';
+
 /**
  * Displays a page to edit or create a new Scenario.
  * @category Pages
@@ -71,8 +78,9 @@ const EditScenario: FC<IProps> = () => {
         [],
     );
 
-    const [loading, setLoading] = useState(false);
+    const [scenarioLoading, setScenarioLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
+    const [previewMode, setPreviewMode] = useState<TPreviewMode>('off');
 
     const cardId = useAppSelector(getActiveCardId);
 
@@ -108,12 +116,12 @@ const EditScenario: FC<IProps> = () => {
                 }
                 dispatch(addScenario({ scenario: response.payload.scenario }));
             }
-            setLoading(false);
+            setScenarioLoading(false);
             router.navigate(ROUTES.MANAGE_SCENARIOS);
         };
 
         try {
-            setLoading(true);
+            setScenarioLoading(true);
             dispatch(scenariosLoading());
             request();
         } catch (error1: any) {
@@ -121,11 +129,11 @@ const EditScenario: FC<IProps> = () => {
                 try {
                     dispatch(refreshAuthentication(request));
                 } catch (error2: any) {
-                    setLoading(false);
+                    setScenarioLoading(false);
                     dispatch(intakeError(error1));
                 }
             } else {
-                setLoading(false);
+                setScenarioLoading(false);
                 dispatch(intakeError(error1));
             }
         }
@@ -134,19 +142,22 @@ const EditScenario: FC<IProps> = () => {
     useEffect(() => {
         try {
             const fetchScenario = async (scenarioId: string) => {
-                const response = await APIService.getSingleScenario(scenarioId);
-                if (!response || !response.payload) {
+                const scenarioResponse =
+                    await APIService.getSingleScenario(scenarioId);
+                if (!scenarioResponse || !scenarioResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
-                setScenario(response.payload.scenario);
+                setScenario(scenarioResponse.payload.scenario);
                 setTransactors(
-                    response.payload.scenario.transactors.map((transactor) => ({
-                        ...transactor,
-                        staged: false,
-                        deleted: false,
-                    })),
+                    scenarioResponse.payload.scenario.transactors.map(
+                        (transactor) => ({
+                            ...transactor,
+                            staged: false,
+                            deleted: false,
+                        }),
+                    ),
                 );
-                setLoading(false);
+                setScenarioLoading(false);
             };
             if ('scenarioId' in params) {
                 fetchScenario(String(params.scenarioId));
@@ -170,13 +181,15 @@ const EditScenario: FC<IProps> = () => {
                     fetchScenario(String(templateId));
                     setIsEdit(false);
                 } else {
-                    setLoading(false);
+                    setScenarioLoading(false);
                 }
             }
         } catch (error: any) {
             dispatch(intakeError(error));
         }
     }, [t]);
+
+    const loading = scenarioLoading;
 
     if (loading) {
         return (
@@ -224,39 +237,46 @@ const EditScenario: FC<IProps> = () => {
                     }
                     value={scenario.description}
                 />
-                <DynamicCardList layout='list'>
-                    {transactors.map((datum) => (
-                        <TransactorRow
-                            key={datum.id}
-                            setTransactors={setTransactors}
-                            transactor={datum}
-                            transactors={transactors}
-                        />
-                    ))}
-                    <Button
-                        onClick={() =>
-                            setTransactors([
-                                ...transactors,
-                                {
-                                    createdOn: '',
-                                    description: '',
-                                    id: uuid(),
-                                    isAddition: true,
-                                    scenarioId: '',
-                                    schedulers: [],
-                                    updatedOn: '',
-                                    value: 0,
-                                    staged: true,
-                                    deleted: false,
-                                } as ITransactorRowEditable,
-                            ])
-                        }
-                    >
-                        <IconPlus /> {t('buttons.addBudgetRow')}
-                    </Button>
-                </DynamicCardList>
+                <Typography component='label' htmlFor='preview-control'>
+                    Preview mode
+                </Typography>
+                <ToggleButtonGroup
+                    exclusive
+                    id='preview-control'
+                    onChange={(_, value) => {
+                        setPreviewMode(value as TPreviewMode);
+                    }}
+                    size='small'
+                    value={previewMode}
+                >
+                    <ToggleButton key='off' value='off'>
+                        <IconPreviewOff /> off
+                    </ToggleButton>
+                    <ToggleButton key='total' value='total'>
+                        <IconPreviewTotal /> total value
+                    </ToggleButton>
+                    <ToggleButton key='category' value='category'>
+                        <IconPreviewCategory /> value by category
+                    </ToggleButton>
+                </ToggleButtonGroup>
+                <ProjectionChart />
+                <TransactorTable
+                    setTransactors={setTransactors}
+                    transactors={transactors}
+                />
+                <Button
+                    onClick={() =>
+                        setTransactors([
+                            ...transactors,
+                            ffBlankTransactorRowEditable(),
+                        ])
+                    }
+                >
+                    <IconPlus /> {t('buttons.addBudgetRow')}
+                </Button>
                 <Button
                     onClick={handleClickSave}
+                    startIcon={<IconSave />}
                     sx={{
                         position: 'fixed',
                         right: '16px',
@@ -264,7 +284,6 @@ const EditScenario: FC<IProps> = () => {
                     }}
                     variant='contained'
                 >
-                    <IconSave />{' '}
                     {isEdit
                         ? t('buttons.saveChanges')
                         : t('buttons.createNewScenario')}

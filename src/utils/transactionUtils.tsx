@@ -134,16 +134,17 @@ export const transactionColumns = (
         accessorKey: 'assignedCategory',
         cell: (cell) => {
             const value: ICategory | unknown = cell.renderValue();
+            console.log('value', value);
             if (value && typeof value === 'object' && 'label' in value) {
                 return value.label;
             }
             return `- ${t('literals.uncategorised')} -`;
         },
     },
-    {
-        header: t('Cat Id'),
-        accessorKey: 'categoryId',
-    },
+    // {
+    //     header: t('Cat Id'),
+    //     accessorKey: 'categoryId',
+    // },
 ];
 
 /**

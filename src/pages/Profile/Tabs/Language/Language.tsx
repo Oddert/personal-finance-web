@@ -57,10 +57,10 @@ const Language: FC = () => {
             >
                 <IconTranslate sx={{ gridRow: '1 / span 2' }} />
                 <Box>
-                    <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
+                    <Typography align='left' sx={{ mb: 1 }} variant='h3'>
                         {t('Profile.displayLanguageTitle')}
                     </Typography>
-                    <Typography textAlign='left'>
+                    <Typography align='left'>
                         {t('Profile.displayLanguageDesc')}
                     </Typography>
                 </Box>

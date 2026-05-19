@@ -19,7 +19,7 @@ const DropZone: FC<IProps> = ({ onSuccess }) => {
             console.log(acceptedFiles, fileRejections, event);
             onSuccess(acceptedFiles);
         },
-        [],
+        [onSuccess],
     );
 
     const { getInputProps, getRootProps, isDragActive } = useDropzone({

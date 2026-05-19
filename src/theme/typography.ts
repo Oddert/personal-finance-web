@@ -1,6 +1,6 @@
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+import { TypographyVariantsOptions } from '@mui/material/styles/createTypography';
 
-const typography: TypographyOptions = {
+const typography: TypographyVariantsOptions = {
     htmlFontSize: 16,
     fontFamily:
         "'open sans', 'Nirmala UI', Roboto, 'helvetica', 'Helvetica Neue', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen-Sans, Ubuntu, Cantarell",

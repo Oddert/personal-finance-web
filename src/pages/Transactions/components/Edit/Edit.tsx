@@ -13,12 +13,14 @@ import { Box, Button } from '@mui/material';
 import { Edit as IconEdit } from '@mui/icons-material';
 
 import {
+    createTECReducer,
+    restoreState,
     setColumnMap,
     setMode,
     tecWriteTransactions,
     TransactionEditContext,
     transactionEditInitialState,
-    transactionEditReducer,
+    TransactionEditState,
 } from '../../../../contexts/transactionEditContext';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 
@@ -37,6 +39,8 @@ import {
 import TransactionEdit from '../../../../components/TransactionEdit/TransactionEdit';
 
 import type { IProps } from './Edit.types';
+import { getFromLocalStore } from '../../../../common/localstore';
+import { PERSONAL_FINANCE_UPLOAD_RECOVERY } from '../../../../constants/appConstants';
 
 /**
  * Modal to edit all transactions currently selected in the view.
@@ -54,7 +58,7 @@ const Edit: FC<IProps> = () => {
     } = useContext(TransactionRange);
 
     const [state, dispatch] = useReducer(
-        transactionEditReducer,
+        createTECReducer(),
         transactionEditInitialState,
     );
 
@@ -96,6 +100,15 @@ const Edit: FC<IProps> = () => {
         dispatch(tecWriteTransactions(filteredTransactions));
         dispatch(setMode('edit'));
     }, [currencies, language, rangeValues, transactions, value]);
+
+    useEffect(() => {
+        const recovery = getFromLocalStore(PERSONAL_FINANCE_UPLOAD_RECOVERY);
+        if (recovery) {
+            const nextState: Partial<TransactionEditState> =
+                JSON.parse(recovery);
+            dispatch(restoreState(nextState));
+        }
+    }, []);
 
     return (
         <Fragment>

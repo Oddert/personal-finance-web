@@ -22,20 +22,16 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
 
     const categories = useSelector(getCategoryOrderedDataById);
 
-    const value = useMemo(
-        () =>
-            transaction.assignedCategory
-                ? categories[transaction.assignedCategory]
-                    ? {
-                          id: String(
-                              categories[transaction.assignedCategory].id,
-                          ),
-                          label: categories[transaction.assignedCategory].label,
-                      }
-                    : null
-                : null,
-        [categories, transaction],
-    );
+    const value = useMemo(() => {
+        return transaction.assignedCategory
+            ? categories[transaction.assignedCategory]
+                ? {
+                      id: String(categories[transaction.assignedCategory].id),
+                      label: categories[transaction.assignedCategory].label,
+                  }
+                : null
+            : null;
+    }, [categories, transaction]);
 
     const options = useMemo(
         () =>
@@ -67,7 +63,7 @@ const CategorySelector: FC<IProps> = ({ transaction }) => {
                         dispatch(
                             updateCategory(
                                 transaction.tecTempId as string,
-                                Number(category.id),
+                                category.id,
                             ),
                         );
                     }}

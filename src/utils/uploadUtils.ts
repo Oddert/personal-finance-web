@@ -58,7 +58,7 @@ export const autoMatchCategories = (
     // whether or not to apply the matcher search which is more computationally expensive.
     const superMatcher = new RegExp(regexList.all.join('|'), 'gi');
 
-    return transactions.map((transaction) => {
+    const returnValue = transactions.map((transaction) => {
         const description: string =
             'Transaction Description' in transaction
                 ? (transaction['Transaction Description'] as string)
@@ -86,4 +86,6 @@ export const autoMatchCategories = (
         }
         return transaction;
     });
+
+    return returnValue;
 };

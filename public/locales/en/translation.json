@@ -52,6 +52,7 @@
         "Debit": "Debit",
         "Default": "Default",
         "Description": "Description",
+        "expand": "expand",
         "Edit": "Edit",
         "Enabled": "Enabled",
         "Error": "Error",
@@ -67,7 +68,9 @@
         "Open": "Open",
         "Options": "Options",
         "Out": "Out",
+        "Repeat": "Repeat",
         "Scenario": "Scenario",
+        "Step": "Step",
         "Subtract": "Subtract",
         "Title": "Title",
         "to": "to",
@@ -119,6 +122,7 @@
         "Dec": "Dec"
     },
     "buttons": {
+        "addOrSubtract": "Add / Subtract",
         "Activate": "Activate",
         "addBudgetRow": "Add budget row",
         "addCategory": "Add Category",
@@ -332,6 +336,7 @@
         "pleaseSelectAScenario": "Please select a scenario.",
         "newBlankScenario": "New blank scenario",
         "numSchedules": "{{num}} schedules",
+        "numScheduleSingle": "1 schedule",
         "returnToAllScenarios": "Return to all scenarios",
         "scheduleThisEvent": "Schedule this event",
         "Scheduler": {
@@ -342,7 +347,9 @@
             "descriptionScalar": "Repeating event",
             "labelDay": "Day",
             "labelNthDay": "Every nth day (optional)",
-            "labelStep": "Step"
+            "labelStep": "Step",
+            "numberOfSchedulers": "number of schedulers",
+            "schedulerType": "Scheduler type"
         },
         "templateScenarioLabel": "Template scenario"
     },

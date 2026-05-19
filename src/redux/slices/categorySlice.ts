@@ -41,7 +41,7 @@ export const categorySlice = createSlice({
             }>,
         ) => {
             const category = payload.category;
-            state.response.push(category);
+            state.response.unshift(category);
             state.orderedData.byId[category.id] = category;
             state.orderedData.byLabel[category.label] = category;
             state.loading = false;

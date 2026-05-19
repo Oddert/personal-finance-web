@@ -84,7 +84,7 @@ const BudgetPercentageChart: FC<IProps> = ({
                         },
                         events: {
                             dataPointSelection: (event, chartContext, opts) => {
-                                if (dataPointCallback) {
+                                if (dataPointCallback && opts) {
                                     dataPointCallback(
                                         categoryIdsOrdered[opts.dataPointIndex],
                                     );
@@ -129,14 +129,17 @@ const BudgetPercentageChart: FC<IProps> = ({
                                 formatter: () => '',
                             },
                             formatter: (value, opts) => {
-                                const budgetDatum =
-                                    seriesRef[opts.dataPointIndex];
-                                return `
-									<p>${t('Discrepancy pc')}: ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
-									<p>${t('Discrepancy val')}: ${budgetDatum.diffFloat < 0 ? `-${currencyLocaliser(Math.abs(budgetDatum.diffFloat))}` : `+${currencyLocaliser(budgetDatum.diffFloat)}`}</p>
-									<p>${t('literals.Expected')}: ${currencyLocaliser(budgetDatum.budget)}</p>
-									<p>${t('literals.Actual')}: ${currencyLocaliser(budgetDatum.spend)}</p>
-								`;
+                                if (opts) {
+                                    const budgetDatum =
+                                        seriesRef[opts.dataPointIndex];
+                                    return `
+                                        <p>${t('Discrepancy pc')}: ${Number(value) >= 0 ? `+${value}%` : `${value}%`}</p>
+                                        <p>${t('Discrepancy val')}: ${budgetDatum.diffFloat < 0 ? `-${currencyLocaliser(Math.abs(budgetDatum.diffFloat))}` : `+${currencyLocaliser(budgetDatum.diffFloat)}`}</p>
+                                        <p>${t('literals.Expected')}: ${currencyLocaliser(budgetDatum.budget)}</p>
+                                        <p>${t('literals.Actual')}: ${currencyLocaliser(budgetDatum.spend)}</p>
+                                    `;
+                                }
+                                return String(value);
                             },
                         },
                     },

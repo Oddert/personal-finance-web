@@ -131,7 +131,9 @@ const ExistingDataLineChart: FC<Props> = ({ compact = false }) => {
                 ...chart2Default.tooltip,
                 y: {
                     formatter: (val, opts) =>
-                        `${debitTransactions[opts.dataPointIndex].description} : ${val}`,
+                        opts
+                            ? `${debitTransactions[opts.dataPointIndex].description} : ${val}`
+                            : String(val),
                 },
             },
             yaxis: {

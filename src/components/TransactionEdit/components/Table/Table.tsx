@@ -159,8 +159,10 @@ const Table = () => {
                     }}
                 >
                     <TableRow>
-                        {columns.map((column, idx) => (
-                            <TableCell key={idx}>{column.header}</TableCell>
+                        {columns.map((column) => (
+                            <TableCell key={column.accessorKey}>
+                                {column.header}
+                            </TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -168,6 +170,7 @@ const Table = () => {
                     {data.map((transaction, idx) => (
                         <Row
                             columns={columns}
+                            key={transaction.tecTempId}
                             idx={idx}
                             transaction={transaction}
                         />

@@ -82,8 +82,10 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
         <Menu
             anchorEl={anchorEl}
             id='basic-menu'
-            MenuListProps={{
-                'aria-labelledby': 'basic-button',
+            slotProps={{
+                list: {
+                    'aria-labelledby': 'basic-button',
+                },
             }}
             onClose={handleClose}
             open={open}

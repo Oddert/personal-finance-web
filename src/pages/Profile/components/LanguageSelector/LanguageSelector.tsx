@@ -62,10 +62,10 @@ const LanguageSelector: FC<IProps> = () => {
         >
             <IconLanguage sx={{ gridRow: '1 / span 2' }} />
             <Box>
-                <Typography textAlign='left' sx={{ mb: 1 }} variant='h3'>
+                <Typography align='left' sx={{ mb: 1 }} variant='h3'>
                     {t('Profile.preferredLanguageTitle')}
                 </Typography>
-                <Typography textAlign='left'>
+                <Typography align='left'>
                     {t('Profile.preferredLanguageDesc')}
                 </Typography>
             </Box>

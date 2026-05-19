@@ -1,6 +1,5 @@
 import { FC, useMemo } from 'react';
-import { Typography } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
+import { Typography, TypographyProps } from '@mui/material';
 
 import EditableText from '../../../EditableText/EditableText';
 
@@ -41,7 +40,7 @@ const TitleBase: FC<IProps> = ({
                 borderBottom: showBorder ? `2px solid ${colour}` : 'none',
                 fontSize: sizeMap[size],
             },
-            variant: 'h3' as Variant | 'inherit' | undefined,
+            variant: 'h3' as TypographyProps['variant'],
         };
     }, [colour, size, showBorder]);
 

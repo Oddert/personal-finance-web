@@ -4,12 +4,12 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import {
-    Box,
     Button,
-    ListItem,
     MenuItem,
     Select,
     SelectChangeEvent,
+    TableCell,
+    TableRow,
     TextField,
     Tooltip,
 } from '@mui/material';
@@ -50,6 +50,7 @@ const SchedulerRow: FC<IProps> = ({
                     });
                 }
             }}
+            size='small'
             type='number'
             value={scheduler.day}
         />
@@ -64,6 +65,7 @@ const SchedulerRow: FC<IProps> = ({
                     nthDay: Number(event.target.value),
                 })
             }
+            size='small'
             type='number'
             value={scheduler.nthDay}
         />
@@ -81,6 +83,9 @@ const SchedulerRow: FC<IProps> = ({
             }
             showDaysOutsideCurrentMonth
             slotProps={{
+                textField: {
+                    size: 'small',
+                },
                 toolbar: {
                     toolbarFormat: 'ddd DD MMMM',
                     hidden: false,
@@ -102,6 +107,7 @@ const SchedulerRow: FC<IProps> = ({
                     step: Number(event.target.value),
                 })
             }
+            size='small'
             type='number'
             value={scheduler.step}
         />
@@ -133,22 +139,16 @@ const SchedulerRow: FC<IProps> = ({
     };
 
     return (
-        <ListItem
-            sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gridGap: '16px',
-            }}
-        >
-            <Box sx={{ display: 'flex', gridGap: '16px' }}>
+        <TableRow>
+            <TableCell>
                 <Select
                     onChange={(event: SelectChangeEvent<TSchedulerCode>) =>
                         handleChangeScheduler({
                             ...scheduler,
-                            // @ts-expect-error For some reason TSchedulerCode not being picked up here
                             schedulerCode: event.target.value,
                         })
                     }
+                    size='small'
                     value={scheduler.schedulerCode}
                 >
                     <MenuItem value='DAY'>
@@ -164,14 +164,20 @@ const SchedulerRow: FC<IProps> = ({
                         {t('Scenario.Scheduler.descriptionEvent')}
                     </MenuItem>
                 </Select>
+            </TableCell>
+            <TableCell
+                sx={{ display: 'flex', alignItems: 'center', gridGap: '8px' }}
+            >
                 {switchLayout()}
-            </Box>
-            <Tooltip title={t('Scenario.Scheduler.deleteSchedule')}>
-                <Button onClick={handleClickDeleteScheduler}>
-                    <IconDelete />
-                </Button>
-            </Tooltip>
-        </ListItem>
+            </TableCell>
+            <TableCell>
+                <Tooltip title={t('Scenario.Scheduler.deleteSchedule')}>
+                    <Button onClick={handleClickDeleteScheduler}>
+                        <IconDelete />
+                    </Button>
+                </Tooltip>
+            </TableCell>
+        </TableRow>
     );
 };
 

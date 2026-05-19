@@ -45,13 +45,13 @@ const Security: FC = () => {
                     alignItems: 'center',
                 }}
             >
-                <Typography component='h4' textAlign='left' variant='body1'>
+                <Typography component='h4' align='left' variant='body1'>
                     {t('auth.Email')}
                 </Typography>
                 <Box
                     sx={{ display: 'flex', gridGap: 24, alignItems: 'center' }}
                 >
-                    <Typography component='p' textAlign='left' variant='h4'>
+                    <Typography component='p' align='left' variant='h4'>
                         {email}
                     </Typography>
                     <ModalEmail />
@@ -66,7 +66,7 @@ const Security: FC = () => {
                     alignItems: 'center',
                 }}
             >
-                <Typography component='h4' textAlign='left' variant='body1'>
+                <Typography component='h4' align='left' variant='body1'>
                     {t('auth.Password')}
                 </Typography>
                 <ModalPassword />

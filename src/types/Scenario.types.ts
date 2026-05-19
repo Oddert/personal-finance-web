@@ -14,13 +14,14 @@ export interface IScenario {
 
 export interface ITransactor {
     id: string;
+    categoryId: string | null;
     createdOn: string;
-    updatedOn: string;
     description: string;
     isAddition: boolean;
-    value: number;
     scenarioId: string;
     schedulers: IScheduler[];
+    updatedOn: string;
+    value: number;
 }
 
 export interface IScheduler {

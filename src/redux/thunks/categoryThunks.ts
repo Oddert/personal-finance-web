@@ -40,7 +40,7 @@ export const refreshCategories =
                 if (!response || !response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
-                if (response?.status === 200) {
+                if (response?.status === 200 && response.payload) {
                     const orderedData = sortCategories(
                         response.payload.categories,
                     );
@@ -70,9 +70,11 @@ export const categoryCreateAction =
             const response =
                 await APIServiceNoInterceptors.createCategory(category);
 
-            if (!response.error && response.payload) {
+            if (!response.data.error && response.data.payload) {
                 dispatch(
-                    createCategory({ category: response.payload.category }),
+                    createCategory({
+                        category: response.data.payload.category,
+                    }),
                 );
             }
         } catch (error1: any) {
@@ -104,10 +106,10 @@ export const categoryUpdateAction =
             const response =
                 await APIServiceNoInterceptors.updateCategory(category);
 
-            if (!response.error && response.payload) {
+            if (!response.data.error && response.data.payload) {
                 dispatch(
                     updateSingleCategory({
-                        category: response.payload.category,
+                        category: response.data.payload.category,
                     }),
                 );
             }
@@ -140,7 +142,7 @@ export const categoryDeleteAction =
             const response =
                 await APIServiceNoInterceptors.deleteSingleCategory(categoryId);
 
-            if (!response.error && response.payload) {
+            if (!response.data.error && response.data.payload) {
                 dispatch(deleteSingleCategory({ categoryId }));
             }
         } catch (error1: any) {
@@ -178,10 +180,10 @@ export const matcherCreateAction =
                 categoryId,
             );
 
-            if (!response.error && response.payload) {
+            if (!response.data.error && response.data.payload) {
                 dispatch(
                     createSingleMatcher({
-                        matcher: response.payload.matcher,
+                        matcher: response.data.payload.matcher,
                         categoryId,
                     }),
                 );
@@ -215,10 +217,10 @@ export const matcherUpdateAction =
             const response =
                 await APIServiceNoInterceptors.updateCategory(category);
 
-            if (!response.error && response.payload) {
+            if (!response.data.error && response.data.payload) {
                 dispatch(
                     updateSingleCategory({
-                        category: response.payload.category,
+                        category: response.data.payload.category,
                     }),
                 );
             }
@@ -251,7 +253,7 @@ export const matcherDeleteAction =
             const response =
                 await APIServiceNoInterceptors.deleteSingleCategory(categoryId);
 
-            if (!response.error && response.payload) {
+            if (!response.data.error && response.data.payload) {
                 dispatch(deleteSingleCategory({ categoryId }));
             }
         } catch (error1: any) {

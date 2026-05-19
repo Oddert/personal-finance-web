@@ -54,6 +54,15 @@ export const PERSONAL_FINANCE_ACCESS_TOKEN = 'PERSONAL_FINANCE_ACCESS_TOKEN';
 export const PERSONAL_FINANCE_REFRESH_TOKEN = 'PERSONAL_FINANCE_REFRESH_TOKEN';
 
 /**
+ * Accessor key for local storage space to store a recovery copy of the upload modal.
+ * @constant
+ * @category Constants
+ * @subcategory App Constants
+ */
+export const PERSONAL_FINANCE_UPLOAD_RECOVERY =
+    'PERSONAL_FINANCE_UPLOAD_RECOVERY';
+
+/**
  * Title used in the header and anywhere the application references itself.
  * @deprecated
  * @constant

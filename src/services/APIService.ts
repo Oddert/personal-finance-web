@@ -7,7 +7,10 @@ import type { ICategory } from '../types/Category.d';
 import type { IMatcher } from '../types/Matcher.d';
 import type { IStandardResponse } from '../types/Request.d';
 import { IScenario } from '../types/Scenario.types';
-import type { ITransaction } from '../types/Transaction.d';
+import type {
+    ITransaction,
+    TAggregateDatapoints,
+} from '../types/Transaction.d';
 
 /**
  * Primary interface for interacting with the API.
@@ -184,6 +187,23 @@ const APIService = Object.freeze({
         return response;
     },
     /**
+     * Gets a list of all Transactions aggregated by category.
+     *
+     * The response is grouped by a date code (YYYY-MM) unless pivotOnCategory is set to true, in which case the response is grouped by category ID.
+     * @returns Transactions within the date range.
+     */
+    getAllTransactionsAggregated: async (
+        cardId: string,
+        pivotOnCategory?: boolean,
+    ) => {
+        const response: IStandardResponse<{
+            transactions: TAggregateDatapoints;
+        }> = await request.get(
+            `/transaction/aggregated?cardId=${cardId}&pivot=${pivotOnCategory ? 'category' : 'time'}`,
+        );
+        return response;
+    },
+    /**
      * Gets a list of all Transactions between two dates.
      * @param startDate The start of the transaction query range.
      * @param endDate The end of the transaction query range.
@@ -212,7 +232,7 @@ const APIService = Object.freeze({
     getTransactionCount: async (
         startDate: number,
         endDate: number,
-        activeCardId: string | null,
+        activeCardId: string,
     ) => {
         let starDateParsed = '';
         let endDateParsed = '';
@@ -224,7 +244,7 @@ const APIService = Object.freeze({
         }
         const from = `?from=${starDateParsed}`;
         const to = `&to=${endDateParsed}`;
-        const activeCard = activeCardId ? `&cardId=${activeCardId}` : '';
+        const activeCard = `&cardId=${activeCardId}`;
         const response: IStandardResponse<{ count: number }> =
             await request.get(`/transaction/count${from}${to}${activeCard}`);
         return response;
