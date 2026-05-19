@@ -54,7 +54,9 @@ export const emailValidator = (email: string) => {
     if (email.trim().length < 4) {
         response = 'auth.emailMustBeXLong';
     }
-    if (!/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
+    // WARNING: vulnerable regex requires replacement
+    // eslint-disable-next-line security/detect-unsafe-regex
+    if (!/^[\w\-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email)) {
         response = 'auth.emailFormatInvalid';
     }
     return response;

@@ -1,7 +1,11 @@
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
+import {
+    ArrowBack as IconArrowLeft,
+    Save as IconSave,
+} from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -13,33 +17,24 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import {
-    ArrowBack as IconArrowLeft,
-    Save as IconSave,
-} from '@mui/icons-material';
 
-import { ICard, ICardTypes } from '../../types/Card.types';
+import type { IProps } from './EditCard.types';
+import type { ICard, ICardTypes } from '../../types/Card.types';
 
 import router, { ROUTES } from '../../constants/routerConstants';
-
-import APIService from '../../services/APIService';
-
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
-
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import { budgetLoading } from '../../redux/slices/budgetSlice';
 import { addCard, updateCard } from '../../redux/slices/cardSlice';
+import { refreshAuthentication } from '../../redux/thunks/authThunks';
 import {
     intakeError,
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
+import APIService from '../../services/APIService';
 
 import DeleteCard from './components/DeleteCard';
 import EditImageIcon from './components/EditImageIcon';
-
-import { IProps } from './EditCard.types';
-import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 /**
  * Creates a blank Budget Row.
@@ -89,7 +84,7 @@ const EditBudget: FC<IProps> = () => {
                     card.id,
                 );
 
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(updateCard({ card: response.payload.card }));
@@ -98,7 +93,7 @@ const EditBudget: FC<IProps> = () => {
                     ...card,
                 });
 
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(addCard({ card: response.payload.card }));
@@ -110,10 +105,14 @@ const EditBudget: FC<IProps> = () => {
             setLoading(true);
             dispatch(budgetLoading());
             request();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error1: any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (error1.status === 401) {
                 try {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     dispatch(refreshAuthentication(request));
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
                 } catch (error2: any) {
                     setLoading(false);
                     dispatch(intakeError(error1));
@@ -129,7 +128,7 @@ const EditBudget: FC<IProps> = () => {
         try {
             const fetchCard = async (cardId: string) => {
                 const response = await APIService.getSingleCard(cardId);
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setCard(response.payload.card);
@@ -137,9 +136,11 @@ const EditBudget: FC<IProps> = () => {
             };
             if ('cardId' in params) {
                 fetchCard(String(params.cardId));
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setIsEdit(true);
             } else {
                 if (
+                    // eslint-disable-next-line security/detect-non-literal-regexp
                     new RegExp(ROUTES.EDIT_CARD, 'gi').test(location.pathname)
                 ) {
                     dispatch(
@@ -152,17 +153,17 @@ const EditBudget: FC<IProps> = () => {
                 }
                 const templateId = search[0].get('templateId');
                 if (templateId) {
-                    fetchCard(String(templateId));
+                    fetchCard(templateId);
                     setIsEdit(false);
                 } else {
                     setLoading(false);
                 }
             }
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             dispatch(intakeError(error));
         }
-    }, [t]);
+    }, [card.id, dispatch, location.pathname, params, search, t]);
 
     if (loading) {
         return (
@@ -219,12 +220,12 @@ const EditBudget: FC<IProps> = () => {
                     >
                         <TextField
                             label={t('Card.bankNameLabel')}
-                            onChange={(event) =>
+                            onChange={(event) => {
                                 setCard({
                                     ...card,
                                     bankName: event.target.value,
-                                })
-                            }
+                                });
+                            }}
                             sx={{
                                 background: theme.palette.secondary.main,
                                 alignSelf: 'start',
@@ -232,12 +233,12 @@ const EditBudget: FC<IProps> = () => {
                             value={card.bankName}
                         />
                         <Select<ICardTypes>
-                            onChange={(event) =>
+                            onChange={(event) => {
                                 setCard({
                                     ...card,
-                                    cardType: event.target.value as ICardTypes,
-                                })
-                            }
+                                    cardType: event.target.value,
+                                });
+                            }}
                             sx={{
                                 justifySelf: 'end',
                                 minWidth: '50px',
@@ -258,12 +259,12 @@ const EditBudget: FC<IProps> = () => {
                         </Select>
                         <TextField
                             label={t('Card.cardNumberLabel')}
-                            onChange={(event) =>
+                            onChange={(event) => {
                                 setCard({
                                     ...card,
                                     cardNumber: Number(event.target.value),
-                                })
-                            }
+                                });
+                            }}
                             sx={{
                                 alignSelf: 'end',
                                 background: theme.palette.secondary.main,
@@ -273,12 +274,12 @@ const EditBudget: FC<IProps> = () => {
                         />
                         <TextField
                             label={t('Card.sortCodeLabel')}
-                            onChange={(event) =>
+                            onChange={(event) => {
                                 setCard({
                                     ...card,
                                     sortCode: Number(event.target.value),
-                                })
-                            }
+                                });
+                            }}
                             sx={{
                                 alignSelf: 'end',
                                 background: theme.palette.secondary.main,
@@ -296,24 +297,24 @@ const EditBudget: FC<IProps> = () => {
                     >
                         <TextField
                             label='Title'
-                            onChange={(event) =>
+                            onChange={(event) => {
                                 setCard({
                                     ...card,
                                     cardName: event.target.value,
-                                })
-                            }
+                                });
+                            }}
                             value={card.cardName}
                         />
                         <TextField
                             label={t('literals.Description')}
                             minRows={3}
                             multiline
-                            onChange={(event) =>
+                            onChange={(event) => {
                                 setCard({
                                     ...card,
                                     description: event.target.value,
-                                })
-                            }
+                                });
+                            }}
                             value={card.description}
                         />
                         <Box sx={{ display: 'flex' }}>

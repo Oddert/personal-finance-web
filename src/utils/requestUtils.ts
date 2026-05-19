@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 
-import { IStandardResponse } from '../types/Request.d';
+import type { IStandardResponse } from '../types/Request.d';
 
 /**
  * Determines the base URL used to communicate with the server.
@@ -22,7 +22,8 @@ export type TRetryFunc<IApiCaller, IResponse> = (
  */
 export async function retry<IResponse>(
     caller: () => Promise<IStandardResponse<IResponse> | AxiosError>,
-): Promise<IStandardResponse<IResponse> | AxiosError> {
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+): Promise<IStandardResponse<IResponse> | AxiosError | unknown> {
     try {
         const response1 = await caller();
         if (!response1.status) {
@@ -35,18 +36,19 @@ export async function retry<IResponse>(
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 const response2 = await caller();
                 return response2;
-            } catch (error2: any) {
+            } catch (error2) {
                 return error2;
             }
         }
         return response1;
-    } catch (error1: any) {
+    } catch (error1) {
+        // @ts-expect-error error handling logic requires review
         if (error1.status === 401) {
             try {
                 await new Promise((resolve) => setTimeout(resolve, 1000));
                 const response2 = await caller();
                 return response2;
-            } catch (error2: any) {
+            } catch (error2) {
                 return error2;
             }
         }

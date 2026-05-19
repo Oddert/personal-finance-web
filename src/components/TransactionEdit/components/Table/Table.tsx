@@ -1,31 +1,30 @@
 import { Fragment, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Add as IconAdd } from '@mui/icons-material';
 import {
+    Box,
+    Button,
     Checkbox,
     FormControlLabel,
     Table as MuiTable,
-    TableCell,
     TableBody,
+    TableCell,
     TableHead,
     TableRow,
     Typography,
-    Button,
-    Box,
 } from '@mui/material';
-import { Add as IconAdd } from '@mui/icons-material';
 
 import {
+    TransactionEditContext,
     addRow,
     checkAll,
     defaultColumns,
     deleteAll,
-    TransactionEditContext,
-    uncheckAll,
     unDeleteAll,
+    uncheckAll,
 } from '../../../../contexts/transactionEditContext';
-
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
 import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
 
 import Row from './components/Row';
@@ -49,10 +48,18 @@ const Table = () => {
 
     const currencies = useAppSelector(getUserCurrencies);
 
-    const handleClickCheckAll = () => dispatch(checkAll());
-    const handleClickUnCheckAll = () => dispatch(uncheckAll());
-    const handleClickDeleteAll = () => dispatch(deleteAll());
-    const handleClickUnDeleteAll = () => dispatch(unDeleteAll());
+    const handleClickCheckAll = () => {
+        dispatch(checkAll());
+    };
+    const handleClickUnCheckAll = () => {
+        dispatch(uncheckAll());
+    };
+    const handleClickDeleteAll = () => {
+        dispatch(deleteAll());
+    };
+    const handleClickUnDeleteAll = () => {
+        dispatch(unDeleteAll());
+    };
 
     const columns: { accessorKey: string; header: string }[] = useMemo(() => {
         return defaultColumns.map((header) => {
@@ -99,9 +106,9 @@ const Table = () => {
                     control={
                         <Checkbox
                             checked={filterUncategorised}
-                            onChange={(e) =>
-                                setFilterUncategorised(e.currentTarget.checked)
-                            }
+                            onChange={(e) => {
+                                setFilterUncategorised(e.currentTarget.checked);
+                            }}
                         />
                     }
                     label={t('Transaction.filterUncategorised')}
@@ -110,9 +117,9 @@ const Table = () => {
                     control={
                         <Checkbox
                             checked={filterUnchecked}
-                            onChange={(e) =>
-                                setFilterUnchecked(e.currentTarget.checked)
-                            }
+                            onChange={(e) => {
+                                setFilterUnchecked(e.currentTarget.checked);
+                            }}
                         />
                     }
                     label={t('Transaction.filterUnchecked')}
@@ -120,7 +127,9 @@ const Table = () => {
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
                 <Button
-                    onClick={() => dispatch(addRow(currencies[0] || ''))}
+                    onClick={() => {
+                        dispatch(addRow(currencies[0] || ''));
+                    }}
                     variant='outlined'
                 >
                     <IconAdd /> {t('buttons.newRow')}

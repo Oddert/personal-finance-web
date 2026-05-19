@@ -1,5 +1,5 @@
 export interface IProps {
-    onClose: (args: any) => void;
-    onOpen: (args: any) => void;
+    onClose: () => void;
+    onOpen: () => void;
     open: boolean;
 }

@@ -1,10 +1,11 @@
-import { FC } from 'react';
-import { Box, Button, Theme } from '@mui/material';
-import { Edit as IconEdit } from '@mui/icons-material';
+import type { FC } from 'react';
 
-import { categoryBoxSizes } from '../../constants/categoryConstants';
+import { Edit as IconEdit } from '@mui/icons-material';
+import { Box, Button, type Theme } from '@mui/material';
 
 import type { IProps } from './ColourBase.types';
+
+import { categoryBoxSizes } from '../../constants/categoryConstants';
 
 /**
  * Lower order component used to allow non-interactive rendering of the colour square.
@@ -25,8 +26,8 @@ import type { IProps } from './ColourBase.types';
  * @param props.size The size of the icon (default: 'md').
  */
 const ColourBase: FC<IProps> = ({
-    asButton = true,
-    colour = '',
+    asButton,
+    colour,
     handleClick = () => {},
     id = '',
     size = 'md',

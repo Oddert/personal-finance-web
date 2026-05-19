@@ -1,5 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import {
+    FontDownload as IconMatchPositive,
+    FontDownloadOutlined as IconMatchNegative,
+} from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -10,16 +15,11 @@ import {
     Select,
     TextField,
 } from '@mui/material';
-import {
-    FontDownloadOutlined as IconMatchNegative,
-    FontDownload as IconMatchPositive,
-} from '@mui/icons-material';
 
+import type { IProps } from './EditMatcher.types';
 import type { TMatchType } from '../../../../types/Matcher.d';
 
 import { matchTypesOptions } from '../../../../utils/matcherUtils';
-
-import type { IProps } from './EditMatcher.types';
 
 /**
  * Alternate layout for a Matcher with edit options enabled.
@@ -36,16 +36,16 @@ import type { IProps } from './EditMatcher.types';
  */
 const EditMatcher: FC<IProps> = ({
     clearOnBlur = false,
-    clearOnCancel = false,
-    clearOnSubmit = false,
+    clearOnCancel,
+    clearOnSubmit,
     matcher = {
         case_sensitive: false,
         match: '',
         matchType: 'any',
     },
-    onBlur = () => {},
-    onCancel = () => {},
-    onSubmit = () => {},
+    onBlur,
+    onCancel,
+    onSubmit,
 }) => {
     const { t } = useTranslation();
 
@@ -54,8 +54,10 @@ const EditMatcher: FC<IProps> = ({
     const [matchType, setMatchType] = useState<TMatchType>('any');
 
     useEffect(() => {
-        setMatch(matcher?.match || '');
-        setCaseSensitive(Boolean(matcher?.case_sensitive || false));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMatch(matcher.match ?? '');
+        setCaseSensitive(Boolean(matcher.case_sensitive ?? false));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const reset = () => {
@@ -114,7 +116,7 @@ const EditMatcher: FC<IProps> = ({
                 autoFocus
                 label={t('Category.matcherLabel')}
                 onChange={(event) => {
-                    setMatch(event?.target?.value);
+                    setMatch(event.target.value);
                 }}
                 size='small'
                 sx={{
@@ -137,9 +139,11 @@ const EditMatcher: FC<IProps> = ({
                             checked={caseSensitive}
                             checkedIcon={<IconMatchPositive />}
                             icon={<IconMatchNegative />}
-                            onChange={() => setCaseSensitive(!caseSensitive)}
+                            onChange={() => {
+                                setCaseSensitive(!caseSensitive);
+                            }}
                             title={
-                                matcher?.case_sensitive
+                                matcher.case_sensitive
                                     ? t('Category.caseSensitiveOn')
                                     : t('Category.caseSensitiveOff')
                             }
@@ -173,9 +177,9 @@ const EditMatcher: FC<IProps> = ({
                             }),
                         }}
                         name='match_type_options'
-                        onChange={(e) =>
-                            setMatchType(e?.target?.value as TMatchType)
-                        }
+                        onChange={(e) => {
+                            setMatchType(e.target.value);
+                        }}
                         size='small'
                         value={matchType}
                     >

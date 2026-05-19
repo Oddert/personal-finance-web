@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, FormLabel } from '@mui/material';
 
-import CardSelector from '../CardSelector';
+import type { IProps } from './ActiveCard.types';
 
-import { IProps } from './ActiveCard.types';
+import CardSelector from '../CardSelector';
 
 /**
  * Displays a form control for the {@link CardSelector} with a left-aligned label and some formatting.

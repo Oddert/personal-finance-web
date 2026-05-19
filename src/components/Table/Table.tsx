@@ -1,24 +1,25 @@
 import {
+    Box,
+    Table as MuiTable,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@mui/material';
+
+import {
     flexRender,
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table';
-import type { ColumnDef } from '@tanstack/react-table';
 
-import {
-    Box,
-    Table as MuiTable,
-    TableBody,
-    TableHead,
-    TableRow,
-    TableCell,
-} from '@mui/material';
+import type { ColumnDef } from '@tanstack/react-table';
 
 interface ReactTableProps<TData> {
     data: TData[];
     columns: ColumnDef<TData>[];
     compact?: boolean;
-    columnVisibility?: { [column: string]: boolean };
+    columnVisibility?: Record<string, boolean>;
 }
 
 /**
@@ -37,6 +38,7 @@ const Table = <TData extends object>({
     compact,
     columnVisibility,
 }: ReactTableProps<TData>) => {
+    // eslint-disable-next-line react-hooks/incompatible-library
     const { getHeaderGroups, getRowModel } = useReactTable<TData>({
         columns,
         enableGrouping: false,

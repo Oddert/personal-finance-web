@@ -1,12 +1,12 @@
-import { FC, Fragment, MouseEvent, useState } from 'react';
+import { type FC, Fragment, type MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button, ListItem } from '@mui/material';
 import { Add as IconPlus } from '@mui/icons-material';
-
-import CreateBudgetMenu from '../CreateScenarioMenu';
+import { Button, ListItem } from '@mui/material';
 
 import type { IProps } from './CreateScenarioCard.types';
+
+import CreateBudgetMenu from '../CreateScenarioMenu';
 
 /**
  * Displays a card component, rendering similarly to the {@link ScenarioCard} to allow users to navigate to the create-scenario page.

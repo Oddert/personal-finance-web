@@ -1,12 +1,13 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { put } from 'redux-saga/effects';
-
-import { retry } from '../../utils/requestUtils';
-
-import APIService from '../../services/APIService';
 
 import type { ICategory } from '../../types/Category.d';
 
+import APIService from '../../services/APIService';
+import { retry } from '../../utils/requestUtils';
 import { updateSingleCategory } from '../slices/categorySlice';
 
 /**
@@ -17,7 +18,7 @@ export default function* categoryUpdateSingleSaga({
     payload,
 }: PayloadAction<{
     category: Partial<ICategory>;
-}>): any {
+}>): unknown {
     try {
         const response = yield retry<{ category: ICategory }>(() =>
             APIService.updateCategory(payload.category),
@@ -25,7 +26,7 @@ export default function* categoryUpdateSingleSaga({
 
         if (!response.payload?.category || response.error) {
             throw new Error(
-                response.error || 'Issue encountered updating category.',
+                response.error ?? 'Issue encountered updating category.',
             );
         }
 

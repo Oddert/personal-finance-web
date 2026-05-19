@@ -1,17 +1,17 @@
-import { FC, useContext } from 'react';
+import { type FC, useContext } from 'react';
 
-import { IconButton, TableCell } from '@mui/material';
 import {
     Delete as IconDelete,
     SettingsBackupRestore as IconUnDelete,
 } from '@mui/icons-material';
+import { IconButton, TableCell } from '@mui/material';
+
+import type { IProps } from './DeleteOption.types';
 
 import {
-    toggleDeleted,
     TransactionEditContext,
+    toggleDeleted,
 } from '../../../../../../contexts/transactionEditContext';
-
-import { IProps } from './DeleteOption.types';
 
 /**
  * Renders the toggle delete button.
@@ -28,18 +28,22 @@ const DeleteOption: FC<IProps> = ({ transaction }) => {
         <TableCell>
             {transaction.deleted ? (
                 <IconButton
-                    onClick={() =>
-                        dispatch(toggleDeleted(transaction.tecTempId as string))
-                    }
+                    onClick={() => {
+                        dispatch(
+                            toggleDeleted(transaction.tecTempId as string),
+                        );
+                    }}
                     title='restore this row (undo delete)'
                 >
                     <IconUnDelete />
                 </IconButton>
             ) : (
                 <IconButton
-                    onClick={() =>
-                        dispatch(toggleDeleted(transaction.tecTempId as string))
-                    }
+                    onClick={() => {
+                        dispatch(
+                            toggleDeleted(transaction.tecTempId as string),
+                        );
+                    }}
                     title='delete this row'
                 >
                     <IconDelete />

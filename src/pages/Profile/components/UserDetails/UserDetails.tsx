@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from 'react';
+/* eslint-disable react-hooks/set-state-in-effect */
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -14,7 +15,6 @@ import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
 import {
     getUserFirstName,
     getUserLastName,
@@ -39,8 +39,8 @@ const UserDetails: FC = () => {
     const lastName = useAppSelector(getUserLastName);
 
     const reset = () => {
-        setInternalFirstName(firstName || '');
-        setInternalLastName(lastName || '');
+        setInternalFirstName(firstName ?? '');
+        setInternalLastName(lastName ?? '');
         setEditing(false);
     };
 
@@ -54,8 +54,12 @@ const UserDetails: FC = () => {
         setEditing(false);
     };
 
-    useEffect(() => setInternalFirstName(firstName || ''), [firstName]);
-    useEffect(() => setInternalLastName(lastName || ''), [lastName]);
+    useEffect(() => {
+        setInternalFirstName(firstName ?? '');
+    }, [firstName]);
+    useEffect(() => {
+        setInternalLastName(lastName ?? '');
+    }, [lastName]);
 
     if (editing) {
         return (
@@ -75,9 +79,9 @@ const UserDetails: FC = () => {
                             <TextField
                                 fullWidth
                                 placeholder={t('Profile.firstName')}
-                                onChange={(event) =>
-                                    setInternalFirstName(event.target.value)
-                                }
+                                onChange={(event) => {
+                                    setInternalFirstName(event.target.value);
+                                }}
                                 value={internalFirstName}
                             />
                         }
@@ -95,9 +99,9 @@ const UserDetails: FC = () => {
                             <TextField
                                 fullWidth
                                 placeholder={t('Profile.lastName')}
-                                onChange={(event) =>
-                                    setInternalLastName(event.target.value)
-                                }
+                                onChange={(event) => {
+                                    setInternalLastName(event.target.value);
+                                }}
                                 value={internalLastName}
                             />
                         }
@@ -146,7 +150,13 @@ const UserDetails: FC = () => {
             }}
         >
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button onClick={() => setEditing(true)}>Edit</Button>
+                <Button
+                    onClick={() => {
+                        setEditing(true);
+                    }}
+                >
+                    Edit
+                </Button>
             </Box>
             <Paper
                 sx={{

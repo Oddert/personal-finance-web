@@ -1,19 +1,17 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 
-import { ColumnDef } from '@tanstack/react-table';
 import { CircularProgress } from '@mui/material';
 
-import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
-
-import { meanValue, standardDeviation } from '../../../../utils/mathsUtils';
+import type { IProps, ITransactionExtended } from './TPTable.types';
+import type { ColumnDef } from '@tanstack/react-table';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import useTransactions from '../../../../hooks/useTransactions';
-
+import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
+import { meanValue, standardDeviation } from '../../../../utils/mathsUtils';
 import Table from '../../../Table';
 
 import { addCurrencySymbol, debitCell } from './TPTableUtils';
-import type { IProps, ITransactionExtended } from './TPTable.types';
 
 /**
  * Table component which renders the transactions.
@@ -104,6 +102,7 @@ const TPTable: FC<IProps> = ({ categoryId, endDate, startDate }) => {
             }),
         );
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFilteredTransactions(response.reverse());
         setLoading(false);
     }, [categoryId, endDate, startDate, transactions]);

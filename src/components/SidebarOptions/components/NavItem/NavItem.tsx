@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { ListItem } from '@mui/material';
 
-import NavLink from '../NavLink';
+import type { IProps } from './NavItem.types';
 
-import { IProps } from './NavItem.types';
+import NavLink from '../NavLink';
 import SubMenu from '../SubMenu';
 
 /**

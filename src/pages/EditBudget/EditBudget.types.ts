@@ -1,4 +1,4 @@
-import { IBudgetRow } from '../../types/Budget.types';
+import type { IBudgetRow } from '../../types/Budget.types';
 
 export interface IProps {}
 

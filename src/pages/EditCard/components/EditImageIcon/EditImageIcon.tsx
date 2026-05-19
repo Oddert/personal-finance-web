@@ -1,6 +1,7 @@
-import { FC, Fragment, useEffect, useState } from 'react';
+import { type FC, Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Edit as IconEdit } from '@mui/icons-material';
 import {
     Button,
     Dialog,
@@ -10,9 +11,8 @@ import {
     FormControlLabel,
     TextField,
 } from '@mui/material';
-import { Edit as IconEdit } from '@mui/icons-material';
 
-import { IProps } from './EditImageIcon.types';
+import type { IProps } from './EditImageIcon.types';
 
 const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
     const { t } = useTranslation();
@@ -31,6 +31,7 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setUpdatedUrl(url);
     }, [url]);
 
@@ -39,7 +40,9 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
             <FormControlLabel
                 control={
                     <Button
-                        onClick={() => setOpen(true)}
+                        onClick={() => {
+                            setOpen(true);
+                        }}
                         sx={{
                             aspectRatio: size === 'sm' ? '1/1' : '4/1',
                             height: '50px',
@@ -76,7 +79,9 @@ const EditImageIcon: FC<IProps> = ({ label, onConfirmChange, size, url }) => {
                 <DialogTitle>{t('Card.enterUrlOfNewImage')}</DialogTitle>
                 <DialogContent>
                     <TextField
-                        onChange={(e) => setUpdatedUrl(e.target.value)}
+                        onChange={(e) => {
+                            setUpdatedUrl(e.target.value);
+                        }}
                         sx={{ minWidth: '30vw' }}
                         value={updatedUrl}
                     />

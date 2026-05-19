@@ -1,12 +1,10 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
-import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
-
-import ColourEdit from '../../../ColourEdit';
+import { type FC, useCallback, useEffect, useState } from 'react';
 
 import type { IProps } from './Colour.types';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { categoryUpdateAction } from '../../../../redux/thunks/categoryThunks';
+import ColourEdit from '../../../ColourEdit';
 
 /**
  * Editable colour component for the Category.
@@ -26,11 +24,10 @@ const Colour: FC<IProps> = ({ category }) => {
                 categoryUpdateAction(
                     {
                         ...category,
-                        matchers:
-                            category?.matchers?.map((matcher) => ({
-                                ...matcher,
-                                case_sensitive: Boolean(matcher.case_sensitive),
-                            })) || [],
+                        matchers: category.matchers.map((matcher) => ({
+                            ...matcher,
+                            case_sensitive: Boolean(matcher.case_sensitive),
+                        })),
                         colour: editedColour,
                     },
                     true,
@@ -41,6 +38,7 @@ const Colour: FC<IProps> = ({ category }) => {
     );
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setColour(category.colour);
     }, [category]);
 

@@ -1,5 +1,6 @@
 /* eslint-disable import/export */
-import {
+import type {
+    JSX,
     JSXElementConstructor,
     PropsWithChildren,
     ReactElement,
@@ -7,20 +8,22 @@ import {
 } from 'react';
 import { Provider, Provider as ReduxProvider } from 'react-redux';
 
-import { RenderOptions, render } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
-
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+import { type RenderOptions, render } from '@testing-library/react';
+
 import reduxStore, {
-    AppStore,
-    RootState,
+    type AppStore,
+    type RootState,
     setupStore,
 } from '../redux/constants/store';
 import theme from '../theme';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Providers: JSXElementConstructor<{ children: ReactNode }> = ({
+    // eslint-disable-next-line react/prop-types
     children,
 }) => {
     return (
@@ -59,6 +62,7 @@ export const renderWithProviders = (
     return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export * from '@testing-library/react';
 
 export { customRenderer as render };

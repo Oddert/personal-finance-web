@@ -10,23 +10,24 @@ export interface IMonthSpendCategory {
     colour: string;
 }
 
-export interface IAllCategories {
-    [categoryId: string]: IMonthSpendCategory;
-}
+export type IAllCategories = Record<string, IMonthSpendCategory>;
 
 export interface IAgDataAccumulator {
     allCategories: IAllCategories;
-    categoriesByDate: {
-        [year: number]: {
-            [month: number]: {
-                [categoryId: string]: {
+    categoriesByDate: Record<
+        number,
+        Record<
+            number,
+            Record<
+                string,
+                {
                     categoryName: string;
                     colour: string;
                     value: number;
-                };
-            };
-        };
-    };
+                }
+            >
+        >
+    >;
 }
 
 export interface ISeries {
@@ -35,9 +36,7 @@ export interface ISeries {
     data: { x: string; y: number }[];
 }
 
-export interface IPivotAccumulator {
-    [categoryId: string]: ISeries;
-}
+export type IPivotAccumulator = Record<string, ISeries>;
 
 export interface ISPendChartCategory {
     categoryName: string;
@@ -45,10 +44,6 @@ export interface ISPendChartCategory {
     value: number;
 }
 
-export interface ISPendChartMonth {
-    [categoryId: string]: ISPendChartCategory;
-}
+export type ISPendChartMonth = Record<string, ISPendChartCategory>;
 
-export interface ISpendChartYear {
-    [month: number]: ISPendChartMonth;
-}
+export type ISpendChartYear = Record<number, ISPendChartMonth>;

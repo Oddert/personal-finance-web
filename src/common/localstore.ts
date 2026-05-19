@@ -3,7 +3,7 @@
  * @param key The storage key to retrieve.
  * @returns The value of that key or null.
  */
-export const getFromLocalStore = (key: string) => {
+export const getFromLocalStore = (key: string): unknown => {
     const res = localStorage.getItem(key);
     if (!res || res === '') {
         return null;
@@ -15,6 +15,6 @@ export const getFromLocalStore = (key: string) => {
  * @param key The storage key to write to.
  * @param data The JSON serialisable content to write
  */
-export const setToLocalStore = (key: string, data: any) => {
+export const setToLocalStore = (key: string, data: unknown) => {
     localStorage.setItem(key, JSON.stringify(data));
 };

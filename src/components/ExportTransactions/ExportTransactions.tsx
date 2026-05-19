@@ -1,8 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { json2csv } from 'json-2-csv';
 
 import {
     Box,
@@ -17,27 +14,28 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { json2csv } from 'json-2-csv';
+
+import type { IProps } from './ExportTransactions.types';
+import type { ICategory } from '../../types/Category';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { getActiveCardId } from '../../redux/selectors/cardSelectors';
+import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
+import { intakeError } from '../../redux/thunks/errorThunks';
+import APIService from '../../services/APIService';
 import {
     toBeginningMonthDayjs,
     toEndMonthDayjs,
 } from '../../utils/budgetUtils';
-
-import APIService from '../../services/APIService';
-
 import {
     createStandardTransactionDlName,
     downloadCsv,
     downloadCsvNoSuffix,
     downloadJson,
 } from '../../utils/exportUtils';
-
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import { intakeError } from '../../redux/thunks/errorThunks';
-import { getActiveCardId } from '../../redux/selectors/cardSelectors';
-import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
-
-import { IProps } from './ExportTransactions.types';
 
 dayjs.extend(localizedFormat);
 
@@ -82,17 +80,17 @@ const ExportTransactions: FC<IProps> = ({
 
                     if (
                         res?.payload?.count &&
-                        typeof res?.payload?.count === 'number'
+                        typeof res.payload.count === 'number'
                     ) {
                         setPreviewCount(res.payload.count);
                     }
-                } catch (error: any) {
+                } catch (error) {
                     dispatch(intakeError(error));
                 }
             };
             getCount();
         }
-    }, [activeCardId, endDate, startDate]);
+    }, [activeCardId, dispatch, endDate, startDate]);
 
     const handleClickExport = () => {
         const getTransactions = async () => {
@@ -102,11 +100,12 @@ const ExportTransactions: FC<IProps> = ({
                     endDate.valueOf(),
                     activeCardId,
                 );
-                const withCategories = (res.payload?.transactions || []).map(
+                const withCategories = (res.payload?.transactions ?? []).map(
                     (transaction) => {
                         if (transaction.categoryId) {
-                            const foundCategory =
+                            const foundCategory: ICategory | undefined =
                                 categoriesById[transaction.categoryId];
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             if (foundCategory) {
                                 return {
                                     ...transaction,
@@ -132,7 +131,7 @@ const ExportTransactions: FC<IProps> = ({
                 } else {
                     downloadJson(withCategories, dlName);
                 }
-            } catch (error: any) {
+            } catch (error) {
                 dispatch(intakeError(error));
             }
         };
@@ -145,7 +144,12 @@ const ExportTransactions: FC<IProps> = ({
 
     if (open) {
         return (
-            <Dialog onClose={() => setOpen(false)} open={open}>
+            <Dialog
+                onClose={() => {
+                    setOpen(false);
+                }}
+                open={open}
+            >
                 <DialogTitle>Export Transactions</DialogTitle>
                 <DialogContent>
                     <Box sx={{ my: 2, display: 'flex', gridGap: '24px' }}>
@@ -205,7 +209,9 @@ const ExportTransactions: FC<IProps> = ({
                         {t('Transaction.countInView', { count: previewCount })}
                     </Typography>
                     <Select
-                        onChange={(event) => setDlFormat(event.target.value)}
+                        onChange={(event) => {
+                            setDlFormat(event.target.value);
+                        }}
                         sx={{ mt: 2 }}
                         value={dlFormat}
                     >
@@ -230,7 +236,15 @@ const ExportTransactions: FC<IProps> = ({
         );
     }
 
-    return <Button onClick={() => setOpen(true)}>Export</Button>;
+    return (
+        <Button
+            onClick={() => {
+                setOpen(true);
+            }}
+        >
+            Export
+        </Button>
+    );
 };
 
 export default ExportTransactions;

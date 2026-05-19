@@ -1,12 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Typography } from '@mui/material';
 
-import { CellContext } from '@tanstack/react-table';
+import type { ITransactionExtended } from './TPTable.types';
+import type { CellContext } from '@tanstack/react-table';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
 import { createReadableNumber } from '../../../../utils/commonUtils';
-
-import { ITransactionExtended } from './TPTable.types';
 
 export const addCurrencySymbol = (
     cell: CellContext<ITransactionExtended, unknown>,

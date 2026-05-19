@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { Drawer, IconButton, useTheme, styled } from '@mui/material';
-
-import SidebarOptions from '../SidebarOptions';
+import { Drawer, IconButton, styled, useTheme } from '@mui/material';
 
 import type { IProps } from './SidebarDiscreet.types';
+
+import SidebarOptions from '../SidebarOptions';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -25,11 +25,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
  * @param props.onOpen Callback function invoked if the component requests to open.
  * @param props.open If true, the drawer is open.
  */
-const SidebarDiscreet: FC<IProps> = ({
-    onClose = () => {},
-    onOpen = () => {},
-    open = false,
-}) => {
+const SidebarDiscreet: FC<IProps> = ({ onClose, onOpen, open }) => {
     const theme = useTheme();
     return (
         <Drawer onClose={onClose} open={open} variant='persistent'>

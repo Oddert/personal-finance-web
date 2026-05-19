@@ -1,14 +1,20 @@
-import { ChangeEvent, FC, Fragment, useState } from 'react';
+import { type ChangeEvent, type FC, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
 
+import {
+    Add as IconCreate,
+    ChevronRight as IconExpandClosed,
+    Delete as IconDelete,
+    DeleteForever as IconUnDelete,
+    ExpandMore as IconExpandOpen,
+} from '@mui/icons-material';
 import {
     Button,
     Collapse,
     IconButton,
     MenuItem,
     Select,
-    SelectChangeEvent,
+    type SelectChangeEvent,
     Table,
     TableBody,
     TableCell,
@@ -18,19 +24,14 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import {
-    Add as IconCreate,
-    ChevronRight as IconExpandClosed,
-    ExpandMore as IconExpandOpen,
-    Delete as IconDelete,
-    DeleteForever as IconUnDelete,
-} from '@mui/icons-material';
 
-import { IScheduler } from '../../../../types/Scenario.types';
-
-import SchedulerRow from '../SchedulerRow';
+import { v4 as uuid } from 'uuid';
 
 import type { IProps } from './TransactorRow.types';
+import type { IScheduler } from '../../../../types/Scenario.types';
+import type { ITransactorRowEditable } from '../../EditScenario.types';
+
+import SchedulerRow from '../SchedulerRow';
 
 /**
  * Displays a single transactor row, representing one type of transaction.
@@ -159,32 +160,36 @@ const TransactorRow: FC<IProps> = ({
     };
 
     const handleClickAddScheduler = () => {
-        const filteredRows = transactors.map((transactorRow) => {
-            if (transactorRow.id === transactor.id) {
-                return {
-                    ...transactorRow,
-                    schedulers: [
-                        ...transactorRow.schedulers,
-                        {
-                            id: uuid(),
-                            createdOn: '',
-                            updatedOn: '',
-                            schedulerCode: 'DAY',
-                            step: null,
-                            startDate: null,
-                            day: 0,
-                            nthDay: null,
-                            transactorId: '',
-                        } as IScheduler,
-                    ],
-                };
-            }
-            return transactorRow;
-        });
+        const filteredRows: ITransactorRowEditable[] = transactors.map(
+            (transactorRow) => {
+                if (transactorRow.id === transactor.id) {
+                    return {
+                        ...transactorRow,
+                        schedulers: [
+                            ...transactorRow.schedulers,
+                            {
+                                id: uuid(),
+                                createdOn: '',
+                                updatedOn: '',
+                                schedulerCode: 'DAY',
+                                step: null,
+                                startDate: null,
+                                day: 0,
+                                nthDay: null,
+                                transactorId: '',
+                            },
+                        ],
+                    };
+                }
+                return transactorRow;
+            },
+        );
         setTransactors(filteredRows);
     };
 
-    const toggleExpanded = () => setExpanded(!expanded);
+    const toggleExpanded = () => {
+        setExpanded(!expanded);
+    };
 
     return (
         <Fragment>

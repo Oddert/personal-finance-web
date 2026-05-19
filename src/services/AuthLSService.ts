@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
     PERSONAL_FINANCE_ACCESS_TOKEN,
     PERSONAL_FINANCE_REFRESH_TOKEN,

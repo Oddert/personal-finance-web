@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { call, put } from 'redux-saga/effects';
 
 import type { ICategory } from '../../types/Category.d';
 import type { IStandardResponse } from '../../types/Request.d';
 
 import APIService from '../../services/APIService';
-
 import { sortCategories } from '../../utils/categoryUtils';
-
 import { writeCategories } from '../slices/categorySlice';
 
 /**
@@ -18,7 +18,7 @@ export default function* categoryWriteSaga() {
             categories: ICategory[];
         }> = yield call(APIService.getAllCategoriesWithMatchers);
 
-        const categories = categoriesResponse?.payload?.categories || [];
+        const categories = categoriesResponse?.payload?.categories ?? [];
 
         const orderedData = sortCategories(categories);
 

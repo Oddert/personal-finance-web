@@ -1,16 +1,16 @@
-import request from '../common/request';
-
 import type { IUser } from '../types/Auth.types';
 import type { IBudget } from '../types/Budget.types';
 import type { ICard } from '../types/Card.types';
 import type { ICategory } from '../types/Category.d';
 import type { IMatcher } from '../types/Matcher.d';
 import type { IStandardResponse } from '../types/Request.d';
-import { IScenario } from '../types/Scenario.types';
+import type { IScenario } from '../types/Scenario.types';
 import type {
     ITransaction,
     TAggregateDatapoints,
 } from '../types/Transaction.d';
+
+import request from '../common/request';
 
 /**
  * Primary interface for interacting with the API.
@@ -36,7 +36,7 @@ const APIService = Object.freeze({
                 newEmail,
             });
             return response;
-        } catch (error: any) {
+        } catch (error) {
             return error;
         }
     },
@@ -57,7 +57,7 @@ const APIService = Object.freeze({
                 newPassword,
             });
             return response;
-        } catch (error: any) {
+        } catch (error) {
             return error;
         }
     },
@@ -67,14 +67,10 @@ const APIService = Object.freeze({
      * @returns True if the user already exists, false if the name is available.
      */
     checkUserExists: async (username: string) => {
-        try {
-            const response: IStandardResponse<{
-                exists: boolean;
-            }> = await request.get(`/auth/user-exists/${username}`);
-            return response;
-        } catch (error: any) {
-            return error;
-        }
+        const response: IStandardResponse<{
+            exists: boolean;
+        }> = await request.get(`/auth/user-exists/${username}`);
+        return response;
     },
     /**
      * Attempts to login the user.
@@ -239,7 +235,8 @@ const APIService = Object.freeze({
         try {
             starDateParsed = new Date(startDate).toISOString();
             endDateParsed = new Date(endDate).toISOString();
-        } catch (error: any) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
             return null;
         }
         const from = `?from=${starDateParsed}`;
@@ -307,7 +304,7 @@ const APIService = Object.freeze({
      */
     updateCategory: async (category: Partial<ICategory>) => {
         const response: IStandardResponse<{ category: ICategory }> =
-            await request.put(`/category/${category.id}`, category);
+            await request.put(`/category/${String(category.id)}`, category);
         return response;
     },
 

@@ -1,6 +1,6 @@
-import { Palette } from '@mui/material/styles';
+import type { ThemeOptions } from '@mui/material';
 
-const palette: Partial<Palette> = {
+const palette: Partial<ThemeOptions['palette']> = {
     mode: 'dark',
     primary: {
         main: '#842fdc',

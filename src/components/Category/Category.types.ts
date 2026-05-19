@@ -6,6 +6,6 @@ export interface IProps {
     category: ICategory;
     defaultOpenAddNew?: boolean;
     defaultOpenMatcher?: Partial<IMatcher>;
-    onAddNewSubmit?: (matcher: Partial<IMatcher>) => any;
+    onAddNewSubmit?: (matcher: Partial<IMatcher>) => unknown;
     layout?: TDynamicCardLayoutModes;
 }

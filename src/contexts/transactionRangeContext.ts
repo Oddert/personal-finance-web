@@ -1,16 +1,20 @@
-import { PayloadAction } from '@reduxjs/toolkit';
-import { createContext, Dispatch } from 'react';
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { type Dispatch, createContext } from 'react';
+
+import { type PayloadAction } from '@reduxjs/toolkit';
 
 export interface TransactionRangeState {
-    rangeKeys: {
-        [index: number]: string;
-    };
-    rangeValues: {
-        [index: number]: {
+    rangeKeys: Record<number, string>;
+    rangeValues: Record<
+        number,
+        {
             top: number;
             bottom: number;
-        };
-    };
+        }
+    >;
     rangeLength: number;
     value: [number, number];
     marks: { label: string; value: number }[];

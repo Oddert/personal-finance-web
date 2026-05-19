@@ -1,5 +1,4 @@
-import { createTheme } from '@mui/material';
-import { ThemeOptions } from '@mui/material/styles/createTheme';
+import { type ThemeOptions, createTheme } from '@mui/material';
 
 import breakpoints from './breakpoints';
 import components from './components';

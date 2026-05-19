@@ -1,18 +1,15 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { type FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button, ListItem, Tooltip } from '@mui/material';
 import { AddCircle as IconAdd } from '@mui/icons-material';
+import { Button, ListItem, Tooltip } from '@mui/material';
 
+import type { IProps } from './AddMatcher.types';
 import type { IMatcher } from '../../../../types/Matcher.d';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
 import { matcherCreateAction } from '../../../../redux/thunks/categoryThunks';
-
 import EditMatcher from '../EditMatcher';
-
-import type { IProps } from './AddMatcher.types';
 
 /**
  * Create form to add a new Matcher.
@@ -36,6 +33,7 @@ const AddMatcher: FC<IProps> = ({
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setOpen(defaultOpen);
     }, [defaultOpen]);
 
@@ -66,7 +64,9 @@ const AddMatcher: FC<IProps> = ({
                     clearOnBlur={false}
                     clearOnCancel={true}
                     clearOnSubmit={true}
-                    onCancel={() => setOpen(false)}
+                    onCancel={() => {
+                        setOpen(false);
+                    }}
                     onSubmit={handleSubmit}
                     matcher={matcher}
                 />
@@ -85,7 +85,9 @@ const AddMatcher: FC<IProps> = ({
             <Tooltip title={t('Category.addMatcher')}>
                 <Button
                     color='primary'
-                    onClick={() => setOpen(!open)}
+                    onClick={() => {
+                        setOpen(!open);
+                    }}
                     sx={{
                         textAlign: 'center',
                         width: '100%',

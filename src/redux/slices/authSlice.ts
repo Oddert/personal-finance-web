@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IUser } from '../../types/Auth.types';
+import type { IUser } from '../../types/Auth.types';
 
 export interface IAuthState {
     accessRequestInProgress: boolean;

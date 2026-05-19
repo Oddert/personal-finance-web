@@ -1,25 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, Typography } from '@mui/material';
 
-import { TDynamicCardLayoutModes } from '../../types/Common.types';
-
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import { refreshBudgets } from '../../redux/thunks/budgetThunks';
-import { getCardResponse } from '../../redux/selectors/cardSelectors';
-
-import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import type { IProps } from './ManageCards.types';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
+import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { getCardResponse } from '../../redux/selectors/cardSelectors';
+import { refreshBudgets } from '../../redux/thunks/budgetThunks';
 
 import CardTile from './components/CardTile';
 import CreateCardButton from './components/CreateCardButton';
 import CreateCardTile from './components/CreateCardTile';
-
-import { IProps } from './ManageCards.types';
 
 /**
  * Page component to display all cards.
@@ -39,7 +35,7 @@ const ManageCards: FC<IProps> = () => {
     useEffect(() => {
         dispatch(refreshBudgets(t, true));
         // TODO: re-enable react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch, t]);
 
     return (
         <ResponsiveContainer>

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 
 import {
     Accordion,
@@ -11,9 +11,9 @@ import {
     Tooltip,
 } from '@mui/material';
 
-import NavLink from '../NavLink';
+import type { IProps } from './SubMenu.types';
 
-import { IProps } from './SubMenu.types';
+import NavLink from '../NavLink';
 
 /**
  * Renders a sub list of grouped nav items.

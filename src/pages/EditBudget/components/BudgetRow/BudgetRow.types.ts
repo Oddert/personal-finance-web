@@ -1,4 +1,4 @@
-import { IBudgetRowEditable } from '../../EditBudget.types';
+import type { IBudgetRowEditable } from '../../EditBudget.types';
 
 export interface IProps {
     budgetRows: IBudgetRowEditable[];

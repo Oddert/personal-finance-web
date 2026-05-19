@@ -1,8 +1,15 @@
-import { FC, useEffect, useState } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuid } from 'uuid';
+import { useLocation, useParams, useSearchParams } from 'react-router';
 
+import {
+    Add as IconPlus,
+    ArrowBack as IconArrowLeft,
+    Save as IconSave,
+    ShowChart as IconPreviewTotal,
+    SsidChart as IconPreviewCategory,
+    WebAssetOff as IconPreviewOff,
+} from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -12,43 +19,32 @@ import {
     ToggleButtonGroup,
     Typography,
 } from '@mui/material';
-import {
-    Add as IconPlus,
-    ArrowBack as IconArrowLeft,
-    Save as IconSave,
-    WebAssetOff as IconPreviewOff,
-    ShowChart as IconPreviewTotal,
-    SsidChart as IconPreviewCategory,
-} from '@mui/icons-material';
 
-import { IScenario } from '../../types/Scenario.types';
+import { v4 as uuid } from 'uuid';
+
+import type { IProps, ITransactorRowEditable } from './EditScenario.types';
+import type { IScenario } from '../../types/Scenario.types';
 
 import router, { ROUTES } from '../../constants/routerConstants';
-
-import APIService from '../../services/APIService';
-
+import ResponsiveContainer from '../../hocs/ResponsiveContainer';
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
+import { getActiveCardId } from '../../redux/selectors/cardSelectors';
 import {
     addScenario,
     scenariosLoading,
     updateScenario,
 } from '../../redux/slices/scenarioSlice';
+import { refreshAuthentication } from '../../redux/thunks/authThunks';
 import {
     intakeError,
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
-import { getActiveCardId } from '../../redux/selectors/cardSelectors';
-import { refreshAuthentication } from '../../redux/thunks/authThunks';
-
-import ResponsiveContainer from '../../hocs/ResponsiveContainer';
+import APIService from '../../services/APIService';
+import { ffBlankTransactorRowEditable } from '../../utils/factoryFunctions';
 
 import DeleteScenario from './components/DeleteScenario';
-
-import { IProps, ITransactorRowEditable } from './EditScenario.types';
-import TransactorTable from './components/TransactorTable/TransactorTable';
-import { ffBlankTransactorRowEditable } from '../../utils/factoryFunctions';
 import ProjectionChart from './components/ProjectionChart';
+import TransactorTable from './components/TransactorTable/TransactorTable';
 
 const emptyScenario = () => ({
     id: uuid(),
@@ -99,7 +95,7 @@ const EditScenario: FC<IProps> = () => {
                     scenario.id,
                     { ...scenario, transactors },
                 );
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(
@@ -108,10 +104,10 @@ const EditScenario: FC<IProps> = () => {
             } else {
                 const response = await APIService.createSingleScenario({
                     ...scenario,
-                    cardId: cardId || '',
+                    cardId: cardId ?? '',
                     transactors,
                 });
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(addScenario({ scenario: response.payload.scenario }));
@@ -124,10 +120,14 @@ const EditScenario: FC<IProps> = () => {
             setScenarioLoading(true);
             dispatch(scenariosLoading());
             request();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error1: any) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (error1.status == 401) {
                 try {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     dispatch(refreshAuthentication(request));
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
                 } catch (error2: any) {
                     setScenarioLoading(false);
                     dispatch(intakeError(error1));
@@ -144,7 +144,7 @@ const EditScenario: FC<IProps> = () => {
             const fetchScenario = async (scenarioId: string) => {
                 const scenarioResponse =
                     await APIService.getSingleScenario(scenarioId);
-                if (!scenarioResponse || !scenarioResponse.payload) {
+                if (!scenarioResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setScenario(scenarioResponse.payload.scenario);
@@ -161,9 +161,11 @@ const EditScenario: FC<IProps> = () => {
             };
             if ('scenarioId' in params) {
                 fetchScenario(String(params.scenarioId));
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setIsEdit(true);
             } else {
                 if (
+                    // eslint-disable-next-line security/detect-non-literal-regexp
                     new RegExp(ROUTES.EDIT_SCENARIO, 'gi').test(
                         location.pathname,
                     )
@@ -171,23 +173,25 @@ const EditScenario: FC<IProps> = () => {
                     dispatch(
                         writeErrorBoundary({
                             title: t('Scenario.notFound'),
-                            message: `${t('Scenario.notFoundWithId', { scenarioId: scenario.id })}`,
+                            message: t('Scenario.notFoundWithId', {
+                                scenarioId: scenario.id,
+                            }),
                             error: t('errors.notFound'),
                         }),
                     );
                 }
                 const templateId = search[0].get('templateId');
                 if (templateId) {
-                    fetchScenario(String(templateId));
+                    fetchScenario(templateId);
                     setIsEdit(false);
                 } else {
                     setScenarioLoading(false);
                 }
             }
-        } catch (error: any) {
+        } catch (error) {
             dispatch(intakeError(error));
         }
-    }, [t]);
+    }, [dispatch, location.pathname, params, scenario.id, search, t]);
 
     const loading = scenarioLoading;
 
@@ -222,19 +226,19 @@ const EditScenario: FC<IProps> = () => {
                 </Typography>
                 <TextField
                     label={t('literals.Title')}
-                    onChange={(event) =>
-                        setScenario({ ...scenario, title: event.target.value })
-                    }
+                    onChange={(event) => {
+                        setScenario({ ...scenario, title: event.target.value });
+                    }}
                     value={scenario.title}
                 />
                 <TextField
                     label={t('Scenario.description')}
-                    onChange={(event) =>
+                    onChange={(event) => {
                         setScenario({
                             ...scenario,
                             description: event.target.value,
-                        })
-                    }
+                        });
+                    }}
                     value={scenario.description}
                 />
                 <Typography component='label' htmlFor='preview-control'>
@@ -265,12 +269,12 @@ const EditScenario: FC<IProps> = () => {
                     transactors={transactors}
                 />
                 <Button
-                    onClick={() =>
+                    onClick={() => {
                         setTransactors([
                             ...transactors,
                             ffBlankTransactorRowEditable(),
-                        ])
-                    }
+                        ]);
+                    }}
                 >
                     <IconPlus /> {t('buttons.addBudgetRow')}
                 </Button>

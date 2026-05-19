@@ -1,10 +1,9 @@
 import { Container, Typography } from '@mui/material';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-import { getUserFirstName } from '../../redux/selectors/authSelectors';
-
 import ExistingDataLineChart from '../../modules/ExistingDataLineChart';
 import ProjectionLineChart from '../../modules/ProjectionLineChart';
+import { getUserFirstName } from '../../redux/selectors/authSelectors';
 
 /**
  * Main home page component.

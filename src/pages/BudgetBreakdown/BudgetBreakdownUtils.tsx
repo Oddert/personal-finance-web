@@ -45,5 +45,5 @@ export const formatReadableDate = (
  * @returns The formatted string in format `(3 months)`, `(1 month)`.
  */
 export const formatNumMonths = (numMonths: number) => {
-    return `(${numMonths} ${numMonths > 1 ? 'months' : 'month'})`;
+    return `(${String(numMonths)} ${numMonths > 1 ? 'months' : 'month'})`;
 };

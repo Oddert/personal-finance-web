@@ -1,10 +1,10 @@
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import { Box, Typography } from '@mui/material';
 
-import { IProps } from './FallbackError.types';
+import type { IProps } from './FallbackError.types';
 
 const FallbackError: FC<IProps> = () => {
     const { t } = useTranslation();

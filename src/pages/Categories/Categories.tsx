@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { Add as IconPlus } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -10,20 +11,18 @@ import {
     ListItem,
     Typography,
 } from '@mui/material';
-import { Add as IconPlus } from '@mui/icons-material';
 
 import type { ICategory } from '../../types/Category.d';
 import type { TDynamicCardLayoutModes } from '../../types/Common.types';
-
-import {
-    getCategoriesLoading,
-    getCategoryResponse,
-} from '../../redux/selectors/categorySelectors';
 
 import Category from '../../components/Category';
 import CategoryAdd from '../../components/CategoryAdd';
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
+import {
+    getCategoriesLoading,
+    getCategoryResponse,
+} from '../../redux/selectors/categorySelectors';
 
 /**
  * Page to display all Categories.
@@ -40,8 +39,12 @@ const Categories = () => {
     const categories = useSelector(getCategoryResponse);
     const loading = useSelector(getCategoriesLoading);
 
-    const handleDialogClose = useCallback(() => setDialogOpen(false), []);
-    const handleDialogOpen = useCallback(() => setDialogOpen(true), []);
+    const handleDialogClose = useCallback(() => {
+        setDialogOpen(false);
+    }, []);
+    const handleDialogOpen = useCallback(() => {
+        setDialogOpen(true);
+    }, []);
 
     if (loading) {
         return (

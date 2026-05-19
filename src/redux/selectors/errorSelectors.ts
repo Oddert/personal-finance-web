@@ -1,4 +1,4 @@
-import { RootState } from '../constants/store';
+import type { RootState } from '../constants/store';
 
 /**
  * Returns the 'error' section of the redux state.

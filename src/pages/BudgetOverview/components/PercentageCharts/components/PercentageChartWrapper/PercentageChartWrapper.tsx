@@ -1,18 +1,18 @@
-import { FC, useRef, useState } from 'react';
-import dayjs, { Dayjs } from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { type FC, useRef, useState } from 'react';
 
 import { Box, Typography } from '@mui/material';
 
+import dayjs, { Dayjs } from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import type { IProps } from './PercentageChartWrapper.types';
+
+import BudgetPercentageChart from '../../../../../../components/BudgetPercentageChart';
+import TransactionPreview from '../../../../../../components/TransactionPreview';
 import {
     toBeginningMonthDayjs,
     toEndMonthDayjs,
 } from '../../../../../../utils/budgetUtils';
-
-import BudgetPercentageChart from '../../../../../../components/BudgetPercentageChart';
-import TransactionPreview from '../../../../../../components/TransactionPreview';
-
-import type { IProps } from './PercentageChartWrapper.types';
 
 const defaultStart = toBeginningMonthDayjs(String(dayjs()));
 const defaultEnd = toEndMonthDayjs(String(dayjs()));
@@ -57,6 +57,7 @@ const PercentageChartWrapper: FC<IProps> = ({
                 width={zoomDim.width}
             />
             <TransactionPreview
+                // eslint-disable-next-line react-hooks/refs
                 anchorEl={ref.current}
                 categoryId={categoryId}
                 clearAnchorEl={() => {

@@ -20,8 +20,8 @@ const useLocalisedNumber = () => {
          * @returns The localised number as a string.
          */
         const currencyLocaliserFunc = (
-            value: number | bigint | typeof Infinity,
-            currency: string = 'GBP',
+            value: number | bigint,
+            currency = 'GBP',
         ) => {
             try {
                 return Intl.NumberFormat(language, {
@@ -41,9 +41,7 @@ const useLocalisedNumber = () => {
          * @param value The number value to format.
          * @returns The localised number as a string.
          */
-        const numberLocaliserFunc = (
-            value: number | bigint | typeof Infinity,
-        ) => {
+        const numberLocaliserFunc = (value: number | bigint) => {
             try {
                 return Intl.NumberFormat(language).format(value);
             } catch (error) {

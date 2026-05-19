@@ -1,17 +1,17 @@
-import { FC, Fragment, useMemo, useState } from 'react';
+import { type FC, Fragment, useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
 import type { IProps } from './TotalDiscrepancyChart.types';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 const aggregateTimeChartId = 'budget-time-chart';
 
 const a11yProps = (index: number) => ({
-    id: `tab-${index}`,
-    'aria-controls': `tabpanel-${index}`,
+    id: `tab-${String(index)}`,
+    'aria-controls': `tabpanel-${String(index)}`,
 });
 
 /**
@@ -83,7 +83,7 @@ const TotalDiscrepancyChart: FC<IProps> = ({
         return [createdSeries1, createdSeries2];
     }, [chartList]);
 
-    const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChangeTab = (_: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
     };
 
@@ -248,7 +248,7 @@ const TotalDiscrepancyChart: FC<IProps> = ({
                             },
                             y: {
                                 formatter: (val) =>
-                                    `${Math.floor(val * 100) / 100}%`,
+                                    `${String(Math.floor(val * 100) / 100)}%`,
                             },
                             shared: true,
                         },
@@ -272,7 +272,7 @@ const TotalDiscrepancyChart: FC<IProps> = ({
                                     colors: '#fff',
                                 },
                                 formatter: (val) =>
-                                    `${Math.floor(val * 100) / 100}%`,
+                                    `${String(Math.floor(val * 100) / 100)}%`,
                             },
                         },
                     }}

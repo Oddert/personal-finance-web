@@ -1,17 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import type { SyntheticEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-
-import type { SyntheticEvent } from 'react';
 
 import { Box, Slider, Typography } from '@mui/material';
 
-import {
-    generateMarks,
-    getRangeKeyEncoding,
-} from '../../../../utils/transactionUtils';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+import type { TransactionRangeState } from '../../../../contexts/transactionRangeContext';
 
 import {
     TransactionRange,
@@ -19,11 +16,13 @@ import {
     setRangeValues,
     updateValue,
 } from '../../../../contexts/transactionRangeContext';
-import type { TransactionRangeState } from '../../../../contexts/transactionRangeContext';
-
 import { getTransactionsOrderedByDate } from '../../../../redux/selectors/transactionsSelectors';
+import {
+    generateMarks,
+    getRangeKeyEncoding,
+} from '../../../../utils/transactionUtils';
 
-const valuetext = (value: number) => `${value}°C`;
+const valuetext = (value: number) => `${String(value)}°C`;
 
 dayjs.extend(localizedFormat);
 
@@ -55,11 +54,11 @@ const RangeControls = () => {
             Object.keys(orderedTransactions[year]).forEach((month) => {
                 rangeKeysArr.push(getRangeKeyEncoding(year, month));
                 const bottomDate = dayjs(
-                    `${year}-${Number(month) + 1}-01`,
+                    `${year}-${String(Number(month) + 1)}-01`,
                 ).startOf('month');
-                const topDate = dayjs(`${year}-${Number(month) + 1}-01`).endOf(
-                    'month',
-                );
+                const topDate = dayjs(
+                    `${year}-${String(Number(month) + 1)}-01`,
+                ).endOf('month');
                 rangeValuesArr.push({
                     bottom: bottomDate.valueOf(),
                     top: topDate.valueOf(),
@@ -88,7 +87,7 @@ const RangeControls = () => {
 
         const rangeValues = rangeValuesArr.reduce(
             (
-                acc: { [key: number]: { top: number; bottom: number } },
+                acc: Record<number, { top: number; bottom: number }>,
                 val,
                 idx,
             ) => {
@@ -115,7 +114,7 @@ const RangeControls = () => {
     }, [orderedTransactions, dispatch, t]);
 
     const handleChange = (
-        event: Event | SyntheticEvent<Element, Event>,
+        _: Event | SyntheticEvent,
         newValue: number | number[],
         // activeThumb: number,
     ) => {
@@ -145,6 +144,7 @@ const RangeControls = () => {
     }, [dispatch, localValue]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLocalValue(value);
     }, [value]);
 

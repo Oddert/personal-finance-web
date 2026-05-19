@@ -1,27 +1,23 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-import { TDynamicCardLayoutModes } from '../../types/Common.types';
+import type { IProps } from './ManageScenarios.types';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
+import DynamicCardList from '../../components/DynamicCardList';
+import LayoutControls from '../../components/LayoutControls';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-
 import {
     getScenarios,
     getScenariosLoading,
 } from '../../redux/selectors/scenarioSelectors';
 
-import DynamicCardList from '../../components/DynamicCardList';
-import LayoutControls from '../../components/LayoutControls';
-
 import CreateScenarioButton from './components/CreateScenarioButton';
 import CreateScenarioCard from './components/CreateScenarioCard';
 import ScenarioCard from './components/ScenarioCard';
-
-import { IProps } from './ManageScenarios.types';
 
 /**
  * Displays all Scenarios with links to edit.

@@ -1,9 +1,9 @@
-import { INavigationOption } from '../../../../constants/routerConstants';
+import type { INavigationOption } from '../../../../constants/routerConstants';
 
 export interface IProps {
     navItem: INavigationOption;
-    onClose: (args?: any) => void;
-    onOpen: (args?: any) => void;
+    onClose: () => void;
+    onOpen: () => void;
     open: boolean;
     permanent?: boolean;
 }

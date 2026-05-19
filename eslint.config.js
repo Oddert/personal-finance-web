@@ -15,7 +15,7 @@ import eslintPluginSecurity from 'eslint-plugin-security'
 import eslintPluginImport from 'eslint-plugin-import'
 
 export default defineConfig([
-    globalIgnores(['dist', 'node_modules']),
+    globalIgnores(['dist', 'node_modules', '.fttemplates', 'build', 'eslint.config.js']),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [

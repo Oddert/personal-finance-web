@@ -1,18 +1,18 @@
-import { FC, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CellContext, ColumnDef } from '@tanstack/react-table';
+
 import { Box } from '@mui/material';
 
+import type { IProps } from './CategoryList.types';
 import type { ICategoryBDValue } from '../../../../types/Category.d';
-
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+import type { CellContext, ColumnDef } from '@tanstack/react-table';
 
 import Table from '../../../../components/Table';
-
-import type { IProps } from './CategoryList.types';
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 const addCurrencySymbol = (cell: CellContext<ICategoryBDValue, unknown>) => {
     const value = cell.renderValue() as number;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { currencyLocaliser } = useLocalisedNumber();
     return (
         <Box sx={{ textAlign: 'right' }}>
@@ -55,4 +55,5 @@ const CategoryList: FC<IProps> = ({ categoryBreakdown }) => {
     return <Table columns={columns} data={data} />;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export default CategoryList;

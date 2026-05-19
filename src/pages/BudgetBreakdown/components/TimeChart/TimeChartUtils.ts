@@ -1,17 +1,17 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
+import type {
+    ISortedByCategory,
+    ISortedByCategoryRow,
+} from './TimeChart.types';
 import type { ICategory } from '../../../../types/Category.d';
 import type { ITransaction } from '../../../../types/Transaction.d';
-
-import { ISortedByCategory, ISortedByCategoryRow } from './TimeChart.types';
 
 dayjs.extend(localizedFormat);
 
 export const generateTimeChartSeries = (
-    categories: {
-        [id: string]: ICategory;
-    },
+    categories: Record<string, ICategory>,
     endDate: Dayjs,
     filteredTransactions: ITransaction[],
     includeCredit: boolean,
@@ -33,7 +33,8 @@ export const generateTimeChartSeries = (
                     const foundCategory = categories[each.categoryId];
                     acc[each.categoryId] = {
                         label:
-                            foundCategory?.label ||
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                            foundCategory.label ??
                             `Category ID ${each.categoryId}`,
                         id: each.categoryId,
                         transactions: {},

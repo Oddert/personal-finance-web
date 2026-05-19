@@ -17,6 +17,8 @@ export const createReadableNumber = (
     if (typeof value !== 'number') {
         return fallbackValue;
     }
+    // WARNING: vulnerable regex requires replacement
+    // eslint-disable-next-line security/detect-unsafe-regex
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
@@ -27,7 +29,7 @@ export const createReadableNumber = (
  */
 export const readCsv = (file: unknown) => {
     const returnValue: {
-        values: { [key: string]: string }[];
+        values: Record<string, string>[];
         headers: string[];
         valueLength: number;
     } = {
@@ -45,7 +47,7 @@ export const readCsv = (file: unknown) => {
             const converted = data.map((row) => {
                 const rowSplit = row.split(',');
                 const rowConverted = headers.reduce(
-                    (acc: { [key: string]: string }, header, idx) => {
+                    (acc: Record<string, string>, header, idx) => {
                         acc[header] = rowSplit[idx];
                         return acc;
                     },

@@ -1,18 +1,18 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import locale from 'locale-codes';
 
 import { Autocomplete, TextField } from '@mui/material';
 
-import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
-import { updateActiveLanguage } from '../../../../redux/thunks/profileThunks';
+import locale from 'locale-codes';
+
+import type { IProps } from './SystemLanguage.styles';
 
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
-import { IProps } from './SystemLanguage.styles';
+import { getActiveLanguage } from '../../../../redux/selectors/profileSelectors';
+import { updateActiveLanguage } from '../../../../redux/thunks/profileThunks';
 
 /**
  * Allows the user to select their main (system) language.
@@ -30,7 +30,7 @@ const SystemLanguage: FC<IProps> = () => {
         <Autocomplete
             getOptionLabel={(option) => `${option.name} (${option.tag})`}
             getOptionKey={(option) => option.tag}
-            onChange={(event, nextValue) => {
+            onChange={(_, nextValue) => {
                 if (nextValue) {
                     dispatch(
                         updateActiveLanguage({

@@ -1,13 +1,14 @@
-import { FC, Fragment, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import ApexCharts from 'apexcharts';
+import { type FC, Fragment, useMemo } from 'react';
 import Chart from 'react-apexcharts';
+import { useTranslation } from 'react-i18next';
 
 import { Box, Button } from '@mui/material';
 
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+import ApexCharts from 'apexcharts';
 
-import { IAgDataAccumulator, IProps } from './BudgetMonthSpendChart.type';
+import type { IAgDataAccumulator, IProps } from './BudgetMonthSpendChart.type';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 const budgetMonthSpendId = 'budget-month-spend';
 
@@ -53,6 +54,7 @@ const BudgetMonthSpendChart: FC<IProps> = ({
 
     const handleClickToggle = () => {
         series.map((value) =>
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             ApexCharts.exec(budgetMonthSpendId, 'toggleSeries', value.name),
         );
     };

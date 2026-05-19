@@ -1,8 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { type FC, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, TextField, Typography } from '@mui/material';
 
 import { Edit as IconEdit } from '@mui/icons-material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 import type { IProps } from './EditableText.types';
 
@@ -20,7 +20,7 @@ import type { IProps } from './EditableText.types';
  * @param props.verticalCenter If true, a vertical center alignment is used, otherwise flex-start is applied.
  */
 const EditableText: FC<IProps> = ({
-    containerSx,
+    // containerSx,
     headingProps,
     iconPosition = 'end',
     onChange,
@@ -39,6 +39,7 @@ const EditableText: FC<IProps> = ({
     }, [onChange, value]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setValue(text);
     }, [text]);
 
@@ -66,12 +67,14 @@ const EditableText: FC<IProps> = ({
                         opacity: 1,
                     },
                 },
-                ...containerSx,
+                // ...(containerSx ?? {}),
             })}
         >
             <Button
                 className='EditableText_open'
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                    setOpen(true);
+                }}
                 sx={{
                     position: 'absolute',
                     left: iconPosition === 'end' ? '-100%' : '100%',
@@ -84,7 +87,9 @@ const EditableText: FC<IProps> = ({
                 <TextField
                     autoFocus
                     onBlur={handleBlur}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={(e) => {
+                        setValue(e.target.value);
+                    }}
                     value={value}
                 />
             ) : !text.length && placeholder ? (

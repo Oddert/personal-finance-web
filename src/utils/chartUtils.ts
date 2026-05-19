@@ -12,12 +12,14 @@
  * @returns The formatted number as string
  */
 export const largeValueFormatter = (number: number) => {
-    if (number === null || isNaN(number)) {
+    if (isNaN(number)) {
         return String(number);
     }
     const str = number.toString().split('.');
     const converted = [];
     if (str[0].length >= 4) {
+        // WARNING: vulnerable regex requires replacement
+        // eslint-disable-next-line security/detect-unsafe-regex
         converted.push(str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,'));
     }
     if (str[1] && str[1].length >= 4) {

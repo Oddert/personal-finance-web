@@ -1,15 +1,20 @@
-import { createContext, Dispatch } from 'react';
-import { PayloadAction } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type Dispatch, createContext } from 'react';
+
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
+
 import { setToLocalStore } from '../common/localstore';
 import { PERSONAL_FINANCE_UPLOAD_RECOVERY } from '../constants/appConstants';
 
-export interface ITECTransaction {
-    [key: string]: string | number | null;
-}
+export type ITECTransaction = Record<string, string | number | null>;
 
 export interface TransactionEditState {
-    columnMap: { [key: string]: string };
+    columnMap: Record<string, string>;
     headers: string[];
     match?: string;
     sideBarOpen: boolean;
@@ -125,7 +130,7 @@ const initialValue: {
     dispatch: () => {},
 };
 
-export const createTECReducer = (uploadMode: boolean = false) => {
+export const createTECReducer = (uploadMode = false) => {
     const transactionEditReducer = (
         state: TransactionEditState,
         action: PayloadAction<any>,
@@ -234,7 +239,7 @@ export const createTECReducer = (uploadMode: boolean = false) => {
                                         return {
                                             ...transaction,
                                             deleted: String(
-                                                !Boolean(transaction.deleted),
+                                                !transaction.deleted,
                                             ),
                                         };
                                     }

@@ -1,13 +1,14 @@
-import { FC } from 'react';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Popover } from '@mui/material';
 
-import TPTable from './components/TPTable';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './TransactionPreview.types';
-import { useTranslation } from 'react-i18next';
+
+import TPTable from './components/TPTable';
 
 dayjs.extend(localizedFormat);
 

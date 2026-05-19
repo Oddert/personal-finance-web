@@ -1,28 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { call, put, select } from 'redux-saga/effects';
-
-import APIService from '../../services/APIService';
-
-import {
-    mapCategoriesToTransactions,
-    orderTransactions,
-} from '../../utils/transactionUtils';
 
 import type { IStandardResponse } from '../../types/Request.d';
 import type { ITransaction } from '../../types/Transaction.d';
 
-import { CategoryState, requestCategories } from '../slices/categorySlice';
-import { writeTransactions } from '../slices/transactionsSlice';
-
+import APIService from '../../services/APIService';
+import {
+    mapCategoriesToTransactions,
+    orderTransactions,
+} from '../../utils/transactionUtils';
 import { getActiveCardId } from '../selectors/cardSelectors';
 import {
     getCategoryOrderedDataById,
     getCategoryQueried,
 } from '../selectors/categorySelectors';
+import { getActiveLanguageCode } from '../selectors/profileSelectors';
 import {
     getTransactionsEndDate,
     getTransactionsStartDate,
 } from '../selectors/transactionsSelectors';
-import { getActiveLanguageCode } from '../selectors/profileSelectors';
+import { type CategoryState, requestCategories } from '../slices/categorySlice';
+import { writeTransactions } from '../slices/transactionsSlice';
 
 /**
  * Bulk creates transactions and re-loads part of the state.

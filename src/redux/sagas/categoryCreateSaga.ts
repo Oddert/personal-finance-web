@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { put } from 'redux-saga/effects';
-
-import type { PayloadAction } from '@reduxjs/toolkit';
 
 import type { ICategory } from '../../types/Category.d';
 
 import APIService from '../../services/APIService';
-
 import { retry } from '../../utils/requestUtils';
-
-import { intakeError } from '../thunks/errorThunks';
-
 import { createCategory } from '../slices/categorySlice';
+import { intakeError } from '../thunks/errorThunks';
 
 /**
  * Creates a category and adds it to the state.
@@ -20,7 +18,7 @@ export default function* categoryCreateSaga({
     payload,
 }: PayloadAction<{
     category: Partial<ICategory>;
-}>): any {
+}>): unknown {
     try {
         const response = yield retry<{ category: ICategory }>(() =>
             APIService.createCategory(payload.category),
@@ -31,7 +29,7 @@ export default function* categoryCreateSaga({
         } else {
             yield put(createCategory({ category: response.payload.category }));
         }
-    } catch (error: any) {
+    } catch (error) {
         yield put(intakeError(error));
     }
 }

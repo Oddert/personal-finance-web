@@ -1,6 +1,10 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { type FC, type SyntheticEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+    CopyAll as FromCopyIcon,
+    NoteAdd as CreateFreshIcon,
+} from '@mui/icons-material';
 import {
     Autocomplete,
     Button,
@@ -15,23 +19,16 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import {
-    CopyAll as FromCopyIcon,
-    NoteAdd as CreateFreshIcon,
-} from '@mui/icons-material';
+
+import type { IProps } from './CreateBudgetMenu.types';
+import type { IBudget } from '../../../../types/Budget.types';
 
 import router, {
     ROUTES,
     ROUTES_FACTORY,
 } from '../../../../constants/routerConstants';
-
-import { IBudget } from '../../../../types/Budget.types';
-
-import { getBudgetResponse } from '../../../../redux/selectors/budgetSelectors';
-
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import type { IProps } from './CreateBudgetMenu.types';
+import { getBudgetResponse } from '../../../../redux/selectors/budgetSelectors';
 
 /**
  * Re-usable menu component to display options to create a new budget (from blank or from template).
@@ -57,15 +54,13 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
         if (!dialogValue?.id) {
             setError(true);
         } else {
-            router.navigate(
-                ROUTES_FACTORY.CREATE_BUDGET(String(dialogValue.id)),
-            );
+            router.navigate(ROUTES_FACTORY.CREATE_BUDGET(dialogValue.id));
             handleClose();
         }
     };
 
     const handleChangeDialog = (
-        e: SyntheticEvent,
+        _: SyntheticEvent,
         nextValue: IBudget | null,
     ) => {
         setDialogValue(nextValue);
@@ -96,7 +91,11 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
                 </ListItemIcon>
                 {t('buttons.newBlankBudget')}
             </MenuItem>
-            <MenuItem onClick={() => setDialogOpen(true)}>
+            <MenuItem
+                onClick={() => {
+                    setDialogOpen(true);
+                }}
+            >
                 <ListItemIcon>
                     <FromCopyIcon fontSize='small' />
                 </ListItemIcon>
@@ -104,7 +103,9 @@ const CreateBudgetMenu: FC<IProps> = ({ anchorEl, handleClose }) => {
             </MenuItem>
             <Dialog
                 open={dialogOpen}
-                onClose={() => setDialogOpen(false)}
+                onClose={() => {
+                    setDialogOpen(false);
+                }}
                 sx={{
                     '& .MuiPaper-root': {
                         p: 3,

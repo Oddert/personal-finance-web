@@ -1,4 +1,4 @@
-import { IScheduler } from '../../../../types/Scenario.types';
+import type { IScheduler } from '../../../../types/Scenario.types';
 
 export interface IProps {
     handleChangeScheduler: (scheduler: IScheduler) => void;

@@ -1,6 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { ArrowForward as IconRightArrow } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -10,22 +11,18 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-import { ArrowForward as IconRightArrow } from '@mui/icons-material';
+
+import type { IProps } from './CardTile.types';
 
 import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
-
-import APIService from '../../../../services/APIService';
-
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
-import { setActiveCard } from '../../../../redux/slices/cardSlice';
 import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
+import { setActiveCard } from '../../../../redux/slices/cardSlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
-
-import type { IProps } from './CardTile.types';
+import APIService from '../../../../services/APIService';
 
 const blurCardNumber = (cardNumber: number | string) => {
     const asString = String(cardNumber);

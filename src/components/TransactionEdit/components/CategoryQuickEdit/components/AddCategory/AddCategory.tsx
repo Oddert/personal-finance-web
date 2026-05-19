@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import { type ChangeEvent, type FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Add as IconPlus } from '@mui/icons-material';
@@ -10,7 +10,7 @@ import {
     TextField,
 } from '@mui/material';
 
-import { ICategory } from '../../../../../../types/Category.d';
+import type { ICategory } from '../../../../../../types/Category.d';
 
 import { useAppDispatch } from '../../../../../../hooks/ReduxHookWrappers';
 import { categoryCreateAction } from '../../../../../../redux/thunks/categoryThunks';
@@ -114,7 +114,11 @@ const AddCategory: FC = () => {
                         p: 1,
                     }}
                 >
-                    <Button onClick={() => setOpen(false)}>
+                    <Button
+                        onClick={() => {
+                            setOpen(false);
+                        }}
+                    >
                         {t('buttons.Cancel')}
                     </Button>
                     <Button onClick={handleSubmit} variant='contained'>
@@ -126,7 +130,12 @@ const AddCategory: FC = () => {
     }
 
     return (
-        <Button onClick={() => setOpen(true)} sx={{ mt: 2 }}>
+        <Button
+            onClick={() => {
+                setOpen(true);
+            }}
+            sx={{ mt: 2 }}
+        >
             <IconPlus /> {t('buttons.addCategory')}
         </Button>
     );

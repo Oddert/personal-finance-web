@@ -1,7 +1,6 @@
+import type { TransactionEditState } from '../contexts/transactionEditContext';
 import type { ICategory } from '../types/Category.d';
 import type { IMatcher } from '../types/Matcher.d';
-
-import { TransactionEditState } from '../contexts/transactionEditContext';
 
 import { escapeRegex } from './commonUtils';
 
@@ -23,6 +22,7 @@ export const createRegexFromMatcher = (matcher: IMatcher) => {
     const capitalisation = matcher.case_sensitive ? '' : 'i';
     const matchString = `${prefix}${escapeRegex(matcher.match)}${suffix}`;
     const options = `${location}${capitalisation}`;
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const regexp = new RegExp(matchString, options);
     return regexp;
 };
@@ -43,7 +43,7 @@ export const autoMatchCategories = (
             acc: { all: string[]; withCategory: [RegExp, ICategory][] },
             category: ICategory,
         ) => {
-            category?.matchers?.forEach((matcher) => {
+            category.matchers.forEach((matcher) => {
                 const re = createRegexFromMatcher(matcher);
                 acc.all.push(matcher.match);
                 acc.withCategory.push([re, category]);
@@ -56,6 +56,7 @@ export const autoMatchCategories = (
     // The list of all `match` attributes is used to create a rough regex
     // This regex loosely matches any portion of the label in order to decide
     // whether or not to apply the matcher search which is more computationally expensive.
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const superMatcher = new RegExp(regexList.all.join('|'), 'gi');
 
     const returnValue = transactions.map((transaction) => {

@@ -1,19 +1,16 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Autocomplete, TextField } from '@mui/material';
 
+import type { IProps } from './BudgetSelector.types';
 import type { IBudget } from '../../types/Budget.types';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 import {
     getActiveBudget,
     getBudgetResponse,
 } from '../../redux/selectors/budgetSelectors';
-
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
 import { setActiveBudget } from '../../redux/slices/budgetSlice';
-
-import { IProps } from './BudgetSelector.types';
 
 /**
  * Re-usable selector component for the Active Budget.
@@ -39,7 +36,7 @@ const BudgetSelector: FC<IProps> = () => {
             disablePortal
             isOptionEqualToValue={(option) => option.id === monthBudget?.id}
             getOptionLabel={(option) => option.name}
-            onChange={(event, nextBudget) => {
+            onChange={(_event, nextBudget) => {
                 if (!nextBudget) {
                     return;
                 }

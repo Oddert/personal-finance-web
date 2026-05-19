@@ -1,7 +1,6 @@
-import { ApexOptions } from 'apexcharts';
+import type { ApexOptions } from 'apexcharts';
 
 import theme from '../../theme';
-
 import { largeValueFormatter } from '../../utils/chartUtils';
 
 export const MODULE_PROJECTION_PAST_BALLANCE =

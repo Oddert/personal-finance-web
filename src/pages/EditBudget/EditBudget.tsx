@@ -1,9 +1,16 @@
-import { FC, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
-import { v4 as uuid } from 'uuid';
-
+import {
+    Add as IconPlus,
+    ArrowBack as IconArrowLeft,
+    Save as IconSave,
+} from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -11,35 +18,26 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import {
-    Add as IconPlus,
-    ArrowBack as IconArrowLeft,
-    Save as IconSave,
-} from '@mui/icons-material';
 
-import { IBudget, IBudgetRow } from '../../types/Budget.types';
+import { v4 as uuid } from 'uuid';
 
+import type { IBudgetRowEditable, IProps } from './EditBudget.types';
+import type { IBudget, IBudgetRow } from '../../types/Budget.types';
+
+import DynamicCardList from '../../components/DynamicCardList';
 import router, { ROUTES } from '../../constants/routerConstants';
-
-import APIService from '../../services/APIService';
-
-import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
-
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-
+import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
 import { addBudget, budgetLoading } from '../../redux/slices/budgetSlice';
+import { refreshAuthentication } from '../../redux/thunks/authThunks';
 import {
     intakeError,
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
-
-import DynamicCardList from '../../components/DynamicCardList';
+import APIService from '../../services/APIService';
 
 import BudgetRow from './components/BudgetRow';
 import DeleteBudget from './components/DeleteBudget';
-
-import { IBudgetRowEditable, IProps } from './EditBudget.types';
-import { refreshAuthentication } from '../../redux/thunks/authThunks';
 
 /**
  * Creates a blank Budget Row.
@@ -85,7 +83,7 @@ const EditBudget: FC<IProps> = () => {
                     budget.id,
                 );
 
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(addBudget({ budget: response.payload.budget }));
@@ -95,7 +93,7 @@ const EditBudget: FC<IProps> = () => {
                     budgetRows,
                 });
 
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 dispatch(addBudget({ budget: response.payload.budget }));
@@ -126,11 +124,11 @@ const EditBudget: FC<IProps> = () => {
         try {
             const fetchBudget = async (budgetId: string) => {
                 const response = await APIService.getSingleBudget(budgetId);
-                if (!response || !response.payload) {
+                if (!response.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
                 setBudget({
-                    ...(response.payload.budget as IBudget),
+                    ...response.payload.budget,
                     budgetRows: [],
                 });
                 setBudgetRows(
@@ -146,9 +144,11 @@ const EditBudget: FC<IProps> = () => {
             };
             if ('budgetId' in params) {
                 fetchBudget(String(params.budgetId));
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setIsEdit(true);
             } else {
                 if (
+                    // eslint-disable-next-line security/detect-non-literal-regexp
                     new RegExp(ROUTES.EDIT_BUDGET, 'gi').test(location.pathname)
                 ) {
                     dispatch(
@@ -161,17 +161,17 @@ const EditBudget: FC<IProps> = () => {
                 }
                 const templateId = search[0].get('templateId');
                 if (templateId) {
-                    fetchBudget(String(templateId));
+                    fetchBudget(templateId);
                     setIsEdit(false);
                 } else {
                     setLoading(false);
                 }
             }
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             dispatch(intakeError(error));
         }
-    }, [t]);
+    }, [budget.id, dispatch, location.pathname, params, search, t]);
 
     if (loading) {
         return (
@@ -204,29 +204,29 @@ const EditBudget: FC<IProps> = () => {
                 </Typography>
                 <TextField
                     label={t('literals.Title')}
-                    onChange={(event) =>
-                        setBudget({ ...budget, name: event.target.value })
-                    }
+                    onChange={(event) => {
+                        setBudget({ ...budget, name: event.target.value });
+                    }}
                     value={budget.name}
                 />
                 <TextField
                     label={t('Budget.tagLine')}
-                    onChange={(event) =>
+                    onChange={(event) => {
                         setBudget({
                             ...budget,
                             shortDescription: event.target.value,
-                        })
-                    }
+                        });
+                    }}
                     value={budget.shortDescription}
                 />
                 <TextField
                     label={t('literals.Description')}
-                    onChange={(event) =>
+                    onChange={(event) => {
                         setBudget({
                             ...budget,
                             longDescription: event.target.value,
-                        })
-                    }
+                        });
+                    }}
                     value={budget.longDescription}
                 />
                 <DynamicCardList layout='list'>
@@ -239,7 +239,7 @@ const EditBudget: FC<IProps> = () => {
                         />
                     ))}
                     <Button
-                        onClick={() =>
+                        onClick={() => {
                             setBudgetRows([
                                 ...budgetRows,
                                 {
@@ -253,8 +253,8 @@ const EditBudget: FC<IProps> = () => {
                                     deleted: false,
                                     colour: '#fff',
                                 },
-                            ])
-                        }
+                            ]);
+                        }}
                     >
                         <IconPlus /> {t('buttons.addBudgetRow')}
                     </Button>

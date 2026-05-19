@@ -1,27 +1,25 @@
-import { ChangeEvent, FC, SyntheticEvent, useMemo } from 'react';
+import { type ChangeEvent, type FC, type SyntheticEvent, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+    Delete as IconDelete,
+    DeleteForever as IconUnDelete,
+} from '@mui/icons-material';
 import {
     Autocomplete,
     Box,
     Button,
     ListItem,
     Paper,
-    styled,
     TextField,
+    styled,
 } from '@mui/material';
-import {
-    Delete as IconDelete,
-    DeleteForever as IconUnDelete,
-} from '@mui/icons-material';
-
-import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
-
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import ColourBase from '../../../../components/ColourBase';
 
 import type { IProps } from './BudgetRow.types';
+
+import ColourBase from '../../../../components/ColourBase';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
 
 const TextFieldStyled = styled(TextField)({});
 
@@ -55,7 +53,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
     );
 
     const handleChangeCategory = (
-        event: SyntheticEvent,
+        _: SyntheticEvent,
         value: { id: string; label: string } | null,
     ) => {
         const filteredRows = budgetRows.map((row) => {

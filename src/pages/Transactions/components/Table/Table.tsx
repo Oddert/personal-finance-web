@@ -1,24 +1,22 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { Box, CircularProgress } from '@mui/material';
+
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
+import type { ITransaction } from '../../../../types/Transaction.d';
 import type { ColumnDef } from '@tanstack/react-table';
 
-import type { ITransaction } from '../../../../types/Transaction.d';
-
-import { TransactionRange } from '../../../../contexts/transactionRangeContext';
-
-import { getTransactionsLoading } from '../../../../redux/selectors/transactionsSelectors';
-
-import useTransactions from '../../../../hooks/useTransactions';
-import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
-
-import { transactionColumns } from '../../../../utils/transactionUtils';
-
 import TableWrapper from '../../../../components/Table/Table';
-import { Box, CircularProgress } from '@mui/material';
+import { TransactionRange } from '../../../../contexts/transactionRangeContext';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import useTransactions from '../../../../hooks/useTransactions';
 import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
+import { getTransactionsLoading } from '../../../../redux/selectors/transactionsSelectors';
+import { transactionColumns } from '../../../../utils/transactionUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -50,8 +48,8 @@ const Table = () => {
     );
 
     useEffect(() => {
-        const minDate = rangeValues[value[0]]?.bottom;
-        const maxDate = rangeValues[value[1]]?.top;
+        const minDate = rangeValues[value[0]].bottom;
+        const maxDate = rangeValues[value[1]].top;
 
         setFilteredTransactions(
             transactions.filter(

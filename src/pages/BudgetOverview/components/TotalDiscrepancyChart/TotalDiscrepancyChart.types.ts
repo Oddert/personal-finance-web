@@ -1,6 +1,5 @@
-import { Dayjs } from 'dayjs';
-
-import { IBudgetOverviewChart } from '../../BudgetOverview.types';
+import type { IBudgetOverviewChart } from '../../BudgetOverview.types';
+import type { Dayjs } from 'dayjs';
 
 export interface IProps {
     chartList: IBudgetOverviewChart[];

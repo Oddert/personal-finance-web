@@ -1,15 +1,12 @@
-import React, { Fragment, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Fragment, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { IconButton, Toolbar, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { AutoGraph as IconHome, Menu as IconMenu } from '@mui/icons-material';
-
-import { getSidebarMode } from '../../redux/selectors/profileSelectors';
+import { IconButton, Toolbar, Typography } from '@mui/material';
 
 import { useAppSelector } from '../../hooks/ReduxHookWrappers';
-
+import { getSidebarMode } from '../../redux/selectors/profileSelectors';
 import SidebarDiscreet from '../SidebarDiscreet';
 import SidebarStatic from '../SidebarStatic';
 

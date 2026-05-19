@@ -1,4 +1,6 @@
+import { type FC, Fragment, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
     Box,
     CircularProgress,
@@ -8,7 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { Fragment, useContext, type FC } from 'react';
+import type { IProps } from './TransactionEdit.types';
 
 import { TransactionEditContext } from '../../contexts/transactionEditContext';
 
@@ -17,8 +19,6 @@ import CategoryQuickEdit from './components/CategoryQuickEdit';
 import ColumnMapping from './components/ColumnMapping';
 import Submit from './components/Submit';
 import Table from './components/Table';
-
-import type { IProps } from './TransactionEdit.types';
 
 /**
  * Allows the user to edit and submit / save transactions.

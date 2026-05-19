@@ -1,14 +1,13 @@
-import { ILanguage } from '../../types/Intl.types';
-
-import { AppDispatch, RootState } from '../constants/store';
+import type { ILanguage } from '../../types/Intl.types';
+import type { AppDispatch, RootState } from '../constants/store';
 
 import {
     setActiveLanguage,
     updateCurrencies,
     updateLanguages,
 } from '../slices/profileSlice';
-import { updateUserDetails } from './authThunks';
 
+import { updateUserDetails } from './authThunks';
 import { intakeError } from './errorThunks';
 
 /**
@@ -65,7 +64,7 @@ export const reorderLanguages =
             languages[to] = languages[from];
             languages[from] = temp;
             dispatch(updateLanguagePreferences(languages));
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             dispatch(intakeError(error));
         }
@@ -108,7 +107,7 @@ export const reorderCurrencies =
             currencies[to] = currencies[from];
             currencies[from] = temp;
             dispatch(updateCurrencyPreferences(currencies));
-        } catch (error: any) {
+        } catch (error) {
             console.error(error);
             dispatch(intakeError(error));
         }

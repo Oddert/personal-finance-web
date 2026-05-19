@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Typography } from '@mui/material';
 import { Palette as IconAppearance } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 
 import SidebarMode from '../../components/SidebarMode';
 import UserDetails from '../../components/UserDetails';

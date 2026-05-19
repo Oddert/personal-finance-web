@@ -1,4 +1,4 @@
-import { ITransactorRowEditable } from '../../EditScenario.types';
+import type { ITransactorRowEditable } from '../../EditScenario.types';
 
 export interface IProps {
     setTransactors: (transactors: ITransactorRowEditable[]) => void;

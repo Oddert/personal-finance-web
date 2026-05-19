@@ -1,21 +1,20 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import {
+    Apps as IconLayoutCompact,
+    TableRows as IconLayoutList,
+    Window as IconLayoutStandard,
+} from '@mui/icons-material';
 import {
     FormControl,
     FormControlLabel,
     Radio,
     RadioGroup,
 } from '@mui/material';
-import {
-    Window as IconLayoutStandard,
-    Apps as IconLayoutCompact,
-    TableRows as IconLayoutList,
-} from '@mui/icons-material';
-
-import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 import type { IProps } from './LayoutControls.types';
+import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 
 /**
  * Main navigation component, displays the page options.
@@ -33,9 +32,9 @@ const LayoutControls: FC<IProps> = ({ layout, setLayout }) => {
                 aria-label={t('Layout')}
                 defaultValue='standard'
                 name='radio-buttons-group'
-                onChange={(event) =>
-                    setLayout(event.target.value as TDynamicCardLayoutModes)
-                }
+                onChange={(event) => {
+                    setLayout(event.target.value as TDynamicCardLayoutModes);
+                }}
                 sx={{
                     flexDirection: 'row',
                     padding: '0px 32px',

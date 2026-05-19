@@ -1,6 +1,5 @@
-import { ChangeEvent, FC, Fragment, useState } from 'react';
+import { type ChangeEvent, type FC, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFormik } from 'formik';
 
 import {
     Button,
@@ -11,22 +10,20 @@ import {
     Typography,
 } from '@mui/material';
 
-import APIService from '../../../../services/APIService';
+import { useFormik } from 'formik';
+
+import type { IProps } from './ModalPassword.types';
 
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
 import { handleAuthResponse } from '../../../../redux/thunks/authThunks';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
-
+import APIService from '../../../../services/APIService';
 import {
     comparePasswords,
     passwordStrength,
 } from '../../../../utils/signupUtils';
-
-import SubmitButton from '../../../Login/components/SubmitButton';
 import { Form, TextField } from '../../../Login/Login.styles';
-
-import { IProps } from './ModalPassword.types';
+import SubmitButton from '../../../Login/components/SubmitButton';
 
 /**
  * Presents the user with a form to change their password.
@@ -57,7 +54,7 @@ const ModalPassword: FC<IProps> = () => {
             confPassword: '',
         },
         validate: (nextValues) => {
-            let errorsFound: boolean = false;
+            let errorsFound = false;
             const nextErrors: {
                 oldPassword: string;
                 newPassword: string;
@@ -105,10 +102,13 @@ const ModalPassword: FC<IProps> = () => {
                     nextValues.newPassword,
                 )
                     .then((response) => {
+                        // @ts-expect-error refactor later
                         dispatch(handleAuthResponse(response));
                         formikBag.setSubmitting(false);
                     })
-                    .catch((err) => console.error(err));
+                    .catch((err: unknown) => {
+                        console.error(err);
+                    });
             } catch (error) {
                 dispatch(intakeError(error));
                 formikBag.setSubmitting(false);
@@ -136,13 +136,20 @@ const ModalPassword: FC<IProps> = () => {
     return (
         <Fragment>
             <Button
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    setOpen(!open);
+                }}
                 size='large'
                 variant='contained'
             >
                 {t('auth.changePassword')}
             </Button>
-            <Dialog onClose={() => setOpen(false)} open={open}>
+            <Dialog
+                onClose={() => {
+                    setOpen(false);
+                }}
+                open={open}
+            >
                 <DialogTitle>{t('auth.changePasswordTitle')}</DialogTitle>
                 <DialogContent>
                     <Form>
@@ -205,7 +212,9 @@ const ModalPassword: FC<IProps> = () => {
                     </Button>
                     <SubmitButton
                         loading={isSubmitting}
-                        onSubmit={() => handleSubmit()}
+                        onSubmit={() => {
+                            handleSubmit();
+                        }}
                         submitDisabled={isSubmitting}
                         success={false}
                         text={t('auth.changePassword')}

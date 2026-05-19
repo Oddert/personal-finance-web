@@ -1,18 +1,16 @@
-import { FC, SyntheticEvent, useCallback } from 'react';
+import { type FC, type SyntheticEvent, useCallback } from 'react';
 
 import { Autocomplete, TextField } from '@mui/material';
 
-import { ICard } from '../../types/Card.types';
+import type { IProps } from './CardSelector.types';
+import type { ICard } from '../../types/Card.types';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 import {
     getActiveCard,
     getCardResponse,
 } from '../../redux/selectors/cardSelectors';
 import { setActiveCardWithTransactions } from '../../redux/thunks/cardThunks';
-
-import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-
-import { IProps } from './CardSelector.types';
 
 /**
  * Re-usable selector component for the Active Card.
@@ -30,7 +28,7 @@ const CardSelector: FC<IProps> = ({ refreshTransactions, sx }) => {
     const activeCard = useAppSelector(getActiveCard);
 
     const handleChangeCard = useCallback(
-        (event: SyntheticEvent, nextValue: ICard | null) => {
+        (_event: SyntheticEvent, nextValue: ICard | null) => {
             if (nextValue) {
                 dispatch(
                     setActiveCardWithTransactions(
@@ -40,7 +38,7 @@ const CardSelector: FC<IProps> = ({ refreshTransactions, sx }) => {
                 );
             }
         },
-        [dispatch],
+        [dispatch, refreshTransactions],
     );
 
     return (
@@ -55,7 +53,8 @@ const CardSelector: FC<IProps> = ({ refreshTransactions, sx }) => {
                 '& .MuiInputBase-root': {
                     padding: '2px',
                 },
-                ...sx,
+                // eslint-disable-next-line @typescript-eslint/no-misused-spread
+                ...(sx ?? {}),
             }}
             value={activeCard}
         />

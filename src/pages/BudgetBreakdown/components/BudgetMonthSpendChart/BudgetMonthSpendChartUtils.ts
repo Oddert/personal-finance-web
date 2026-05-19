@@ -1,24 +1,21 @@
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import type { ICategory } from '../../../../types/Category.d';
-import type { ITransaction } from '../../../../types/Transaction.d';
-
-import {
+import type {
     IAgDataAccumulator,
     IAllCategories,
     IPivotAccumulator,
-    ISeries,
     ISPendChartMonth,
+    ISeries,
     ISpendChartYear,
 } from './BudgetMonthSpendChart.type';
+import type { ICategory } from '../../../../types/Category.d';
+import type { ITransaction } from '../../../../types/Transaction.d';
 
 dayjs.extend(localizedFormat);
 
 export const generateMonthSpendData = (
-    categories: {
-        [id: string]: ICategory;
-    },
+    categories: Record<string, ICategory>,
     filteredTransactions: ITransaction[],
 ): { series: ISeries[]; allCategories: IAllCategories } => {
     // Filter over all transactions in range and arrange them into sorted objects by year and month (as time series is month based).
@@ -29,8 +26,9 @@ export const generateMonthSpendData = (
             const month = date.month();
 
             const foundCategory: ICategory | undefined =
-                categories[transaction.categoryId || -1];
+                categories[transaction.categoryId ?? -1];
 
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (foundCategory) {
                 if (!(foundCategory.id in acc.allCategories)) {
                     acc.allCategories[foundCategory.id] = {
@@ -52,6 +50,7 @@ export const generateMonthSpendData = (
                 acc.categoriesByDate[year][month] = {};
             }
             // If the category is invalid, add or append to 'uncategorised'.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!transaction.categoryId || !foundCategory) {
                 if (!('uncategorised' in acc.categoriesByDate[year][month])) {
                     acc.categoriesByDate[year][month] = {
@@ -103,7 +102,7 @@ export const generateMonthSpendData = (
             Object.entries(yearVal).forEach(
                 ([month, monthVal]: [string, ISPendChartMonth]) => {
                     const date = dayjs(
-                        `${year}/${Number(month) + 1}/01`,
+                        `${year}/${String(Number(month) + 1)}/01`,
                     ).toISOString();
                     categoryList.forEach((category) => {
                         const categoryId = category.categoryId;

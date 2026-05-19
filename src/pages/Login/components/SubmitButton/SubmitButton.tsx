@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
-import { Button, CircularProgress } from '@mui/material';
 import { CheckCircle as SuccessIcon } from '@mui/icons-material';
+import { Button, CircularProgress } from '@mui/material';
 
-import { IProps } from './SubmitButton.types';
+import type { IProps } from './SubmitButton.types';
 
 const SubmitButton: FC<IProps> = ({
     onSubmit,

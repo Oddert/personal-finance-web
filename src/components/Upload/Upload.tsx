@@ -1,34 +1,30 @@
 import { Fragment, useCallback, useEffect, useReducer, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+
 import { Button } from '@mui/material';
 
 import { v4 as uuid } from 'uuid';
 
 import { PERSONAL_FINANCE_CSV_MAPPING } from '../../constants/appConstants';
-
-import { readCsv } from '../../utils/commonUtils';
-import { autoMatchCategories } from '../../utils/uploadUtils';
-
 import {
-    createTECReducer,
-    transactionEditInitialState,
     TransactionEditContext,
-    writeHeaders,
+    createTECReducer,
     setColumnMap,
     setLoading,
     tecWriteTransactions,
+    transactionEditInitialState,
+    writeHeaders,
 } from '../../contexts/transactionEditContext';
-
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
-
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
 import { getUserCurrencies } from '../../redux/selectors/profileSelectors';
 import { checkAuth } from '../../redux/thunks/authThunks';
-
-import TransactionEdit from '../TransactionEdit';
-import DropZone from '../DropZone';
 import { refreshCategories } from '../../redux/thunks/categoryThunks';
+import { readCsv } from '../../utils/commonUtils';
+import { autoMatchCategories } from '../../utils/uploadUtils';
+import DropZone from '../DropZone';
+import TransactionEdit from '../TransactionEdit';
 
 /**
  * Allows the user to upload new transactions.
@@ -59,16 +55,15 @@ const Upload = () => {
 
     const handleChange = useCallback(
         (files: File[] | null) => {
-            console.log('categories', categories);
             dispatch(setLoading(true));
             if (files) {
-                const transactions: { [key: string]: string | number }[] = [];
+                const transactions: Record<string, string | number>[] = [];
                 let headers: string[] = [];
 
                 files.forEach((file, idx) => {
                     const reader = new FileReader();
                     reader.onload = (evt) => {
-                        const readValues = readCsv(evt?.target?.result);
+                        const readValues = readCsv(evt.target?.result);
                         if (readValues) {
                             if (!headers.length) {
                                 headers = readValues.headers;
@@ -98,14 +93,14 @@ const Upload = () => {
                 setModalOpen(true);
             }
         },
-        [categories, currencies, dispatch],
+        [categories, currencies, reduxDispatch],
     );
 
     useEffect(() => {
         const mapping = localStorage.getItem(PERSONAL_FINANCE_CSV_MAPPING);
         if (mapping) {
             dispatch(
-                setColumnMap(JSON.parse(mapping) as { [key: string]: string }),
+                setColumnMap(JSON.parse(mapping) as Record<string, string>),
             );
         } else {
             localStorage.setItem(
@@ -118,13 +113,19 @@ const Upload = () => {
     return (
         <Fragment>
             <DropZone onSuccess={handleChange} />
-            <Button onClick={() => setModalOpen(true)}>
+            <Button
+                onClick={() => {
+                    setModalOpen(true);
+                }}
+            >
                 {t('Transaction.enterTransactionsManually')}
             </Button>
             <TransactionEditContext.Provider value={{ state, dispatch }}>
                 <TransactionEdit
                     open={modalOpen}
-                    onClose={() => setModalOpen(false)}
+                    onClose={() => {
+                        setModalOpen(false);
+                    }}
                     showMapping
                 />
             </TransactionEditContext.Provider>

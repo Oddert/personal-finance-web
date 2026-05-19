@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import { Container } from '@mui/material';
 
-import useContentWidth from '../../hooks/useContentWidth';
-
 import type { IProps } from './ResponsiveContainer.types';
+
+import useContentWidth from '../../hooks/useContentWidth';
 
 /**
  * Higher order component to provide a container which adapts to the users screen width in increments.

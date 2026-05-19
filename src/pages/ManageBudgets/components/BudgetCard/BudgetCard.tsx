@@ -1,24 +1,21 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
 import { ArrowForward as IconRightArrow } from '@mui/icons-material';
+import { Box, Button, Chip, ListItem, Paper, Typography } from '@mui/material';
+
+import type { IProps } from './BudgetCard.types';
 
 import router, { ROUTES_FACTORY } from '../../../../constants/routerConstants';
-
-import APIService from '../../../../services/APIService';
-
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-
 import { getActiveBudgetId } from '../../../../redux/selectors/budgetSelectors';
 import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 import { setActiveBudget } from '../../../../redux/slices/budgetSlice';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
-
-import type { IProps } from './BudgetCard.types';
+import APIService from '../../../../services/APIService';
 
 /**
  * Displays a single budget.

@@ -52,7 +52,10 @@ export const downloadCsvNoSuffix = (fileData: string, fileName?: string) => {
  * @param fileData The CSV data as a string.
  * @param fileName The filename. Defaults to "download".
  */
-export const downloadJson = (fileData: object | any[], fileName?: string) => {
+export const downloadJson = (
+    fileData: object | unknown[],
+    fileName?: string,
+) => {
     const blob = new Blob([JSON.stringify(fileData)], { type: 'text/json' });
     const url = URL.createObjectURL(blob);
     const aTag = document.createElement('a');

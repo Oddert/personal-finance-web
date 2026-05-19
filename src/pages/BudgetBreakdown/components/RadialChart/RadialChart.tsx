@@ -1,11 +1,15 @@
-import { FC, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { type FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
 
 import { Box } from '@mui/material';
 
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
 import type { IProps } from './RadialChart.types';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 /**
  * Donut chart showing the percentage breakdown if each category's spend.

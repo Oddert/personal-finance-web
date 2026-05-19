@@ -1,28 +1,24 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { type FC, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, ListItem, Typography } from '@mui/material';
 import {
     Close as IconDelete,
     Edit as IconEdit,
     FontDownload as IconMatchPositive,
     FontDownloadOutlined as IconMatchNegative,
 } from '@mui/icons-material';
-
-import { categorySlice } from '../../../../redux/slices/categorySlice';
-import { intakeError } from '../../../../redux/thunks/errorThunks';
-import { matcherDeleteAction } from '../../../../redux/thunks/categoryThunks';
-
-import APIService from '../../../../services/APIService';
-
-import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
-
-import { IMatcher } from '../../../../types/Matcher.d';
-
-import EditMatcher from '../EditMatcher';
+import { Box, Button, ListItem, Typography } from '@mui/material';
 
 import type { IProps } from './Matcher.types';
+import type { IMatcher } from '../../../../types/Matcher.d';
+
+import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
+import { categorySlice } from '../../../../redux/slices/categorySlice';
 import { refreshAuthentication } from '../../../../redux/thunks/authThunks';
+import { matcherDeleteAction } from '../../../../redux/thunks/categoryThunks';
+import { intakeError } from '../../../../redux/thunks/errorThunks';
+import APIService from '../../../../services/APIService';
+import EditMatcher from '../EditMatcher';
 
 const iconWidth = 50;
 
@@ -47,7 +43,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 { ..._matcher },
                 matcher.id,
             );
-            if (!response || !response.payload) {
+            if (!response.payload) {
                 throw new Error(t('modalMessages.noServerResponse'));
             }
             dispatch(
@@ -66,12 +62,14 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
         try {
             request();
             setOpen(false);
-        } catch (error1: any) {
+        } catch (error1) {
+            // @ts-expect-error error handling logic requires review
             if (error1.status === 401) {
                 try {
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     dispatch(refreshAuthentication(request));
-                } catch (error2: any) {
-                    dispatch(intakeError(error1));
+                } catch (error2) {
+                    dispatch(intakeError(error2));
                 }
             } else {
                 dispatch(intakeError(error1));
@@ -81,10 +79,10 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
 
     const handleDelete = useCallback(() => {
         dispatch(matcherDeleteAction(matcher.id, true));
-    }, [dispatch, categoryId, matcher.id]);
+    }, [dispatch, matcher.id]);
 
     const matchTypeTitle = useMemo(() => {
-        switch (matcher?.match_type) {
+        switch (matcher.match_type) {
             case 'any':
                 return 'Category.matchMessages.any';
             case 'exact':
@@ -96,13 +94,15 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
             default:
                 return '';
         }
-    }, [matcher?.match_type]);
+    }, [matcher.match_type]);
 
     if (open) {
         return (
             <EditMatcher
                 matcher={matcher}
-                onCancel={() => setOpen(false)}
+                onCancel={() => {
+                    setOpen(false);
+                }}
                 onSubmit={handleSubmit}
                 clearOnCancel
                 clearOnSubmit
@@ -117,7 +117,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                 padding: '2px 0',
                 display: 'grid',
                 justifyItems: 'center',
-                gridTemplateColumns: `1fr repeat(2, ${iconWidth}px) auto`,
+                gridTemplateColumns: `1fr repeat(2, ${String(iconWidth)}px) auto`,
                 [theme.breakpoints.down('sm')]: {
                     gridTemplateColumns: `1fr repeat(3, auto)`,
                 },
@@ -136,7 +136,9 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
             })}
         >
             <Button
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                    setOpen(true);
+                }}
                 sx={(theme) => ({
                     justifySelf: 'flex-start',
                     display: 'flex',

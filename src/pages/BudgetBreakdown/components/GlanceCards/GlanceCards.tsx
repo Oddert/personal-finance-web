@@ -1,4 +1,4 @@
-import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { type FC, Fragment, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -9,13 +9,11 @@ import {
     Typography,
 } from '@mui/material';
 
+import type { IProps } from './GlanceCards.types';
 import type { IBudgetDatum } from '../../../../types/Budget.types';
 
 import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
-
 import { normaliseNum } from '../../../../utils/mathsUtils';
-
-import type { IProps } from './GlanceCards.types';
 
 /**
  * A series of 'at-a-glance' cards, presenting high-level insights.
@@ -74,6 +72,7 @@ const GlanceCards: FC<IProps> = ({ data, monthBudget, numMonths }) => {
                 nextNumOverSpend: [],
             },
         );
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setActualSpend(normaliseNum(nextActualSpend));
         setLargestOverspendPc(nextOverSpendPc);
         setLargestOverspendVal(nextOverSpendVal);

@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
+
 import { Container, Typography } from '@mui/material';
 
+import ActiveBudget from '../../components/ActiveBudget';
+import ActiveCard from '../../components/ActiveCard/ActiveCard';
 import ExistingDataLineChart from '../../modules/ExistingDataLineChart/ExistingDataLineChart';
 import ProjectionLineChart from '../../modules/ProjectionLineChart/ProjectionLineChart';
-
-import ActiveCard from '../../components/ActiveCard/ActiveCard';
-import ActiveBudget from '../../components/ActiveBudget';
 
 /**
  * Displays all historical data.

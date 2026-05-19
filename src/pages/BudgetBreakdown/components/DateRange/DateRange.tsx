@@ -1,21 +1,21 @@
-import { FC, Fragment, useCallback, useMemo, useState } from 'react';
-import { Dayjs } from 'dayjs';
-
-import { Box, Button, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { type FC, Fragment, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     ArrowLeft as IconBackButton,
     ArrowRight as IconForwardButton,
 } from '@mui/icons-material';
+import { Box, Button, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import { Dayjs } from 'dayjs';
+
+import type { IProps } from './DateRange.types';
 
 import {
     toBeginningMonthDayjs,
     toEndMonthDayjs,
 } from '../../../../utils/budgetUtils';
-
-import type { IProps } from './DateRange.types';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Displays date range controls.
@@ -138,7 +138,7 @@ const DateRange: FC<IProps> = ({
                     {nextMonth.format('YYYY')}) <IconForwardButton />
                 </Button>
             </Box>
-            <Typography color='error'>{dateError || ''}</Typography>
+            <Typography color='error'>{dateError ?? ''}</Typography>
         </Fragment>
     );
 };

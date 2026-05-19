@@ -1,14 +1,17 @@
-import { FC, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { type FC, useMemo } from 'react';
 import Chart from 'react-apexcharts';
-import dayjs from 'dayjs';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { useTranslation } from 'react-i18next';
 
 import { Box, useTheme } from '@mui/material';
 
-import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { IProps } from './CandleStickChart.types';
+import type { IProps } from './CandleStickChart.types';
+
+import useLocalisedNumber from '../../../../hooks/useLocalisedNumber';
 
 dayjs.extend(localizedFormat);
 
@@ -67,8 +70,8 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                     x: sDate.valueOf(),
                     y: [
                         startBallance,
-                        highValue || 0,
-                        lowValue || 0,
+                        highValue ?? 0,
+                        lowValue ?? 0,
                         endBallance,
                     ],
                 };
@@ -78,7 +81,7 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
         }
 
         return seriesData;
-    }, [transactions]);
+    }, [endDate, startDate, transactions]);
 
     const theme = useTheme();
 
@@ -168,20 +171,20 @@ const CandleStickChart: FC<IProps> = ({ endDate, startDate, transactions }) => {
                                 ],
                             );
                             return (
-                                '<div class="apexcharts-tooltip-candlestick">' +
-                                `<div>${t('literals.Open')}: <span class="value">` +
-                                o +
-                                '</span></div>' +
-                                `<div>${t('literals.High')}: <span class="value">` +
-                                h +
-                                '</span></div>' +
-                                `<div>${t('literals.Low')}: <span class="value">` +
-                                l +
-                                '</span></div>' +
-                                `<div>${t('literals.Close')}: <span class="value">` +
-                                c +
-                                '</span></div>' +
-                                '</div>'
+                                `<div class="apexcharts-tooltip-candlestick">` +
+                                `<div>${t('literals.Open')}: <span class="value">${
+                                    o
+                                }</span></div>` +
+                                `<div>${t('literals.High')}: <span class="value">${
+                                    h
+                                }</span></div>` +
+                                `<div>${t('literals.Low')}: <span class="value">${
+                                    l
+                                }</span></div>` +
+                                `<div>${t('literals.Close')}: <span class="value">${
+                                    c
+                                }</span></div>` +
+                                `</div>`
                             );
                         },
                     },

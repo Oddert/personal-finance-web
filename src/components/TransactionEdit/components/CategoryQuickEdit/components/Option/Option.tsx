@@ -1,21 +1,19 @@
-import { FC, useCallback, useContext, useState } from 'react';
+import { type FC, useCallback, useContext, useState } from 'react';
+
 import { Button } from '@mui/material';
 
+import type { IProps } from './Option.types';
 import type { IMatcher, TMatchType } from '../../../../../../types/Matcher';
 
 import {
+    TransactionEditContext,
     tecWriteTransactions,
     toggleSideBar,
-    TransactionEditContext,
 } from '../../../../../../contexts/transactionEditContext';
-
 import { autoMatchCategories } from '../../../../../../utils/uploadUtils';
-
 import Category from '../../../../../Category/Category';
-import ColourBase from '../../../../../ColourBase';
 import TitleBase from '../../../../../Category/components/TitleBase';
-
-import type { IProps } from './Option.types';
+import ColourBase from '../../../../../ColourBase';
 
 /**
  * Displays a category.
@@ -36,12 +34,9 @@ const Option: FC<IProps> = ({ category }) => {
         (partialMatcher: Partial<IMatcher>) => {
             const matcher: IMatcher = {
                 id: '0',
-                match: partialMatcher.match as string,
+                match: partialMatcher.match ?? '',
                 match_type: partialMatcher.match_type as TMatchType,
-                case_sensitive: partialMatcher.case_sensitive as
-                    | boolean
-                    | 0
-                    | 1,
+                case_sensitive: partialMatcher.case_sensitive ?? false,
                 created_on: '',
                 updated_on: '',
             };
@@ -72,7 +67,9 @@ const Option: FC<IProps> = ({ category }) => {
     }
     return (
         <Button
-            onClick={() => setOpen(true)}
+            onClick={() => {
+                setOpen(true);
+            }}
             sx={(theme) => ({
                 padding: '10px 30px',
                 [theme.breakpoints.down('xs')]: {

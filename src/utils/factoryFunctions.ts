@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import { ITransactorRowEditable } from '../pages/EditScenario/EditScenario.types';
+import type { ITransactorRowEditable } from '../pages/EditScenario/EditScenario.types';
 
 export const ffBlankTransactorRowEditable = (
     partial?: Partial<ITransactorRowEditable>,
