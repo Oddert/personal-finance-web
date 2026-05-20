@@ -11,7 +11,7 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false, // important, test runner unable to implement necessary import elision https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
@@ -22,5 +22,6 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/", "vite.config.ts", "jest.config.js"]
+  "include": ["src/", "vite.config.ts", "jest.config.js"],
+  "exclude": ["node_modules"]
 }
