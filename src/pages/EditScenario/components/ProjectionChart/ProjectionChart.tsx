@@ -1,8 +1,11 @@
-import { type FC, useEffect, useMemo, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { CircularProgress, Paper, useTheme } from '@mui/material';
-import { BarChart } from '@mui/x-charts';
+import { Box, FormControlLabel, Paper, Switch, useTheme } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './ProjectionChart.types';
 import type { TAggregateDatapoints } from '../../../../types/Transaction.d';
@@ -12,19 +15,29 @@ import {
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
 import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
-import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 import APIService from '../../../../services/APIService';
+import {
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
+} from '../../../../utils/budgetUtils';
 
-const ProjectionChart: FC<IProps> = () => {
+import Display from './components/Display/Display';
+
+dayjs.extend(localizedFormat);
+const ProjectionChart: FC<IProps> = ({ previewMode }) => {
     const [pastData, setPastData] = useState<TAggregateDatapoints>({});
     const [pastDataLoading, setPastDataLoading] = useState(false);
+    const [showNegatives, setShowNegatives] = useState(true);
+    const [startDate, setStartDate] = useState(
+        toBeginningMonthDayjs(dayjs().subtract(24, 'months')),
+    );
+    const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
 
     const cardId = useAppSelector(getActiveCardId);
 
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    const categoryLookup = useAppSelector(getCategoryOrderedDataById);
     const theme = useTheme();
 
     useEffect(() => {
@@ -38,7 +51,10 @@ const ProjectionChart: FC<IProps> = () => {
         const fetchPastData = async () => {
             try {
                 const pastDataResponse =
-                    await APIService.getAllTransactionsAggregated(cardId, true);
+                    await APIService.getAllTransactionsAggregated(cardId, {
+                        startDate: startDate.valueOf(),
+                        endDate: endDate.valueOf(),
+                    });
                 if (!pastDataResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
@@ -51,49 +67,10 @@ const ProjectionChart: FC<IProps> = () => {
         };
 
         fetchPastData();
-    }, [dispatch, t, cardId]);
+    }, [dispatch, t, cardId, startDate, endDate]);
 
-    const monthKeys = useMemo(() => {
-        const months = new Set<string>();
-        Object.values(pastData).forEach((monthData) => {
-            monthData.forEach((month) => {
-                months.add(new Date(month.month).toISOString());
-            });
-        });
-        return Array.from(months).sort(
-            (a, b) => new Date(a).getTime() - new Date(b).getTime(),
-        );
-    }, [pastData]);
-
-    const data = useMemo(
-        () =>
-            Object.entries(pastData).map(([categoryId, monthData]) => {
-                const monthMap = new Map(
-                    monthData.map((month) => [
-                        new Date(month.month).toISOString(),
-                        month,
-                    ]),
-                );
-
-                return {
-                    series:
-                        categoryId in categoryLookup
-                            ? categoryLookup[categoryId].label
-                            : categoryId,
-                    data: monthKeys.map((monthKey) => {
-                        const month = monthMap.get(monthKey);
-                        return {
-                            x: monthKey,
-                            y: month ? month.totalDebit - month.totalCredit : 0,
-                        };
-                    }),
-                };
-            }),
-        [categoryLookup, monthKeys, pastData],
-    );
-
-    if (pastDataLoading) {
-        return <CircularProgress />;
+    if (previewMode === 'off') {
+        return null;
     }
 
     return (
@@ -104,7 +81,80 @@ const ProjectionChart: FC<IProps> = () => {
                 padding: '20px',
             }}
         >
-            <BarChart dataset={data} height={600} series={[]} />
+            <Box sx={{ display: 'flex', gridGap: '16px' }}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={showNegatives}
+                            onChange={(_, checked) => {
+                                setShowNegatives(checked);
+                            }}
+                        />
+                    }
+                    label='Include income'
+                    sx={(theme) => ({
+                        color: theme.palette.primary.contrastText,
+                    })}
+                />
+
+                <DatePicker
+                    label={t('Start date')}
+                    name='startDate'
+                    onChange={(nextValue) => {
+                        if (nextValue) {
+                            setStartDate(toBeginningMonthDayjs(nextValue));
+                        }
+                    }}
+                    showDaysOutsideCurrentMonth
+                    slotProps={{
+                        toolbar: {
+                            toolbarFormat: 'ddd DD MMMM',
+                            hidden: false,
+                        },
+                        textField: {
+                            size: 'small',
+                        },
+                    }}
+                    sx={{
+                        borderRadius: '4px',
+                    }}
+                    value={startDate}
+                    views={['month', 'year']}
+                />
+                <DatePicker
+                    label={t('End date')}
+                    name='endDate'
+                    onChange={(nextValue) => {
+                        if (nextValue) {
+                            const nextEndDate = toEndMonthDayjs(nextValue);
+                            if (startDate > nextEndDate) {
+                                setStartDate(toBeginningMonthDayjs(nextValue));
+                            }
+                            setEndDate(nextEndDate);
+                        }
+                    }}
+                    showDaysOutsideCurrentMonth
+                    slotProps={{
+                        toolbar: {
+                            toolbarFormat: 'ddd DD MMMM',
+                            hidden: false,
+                        },
+                        textField: {
+                            size: 'small',
+                        },
+                    }}
+                    sx={{
+                        borderRadius: '4px',
+                    }}
+                    value={endDate}
+                    views={['month', 'year']}
+                />
+            </Box>
+            <Display
+                loading={pastDataLoading}
+                pastData={pastData}
+                showNegatives={showNegatives}
+            />
         </Paper>
     );
 };

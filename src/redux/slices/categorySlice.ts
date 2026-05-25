@@ -128,6 +128,7 @@ export const categorySlice = createSlice({
          */
         initCreateCategory: (
             state,
+            // @ts-expect-error - payload is not used, but required to trigger this action with necessary data for saga
             {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
@@ -142,6 +143,7 @@ export const categorySlice = createSlice({
          */
         initCreateSingleMatcher: (
             state,
+            // @ts-expect-error - payload is not used, but required to trigger this action with necessary data for saga
             {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
@@ -157,6 +159,7 @@ export const categorySlice = createSlice({
          */
         initDeleteSingleCategory: (
             state,
+            // @ts-expect-error - payload is not used, but required to trigger this action with necessary data for saga
             {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
@@ -171,6 +174,7 @@ export const categorySlice = createSlice({
          */
         initDeleteSingleMatcher: (
             state,
+            // @ts-expect-error - payload is not used, but required to trigger this action with necessary data for saga
             {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
@@ -186,6 +190,7 @@ export const categorySlice = createSlice({
          */
         initUpdateSingleCategory: (
             state,
+            // @ts-expect-error - payload is not used, but required to trigger this action with necessary data for saga
             {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,
@@ -200,6 +205,7 @@ export const categorySlice = createSlice({
          */
         initUpdateSingleMatcher: (
             state,
+            // @ts-expect-error - payload is not used, but required to trigger this action with necessary data for saga
             {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 payload,

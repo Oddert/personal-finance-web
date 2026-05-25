@@ -12,7 +12,12 @@ import { ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import { type RenderOptions, render } from '@testing-library/react';
+import {
+    type RenderOptions,
+    queries,
+    render,
+    within,
+} from '@testing-library/react';
 
 import reduxStore, {
     type AppStore,
@@ -21,10 +26,23 @@ import reduxStore, {
 } from '../redux/constants/store';
 import theme from '../theme';
 
+import * as customQueries from './testCustomQueries';
+
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
+    preloadedState?: Partial<RootState>;
+    store?: AppStore;
+}
+
+const allQueries = {
+    ...queries,
+    ...customQueries,
+};
+
 // eslint-disable-next-line react-refresh/only-export-components
 const Providers: JSXElementConstructor<{ children: ReactNode }> = ({
-    // eslint-disable-next-line react/prop-types
     children,
+}: {
+    children: ReactNode;
 }) => {
     return (
         <ReduxProvider store={reduxStore}>
@@ -40,13 +58,10 @@ const Providers: JSXElementConstructor<{ children: ReactNode }> = ({
     );
 };
 
-export const customRenderer = (ui: ReactElement, options?: RenderOptions) =>
-    render(ui, { wrapper: Providers, ...options });
-
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-    preloadedState?: Partial<RootState>;
-    store?: AppStore;
-}
+export const customRenderer = (
+    ui: ReactElement,
+    options?: Omit<RenderOptions, 'wrapper'>,
+) => render(ui, { wrapper: Providers, ...options });
 
 export const renderWithProviders = (
     ui: ReactElement,
@@ -61,8 +76,14 @@ export const renderWithProviders = (
     };
     return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 };
+const customScreen = within(document.body, allQueries);
+const customWithin = (element: HTMLElement) => within(element, allQueries);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export * from '@testing-library/react';
 
-export { customRenderer as render };
+export {
+    customRenderer as render,
+    customScreen as screen,
+    customWithin as within,
+};

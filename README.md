@@ -134,3 +134,9 @@ The following guide must be used when deciding where to place translations:
 ## License
 
 This project is [MIT licensed](./LICENSE).
+
+## Change Notes
+
+### 20-05-2026
+
+- UUID downgraded from 14.x to 11.x due to lack of support for CommonJS in jest. Alternate solution would be to exempt files using `transformIgnorePatterns` however this seemed to fail on all attempts. This issue is expected to return as a result.
