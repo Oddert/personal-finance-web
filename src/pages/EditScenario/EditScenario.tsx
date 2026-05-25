@@ -22,7 +22,11 @@ import {
 
 import { v4 as uuid } from 'uuid';
 
-import type { IProps, ITransactorRowEditable } from './EditScenario.types';
+import type {
+    IProps,
+    ITransactorRowEditable,
+    TPreviewMode,
+} from './EditScenario.types';
 import type { IScenario } from '../../types/Scenario.types';
 
 import router, { ROUTES } from '../../constants/routerConstants';
@@ -60,8 +64,6 @@ const emptyScenario = () => ({
     transactors: [],
 });
 
-type TPreviewMode = 'off' | 'total' | 'category';
-
 /**
  * Displays a page to edit or create a new Scenario.
  * @category Pages
@@ -76,7 +78,7 @@ const EditScenario: FC<IProps> = () => {
 
     const [scenarioLoading, setScenarioLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [previewMode, setPreviewMode] = useState<TPreviewMode>('off');
+    const [previewMode, setPreviewMode] = useState<TPreviewMode>('category');
 
     const cardId = useAppSelector(getActiveCardId);
 
@@ -191,7 +193,8 @@ const EditScenario: FC<IProps> = () => {
         } catch (error) {
             dispatch(intakeError(error));
         }
-    }, [dispatch, location.pathname, params, scenario.id, search, t]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.pathname, scenario.id, t]);
 
     const loading = scenarioLoading;
 
@@ -253,17 +256,17 @@ const EditScenario: FC<IProps> = () => {
                     size='small'
                     value={previewMode}
                 >
-                    <ToggleButton key='off' value='off'>
-                        <IconPreviewOff /> off
+                    <ToggleButton key='category' value='category'>
+                        <IconPreviewCategory /> value by category
                     </ToggleButton>
                     <ToggleButton key='total' value='total'>
                         <IconPreviewTotal /> total value
                     </ToggleButton>
-                    <ToggleButton key='category' value='category'>
-                        <IconPreviewCategory /> value by category
+                    <ToggleButton key='off' value='off'>
+                        <IconPreviewOff /> off
                     </ToggleButton>
                 </ToggleButtonGroup>
-                <ProjectionChart />
+                <ProjectionChart previewMode={previewMode} />
                 <TransactorTable
                     setTransactors={setTransactors}
                     transactors={transactors}
