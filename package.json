@@ -28,8 +28,8 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.0.1",
     "@mui/material": "^9.0.1",
-    "@mui/x-charts": "^9.2.0",
-    "@mui/x-date-pickers": "^9.2.0",
+    "@mui/x-charts": "^9.3.0",
+    "@mui/x-date-pickers": "^9.3.0",
     "@reduxjs/toolkit": "^2.12.0",
     "@tanstack/react-table": "^8.21.3",
     "apexcharts": "^5.12.0",
@@ -90,9 +90,9 @@
     "jest-watch-typeahead": "^3.0.1",
     "jsdoc": "^4.0.5",
     "react-app-polyfill": "^3.0.0",
-    "ts-jest": "^29.4.10",
+    "ts-jest": "^29.4.11",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.4",
-    "vite": "^8.0.13"
+    "vite": "^8.0.14"
   }
 }
