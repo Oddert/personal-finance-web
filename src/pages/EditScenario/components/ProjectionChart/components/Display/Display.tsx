@@ -1,10 +1,25 @@
 import { type FC, useMemo } from 'react';
 
-import { BarChart } from '@mui/x-charts';
+import {
+    BarPlot,
+    ChartsAxis,
+    ChartsAxisHighlight,
+    ChartsClipPath,
+    ChartsDataProvider,
+    ChartsGrid,
+    ChartsLegend,
+    ChartsSurface,
+    ChartsTooltip,
+    ChartsWrapper,
+    FocusedBar,
+} from '@mui/x-charts';
+import { ChartsOverlay } from '@mui/x-charts/ChartsOverlay';
 
 import type { IProps } from './Display.types';
 
-const Display: FC<IProps> = ({ loading, pastData, showNegatives }) => {
+const clipPathId = 'editscenario-preview-clippath';
+
+const Display: FC<IProps> = ({ pastData, showNegatives }) => {
     const { dataset, series } = useMemo(() => {
         // With data pivoted on month the response format in pseudo code is: {[monthKey]: categoryData[]}
         // Here we transform this into an array where each entry represents one month, with category IDs mapped to values.
@@ -14,7 +29,10 @@ const Display: FC<IProps> = ({ loading, pastData, showNegatives }) => {
             // Record<monthKey, Record<categoryId, value>>
             _dataset: Record<string, Record<string, string | number>>;
             // Record<categoryId, seriesItem[]>
-            _series: Record<string, { label: string; dataKey: string }>;
+            _series: Record<
+                string,
+                { label: string; dataKey: string; type: 'bar' }
+            >;
         }
 
         const { _dataset, _series } = Object.entries(pastData).reduce(
@@ -31,6 +49,7 @@ const Display: FC<IProps> = ({ loading, pastData, showNegatives }) => {
                             monthAcc._series[category.categoryId] = {
                                 dataKey: category.categoryId,
                                 label: category.categoryName,
+                                type: 'bar',
                             };
                         }
                         return catAcc;
@@ -50,13 +69,29 @@ const Display: FC<IProps> = ({ loading, pastData, showNegatives }) => {
     }, [pastData, showNegatives]);
 
     return (
-        <BarChart
+        <ChartsDataProvider
             dataset={dataset}
             height={600}
-            loading={loading}
+            // loading={loading}
             series={series}
-            xAxis={[{ dataKey: 'month' }]}
-        />
+            xAxis={[{ dataKey: 'month', scaleType: 'band' }]}
+        >
+            <ChartsWrapper>
+                <ChartsLegend />
+                <ChartsSurface>
+                    <ChartsGrid />
+                    <g clipPath={`url(#${clipPathId})`}>
+                        <BarPlot />
+                        <ChartsOverlay />
+                        <ChartsAxisHighlight />
+                        <FocusedBar />
+                    </g>
+                    <ChartsAxis />
+                    <ChartsClipPath id={clipPathId} />
+                </ChartsSurface>
+                <ChartsTooltip />
+            </ChartsWrapper>
+        </ChartsDataProvider>
     );
 };
 
