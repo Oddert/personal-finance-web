@@ -1,8 +1,11 @@
-import { type FC, useEffect, useMemo, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { FormControlLabel, Paper, Switch, useTheme } from '@mui/material';
-import { BarChart } from '@mui/x-charts';
+import { Box, FormControlLabel, Paper, Switch, useTheme } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+
+import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './ProjectionChart.types';
 import type { TAggregateDatapoints } from '../../../../types/Transaction.d';
@@ -14,11 +17,22 @@ import {
 import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 import APIService from '../../../../services/APIService';
+import {
+    toBeginningMonthDayjs,
+    toEndMonthDayjs,
+} from '../../../../utils/budgetUtils';
 
+import Display from './components/Display/Display';
+
+dayjs.extend(localizedFormat);
 const ProjectionChart: FC<IProps> = ({ previewMode }) => {
     const [pastData, setPastData] = useState<TAggregateDatapoints>({});
     const [pastDataLoading, setPastDataLoading] = useState(false);
     const [showNegatives, setShowNegatives] = useState(true);
+    const [startDate, setStartDate] = useState(
+        toBeginningMonthDayjs(dayjs().subtract(24, 'months')),
+    );
+    const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
 
     const cardId = useAppSelector(getActiveCardId);
 
@@ -37,7 +51,10 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
         const fetchPastData = async () => {
             try {
                 const pastDataResponse =
-                    await APIService.getAllTransactionsAggregated(cardId);
+                    await APIService.getAllTransactionsAggregated(cardId, {
+                        startDate: startDate.valueOf(),
+                        endDate: endDate.valueOf(),
+                    });
                 if (!pastDataResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
@@ -50,51 +67,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
         };
 
         fetchPastData();
-    }, [dispatch, t, cardId]);
-
-    const { dataset, series } = useMemo(() => {
-        // With data pivoted on month the response format in pseudo code is: {[monthKey]: categoryData[]}
-        // Here we transform this into an array where each entry represents one month, with category IDs mapped to values.
-        // MUI X charts will use a series definition to resolve a label to these values.
-        // The accumulator uses top-level keys is for convenient lookup until the eventual Object.values() calls.
-        interface TLocalAcc {
-            // Record<monthKey, Record<categoryId, value>>
-            _dataset: Record<string, Record<string, string | number>>;
-            // Record<categoryId, seriesItem[]>
-            _series: Record<string, { label: string; dataKey: string }>;
-        }
-
-        const { _dataset, _series } = Object.entries(pastData).reduce(
-            (monthAcc: TLocalAcc, [monthKey, categoryList]) => {
-                monthAcc._dataset[monthKey] = categoryList.reduce(
-                    (catAcc: Record<string, string | number>, category) => {
-                        const value = showNegatives
-                            ? category.totalDebit - category.totalCredit
-                            : category.totalDebit;
-                        if (!isNaN(value)) {
-                            catAcc[category.categoryId] = value;
-                        }
-                        if (!(category.categoryId in monthAcc._series)) {
-                            monthAcc._series[category.categoryId] = {
-                                dataKey: category.categoryId,
-                                label: category.categoryName,
-                            };
-                        }
-                        return catAcc;
-                    },
-                    {},
-                );
-                monthAcc._dataset[monthKey].month = monthKey;
-                return monthAcc;
-            },
-            { _dataset: {}, _series: {} },
-        );
-
-        return {
-            dataset: Object.values(_dataset),
-            series: Object.values(_series),
-        };
-    }, [pastData, showNegatives]);
+    }, [dispatch, t, cardId, startDate, endDate]);
 
     if (previewMode === 'off') {
         return null;
@@ -108,24 +81,79 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
                 padding: '20px',
             }}
         >
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={showNegatives}
-                        onChange={(_, checked) => {
-                            setShowNegatives(checked);
-                        }}
-                    />
-                }
-                label='Include income'
-                sx={(theme) => ({ color: theme.palette.primary.contrastText })}
-            />
-            <BarChart
-                dataset={dataset}
-                height={600}
+            <Box sx={{ display: 'flex', gridGap: '16px' }}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={showNegatives}
+                            onChange={(_, checked) => {
+                                setShowNegatives(checked);
+                            }}
+                        />
+                    }
+                    label='Include income'
+                    sx={(theme) => ({
+                        color: theme.palette.primary.contrastText,
+                    })}
+                />
+
+                <DatePicker
+                    label={t('Start date')}
+                    name='startDate'
+                    onChange={(nextValue) => {
+                        if (nextValue) {
+                            setStartDate(toBeginningMonthDayjs(nextValue));
+                        }
+                    }}
+                    showDaysOutsideCurrentMonth
+                    slotProps={{
+                        toolbar: {
+                            toolbarFormat: 'ddd DD MMMM',
+                            hidden: false,
+                        },
+                        textField: {
+                            size: 'small',
+                        },
+                    }}
+                    sx={{
+                        borderRadius: '4px',
+                    }}
+                    value={startDate}
+                    views={['month', 'year']}
+                />
+                <DatePicker
+                    label={t('End date')}
+                    name='endDate'
+                    onChange={(nextValue) => {
+                        if (nextValue) {
+                            const nextEndDate = toEndMonthDayjs(nextValue);
+                            if (startDate > nextEndDate) {
+                                setStartDate(toBeginningMonthDayjs(nextValue));
+                            }
+                            setEndDate(nextEndDate);
+                        }
+                    }}
+                    showDaysOutsideCurrentMonth
+                    slotProps={{
+                        toolbar: {
+                            toolbarFormat: 'ddd DD MMMM',
+                            hidden: false,
+                        },
+                        textField: {
+                            size: 'small',
+                        },
+                    }}
+                    sx={{
+                        borderRadius: '4px',
+                    }}
+                    value={endDate}
+                    views={['month', 'year']}
+                />
+            </Box>
+            <Display
                 loading={pastDataLoading}
-                series={series}
-                xAxis={[{ dataKey: 'month' }]}
+                pastData={pastData}
+                showNegatives={showNegatives}
             />
         </Paper>
     );
