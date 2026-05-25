@@ -40,4 +40,7 @@ export interface IAggregateDatapoint {
     categoryName: string;
 }
 
-export type TAggregateDatapoints = Record<string, IAggregateDatapoint[]>;
+export type TAggregateDatapoints = Record<
+    string,
+    { data: IAggregateDatapoint[]; totalCredit: number; totalDebit: number }
+>;

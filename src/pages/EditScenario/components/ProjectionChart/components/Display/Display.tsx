@@ -19,7 +19,7 @@ const Display: FC<IProps> = ({ loading, pastData, showNegatives }) => {
 
         const { _dataset, _series } = Object.entries(pastData).reduce(
             (monthAcc: TLocalAcc, [monthKey, categoryList]) => {
-                monthAcc._dataset[monthKey] = categoryList.reduce(
+                monthAcc._dataset[monthKey] = categoryList.data.reduce(
                     (catAcc: Record<string, string | number>, category) => {
                         const value = showNegatives
                             ? category.totalDebit - category.totalCredit
