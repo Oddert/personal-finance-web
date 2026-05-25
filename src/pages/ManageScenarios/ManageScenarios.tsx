@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Box, CircularProgress, Typography } from '@mui/material';
@@ -9,11 +9,12 @@ import type { TDynamicCardLayoutModes } from '../../types/Common.types';
 import DynamicCardList from '../../components/DynamicCardList';
 import LayoutControls from '../../components/LayoutControls';
 import ResponsiveContainer from '../../hocs/ResponsiveContainer';
-import { useAppSelector } from '../../hooks/ReduxHookWrappers';
+import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
 import {
     getScenarios,
     getScenariosLoading,
 } from '../../redux/selectors/scenarioSelectors';
+import { refreshScenarios } from '../../redux/thunks/scenarioThunks';
 
 import CreateScenarioButton from './components/CreateScenarioButton';
 import CreateScenarioCard from './components/CreateScenarioCard';
@@ -28,10 +29,16 @@ import ScenarioCard from './components/ScenarioCard';
 const ManageScenarios: FC<IProps> = () => {
     const { t } = useTranslation();
 
+    const dispatch = useAppDispatch();
+
     const [layout, setLayout] = useState<TDynamicCardLayoutModes>('standard');
 
     const scenarios = useAppSelector(getScenarios);
     const loading = useAppSelector(getScenariosLoading);
+
+    useEffect(() => {
+        dispatch(refreshScenarios(t));
+    }, [dispatch, t]);
 
     return (
         <ResponsiveContainer>
