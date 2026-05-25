@@ -6,3 +6,5 @@ export type ITransactorRowEditable = ITransactor & {
     staged: boolean;
     deleted: boolean;
 };
+
+export type TPreviewMode = 'off' | 'total' | 'category';
