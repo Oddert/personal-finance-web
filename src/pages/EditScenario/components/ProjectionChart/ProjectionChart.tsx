@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './ProjectionChart.types';
-import type { TAggregateDatapoints } from '../../../../types/Transaction.d';
+import type { TAggregateDataResponse } from '../../../../types/Transaction.d';
 
 import {
     useAppDispatch,
@@ -26,7 +26,7 @@ import Display from './components/Display/Display';
 
 dayjs.extend(localizedFormat);
 const ProjectionChart: FC<IProps> = ({ previewMode }) => {
-    const [pastData, setPastData] = useState<TAggregateDatapoints>({});
+    const [pastData, setPastData] = useState<TAggregateDataResponse>([]);
     const [pastDataLoading, setPastDataLoading] = useState(false);
     const [showNegatives, setShowNegatives] = useState(true);
     const [startDate, setStartDate] = useState(
@@ -58,7 +58,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
                 if (!pastDataResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
-                setPastData(pastDataResponse.payload.transactions);
+                setPastData(pastDataResponse.payload.cards);
             } catch (error) {
                 dispatch(intakeError(error));
             } finally {

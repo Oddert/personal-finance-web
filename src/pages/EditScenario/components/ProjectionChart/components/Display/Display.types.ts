@@ -1,8 +1,8 @@
-import type { TAggregateDatapoints } from '../../../../../../types/Transaction';
+import type { TAggregateDataResponse } from '../../../../../../types/Transaction';
 
 export interface IProps {
     disableCategoryBreakdown?: boolean;
     loading?: boolean;
-    pastData: TAggregateDatapoints;
+    pastData: TAggregateDataResponse;
     showNegatives?: boolean;
 }

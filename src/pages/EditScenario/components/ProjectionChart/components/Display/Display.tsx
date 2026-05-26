@@ -40,50 +40,76 @@ const Display: FC<IProps> = ({
             >;
         }
 
-        const { _dataset, _series } = Object.entries(pastData).reduce(
-            (monthAcc: TLocalAcc, [monthKey, categoryList]) => {
-                monthAcc._dataset[monthKey] = disableCategoryBreakdown
-                    ? {}
-                    : categoryList.data.reduce(
-                          (
-                              catAcc: Record<string, string | number>,
-                              category,
-                          ) => {
-                              const value = showNegatives
-                                  ? category.totalDebit - category.totalCredit
-                                  : category.totalDebit;
-                              if (!isNaN(value)) {
-                                  catAcc[category.categoryId] = value;
-                              }
-                              if (!(category.categoryId in monthAcc._series)) {
-                                  monthAcc._series[category.categoryId] = {
-                                      dataKey: category.categoryId,
-                                      label: category.categoryName,
-                                      type: 'bar',
-                                  };
-                              }
-                              return catAcc;
-                          },
-                          {},
-                      );
-                monthAcc._dataset[monthKey].month = monthKey;
-                monthAcc._dataset[monthKey].total =
-                    categoryList.finalBalance ?? 0;
-                return monthAcc;
+        const { _dataset: datasetObj, _series: seriesObj } = pastData.reduce(
+            (totalAcc: TLocalAcc, cardDataSet, idx) => {
+                const { _dataset, _series } = Object.entries(
+                    cardDataSet.transactions,
+                ).reduce(
+                    (monthAcc: TLocalAcc, [monthKey, categoryList]) => {
+                        monthAcc._dataset[monthKey] = disableCategoryBreakdown
+                            ? {}
+                            : categoryList.data.reduce(
+                                  (
+                                      catAcc: Record<string, string | number>,
+                                      category,
+                                  ) => {
+                                      const value = showNegatives
+                                          ? category.totalDebit -
+                                            category.totalCredit
+                                          : category.totalDebit;
+                                      if (!isNaN(value)) {
+                                          catAcc[category.categoryId] = value;
+                                      }
+                                      if (
+                                          !(
+                                              category.categoryId in
+                                              monthAcc._series
+                                          )
+                                      ) {
+                                          monthAcc._series[
+                                              category.categoryId
+                                          ] = {
+                                              dataKey: category.categoryId,
+                                              label: category.categoryName,
+                                              type: 'bar',
+                                          };
+                                      }
+                                      return catAcc;
+                                  },
+                                  {},
+                              );
+                        monthAcc._dataset[monthKey].month = monthKey;
+                        monthAcc._dataset[monthKey][
+                            `total_${cardDataSet.cardId}`
+                        ] = categoryList.finalBalance ?? 0;
+                        monthAcc._series[`total_${cardDataSet.cardId}`] = {
+                            dataKey: `total_${cardDataSet.cardId}`,
+                            label: `Balance ${String(idx)}`,
+                            type: 'line',
+                        };
+                        return monthAcc;
+                    },
+                    {
+                        _dataset: {},
+                        _series: {},
+                    },
+                );
+                return {
+                    _dataset: { ...totalAcc._dataset, ..._dataset },
+                    _series: { ...totalAcc._series, ..._series },
+                };
             },
-            {
-                _dataset: {},
-                _series: {
-                    '': { dataKey: 'total', label: 'Balance', type: 'line' },
-                },
-            },
+            { _dataset: {}, _series: {} },
         );
 
         return {
-            dataset: Object.values(_dataset),
-            series: Object.values(_series),
+            dataset: Object.values(datasetObj),
+            series: Object.values(seriesObj),
         };
     }, [disableCategoryBreakdown, pastData, showNegatives]);
+
+    console.log('dataset', dataset);
+    console.log('series', series);
 
     return (
         <ChartsDataProvider

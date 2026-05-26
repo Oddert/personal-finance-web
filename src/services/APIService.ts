@@ -7,7 +7,7 @@ import type { IStandardResponse } from '../types/Request.d';
 import type { IScenario } from '../types/Scenario.types';
 import type {
     ITransaction,
-    TAggregateDatapoints,
+    TAggregateDataResponse,
 } from '../types/Transaction.d';
 
 import request from '../common/request';
@@ -203,7 +203,7 @@ const APIService = Object.freeze({
             ? `&to=${new Date(options.endDate).toISOString()}`
             : '';
         const response: IStandardResponse<{
-            transactions: TAggregateDatapoints;
+            cards: TAggregateDataResponse;
         }> = await request.get(
             `/transaction/aggregated?cardId=${cardId}&pivot=${options?.pivotOnCategory ? 'category' : 'time'}${from}${to}`,
         );

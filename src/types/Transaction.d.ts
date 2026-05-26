@@ -49,3 +49,8 @@ export type TAggregateDatapoints = Record<
         finalBalance?: number;
     }
 >;
+
+export type TAggregateDataResponse = {
+    cardId: string;
+    transactions: TAggregateDatapoints;
+}[];
