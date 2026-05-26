@@ -266,7 +266,9 @@ const EditScenario: FC<IProps> = () => {
                         <IconPreviewOff /> off
                     </ToggleButton>
                 </ToggleButtonGroup>
-                <ProjectionChart previewMode={previewMode} />
+                {previewMode === 'off' ? null : (
+                    <ProjectionChart previewMode={previewMode} />
+                )}
                 <TransactorTable
                     setTransactors={setTransactors}
                     transactors={transactors}

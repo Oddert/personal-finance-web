@@ -151,6 +151,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
                 />
             </Box>
             <Display
+                disableCategoryBreakdown={previewMode === 'total'}
                 loading={pastDataLoading}
                 pastData={pastData}
                 showNegatives={showNegatives}

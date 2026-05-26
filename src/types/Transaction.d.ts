@@ -42,5 +42,10 @@ export interface IAggregateDatapoint {
 
 export type TAggregateDatapoints = Record<
     string,
-    { data: IAggregateDatapoint[]; totalCredit: number; totalDebit: number }
+    {
+        data: IAggregateDatapoint[];
+        totalCredit: number;
+        totalDebit: number;
+        finalBalance?: number;
+    }
 >;
