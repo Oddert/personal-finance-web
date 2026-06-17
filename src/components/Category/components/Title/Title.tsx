@@ -25,7 +25,7 @@ const Title: FC<IProps> = ({ category, small = false }) => {
                         ...category,
                         matchers: category.matchers.map((matcher) => ({
                             ...matcher,
-                            case_sensitive: Boolean(matcher.case_sensitive),
+                            caseSensitive: Boolean(matcher.caseSensitive),
                         })),
                         label: value,
                     },

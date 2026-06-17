@@ -151,13 +151,13 @@ const EditScenario: FC<IProps> = () => {
                 }
                 setScenario(scenarioResponse.payload.scenario);
                 setTransactors(
-                    scenarioResponse.payload.scenario.transactors.map(
+                    scenarioResponse.payload.scenario.transactors?.map(
                         (transactor) => ({
                             ...transactor,
                             staged: false,
                             deleted: false,
                         }),
-                    ),
+                    ) ?? [],
                 );
                 setScenarioLoading(false);
             };

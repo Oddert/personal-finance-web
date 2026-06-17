@@ -39,7 +39,7 @@ const EditMatcher: FC<IProps> = ({
     clearOnCancel,
     clearOnSubmit,
     matcher = {
-        case_sensitive: false,
+        caseSensitive: false,
         match: '',
         matchType: 'any',
     },
@@ -56,7 +56,7 @@ const EditMatcher: FC<IProps> = ({
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setMatch(matcher.match ?? '');
-        setCaseSensitive(Boolean(matcher.case_sensitive ?? false));
+        setCaseSensitive(Boolean(matcher.caseSensitive ?? false));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -67,9 +67,9 @@ const EditMatcher: FC<IProps> = ({
     };
 
     const createResponse = () => ({
-        case_sensitive: caseSensitive,
+        caseSensitive: caseSensitive,
         match,
-        match_type: matchType,
+        matchType: matchType,
     });
 
     const handleBlur = () => {
@@ -143,7 +143,7 @@ const EditMatcher: FC<IProps> = ({
                                 setCaseSensitive(!caseSensitive);
                             }}
                             title={
-                                matcher.case_sensitive
+                                matcher.caseSensitive
                                     ? t('Category.caseSensitiveOn')
                                     : t('Category.caseSensitiveOff')
                             }

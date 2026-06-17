@@ -10,6 +10,7 @@ import {
     tecWriteTransactions,
     toggleSideBar,
 } from '../../../../../../contexts/transactionEditContext';
+import { ffBlankMatcher } from '../../../../../../utils/factoryFunctions';
 import { autoMatchCategories } from '../../../../../../utils/uploadUtils';
 import Category from '../../../../../Category/Category';
 import TitleBase from '../../../../../Category/components/TitleBase';
@@ -32,14 +33,11 @@ const Option: FC<IProps> = ({ category }) => {
 
     const handleClose = useCallback(
         (partialMatcher: Partial<IMatcher>) => {
-            const matcher: IMatcher = {
-                id: '0',
+            const matcher: IMatcher = ffBlankMatcher({
                 match: partialMatcher.match ?? '',
-                match_type: partialMatcher.match_type as TMatchType,
-                case_sensitive: partialMatcher.case_sensitive ?? false,
-                created_on: '',
-                updated_on: '',
-            };
+                matchType: partialMatcher.matchType as TMatchType,
+                caseSensitive: partialMatcher.caseSensitive ?? false,
+            });
             dispatch(
                 tecWriteTransactions(
                     autoMatchCategories(transactions, [

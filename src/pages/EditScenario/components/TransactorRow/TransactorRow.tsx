@@ -129,14 +129,13 @@ const TransactorRow: FC<IProps> = ({
                 if (transactorRow.id === transactor.id) {
                     return {
                         ...transactorRow,
-                        schedulers: transactorRow.schedulers.map(
-                            (schedulerRow) => {
+                        schedulers:
+                            transactorRow.schedulers?.map((schedulerRow) => {
                                 if (schedulerRow.id === schedulerId) {
                                     return scheduler;
                                 }
                                 return schedulerRow;
-                            },
-                        ),
+                            }) ?? [],
                     };
                 }
                 return transactorRow;
@@ -149,9 +148,10 @@ const TransactorRow: FC<IProps> = ({
             if (transactorRow.id === transactor.id) {
                 return {
                     ...transactorRow,
-                    schedulers: transactorRow.schedulers.filter(
-                        (schedulerRow) => schedulerRow.id !== schedulerId,
-                    ),
+                    schedulers:
+                        transactorRow.schedulers?.filter(
+                            (schedulerRow) => schedulerRow.id !== schedulerId,
+                        ) ?? [],
                 };
             }
             return transactorRow;
@@ -166,7 +166,7 @@ const TransactorRow: FC<IProps> = ({
                     return {
                         ...transactorRow,
                         schedulers: [
-                            ...transactorRow.schedulers,
+                            ...(transactorRow.schedulers ?? []),
                             {
                                 id: uuid(),
                                 createdOn: '',
@@ -208,7 +208,7 @@ const TransactorRow: FC<IProps> = ({
                 </TableCell>
                 <TableCell>
                     <Typography>
-                        {transactor.schedulers.length
+                        {transactor.schedulers?.length
                             ? transactor.schedulers.length > 1
                                 ? t('Scenario.numSchedules', {
                                       num: transactor.schedulers.length,
@@ -295,18 +295,20 @@ const TransactorRow: FC<IProps> = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {transactor.schedulers.map((scheduler, idx) => (
-                                    <SchedulerRow
-                                        handleClickDeleteScheduler={handleClickDeleteScheduler(
-                                            scheduler.id,
-                                        )}
-                                        handleChangeScheduler={handleChangeScheduler(
-                                            scheduler.id,
-                                        )}
-                                        key={idx}
-                                        scheduler={scheduler}
-                                    />
-                                ))}
+                                {transactor.schedulers?.map(
+                                    (scheduler, idx) => (
+                                        <SchedulerRow
+                                            handleClickDeleteScheduler={handleClickDeleteScheduler(
+                                                scheduler.id,
+                                            )}
+                                            handleChangeScheduler={handleChangeScheduler(
+                                                scheduler.id,
+                                            )}
+                                            key={idx}
+                                            scheduler={scheduler}
+                                        />
+                                    ),
+                                ) ?? []}
                                 <TableRow>
                                     <TableCell colSpan={6} align='center'>
                                         <Button

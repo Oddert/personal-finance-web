@@ -17,16 +17,18 @@ describe('components/Category', () => {
             label: 'Test Category label',
             description: 'Text Category desc',
             colour: '#ecf0f1',
-            created_on: new Date().toISOString(),
-            updated_on: new Date().toISOString(),
+            createdOn: new Date().toISOString(),
+            updatedOn: new Date().toISOString(),
+            userId: '',
             matchers: [
                 {
-                    case_sensitive: false,
-                    created_on: new Date().toISOString(),
+                    caseSensitive: false,
+                    createdOn: new Date().toISOString(),
                     id: '1',
                     match: 'TESCO',
-                    match_type: 'any',
-                    updated_on: new Date().toISOString(),
+                    matchType: 'any',
+                    updatedOn: new Date().toISOString(),
+                    userId: '',
                 },
             ],
         };
@@ -43,7 +45,9 @@ describe('components/Category', () => {
             // eslint-disable-next-line security/detect-non-literal-regexp
             screen.getByText(new RegExp(category.label, 'i')),
         ).toBeInTheDocument();
-        expect(screen.getByText(category.description)).toBeInTheDocument();
+        expect(
+            screen.getByText(category.description ?? ''),
+        ).toBeInTheDocument();
         expect(
             screen.getByText(/literals\.Matchers \(1\)/),
         ).toBeInTheDocument();
@@ -58,16 +62,18 @@ describe('components/Category', () => {
             label: 'Test Category label',
             description: 'Text Category desc',
             colour: '#ecf0f1',
-            created_on: new Date().toISOString(),
-            updated_on: new Date().toISOString(),
+            createdOn: new Date().toISOString(),
+            updatedOn: new Date().toISOString(),
+            userId: '',
             matchers: [
                 {
-                    case_sensitive: false,
-                    created_on: new Date().toISOString(),
+                    caseSensitive: false,
+                    createdOn: new Date().toISOString(),
                     id: '1',
                     match: 'TESCO',
-                    match_type: 'any',
-                    updated_on: new Date().toISOString(),
+                    matchType: 'any',
+                    updatedOn: new Date().toISOString(),
+                    userId: '',
                 },
             ],
         };
@@ -115,16 +121,18 @@ describe('components/Category', () => {
             label: 'Test Category label',
             description: 'Text Category desc',
             colour: '#ecf0f1',
-            created_on: new Date().toISOString(),
-            updated_on: new Date().toISOString(),
+            createdOn: new Date().toISOString(),
+            updatedOn: new Date().toISOString(),
+            userId: '',
             matchers: [
                 {
-                    case_sensitive: false,
-                    created_on: new Date().toISOString(),
+                    caseSensitive: false,
+                    createdOn: new Date().toISOString(),
                     id: '1',
                     match: 'TESCO',
-                    match_type: 'any',
-                    updated_on: new Date().toISOString(),
+                    matchType: 'any',
+                    updatedOn: new Date().toISOString(),
+                    userId: '',
                 },
             ],
         };
