@@ -108,9 +108,6 @@ const Display: FC<IProps> = ({
         };
     }, [disableCategoryBreakdown, pastData, showNegatives]);
 
-    console.log('dataset', dataset);
-    console.log('series', series);
-
     return (
         <ChartsDataProvider
             dataset={dataset}

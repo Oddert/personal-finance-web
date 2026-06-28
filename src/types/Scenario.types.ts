@@ -8,6 +8,8 @@
 export interface IScenario {
     /** The Card / Account which is associated. Future work will allow multi-card Scenarios. */
     cardId: string;
+    /** List of Card bridge entries for multi-card Scenarios. */
+    cards?: IScenarioCardBridge[];
     /** ISO timestamp of the date/time the record was first created. */
     createdOn: string;
     /** Longer user-defined description of what this Scenario represents. */
@@ -28,6 +30,34 @@ export interface IScenario {
     userId: string;
     /** ISO timestamp of most recent save. */
     updatedOn: string;
+}
+
+/**
+ * A connection from Scenario to Card to allow Scenario to track a starting balance and window to display for.
+ * @category Types
+ * @subcategory Scenario
+ */
+export interface IScenarioCardBridge {
+    /** The Card associated with this bridge. */
+    cardId: string;
+    /** Name of the card or account. */
+    cardName: string;
+    /** Computed start date for the bridge entry. */
+    calcStartDate: string;
+    /** Computed end date for the bridge entry. */
+    calcEndDate: string | null;
+    /** Display start date for the bridge entry. */
+    displayStartDate: string;
+    /** Display end date for the bridge entry. */
+    displayEndDate: string | null;
+    /** Unique identifier for the bridge record. */
+    id: string;
+    /** The Scenario this bridge belongs to. */
+    scenarioId: string;
+    /** Starting balance for the bridge entry. */
+    startBalance: number;
+    /** Optional note attached to the bridge. */
+    note: string | null;
 }
 
 /**

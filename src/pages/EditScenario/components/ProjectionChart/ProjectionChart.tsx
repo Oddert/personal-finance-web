@@ -8,13 +8,14 @@ import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './ProjectionChart.types';
+import type { ICard } from '../../../../types/Card.types';
 import type { TAggregateDataResponse } from '../../../../types/Transaction.d';
 
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
-import { getActiveCardId } from '../../../../redux/selectors/cardSelectors';
+import { getCardResponse } from '../../../../redux/selectors/cardSelectors';
 import { intakeError } from '../../../../redux/thunks/errorThunks';
 import APIService from '../../../../services/APIService';
 import {
@@ -33,15 +34,21 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
         toBeginningMonthDayjs(dayjs().subtract(24, 'months')),
     );
     const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
+    const [selectedCards, setSelectedCards] = useState<ICard[]>([]);
 
-    const cardId = useAppSelector(getActiveCardId);
+    const cards = useAppSelector(getCardResponse);
 
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const theme = useTheme();
 
     useEffect(() => {
-        if (!cardId?.length) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setSelectedCards(cards);
+    }, [cards]);
+
+    useEffect(() => {
+        if (!selectedCards.length) {
             return;
         }
 
@@ -51,10 +58,13 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
         const fetchPastData = async () => {
             try {
                 const pastDataResponse =
-                    await APIService.getAllTransactionsAggregated(cardId, {
-                        startDate: startDate.valueOf(),
-                        endDate: endDate.valueOf(),
-                    });
+                    await APIService.getAllTransactionsAggregated(
+                        selectedCards.map((card) => card.id).join(','),
+                        {
+                            startDate: startDate.valueOf(),
+                            endDate: endDate.valueOf(),
+                        },
+                    );
                 if (!pastDataResponse.payload) {
                     throw new Error(t('modalMessages.noServerResponse'));
                 }
@@ -67,7 +77,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
         };
 
         fetchPastData();
-    }, [dispatch, t, cardId, startDate, endDate]);
+    }, [dispatch, t, startDate, endDate, selectedCards]);
 
     if (previewMode === 'off') {
         return null;
