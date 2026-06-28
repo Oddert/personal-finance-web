@@ -52,12 +52,12 @@ request.interceptors.response.use(
     (error) => {
         if (error.status === 401) {
             store.dispatch(refreshAuthentication());
-            return error;
+            throw error;
         }
         if (error.status < 200 || error.status >= 300) {
             console.error(error);
         }
-        return error;
+        throw error;
     },
 );
 
