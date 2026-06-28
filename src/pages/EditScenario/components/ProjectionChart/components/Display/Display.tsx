@@ -42,6 +42,7 @@ const Display: FC<IProps> = ({
 
         const { _dataset: datasetObj, _series: seriesObj } = pastData.reduce(
             (totalAcc: TLocalAcc, cardDataSet, idx) => {
+                const balanceKey = `total_${cardDataSet.cardId}`;
                 const { _dataset, _series } = Object.entries(
                     cardDataSet.transactions,
                 ).reduce(
@@ -79,11 +80,10 @@ const Display: FC<IProps> = ({
                                   {},
                               );
                         monthAcc._dataset[monthKey].month = monthKey;
-                        monthAcc._dataset[monthKey][
-                            `total_${cardDataSet.cardId}`
-                        ] = categoryList.finalBalance ?? 0;
-                        monthAcc._series[`total_${cardDataSet.cardId}`] = {
-                            dataKey: `total_${cardDataSet.cardId}`,
+                        monthAcc._dataset[monthKey][balanceKey] =
+                            categoryList.finalBalance ?? 0;
+                        monthAcc._series[balanceKey] = {
+                            dataKey: balanceKey,
                             label: `Balance ${String(idx)}`,
                             type: 'line',
                         };
@@ -94,8 +94,34 @@ const Display: FC<IProps> = ({
                         _series: {},
                     },
                 );
+
+                // Fill balance gaps: for months already in totalAcc that this card
+                // has no data for, carry forward the last known balance.
+                const mergedDataset = { ...totalAcc._dataset };
+                let lastKnownBalance: number | undefined;
+                const allMonths = Object.keys({
+                    ...totalAcc._dataset,
+                    ..._dataset,
+                }).sort();
+                for (const month of allMonths) {
+                    if (month in _dataset) {
+                        lastKnownBalance = _dataset[month][
+                            balanceKey
+                        ] as number;
+                        mergedDataset[month] = {
+                            ...mergedDataset[month],
+                            ..._dataset[month],
+                        };
+                    } else if (lastKnownBalance !== undefined) {
+                        mergedDataset[month] = {
+                            ...mergedDataset[month],
+                            [balanceKey]: lastKnownBalance,
+                        };
+                    }
+                }
+
                 return {
-                    _dataset: { ...totalAcc._dataset, ..._dataset },
+                    _dataset: mergedDataset,
                     _series: { ...totalAcc._series, ..._series },
                 };
             },
