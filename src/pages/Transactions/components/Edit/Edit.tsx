@@ -61,8 +61,10 @@ const Edit: FC<IProps> = () => {
     );
 
     const { transactions } = useTransactions(
-        rangeValues[value[0]].bottom,
-        rangeValues[value[1]].top,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        rangeValues[value[0]]?.bottom,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        rangeValues[value[1]]?.top,
     );
 
     const language = useAppSelector(getActiveLanguageCode);
