@@ -51,8 +51,8 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                     categoryId,
                     matcher: {
                         ...response.payload.matcher,
-                        case_sensitive: Boolean(
-                            response.payload.matcher.case_sensitive,
+                        caseSensitive: Boolean(
+                            response.payload.matcher.caseSensitive,
                         ),
                     },
                 }),
@@ -82,7 +82,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
     }, [dispatch, matcher.id]);
 
     const matchTypeTitle = useMemo(() => {
-        switch (matcher.match_type) {
+        switch (matcher.matchType) {
             case 'any':
                 return 'Category.matchMessages.any';
             case 'exact':
@@ -94,7 +94,7 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
             default:
                 return '';
         }
-    }, [matcher.match_type]);
+    }, [matcher.matchType]);
 
     if (open) {
         return (
@@ -175,19 +175,19 @@ const Matcher: FC<IProps> = ({ matcher, categoryId }) => {
                     alignItems: 'center',
                 }}
                 title={
-                    matcher.case_sensitive
+                    matcher.caseSensitive
                         ? t('Category.onlyMatchesExactCase')
                         : t('Category.ignoresCase')
                 }
             >
-                {matcher.case_sensitive ? (
+                {matcher.caseSensitive ? (
                     <IconMatchPositive />
                 ) : (
                     <IconMatchNegative />
                 )}
             </Box>
             <Typography title={t(matchTypeTitle)} variant='body1'>
-                {matcher.match_type}
+                {matcher.matchType}
             </Typography>
             <Button
                 className='Matcher_delete'

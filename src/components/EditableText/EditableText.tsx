@@ -90,6 +90,7 @@ const EditableText: FC<IProps> = ({
                     onChange={(e) => {
                         setValue(e.target.value);
                     }}
+                    role='textbox'
                     value={value}
                 />
             ) : !text.length && placeholder ? (

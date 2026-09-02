@@ -1,9 +1,8 @@
-import type { SxProps } from '@mui/material';
-import type { TypographyProps } from '@mui/system';
+import type { SxProps, TypographyOwnProps } from '@mui/material';
 
 export interface IProps {
     containerSx?: SxProps;
-    headingProps: Partial<TypographyProps>;
+    headingProps: TypographyOwnProps;
     iconPosition?: 'start' | 'end';
     onChange: (value: string) => void;
     placeholder?: string;

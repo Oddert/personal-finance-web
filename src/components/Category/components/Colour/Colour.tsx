@@ -26,7 +26,7 @@ const Colour: FC<IProps> = ({ category }) => {
                         ...category,
                         matchers: category.matchers.map((matcher) => ({
                             ...matcher,
-                            case_sensitive: Boolean(matcher.case_sensitive),
+                            caseSensitive: Boolean(matcher.caseSensitive),
                         })),
                         colour: editedColour,
                     },

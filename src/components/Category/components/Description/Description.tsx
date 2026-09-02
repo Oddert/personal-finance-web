@@ -26,7 +26,7 @@ const Title: FC<IProps> = ({ category }) => {
                         ...category,
                         matchers: category.matchers.map((matcher) => ({
                             ...matcher,
-                            case_sensitive: Boolean(matcher.case_sensitive),
+                            caseSensitive: matcher.caseSensitive,
                         })),
                         label: value,
                     },
@@ -52,7 +52,7 @@ const Title: FC<IProps> = ({ category }) => {
             }}
             onChange={handleChange}
             placeholder={t('Category.descriptionPlaceholder')}
-            text={category.description}
+            text={category.description ?? ''}
         />
     );
 };

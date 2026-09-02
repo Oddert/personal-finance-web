@@ -48,8 +48,10 @@ const Table = () => {
     );
 
     useEffect(() => {
-        const minDate = rangeValues[value[0]].bottom;
-        const maxDate = rangeValues[value[1]].top;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const minDate = rangeValues[value[0]]?.bottom;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const maxDate = rangeValues[value[1]]?.top;
 
         setFilteredTransactions(
             transactions.filter(

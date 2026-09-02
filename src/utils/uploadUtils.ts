@@ -11,15 +11,15 @@ import { escapeRegex } from './commonUtils';
  */
 export const createRegexFromMatcher = (matcher: IMatcher) => {
     const prefix =
-        matcher.match_type === 'exact' || matcher.match_type === 'start'
+        matcher.matchType === 'exact' || matcher.matchType === 'start'
             ? '^'
             : '.*';
     const suffix =
-        matcher.match_type === 'exact' || matcher.match_type === 'end'
+        matcher.matchType === 'exact' || matcher.matchType === 'end'
             ? '$'
             : '.*';
-    const location = matcher.match_type === 'any' ? 'g' : '';
-    const capitalisation = matcher.case_sensitive ? '' : 'i';
+    const location = matcher.matchType === 'any' ? 'g' : '';
+    const capitalisation = matcher.caseSensitive ? '' : 'i';
     const matchString = `${prefix}${escapeRegex(matcher.match)}${suffix}`;
     const options = `${location}${capitalisation}`;
     // eslint-disable-next-line security/detect-non-literal-regexp

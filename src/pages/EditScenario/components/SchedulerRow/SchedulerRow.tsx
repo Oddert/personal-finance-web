@@ -149,7 +149,7 @@ const SchedulerRow: FC<IProps> = ({
                         });
                     }}
                     size='small'
-                    value={scheduler.schedulerCode}
+                    value={scheduler.schedulerCode as TSchedulerCode}
                 >
                     <MenuItem value='DAY'>
                         {t('Scenario.Scheduler.descriptionDay')}

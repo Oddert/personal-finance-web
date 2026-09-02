@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import type { ITransactorRowEditable } from '../pages/EditScenario/EditScenario.types';
+import type { IMatcher } from '../types/Matcher';
 
 export const ffBlankTransactorRowEditable = (
     partial?: Partial<ITransactorRowEditable>,
@@ -17,4 +18,15 @@ export const ffBlankTransactorRowEditable = (
     staged: true,
     deleted: false,
     ...partial,
+});
+
+export const ffBlankMatcher = (matcher?: Partial<IMatcher>): IMatcher => ({
+    id: '',
+    match: '',
+    matchType: 'exact',
+    caseSensitive: false,
+    createdOn: '',
+    updatedOn: '',
+    userId: '',
+    ...matcher,
 });

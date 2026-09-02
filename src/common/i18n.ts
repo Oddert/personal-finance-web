@@ -9,7 +9,6 @@ i18n.use(Backend)
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         debug: Boolean(process.env.debug),
         lng: 'en',
         fallbackLng: 'en',

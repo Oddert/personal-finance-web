@@ -142,36 +142,40 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
                 title: '',
                 description: '',
                 startBallance: 0,
-                transactors: scenario.transactors.map((transactor) => ({
-                    annotation: '',
-                    startDate: '',
-                    description: '',
-                    action: (value: number) =>
-                        transactor.isAddition
-                            ? value + transactor.value
-                            : value - transactor.value,
-                    schedulers: transactor.schedulers.map((scheduler) => {
-                        switch (scheduler.schedulerCode) {
-                            case 'DAY':
-                                return new ScheduleBySpecificDay(scheduler.day);
-                            case 'DAY_OF_WEEK':
-                                return new ScheduleByDayOfWeek(
-                                    scheduler.day,
-                                    scheduler.nthDay ?? undefined,
-                                );
-                            case 'EVENT':
-                                return new ScheduleByEvent(
-                                    scheduler.startDate ?? new Date(),
-                                );
-                            case 'SCALAR':
-                            default:
-                                return new ScheduleByScalarTime(
-                                    scheduler.step ?? 1,
-                                    scheduler.startDate ?? new Date(),
-                                );
-                        }
-                    }),
-                })),
+                transactors:
+                    scenario.transactors?.map((transactor) => ({
+                        annotation: '',
+                        startDate: '',
+                        description: '',
+                        action: (value: number) =>
+                            transactor.isAddition
+                                ? value + transactor.value
+                                : value - transactor.value,
+                        schedulers:
+                            transactor.schedulers?.map((scheduler) => {
+                                switch (scheduler.schedulerCode) {
+                                    case 'DAY':
+                                        return new ScheduleBySpecificDay(
+                                            scheduler.day ?? 0,
+                                        );
+                                    case 'DAY_OF_WEEK':
+                                        return new ScheduleByDayOfWeek(
+                                            scheduler.day ?? 0,
+                                            scheduler.nthDay ?? undefined,
+                                        );
+                                    case 'EVENT':
+                                        return new ScheduleByEvent(
+                                            scheduler.startDate ?? new Date(),
+                                        );
+                                    case 'SCALAR':
+                                    default:
+                                        return new ScheduleByScalarTime(
+                                            scheduler.step ?? 1,
+                                            scheduler.startDate ?? new Date(),
+                                        );
+                                }
+                            }) ?? [],
+                    })) ?? [],
             })),
         [scenarios],
     );

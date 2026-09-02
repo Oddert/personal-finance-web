@@ -18,6 +18,7 @@ export const normaliseDateStamp = (date: Date | number | string) => {
 };
 
 class Schedule {
+    // @ts-expect-error placeholder values used to implement prototypal inheritance.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getRange(startDate: number | Date, endDate: number | Date): number[] {
         return [];
