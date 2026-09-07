@@ -176,7 +176,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
                     localDispatch(toggleCloseModal(true));
                 }}
             >
-                {t('buttons.Cancel')}
+                {t('buttons.discardChanges')}
             </Button>
             <Button
                 color='primary'

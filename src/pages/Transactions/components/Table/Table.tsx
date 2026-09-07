@@ -14,9 +14,11 @@ import TableWrapper from '../../../../components/Table/Table';
 import { TransactionRange } from '../../../../contexts/transactionRangeContext';
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import useTransactions from '../../../../hooks/useTransactions';
+import { getCardResponse } from '../../../../redux/selectors/cardSelectors';
+import { getCategoryOrderedDataById } from '../../../../redux/selectors/categorySelectors';
 import { getActiveLanguageCode } from '../../../../redux/selectors/profileSelectors';
 import { getTransactionsLoading } from '../../../../redux/selectors/transactionsSelectors';
-import { transactionColumns } from '../../../../utils/transactionUtils';
+import { addCurrencySymbol } from '../../../../utils/transactionUtils';
 
 dayjs.extend(customParseFormat);
 
@@ -38,12 +40,80 @@ const Table = () => {
     >([]);
 
     const { transactions } = useTransactions();
+    console.log({ transactions });
 
     const transactionsLoading = useAppSelector(getTransactionsLoading);
     const language = useAppSelector(getActiveLanguageCode);
+    const cards = useAppSelector(getCardResponse);
+    const categories = useAppSelector(getCategoryOrderedDataById);
 
     const columns = useMemo<ColumnDef<ITransaction>[]>(
-        () => transactionColumns(language, t),
+        () => [
+            {
+                header: t('literals.Date'),
+                accessorKey: 'date',
+                cell: (cell) => {
+                    const value = cell.renderValue();
+                    try {
+                        // @ts-expect-error use of try-catch accounts for errors thrown from bad 'unknown' values
+                        return new Date(value).toLocaleDateString(language);
+                    } catch {
+                        return value;
+                    }
+                },
+            },
+            {
+                header: t('literals.Description'),
+                accessorKey: 'description',
+            },
+            {
+                header: t('literals.Out'),
+                accessorKey: 'debit',
+                cell: addCurrencySymbol,
+            },
+            {
+                header: t('literals.In'),
+                accessorKey: 'credit',
+                cell: addCurrencySymbol,
+            },
+            {
+                header: t('literals.Ballance'),
+                accessorKey: 'ballance',
+                cell: addCurrencySymbol,
+            },
+            {
+                header: t('literals.Category'),
+                accessorKey: 'categoryId',
+                cell: (cell) => {
+                    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+                    const categoryId: string | unknown = cell.renderValue();
+                    if (typeof categoryId === 'string') {
+                        const foundCategory = categories[categoryId];
+                        if (foundCategory) {
+                            return foundCategory.label;
+                        }
+                    }
+                    return `- ${t('literals.uncategorised')} -`;
+                },
+            },
+            {
+                header: t('literals.Card'),
+                accessorKey: 'cardId',
+                cell: (cell) => {
+                    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+                    const cardId: string | unknown = cell.renderValue();
+                    if (typeof cardId === 'string') {
+                        const foundCard = cards.find(
+                            (card) => card.id === cardId,
+                        );
+                        if (foundCard) {
+                            return foundCard.cardName;
+                        }
+                    }
+                    return `- ${t('literals.uncategorised')} -`;
+                },
+            },
+        ],
         [language, t],
     );
 
@@ -54,10 +124,10 @@ const Table = () => {
         const maxDate = rangeValues[value[1]]?.top;
 
         setFilteredTransactions(
-            transactions.filter(
-                (transaction) =>
-                    transaction.date >= minDate && transaction.date <= maxDate,
-            ),
+            transactions.filter((transaction) => {
+                const date = dayjs(transaction.date).valueOf();
+                return date >= minDate && date <= maxDate;
+            }),
         );
     }, [rangeValues, value, transactions]);
 

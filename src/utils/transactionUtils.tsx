@@ -1,9 +1,8 @@
 import { Box } from '@mui/material';
 
 import type { CategoryState } from '../redux/slices/categorySlice';
-import type { ICategory } from '../types/Category.d';
 import type { ITransaction } from '../types/Transaction.d';
-import type { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { CellContext } from '@tanstack/react-table';
 import type { TFunction } from 'i18next';
 
 import useLocalisedNumber from '../hooks/useLocalisedNumber';
@@ -89,63 +88,6 @@ export const addCurrencySymbol = (cell: CellContext<ITransaction, unknown>) => {
         </Box>
     );
 };
-
-/**
- * Columns for the transaction table on the upload / edit form.
- */
-export const transactionColumns = (
-    language: string,
-    t: TFunction,
-): ColumnDef<ITransaction>[] => [
-    {
-        header: t('literals.Date'),
-        accessorKey: 'date',
-        cell: (cell) => {
-            const value = cell.renderValue();
-            if (typeof value === 'number') {
-                return new Date(value).toLocaleDateString(language);
-            }
-            return value;
-        },
-    },
-    {
-        header: t('literals.Description'),
-        accessorKey: 'description',
-    },
-    {
-        header: t('literals.Out'),
-        accessorKey: 'debit',
-        cell: addCurrencySymbol,
-    },
-    {
-        header: t('literals.In'),
-        accessorKey: 'credit',
-        cell: addCurrencySymbol,
-    },
-    {
-        header: t('literals.Ballance'),
-        accessorKey: 'ballance',
-        cell: addCurrencySymbol,
-    },
-    {
-        header: t('literals.Category'),
-        accessorKey: 'assignedCategory',
-        cell: (cell) => {
-            // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-            const value: ICategory | unknown = cell.renderValue();
-            // eslint-disable-next-line no-console
-            console.log('value', value);
-            if (value && typeof value === 'object' && 'label' in value) {
-                return value.label;
-            }
-            return `- ${t('literals.uncategorised')} -`;
-        },
-    },
-    // {
-    //     header: t('Cat Id'),
-    //     accessorKey: 'categoryId',
-    // },
-];
 
 /**
  * Creates a string format for month-year combinations.
