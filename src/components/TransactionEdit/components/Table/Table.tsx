@@ -163,10 +163,13 @@ const Table = () => {
                 }}
             >
                 <TableHead
-                    sx={{
+                    sx={(theme) => ({
                         position: 'sticky',
                         top: 0,
-                    }}
+                        zIndex: 1,
+                        borderRadius: '4px',
+                        background: theme.palette.background.paper,
+                    })}
                 >
                     <TableRow>
                         {columns.map((column) => (

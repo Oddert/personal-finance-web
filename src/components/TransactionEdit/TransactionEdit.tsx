@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import {
     Box,
     CircularProgress,
-    Container,
-    Modal,
-    Paper,
+    Dialog,
+    DialogContent,
+    DialogTitle,
     Typography,
 } from '@mui/material';
 
@@ -41,38 +41,36 @@ const TransactionEdit: FC<IProps> = ({
     const { t } = useTranslation();
 
     return (
-        <Modal open={open} onClose={onClose} sx={{ overflowY: 'auto' }}>
-            <Container>
-                <Paper
-                    sx={{
-                        padding: '32px',
-                        marginTop: '24px',
-                        marginBottom: '24px',
-                    }}
-                >
-                    <Typography variant='h2'>
-                        {mode === 'upload'
-                            ? t('Transaction.bulkUploadTransactions')
-                            : t('Transaction.bulkEditTransactions')}
-                    </Typography>
-                    {loading ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            <Typography>{t('literals.Uploading')}</Typography>
-                            <CircularProgress />
-                        </Box>
-                    ) : (
-                        <Fragment>
-                            {showMapping ? <ColumnMapping /> : null}
-                            <CardSelection />
-                            <Submit onClose={onClose} />
-                            <Table />
-                            <Submit onClose={onClose} />
-                        </Fragment>
-                    )}
-                </Paper>
+        <Dialog
+            fullWidth
+            maxWidth='xl'
+            open={open}
+            onClose={onClose}
+            sx={{ overflowY: 'auto' }}
+        >
+            <DialogTitle variant='h2'>
+                {mode === 'upload'
+                    ? t('Transaction.bulkUploadTransactions')
+                    : t('Transaction.bulkEditTransactions')}
+            </DialogTitle>
+            <DialogContent>
+                {loading ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Typography>{t('literals.Uploading')}</Typography>
+                        <CircularProgress />
+                    </Box>
+                ) : (
+                    <Fragment>
+                        {showMapping ? <ColumnMapping /> : null}
+                        <CardSelection />
+                        <Submit onClose={onClose} />
+                        <Table />
+                        <Submit onClose={onClose} />
+                    </Fragment>
+                )}
                 <CategoryQuickEdit />
-            </Container>
-        </Modal>
+            </DialogContent>
+        </Dialog>
     );
 };
 

@@ -399,7 +399,7 @@ export const addRow = (currency: string) => ({
 
 export const changeCard = (uid: string, cardId: string) => ({
     type: TransactionEditActionTypes.changeCard,
-    payload: { cardId, uid, },
+    payload: { cardId, uid },
 });
 
 export const changeSingleSelected = (uid: string, selected: boolean) => ({

@@ -17,6 +17,7 @@ import {
     writeHeaders,
 } from '../../contexts/transactionEditContext';
 import { useAppDispatch } from '../../hooks/ReduxHookWrappers';
+import { getCardResponse } from '../../redux/selectors/cardSelectors';
 import { getCategoryResponse } from '../../redux/selectors/categorySelectors';
 import { getUserCurrencies } from '../../redux/selectors/profileSelectors';
 import { checkAuth } from '../../redux/thunks/authThunks';
@@ -25,7 +26,6 @@ import { readCsv } from '../../utils/commonUtils';
 import { autoMatchCategories } from '../../utils/uploadUtils';
 import DropZone from '../DropZone';
 import TransactionEdit from '../TransactionEdit';
-import { getCardResponse } from '../../redux/selectors/cardSelectors';
 
 /**
  * Allows the user to upload new transactions.
@@ -83,7 +83,7 @@ const Upload = () => {
                                 deleted: 0,
                                 tecTempId: uuid(),
                                 currency: currencies[0],
-                                card: cards[0].id,
+                                card: cards?.[0]?.id,
                             }));
                             dispatch(writeHeaders(headers));
                             dispatch(tecWriteTransactions(withPresets));

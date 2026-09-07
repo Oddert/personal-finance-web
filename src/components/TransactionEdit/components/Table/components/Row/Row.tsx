@@ -5,13 +5,13 @@ import { TableCell, TableRow } from '@mui/material';
 import type { IProps } from './Row.types';
 
 import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
+import CardSelector from '../CardSelector';
 import CategorySelector from '../CategorySelector';
 import CurrencySelector from '../CurrencySelector';
 import DeleteOption from '../DeleteOption/DeleteOption';
 import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
-import CardSelector from '../CardSelector';
 
 /**
  * Displays a single table row.
