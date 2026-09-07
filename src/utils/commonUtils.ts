@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(LocalizedFormat);
+
 /**
  * Formats an integer value to a human-readable format with commas separating 100 decimal points.
  * @example
@@ -72,4 +77,86 @@ export const readCsv = (file: unknown) => {
  */
 export const escapeRegex = (text: string) => {
     return text.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+};
+
+/**
+ * Applies a range of possible date formats to the interpretation of a date.
+ *
+ * Will throw an error if no format works.
+ * @param date The date string to parse.
+ * @returns The date in ISO string format or null (will throw).
+ */
+export const looseDateParser = (date: string) => {
+    const formats = [
+        'DD/MM/YYYY',
+        'DD/MM/YY',
+        'DD-MM-YYYY',
+        'DD-MM-YY',
+        'DD/M/YYYY',
+        'DD/M/YY',
+        'DD-M-YYYY',
+        'DD-M-YY',
+        'DD/MMM/YYYY',
+        'DD/MMM/YY',
+        'DD-MMM-YYYY',
+        'DD-MMM-YY',
+        'DD/MMMM/YYYY',
+        'DD/MMMM/YY',
+        'DD-MMMM-YYYY',
+        'DD-MMMM-YY',
+        'D/MM/YYYY',
+        'D/MM/YY',
+        'D-MM-YYYY',
+        'D-MM-YY',
+        'D/M/YYYY',
+        'D/M/YY',
+        'D-M-YYYY',
+        'D-M-YY',
+        'D/MMM/YYYY',
+        'D/MMM/YY',
+        'D-MMM-YYYY',
+        'D-MMM-YY',
+        'D/MMMM/YYYY',
+        'D/MMMM/YY',
+        'D-MMMM-YYYY',
+        'D-MMMM-YY',
+        'YYYY/MM/DD',
+        'YY/MM/DD',
+        'YYYY-MM-DD',
+        'YY-MM-DD',
+        'YYYY/M/DD',
+        'YY/M/DD',
+        'YYYY-M-DD',
+        'YY-M-DD',
+        'YYYY/MMM/DD',
+        'YY/MMM/DD',
+        'YYYY-MMM-DD',
+        'YY-MMM-DD',
+        'YYYY/MMMM/DD',
+        'YY/MMMM/DD',
+        'YYYY-MMMM-DD',
+        'YY-MMMM-DD',
+        'YYYY/MM/D',
+        'YY/MM/D',
+        'YYYY-MM-D',
+        'YY-MM-D',
+        'YYYY/M/D',
+        'YY/M/D',
+        'YYYY-M-D',
+        'YY-M-D',
+        'YYYY/MMM/D',
+        'YY/MMM/D',
+        'YYYY-MMM-D',
+        'YY-MMM-D',
+        'YYYY/MMMM/D',
+        'YY/MMMM/D',
+        'YYYY-MMMM-D',
+        'YY-MMMM-D',
+    ];
+    const parseAttempt = dayjs(date, formats);
+    if (parseAttempt.isValid()) {
+        return parseAttempt.toISOString();
+    }
+    console.warn('Unable to interpret date:', date);
+    throw new Error(`Invalid date: ${date}`);
 };

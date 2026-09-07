@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IUser } from '../types/Auth.types';
 import type { IBudget } from '../types/Budget.types';
@@ -13,6 +14,9 @@ import type {
 } from '../types/Transaction.d';
 
 import request from '../common/request';
+import { looseDateParser } from '../utils/commonUtils';
+
+dayjs.extend(LocalizedFormat);
 
 /**
  * Primary interface for interacting with the API.
@@ -172,7 +176,13 @@ const APIService = Object.freeze({
     createManyTransactions: async (transactions: Partial<ITransaction>[]) => {
         const response: IStandardResponse<{
             createdTransactions: ITransaction[];
-        }> = await request.post(`/transaction/create-many`, { transactions });
+        }> = await request.post(`/transaction/create-many`, {
+            transactions: transactions.map((transaction) => ({
+                ...transaction,
+                // @ts-expect-error types to be updated
+                date: looseDateParser(transaction.date),
+            })),
+        });
         return response;
     },
     /**
