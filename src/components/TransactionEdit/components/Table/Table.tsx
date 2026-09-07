@@ -11,6 +11,7 @@ import {
     TableBody,
     TableCell,
     TableHead,
+    TablePagination,
     TableRow,
     Typography,
 } from '@mui/material';
@@ -40,6 +41,8 @@ const Table = () => {
 
     const [filterUncategorised, setFilterUncategorised] = useState(false);
     const [filterUnchecked, setFilterUnchecked] = useState(false);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const {
         dispatch,
@@ -90,6 +93,20 @@ const Table = () => {
         return stageUnchecked;
     }, [filterUncategorised, filterUnchecked, transactions]);
 
+    const currentPage = Math.min(
+        page,
+        Math.max(Math.ceil(data.length / rowsPerPage) - 1, 0),
+    );
+
+    const paginatedData = useMemo(
+        () =>
+            data.slice(
+                currentPage * rowsPerPage,
+                (currentPage + 1) * rowsPerPage,
+            ),
+        [currentPage, data, rowsPerPage],
+    );
+
     return (
         <Fragment>
             <Typography>
@@ -108,6 +125,7 @@ const Table = () => {
                         <Checkbox
                             checked={filterUncategorised}
                             onChange={(e) => {
+                                setPage(0);
                                 setFilterUncategorised(e.currentTarget.checked);
                             }}
                         />
@@ -119,6 +137,7 @@ const Table = () => {
                         <Checkbox
                             checked={filterUnchecked}
                             onChange={(e) => {
+                                setPage(0);
                                 setFilterUnchecked(e.currentTarget.checked);
                             }}
                         />
@@ -154,6 +173,20 @@ const Table = () => {
                     </Button>
                 </Box>
             </Box>
+            <TablePagination
+                component='div'
+                count={data.length}
+                onPageChange={(_, nextPage) => {
+                    setPage(nextPage);
+                }}
+                onRowsPerPageChange={(event) => {
+                    setRowsPerPage(Number(event.target.value));
+                    setPage(0);
+                }}
+                page={currentPage}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10, 25, 50]}
+            />
             <MuiTable
                 sx={{
                     width: '100%',
@@ -180,16 +213,30 @@ const Table = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((transaction, idx) => (
+                    {paginatedData.map((transaction, idx) => (
                         <Row
                             columns={columns}
                             key={transaction.tecTempId}
-                            idx={idx}
+                            idx={currentPage * rowsPerPage + idx}
                             transaction={transaction}
                         />
                     ))}
                 </TableBody>
             </MuiTable>
+            <TablePagination
+                component='div'
+                count={data.length}
+                onPageChange={(_, nextPage) => {
+                    setPage(nextPage);
+                }}
+                onRowsPerPageChange={(event) => {
+                    setRowsPerPage(Number(event.target.value));
+                    setPage(0);
+                }}
+                page={currentPage}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10, 25, 50]}
+            />
         </Fragment>
     );
 };

@@ -55,13 +55,13 @@ const Submit: FC<IProps> = ({ onClose }) => {
             (transaction) => transaction.selected,
         );
 
-        const filterDelted =
+        const filterDeleted =
             mode === 'upload'
                 ? filterSeleted.filter((transaction) => !transaction.deleted)
                 : filterSeleted;
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
-        const stagedTemp = filterDelted.map((transaction) => {
+        const stagedTemp = filterDeleted.map((transaction) => {
             const formattedTransaction: Partial<ITransactionWithDeleted> = {
                 assignedCategory:
                     (transaction[
