@@ -25,6 +25,7 @@ export interface TransactionEditState {
 
 const TransactionEditActionTypes = {
     addRow: 'addRow',
+    changeCard: 'changeCard',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
     deleteAll: 'deleteAll',
@@ -69,7 +70,8 @@ export type TAccessorKey =
     | 'credit'
     | 'ballance'
     | 'assignedCategory'
-    | 'currency';
+    | 'currency'
+    | 'card';
 
 export type TAccessorKeyNumbers = 'debit' | 'credit' | 'ballance';
 
@@ -107,6 +109,10 @@ export const defaultColumns: IColumnDef[] = [
     {
         header: 'Currency',
         accessorKey: 'currency',
+    },
+    {
+        header: 'Card',
+        accessorKey: 'card',
     },
     {
         header: 'Category',
@@ -152,9 +158,26 @@ export const createTECReducer = (uploadMode = false) => {
                                     deleted: 0,
                                     tecTempId: uuid(),
                                     currency: action.payload.currency,
+                                    card: '',
                                 },
                                 ...state.transactions,
                             ],
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.changeCard:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) =>
+                                    transaction.tecTempId === action.payload.uid
+                                        ? {
+                                              ...transaction,
+                                              card: action.payload.cardId,
+                                          }
+                                        : transaction,
+                            ),
                         },
                         true,
                     ];
@@ -372,6 +395,11 @@ export const createTECReducer = (uploadMode = false) => {
 export const addRow = (currency: string) => ({
     type: TransactionEditActionTypes.addRow,
     payload: { currency },
+});
+
+export const changeCard = (uid: string, cardId: string) => ({
+    type: TransactionEditActionTypes.changeCard,
+    payload: { cardId, uid, },
 });
 
 export const changeSingleSelected = (uid: string, selected: boolean) => ({

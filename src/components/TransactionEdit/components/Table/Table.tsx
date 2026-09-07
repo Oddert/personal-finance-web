@@ -70,6 +70,7 @@ const Table = () => {
                     'selected',
                     'deleted',
                     'currency',
+                    'card',
                 ].includes(header.accessorKey)
                     ? header.accessorKey
                     : columnMap[header.accessorKey],

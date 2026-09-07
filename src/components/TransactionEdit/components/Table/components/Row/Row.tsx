@@ -11,6 +11,7 @@ import DeleteOption from '../DeleteOption/DeleteOption';
 import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
+import CardSelector from '../CardSelector';
 
 /**
  * Displays a single table row.
@@ -74,6 +75,8 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                 return <CategorySelector key={key} transaction={transaction} />;
             case 'currency':
                 return <CurrencySelector key={key} transaction={transaction} />;
+            case 'card':
+                return <CardSelector key={key} transaction={transaction} />;
             default:
                 return (
                     <TableCell key={key}>

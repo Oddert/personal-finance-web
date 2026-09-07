@@ -25,6 +25,7 @@ import { readCsv } from '../../utils/commonUtils';
 import { autoMatchCategories } from '../../utils/uploadUtils';
 import DropZone from '../DropZone';
 import TransactionEdit from '../TransactionEdit';
+import { getCardResponse } from '../../redux/selectors/cardSelectors';
 
 /**
  * Allows the user to upload new transactions.
@@ -45,6 +46,7 @@ const Upload = () => {
     const { t } = useTranslation();
 
     const categories = useSelector(getCategoryResponse);
+    const cards = useSelector(getCardResponse);
     const currencies = useSelector(getUserCurrencies);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -81,6 +83,7 @@ const Upload = () => {
                                 deleted: 0,
                                 tecTempId: uuid(),
                                 currency: currencies[0],
+                                card: cards[0].id,
                             }));
                             dispatch(writeHeaders(headers));
                             dispatch(tecWriteTransactions(withPresets));
