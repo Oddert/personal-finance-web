@@ -83,7 +83,7 @@ const Upload = () => {
                                 deleted: 0,
                                 tecTempId: uuid(),
                                 currency: currencies[0],
-                                card: cards?.[0]?.id,
+                                card: cards[0]?.id,
                             }));
                             dispatch(writeHeaders(headers));
                             dispatch(tecWriteTransactions(withPresets));
@@ -96,7 +96,7 @@ const Upload = () => {
                 setModalOpen(true);
             }
         },
-        [categories, currencies, reduxDispatch],
+        [cards, categories, currencies, reduxDispatch],
     );
 
     useEffect(() => {

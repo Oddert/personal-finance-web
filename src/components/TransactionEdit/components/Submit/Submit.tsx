@@ -3,7 +3,7 @@
 import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Button, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -12,7 +12,10 @@ import type { IProps } from './Submit.types';
 import type { ICategory } from '../../../../types/Category.d';
 import type { ITransaction } from '../../../../types/Transaction.d';
 
-import { TransactionEditContext } from '../../../../contexts/transactionEditContext';
+import {
+    TransactionEditContext,
+    toggleCloseModal,
+} from '../../../../contexts/transactionEditContext';
 import {
     useAppDispatch,
     useAppSelector,
@@ -42,6 +45,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
     const appDispatch = useAppDispatch();
     const {
         state: { columnMap, mode, transactions },
+        dispatch: localDispatch,
     } = useContext(TransactionEditContext);
 
     const activeCardId = useAppSelector(getActiveCardId);
@@ -158,24 +162,37 @@ const Submit: FC<IProps> = ({ onClose }) => {
     };
 
     return (
-        <Button
-            color='primary'
-            disabled={loading}
-            onClick={handleClick}
+        <Box
             sx={{
-                margin: '12px 0 12px auto',
-                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                margin: '12px 0',
+                gridGap: 24,
             }}
-            variant='contained'
         >
-            {loading ? (
-                <CircularProgress />
-            ) : mode === 'upload' ? (
-                t('buttons.Submit')
-            ) : (
-                t('buttons.Save')
-            )}
-        </Button>
+            <Button
+                onClick={() => {
+                    localDispatch(toggleCloseModal(true));
+                }}
+            >
+                {t('buttons.Cancel')}
+            </Button>
+            <Button
+                color='primary'
+                disabled={loading}
+                onClick={handleClick}
+                variant='contained'
+            >
+                {loading ? (
+                    <CircularProgress />
+                ) : mode === 'upload' ? (
+                    t('buttons.Submit')
+                ) : (
+                    t('buttons.Save')
+                )}
+            </Button>
+        </Box>
     );
 };
 

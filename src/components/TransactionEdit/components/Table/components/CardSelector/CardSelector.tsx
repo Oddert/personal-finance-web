@@ -20,7 +20,7 @@ const CardSelector: FC<IProps> = ({ transaction }) => {
 
     const value = useMemo(() => {
         return cards.find((card) => card.id === transaction.card);
-    }, [cards]);
+    }, [cards, transaction.card]);
 
     return (
         <TableCell>

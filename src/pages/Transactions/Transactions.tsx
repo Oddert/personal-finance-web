@@ -47,7 +47,7 @@ const Transactions = () => {
                     onChange={handleChange}
                     options={[
                         { label: 'Upload', value: 'upload' },
-                        { label: 'Edit', value: 'edit' },
+                        { label: 'Explore & Edit', value: 'edit' },
                     ]}
                     panelPrefix='upload_edit'
                     tab={tab}

@@ -15,6 +15,7 @@ export type ITECTransaction = Record<string, string | number | null>;
 
 export interface TransactionEditState {
     columnMap: Record<string, string>;
+    closeModalOpen: boolean;
     headers: string[];
     match?: string;
     sideBarOpen: boolean;
@@ -35,6 +36,7 @@ const TransactionEditActionTypes = {
     setLoading: 'setLoading',
     tecWriteTransactions: 'tecWriteTransactions',
     toggleDeleted: 'toggleDeleted',
+    toggleCloseModal: 'toggleCloseModal',
     toggleSideBarOpen: 'toggleSideBarOpen',
     uncheckAll: 'uncheckAll',
     unDeleteAll: 'unDeleteAll',
@@ -54,6 +56,7 @@ export const transactionEditInitialState: TransactionEditState = {
         ballance: 'ballance',
         currency: 'currency',
     },
+    closeModalOpen: false,
     loading: false,
     headers: [],
     mode: 'upload',
@@ -379,6 +382,14 @@ export const createTECReducer = (uploadMode = false) => {
                         },
                         true,
                     ];
+                case TransactionEditActionTypes.toggleCloseModal:
+                    return [
+                        {
+                            ...state,
+                            closeModalOpen: Boolean(action?.payload?.open),
+                        },
+                        false,
+                    ];
                 default:
                     return [state, false];
             }
@@ -440,6 +451,11 @@ export const setMode = (mode: TransactionEditState['mode']) => ({
 export const toggleDeleted = (uid: string) => ({
     type: TransactionEditActionTypes.toggleDeleted,
     payload: { uid },
+});
+
+export const toggleCloseModal = (open: boolean) => ({
+    type: TransactionEditActionTypes.toggleCloseModal,
+    payload: { open },
 });
 
 export const toggleSideBar = (

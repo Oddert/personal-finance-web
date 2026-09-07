@@ -12,10 +12,14 @@ import {
 
 import type { IProps } from './TransactionEdit.types';
 
-import { TransactionEditContext } from '../../contexts/transactionEditContext';
+import {
+    TransactionEditContext,
+    toggleCloseModal,
+} from '../../contexts/transactionEditContext';
 
 import CardSelection from './components/CardSelection';
 import CategoryQuickEdit from './components/CategoryQuickEdit';
+import CloseModal from './components/CloseModal';
 import ColumnMapping from './components/ColumnMapping';
 import Submit from './components/Submit';
 import Table from './components/Table';
@@ -36,6 +40,7 @@ const TransactionEdit: FC<IProps> = ({
 }) => {
     const {
         state: { loading, mode },
+        dispatch,
     } = useContext(TransactionEditContext);
 
     const { t } = useTranslation();
@@ -45,7 +50,9 @@ const TransactionEdit: FC<IProps> = ({
             fullWidth
             maxWidth='xl'
             open={open}
-            onClose={onClose}
+            onClose={() => {
+                dispatch(toggleCloseModal(true));
+            }}
             sx={{ overflowY: 'auto' }}
         >
             <DialogTitle variant='h2'>
@@ -66,6 +73,7 @@ const TransactionEdit: FC<IProps> = ({
                         <Submit onClose={onClose} />
                         <Table />
                         <Submit onClose={onClose} />
+                        <CloseModal onClose={onClose} />
                     </Fragment>
                 )}
                 <CategoryQuickEdit />
