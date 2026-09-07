@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import type { IUser } from '../types/Auth.types';
 import type { IBudget } from '../types/Budget.types';
 import type { ICard } from '../types/Card.types';
@@ -432,7 +434,7 @@ const APIService = Object.freeze({
     createSingleCard: async (card: ICard) => {
         const response: IStandardResponse<{ card: ICard }> = await request.post(
             `/card`,
-            card,
+            { ...card, expires: dayjs(card.expires).toISOString() },
         );
         return response;
     },
@@ -488,7 +490,7 @@ const APIService = Object.freeze({
     updateSingleCard: async (card: ICard, cardId: string) => {
         const response: IStandardResponse<{ card: ICard }> = await request.put(
             `/card/${cardId}`,
-            card,
+            { ...card, expires: dayjs(card.expires).toISOString() },
         );
         return response;
     },

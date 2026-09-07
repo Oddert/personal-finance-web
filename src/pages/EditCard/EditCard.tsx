@@ -10,6 +10,7 @@ import {
     Box,
     Button,
     CircularProgress,
+    FormControlLabel,
     MenuItem,
     Paper,
     Select,
@@ -17,6 +18,10 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+
+import dayjs from 'dayjs';
+import LocalisedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './EditCard.types';
 import type { ICard, ICardTypes } from '../../types/Card.types';
@@ -35,13 +40,14 @@ import APIService from '../../services/APIService';
 
 import DeleteCard from './components/DeleteCard';
 import EditImageIcon from './components/EditImageIcon';
+dayjs.extend(LocalisedFormat);
 
 /**
  * Creates a blank Budget Row.
  * @param id The temporary ID.
  * @returns An empty card row object.
  */
-const createEmptyBudget = (id: string): ICard => ({
+const createEmptyCard = (id: string): ICard => ({
     id,
     isDefault: false,
     cardName: '',
@@ -49,7 +55,7 @@ const createEmptyBudget = (id: string): ICard => ({
     bankName: '',
     sortCode: 0,
     cardNumber: 0,
-    expires: 0,
+    expires: dayjs().toISOString(),
     description: '',
     icon: '',
     coverImage: '',
@@ -70,7 +76,7 @@ const EditBudget: FC<IProps> = () => {
 
     const [loading, setLoading] = useState(true);
     const [isEdit, setIsEdit] = useState(false);
-    const [card, setCard] = useState<ICard>(createEmptyBudget('-1'));
+    const [card, setCard] = useState<ICard>(createEmptyCard('-1'));
 
     const location = useLocation();
     const params = useParams();
@@ -205,7 +211,7 @@ const EditBudget: FC<IProps> = () => {
                         sx={{
                             display: 'grid',
                             gridTemplateRows: '1fr 1fr',
-                            gridTemplateColumns: '1fr 1fr',
+                            gridTemplateColumns: '1fr 1fr 1fr',
                             gridGap: '32px',
                             aspectRatio: '8.56 / 5',
                             p: 4,
@@ -232,6 +238,7 @@ const EditBudget: FC<IProps> = () => {
                             }}
                             value={card.bankName}
                         />
+                        <Box />
                         <Select<ICardTypes>
                             onChange={(event) => {
                                 setCard({
@@ -286,6 +293,40 @@ const EditBudget: FC<IProps> = () => {
                             }}
                             type='number'
                             value={card.sortCode}
+                        />
+                        <FormControlLabel
+                            control={
+                                <DatePicker
+                                    label=''
+                                    name='startDate'
+                                    onChange={(value) => {
+                                        if (value) {
+                                            setCard((card) => ({
+                                                ...card,
+                                                expires: value.toISOString(),
+                                            }));
+                                        }
+                                    }}
+                                    showDaysOutsideCurrentMonth
+                                    slotProps={{
+                                        toolbar: {
+                                            toolbarFormat: 'ddd DD MMMM',
+                                            hidden: false,
+                                        },
+                                    }}
+                                    sx={{
+                                        borderRadius: '4px',
+                                    }}
+                                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                                    value={dayjs(card.expires ?? new Date())}
+                                />
+                            }
+                            label={t('Expires')}
+                            labelPlacement='top'
+                            sx={(theme) => ({
+                                alignItems: 'flex-start',
+                                color: theme.palette.common.white,
+                            })}
                         />
                     </Paper>
                     <Box

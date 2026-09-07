@@ -26,7 +26,9 @@ describe('components/CardSelector', () => {
             cardType: 'DEBIT',
             coverImage: '',
             description: 'Commodo ullamco esse sunt ad.',
-            expires: new Date().setFullYear(new Date().getFullYear() + 1),
+            expires: new Date(
+                new Date().setFullYear(new Date().getFullYear() + 1),
+            ).toISOString(),
             icon: '',
             sortCode: 123456,
         };
@@ -41,7 +43,9 @@ describe('components/CardSelector', () => {
             cardType: 'CREDIT',
             coverImage: '',
             description: 'Id officia magna irure ex eiusmod.',
-            expires: new Date().setFullYear(new Date().getFullYear() + 1),
+            expires: new Date(
+                new Date().setFullYear(new Date().getFullYear() + 1),
+            ).toISOString(),
             icon: '',
             sortCode: 123456,
         };
@@ -87,7 +91,9 @@ describe('components/CardSelector', () => {
             cardType: 'DEBIT',
             coverImage: '',
             description: 'Commodo ullamco esse sunt ad.',
-            expires: new Date().setFullYear(new Date().getFullYear() + 1),
+            expires: new Date(
+                new Date().setFullYear(new Date().getFullYear() + 1),
+            ).toISOString(),
             icon: '',
             sortCode: 123456,
         };
@@ -102,7 +108,9 @@ describe('components/CardSelector', () => {
             cardType: 'CREDIT',
             coverImage: '',
             description: 'Id officia magna irure ex eiusmod.',
-            expires: new Date().setFullYear(new Date().getFullYear() + 1),
+            expires: new Date(
+                new Date().setFullYear(new Date().getFullYear() + 1),
+            ).toISOString(),
             icon: '',
             sortCode: 123456,
         };
@@ -148,7 +156,9 @@ describe('components/CardSelector', () => {
             cardType: 'DEBIT',
             coverImage: '',
             description: 'Commodo ullamco esse sunt ad.',
-            expires: new Date().setFullYear(new Date().getFullYear() + 1),
+            expires: new Date(
+                new Date().setFullYear(new Date().getFullYear() + 1),
+            ).toISOString(),
             icon: '',
             sortCode: 123456,
         };
@@ -163,7 +173,9 @@ describe('components/CardSelector', () => {
             cardType: 'CREDIT',
             coverImage: '',
             description: 'Id officia magna irure ex eiusmod.',
-            expires: new Date().setFullYear(new Date().getFullYear() + 1),
+            expires: new Date(
+                new Date().setFullYear(new Date().getFullYear() + 1),
+            ).toISOString(),
             icon: '',
             sortCode: 123456,
         };

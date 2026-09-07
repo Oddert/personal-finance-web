@@ -21,7 +21,7 @@ export interface ICard {
     /** user-defined description of the card and its purpose. */
     description: string;
     /** ISO timestamp of the date of expiry. */
-    expires: number;
+    expires: string;
     /** Small card icon. */
     icon: string;
     /** Unique identifier. */
