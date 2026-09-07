@@ -47,7 +47,9 @@ const CardSelector: FC<IProps> = ({ refreshTransactions, sx }) => {
             getOptionLabel={(option) => option.cardName}
             onChange={handleChangeCard}
             options={cards}
-            renderInput={(props) => <TextField {...props} />}
+            renderInput={(props) => (
+                <TextField {...props} sx={{ minWidth: '250px' }} />
+            )}
             sx={{
                 width: '100%',
                 '& .MuiInputBase-root': {

@@ -1,0 +1,3 @@
+- delete matcher from quick edit does not remove
+- create category from dropdown modal
+- 

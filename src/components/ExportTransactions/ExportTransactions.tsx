@@ -1,6 +1,7 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { CloudDownload as IconDownload } from '@mui/icons-material';
 import {
     Box,
     Button,
@@ -142,8 +143,17 @@ const ExportTransactions: FC<IProps> = ({
         setOpen(false);
     };
 
-    if (open) {
-        return (
+    // TODO: i18next
+    return (
+        <Fragment>
+            <Button
+                endIcon={<IconDownload />}
+                onClick={() => {
+                    setOpen(true);
+                }}
+            >
+                Export Data
+            </Button>
             <Dialog
                 onClose={() => {
                     setOpen(false);
@@ -174,7 +184,7 @@ const ExportTransactions: FC<IProps> = ({
                                 borderRadius: '4px',
                             }}
                             value={startDate}
-                            views={['month', 'year']}
+                            views={['year', 'month', 'day']}
                         />
                         <DatePicker
                             label={t('End date')}
@@ -202,7 +212,7 @@ const ExportTransactions: FC<IProps> = ({
                                 borderRadius: '4px',
                             }}
                             value={endDate}
-                            views={['month', 'year']}
+                            views={['year', 'month', 'day']}
                         />
                     </Box>
                     <Typography>
@@ -233,17 +243,7 @@ const ExportTransactions: FC<IProps> = ({
                     </Button>
                 </DialogActions>
             </Dialog>
-        );
-    }
-
-    return (
-        <Button
-            onClick={() => {
-                setOpen(true);
-            }}
-        >
-            Export
-        </Button>
+        </Fragment>
     );
 };
 

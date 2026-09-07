@@ -2,8 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Refresh as IconRefresh } from '@mui/icons-material';
-import { Box, Button, FormControlLabel, Typography } from '@mui/material';
+import { Box, Button, FormControlLabel } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import dayjs, { Dayjs } from 'dayjs';
@@ -72,18 +71,12 @@ const RequestControls = () => {
 
     return (
         <Box>
-            <Typography
-                sx={{ textAlign: 'left', margin: '12px 16px' }}
-                variant='h3'
-            >
-                {t('Load data')}
-            </Typography>
             <Box
                 sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
+                    alignItems: 'stretch',
+                    justifyContent: 'space-between',
                 }}
             >
                 <FormControlLabel
@@ -151,9 +144,12 @@ const RequestControls = () => {
                     onClick={handleSubmit}
                     size='large'
                     sx={{ px: 2, alignSelf: 'flex-end' }}
+                    variant='contained'
                 >
-                    {t('buttons.Refresh')} <IconRefresh />
+                    {t('Load data')}
                 </Button>
+            </Box>
+            <Box sx={{ my: 2 }}>
                 <ExportTransactions
                     defaultEndDate={endDate}
                     defaultStartDate={startDate}
