@@ -21,7 +21,7 @@ import { setActiveCardWithTransactions } from '../../redux/thunks/cardThunks';
  * @subcategory Card Selector
  * @param props.refreshTransactions If true, transactions will als be re-requested on change.
  */
-const CardSelector: FC<IProps> = ({ refreshTransactions, sx }) => {
+const CardSelector: FC<IProps> = ({ disabled, refreshTransactions, sx }) => {
     const dispatch = useAppDispatch();
 
     const cards = useAppSelector(getCardResponse);
@@ -43,6 +43,7 @@ const CardSelector: FC<IProps> = ({ refreshTransactions, sx }) => {
 
     return (
         <Autocomplete
+            disabled={disabled}
             getOptionKey={(option) => option.id}
             getOptionLabel={(option) => option.cardName}
             onChange={handleChangeCard}

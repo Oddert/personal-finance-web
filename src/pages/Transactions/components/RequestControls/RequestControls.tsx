@@ -2,23 +2,32 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, FormControlLabel } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    TextField,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import dayjs, { Dayjs } from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import CardSelector from '../../../../components/CardSelector';
+import type { ICard } from '../../../../types/Card.types';
+
 import ExportTransactions from '../../../../components/ExportTransactions';
 import {
     useAppDispatch,
     useAppSelector,
 } from '../../../../hooks/ReduxHookWrappers';
+import { getCardResponse } from '../../../../redux/selectors/cardSelectors';
 import {
     getTransactionsEndDate,
     getTransactionsStartDate,
 } from '../../../../redux/selectors/transactionsSelectors';
-import { conditionallyRefreshTransactions } from '../../../../redux/thunks/transactionThunks';
+import { refreshTransactions } from '../../../../redux/thunks/transactionThunks';
 
 dayjs.extend(localizedFormat);
 
@@ -35,9 +44,12 @@ const RequestControls = () => {
 
     const [start, setStart] = useState<Dayjs | null>(dayjs().startOf('month'));
     const [end, setEnd] = useState<Dayjs | null>(dayjs().endOf('month'));
+    const [allCards, setAllCards] = useState(true);
+    const [activeCards, setActiveCards] = useState<ICard[]>([]);
 
     const startDate = useAppSelector(getTransactionsStartDate);
     const endDate = useAppSelector(getTransactionsEndDate);
+    const cards = useAppSelector(getCardResponse);
 
     const handleChangeStart = useCallback((nextValue: Dayjs | null) => {
         setStart(nextValue);
@@ -49,15 +61,9 @@ const RequestControls = () => {
 
     const handleSubmit = useCallback(() => {
         if (start && end) {
-            dispatch(
-                conditionallyRefreshTransactions(
-                    start.valueOf(),
-                    end.valueOf(),
-                    true,
-                ),
-            );
+            dispatch(refreshTransactions(allCards ? [] : [], start, end));
         }
-    }, [dispatch, end, start]);
+    }, [allCards, dispatch, end, start]);
 
     useEffect(() => {
         const date = dayjs(startDate);
@@ -103,6 +109,7 @@ const RequestControls = () => {
                     sx={(theme) => ({
                         alignItems: 'flex-start',
                         color: theme.palette.common.white,
+                        mx: 0,
                     })}
                 />
                 <FormControlLabel
@@ -129,15 +136,46 @@ const RequestControls = () => {
                     sx={(theme) => ({
                         alignItems: 'flex-start',
                         color: theme.palette.common.white,
+                        mx: 0,
                     })}
                 />
                 <FormControlLabel
-                    control={<CardSelector />}
+                    control={
+                        <Checkbox
+                            checked={allCards}
+                            onChange={(_, checked) => {
+                                setAllCards(checked);
+                            }}
+                        />
+                    }
+                    label='All cards'
+                    labelPlacement='top'
+                    sx={{
+                        mx: 0,
+                    }}
+                />
+                <FormControlLabel
+                    control={
+                        <Autocomplete
+                            disabled={allCards}
+                            fullWidth
+                            getOptionKey={(opt) => opt.id}
+                            getOptionLabel={(opt) => opt.cardName}
+                            multiple
+                            onChange={(_, value) => {
+                                setActiveCards(value);
+                            }}
+                            options={cards}
+                            renderInput={(props) => <TextField {...props} />}
+                            value={activeCards}
+                        />
+                    }
                     label={t('literals.Card')}
                     labelPlacement='top'
                     sx={(theme) => ({
                         alignItems: 'flex-start',
                         color: theme.palette.common.white,
+                        mx: 0,
                     })}
                 />
                 <Button
