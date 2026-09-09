@@ -36,7 +36,7 @@ const initialState: TransactionState = {
         byDate: {},
         byCategory: {},
     },
-    startDate: dayjs().subtract(3, 'months').valueOf(),
+    startDate: dayjs().subtract(3, 'months').startOf('month').valueOf(),
     startDateReadable: null,
     refreshed: null,
     response: [],
