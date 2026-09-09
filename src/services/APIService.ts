@@ -14,7 +14,6 @@ import type {
 } from '../types/Transaction.d';
 
 import request from '../common/request';
-import { looseDateParser } from '../utils/commonUtils';
 
 dayjs.extend(LocalizedFormat);
 
@@ -171,16 +170,19 @@ const APIService = Object.freeze({
     /**
      * Creates multiple Transactions at once.
      * @param transactions The list of partial Transactions to create.
+     * @param dateFormat The format code to use interpreting the transaction date column.
      * @returns The list of created Transactions.
      */
-    createManyTransactions: async (transactions: Partial<ITransaction>[]) => {
+    createManyTransactions: async (
+        transactions: Partial<ITransaction>[],
+        dateFormat: string,
+    ) => {
         const response: IStandardResponse<{
             createdTransactions: ITransaction[];
         }> = await request.post(`/transaction/create-many`, {
             transactions: transactions.map((transaction) => ({
                 ...transaction,
-                // @ts-expect-error types to be updated
-                date: looseDateParser(transaction.date),
+                date: dayjs.utc(transaction.date, dateFormat, true),
             })),
         });
         return response;
@@ -271,12 +273,21 @@ const APIService = Object.freeze({
     /**
      * Updates multiple Transactions at once.
      * @param transactions The list of Transactions to update.
+     * @param dateFormat The format code to use interpreting the transaction date column.
      * @returns The list of updated Transactions.
      */
-    updateManyTransactions: async (transactions: Partial<ITransaction>[]) => {
+    updateManyTransactions: async (
+        transactions: Partial<ITransaction>[],
+        dateFormat: string,
+    ) => {
         const response: IStandardResponse<{
             updatedTransactions: ITransaction[];
-        }> = await request.put(`/transaction/update-many`, { transactions });
+        }> = await request.put(`/transaction/update-many`, {
+            transactions: transactions.map((transaction) => ({
+                ...transaction,
+                date: dayjs.utc(transaction.date, dateFormat, true),
+            })),
+        });
         return response;
     },
 

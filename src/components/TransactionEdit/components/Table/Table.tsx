@@ -46,7 +46,7 @@ const Table = () => {
 
     const {
         dispatch,
-        state: { columnMap, transactions },
+        state: { transactions },
     } = useContext(TransactionEditContext);
 
     const currencies = useAppSelector(getUserCurrencies);
@@ -68,18 +68,10 @@ const Table = () => {
         return defaultColumns.map((header) => {
             return {
                 ...header,
-                accessorKey: [
-                    'assignedCategory',
-                    'selected',
-                    'deleted',
-                    'currency',
-                    'card',
-                ].includes(header.accessorKey)
-                    ? header.accessorKey
-                    : columnMap[header.accessorKey],
+                accessorKey: header.accessorKey,
             };
         });
-    }, [columnMap]);
+    }, []);
 
     const data = useMemo(() => {
         const stageUncategorised = filterUncategorised

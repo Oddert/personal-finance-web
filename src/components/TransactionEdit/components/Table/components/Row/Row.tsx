@@ -2,6 +2,8 @@ import { type FC, useContext } from 'react';
 
 import { TableCell, TableRow } from '@mui/material';
 
+import dayjs from 'dayjs';
+
 import type { IProps } from './Row.types';
 
 import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
@@ -24,7 +26,7 @@ import TransactionDescription from '../TransactionDescription';
  */
 const Row: FC<IProps> = ({ columns, idx, transaction }) => {
     const {
-        state: { columnMap },
+        state: { columnMap, dateFormat },
     } = useContext(TransactionEditContext);
 
     const switchComponents = (
@@ -36,14 +38,14 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
     ) => {
         const key = `${String(idx)}_${String(columnIdx)}`;
         switch (column.accessorKey) {
-            case columnMap.description:
+            case 'description':
                 return (
                     <TransactionDescription
                         key={key}
                         transaction={transaction}
                     />
                 );
-            case columnMap.debit:
+            case 'debit':
                 return (
                     <EditableNumber
                         key={key}
@@ -51,7 +53,7 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                         transaction={transaction}
                     />
                 );
-            case columnMap.credit:
+            case 'credit':
                 return (
                     <EditableNumber
                         key={key}
@@ -59,7 +61,7 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                         transaction={transaction}
                     />
                 );
-            case columnMap.ballance:
+            case 'ballance':
                 return (
                     <EditableNumber
                         key={key}
@@ -77,6 +79,14 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                 return <CurrencySelector key={key} transaction={transaction} />;
             case 'card':
                 return <CardSelector key={key} transaction={transaction} />;
+            case 'date':
+                return (
+                    <TableCell key={key}>
+                        {dayjs
+                            .utc(transaction[columnMap.date], dateFormat, true)
+                            .toISOString()}
+                    </TableCell>
+                );
             default:
                 return (
                     <TableCell key={key}>

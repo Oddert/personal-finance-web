@@ -44,7 +44,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
     const { t } = useTranslation();
     const appDispatch = useAppDispatch();
     const {
-        state: { columnMap, mode, transactions },
+        state: { columnMap, dateFormat, mode, transactions },
         dispatch: localDispatch,
     } = useContext(TransactionEditContext);
 
@@ -132,8 +132,14 @@ const Submit: FC<IProps> = ({ onClose }) => {
         const request = async () => {
             const response =
                 mode === 'upload'
-                    ? await APIService.createManyTransactions(stagedTemp)
-                    : await APIService.updateManyTransactions(stagedTemp);
+                    ? await APIService.createManyTransactions(
+                          stagedTemp,
+                          dateFormat,
+                      )
+                    : await APIService.updateManyTransactions(
+                          stagedTemp,
+                          dateFormat,
+                      );
             setLoading(false);
             if (response.status === 201) {
                 onClose();
