@@ -28,6 +28,8 @@ export interface TransactionEditState {
 const TransactionEditActionTypes = {
     addRow: 'addRow',
     changeCard: 'changeCard',
+    changeCardAll: 'changeCardAll',
+    changeCurrencyAll: 'changeCurrencyAll',
     changeDateFormat: 'changeDateFormat',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
@@ -439,6 +441,32 @@ export const createTECReducer = (uploadMode = false) => {
                         },
                         true,
                     ];
+                case TransactionEditActionTypes.changeCardAll:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => ({
+                                    ...transaction,
+                                    cardId: String(action.payload.cardId),
+                                }),
+                            ),
+                        },
+                        true,
+                    ];
+                case TransactionEditActionTypes.changeCurrencyAll:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) => ({
+                                    ...transaction,
+                                    currency: String(action.payload.currency),
+                                }),
+                            ),
+                        },
+                        true,
+                    ];
                 default:
                     return [state, false];
             }
@@ -460,6 +488,16 @@ export const addRow = (currency: string) => ({
 export const changeCard = (uid: string, cardId: string) => ({
     type: TransactionEditActionTypes.changeCard,
     payload: { cardId, uid },
+});
+
+export const changeCardAll = (cardId: string) => ({
+    type: TransactionEditActionTypes.changeCardAll,
+    payload: { cardId },
+});
+
+export const changeCurrencyAll = (currency: string) => ({
+    type: TransactionEditActionTypes.changeCurrencyAll,
+    payload: { currency },
 });
 
 export const changeDateFormat = (format: string) => ({

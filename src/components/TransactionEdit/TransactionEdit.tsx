@@ -17,7 +17,7 @@ import {
     toggleCloseModal,
 } from '../../contexts/transactionEditContext';
 
-import CardSelection from './components/CardSelection';
+import BulkActions from './components/BulkActions';
 import CategoryQuickEdit from './components/CategoryQuickEdit';
 import CloseModal from './components/CloseModal';
 import ColumnMapping from './components/ColumnMapping';
@@ -69,7 +69,7 @@ const TransactionEdit: FC<IProps> = ({
                 ) : (
                     <Fragment>
                         {showMapping ? <ColumnMapping /> : null}
-                        <CardSelection />
+                        <BulkActions />
                         <Submit onClose={onClose} />
                         <Table />
                         <Submit onClose={onClose} />

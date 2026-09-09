@@ -19,14 +19,11 @@ import {
 import {
     TransactionEditContext,
     addRow,
-    checkAll,
     defaultColumns,
-    deleteAll,
-    unDeleteAll,
-    uncheckAll,
 } from '../../../../contexts/transactionEditContext';
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
 import { getUserCurrencies } from '../../../../redux/selectors/profileSelectors';
+import BulkActions from '../BulkActions';
 
 import Row from './components/Row';
 
@@ -50,19 +47,6 @@ const Table = () => {
     } = useContext(TransactionEditContext);
 
     const currencies = useAppSelector(getUserCurrencies);
-
-    const handleClickCheckAll = () => {
-        dispatch(checkAll());
-    };
-    const handleClickUnCheckAll = () => {
-        dispatch(uncheckAll());
-    };
-    const handleClickDeleteAll = () => {
-        dispatch(deleteAll());
-    };
-    const handleClickUnDeleteAll = () => {
-        dispatch(unDeleteAll());
-    };
 
     const columns: { accessorKey: string; header: string }[] = useMemo(() => {
         return defaultColumns.map((header) => {
@@ -137,7 +121,10 @@ const Table = () => {
                     label={t('Transaction.filterUnchecked')}
                 />
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+            <Box
+                sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}
+            >
+                <BulkActions />
                 <Button
                     onClick={() => {
                         dispatch(addRow(currencies[0] || ''));
@@ -146,24 +133,6 @@ const Table = () => {
                 >
                     <IconAdd /> {t('buttons.newRow')}
                 </Button>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Box>
-                    <Button onClick={handleClickCheckAll}>
-                        {t('buttons.checkAll')}
-                    </Button>
-                    <Button onClick={handleClickUnCheckAll}>
-                        {t('buttons.uncheckAll')}
-                    </Button>
-                </Box>
-                <Box>
-                    <Button onClick={handleClickDeleteAll}>
-                        {t('buttons.deleteAll')}
-                    </Button>
-                    <Button onClick={handleClickUnDeleteAll}>
-                        {t('buttons.unDeleteAll')}
-                    </Button>
-                </Box>
             </Box>
             <TablePagination
                 component='div'
