@@ -19,6 +19,33 @@ export const DateFormat: FC<IProps> = ({
     const { t } = useTranslation();
 
     const [date, setDate] = useState(dayjs());
+    const [formatError, setFormatError] = useState<string>('');
+
+    const validateDateFormat = (format: string): boolean => {
+        if (!format) {
+            setFormatError('');
+            return true;
+        }
+        try {
+            // Try to format a date with the provided format
+            const testDate = dayjs('2024-01-15');
+            const formatted = testDate.format(format);
+            // Check if the result is a non-empty string
+            if (!formatted || formatted.includes('undefined')) {
+                setFormatError(
+                    t('Transaction.invalidDateFormat') || 'Invalid date format',
+                );
+                return false;
+            }
+            setFormatError('');
+            return true;
+        } catch {
+            setFormatError(
+                t('Transaction.invalidDateFormat') || 'Invalid date format',
+            );
+            return false;
+        }
+    };
 
     return (
         <Box sx={{ gridColumn: '1 / -1' }}>
@@ -40,9 +67,12 @@ export const DateFormat: FC<IProps> = ({
                 <FormControlLabel
                     control={
                         <TextField
+                            error={!!formatError}
                             fullWidth
+                            helperText={formatError}
                             onChange={(event) => {
                                 setLocalDateFormat(event.target.value);
+                                validateDateFormat(event.target.value);
                             }}
                             placeholder='DD/MM/YYYY'
                             value={localDateFormat}
