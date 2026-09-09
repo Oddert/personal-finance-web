@@ -20,10 +20,14 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { json2csv } from 'json-2-csv';
 
 import type { IProps } from './ExportTransactions.types';
+import type { ICard } from '../../types/Card.types';
 import type { ICategory } from '../../types/Category';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-import { getActiveCardId } from '../../redux/selectors/cardSelectors';
+import {
+    getActiveCardId,
+    getCardResponse,
+} from '../../redux/selectors/cardSelectors';
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { intakeError } from '../../redux/thunks/errorThunks';
 import APIService from '../../services/APIService';
@@ -67,6 +71,7 @@ const ExportTransactions: FC<IProps> = ({
     const [dlFormat, setDlFormat] = useState('csv');
 
     const activeCardId = useAppSelector(getActiveCardId);
+    const cards = useAppSelector(getCardResponse);
     const categoriesById = useAppSelector(getCategoryOrderedDataById);
 
     useEffect(() => {
@@ -94,6 +99,23 @@ const ExportTransactions: FC<IProps> = ({
     }, [activeCardId, dispatch, endDate, startDate]);
 
     const handleClickExport = () => {
+        interface IDownloadRow {
+            id: string;
+            currency: string | null;
+            cardId: string;
+            cardName: string | null;
+            userId: string;
+            date: string;
+            transactionType: string;
+            description: string;
+            debit: number;
+            credit: number;
+            ballance: number;
+            createdOn: string;
+            updatedOn: string;
+            categoryId: string | null;
+            categoryName: string | null;
+        }
         const getTransactions = async () => {
             try {
                 const res = await APIService.getAllTransactionsWithinRange(
@@ -101,22 +123,44 @@ const ExportTransactions: FC<IProps> = ({
                     endDate.valueOf(),
                     activeCardId,
                 );
-                const withCategories = (res.payload?.transactions ?? []).map(
-                    (transaction) => {
-                        if (transaction.categoryId) {
-                            const foundCategory: ICategory | undefined =
-                                categoriesById[transaction.categoryId];
-                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                            if (foundCategory) {
-                                return {
-                                    ...transaction,
-                                    categoryName: foundCategory.label,
-                                };
-                            }
+                const withMixins: IDownloadRow[] = (
+                    res.payload?.transactions ?? []
+                ).map((transaction) => {
+                    const row: IDownloadRow = {
+                        id: transaction.id,
+                        currency: transaction.currency,
+                        cardId: transaction.cardId,
+                        cardName: null,
+                        userId: transaction.userId,
+                        date: transaction.date,
+                        transactionType: transaction.transactionType,
+                        description: transaction.description,
+                        debit: transaction.debit,
+                        credit: transaction.credit,
+                        ballance: transaction.ballance,
+                        createdOn: transaction.createdOn,
+                        updatedOn: transaction.updatedOn,
+                        categoryId: transaction.categoryId,
+                        categoryName: null,
+                    };
+                    if (transaction.categoryId) {
+                        const foundCategory: ICategory | undefined =
+                            categoriesById[transaction.categoryId];
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                        if (foundCategory) {
+                            row.categoryName = foundCategory.label;
                         }
-                        return transaction;
-                    },
-                );
+                    }
+
+                    const foundCard: ICard | undefined = cards.find(
+                        (card) => card.id === row.cardId,
+                    );
+                    if (foundCard) {
+                        row.cardName = foundCard.cardName;
+                    }
+
+                    return row;
+                });
 
                 const dlName = createStandardTransactionDlName(
                     startDate,
@@ -124,13 +168,13 @@ const ExportTransactions: FC<IProps> = ({
                 );
 
                 if (dlFormat === 'csv') {
-                    const converted = json2csv(withCategories);
+                    const converted = json2csv(withMixins);
                     downloadCsv(converted, dlName);
                 } else if (dlFormat === 'txt') {
-                    const converted = json2csv(withCategories);
+                    const converted = json2csv(withMixins);
                     downloadCsvNoSuffix(converted, `${dlName}.txt`);
                 } else {
-                    downloadJson(withCategories, dlName);
+                    downloadJson(withMixins, dlName);
                 }
             } catch (error) {
                 dispatch(intakeError(error));
