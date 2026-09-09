@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import utc from 'dayjs/plugin/utc';
 
+dayjs.extend(customParseFormat);
 dayjs.extend(LocalizedFormat);
+dayjs.extend(utc);
 
 /**
  * Formats an integer value to a human-readable format with commas separating 100 decimal points.
@@ -153,8 +157,10 @@ export const looseDateParser = (date: string) => {
         'YYYY-MMMM-D',
         'YY-MMMM-D',
     ];
-    const parseAttempt = dayjs(date, formats);
-    if (parseAttempt.isValid()) {
+    const parseAttempt = formats
+        .map((format) => dayjs.utc(date, format, true))
+        .find((attempt) => attempt.isValid());
+    if (parseAttempt) {
         return parseAttempt.toISOString();
     }
     console.warn('Unable to interpret date:', date);
