@@ -16,6 +16,7 @@ export type ITECTransaction = Record<string, string | number | null>;
 export interface TransactionEditState {
     columnMap: Record<string, string>;
     closeModalOpen: boolean;
+    dateFormat: string;
     headers: string[];
     match?: string;
     sideBarOpen: boolean;
@@ -27,6 +28,7 @@ export interface TransactionEditState {
 const TransactionEditActionTypes = {
     addRow: 'addRow',
     changeCard: 'changeCard',
+    changeDateFormat: 'changeDateFormat',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
     deleteAll: 'deleteAll',
@@ -57,6 +59,7 @@ export const transactionEditInitialState: TransactionEditState = {
         currency: 'currency',
     },
     closeModalOpen: false,
+    dateFormat: 'DD/MM/YYYY',
     loading: false,
     headers: [],
     mode: 'upload',
@@ -124,6 +127,42 @@ export const defaultColumns: IColumnDef[] = [
     {
         header: 'Delete',
         accessorKey: 'deleted',
+    },
+];
+
+// TODO: remove react-table logic once new logic is confirmed stable and better.
+export const columnMappingCols: IColumnDef[] = [
+    {
+        header: 'Date',
+        accessorKey: 'date',
+    },
+    {
+        header: 'Description',
+        accessorKey: 'description',
+    },
+    {
+        header: 'Out (debit)',
+        accessorKey: 'debit',
+    },
+    {
+        header: 'In (credit)',
+        accessorKey: 'credit',
+    },
+    {
+        header: 'Ballance',
+        accessorKey: 'ballance',
+    },
+    {
+        header: 'Currency',
+        accessorKey: 'currency',
+    },
+    {
+        header: 'Card',
+        accessorKey: 'card',
+    },
+    {
+        header: 'Category',
+        accessorKey: 'assignedCategory',
     },
 ];
 
@@ -390,6 +429,16 @@ export const createTECReducer = (uploadMode = false) => {
                         },
                         false,
                     ];
+                case TransactionEditActionTypes.changeDateFormat:
+                    return [
+                        {
+                            ...state,
+                            dateFormat: String(
+                                action?.payload?.format ?? 'DD/MM/YYY',
+                            ),
+                        },
+                        true,
+                    ];
                 default:
                     return [state, false];
             }
@@ -411,6 +460,11 @@ export const addRow = (currency: string) => ({
 export const changeCard = (uid: string, cardId: string) => ({
     type: TransactionEditActionTypes.changeCard,
     payload: { cardId, uid },
+});
+
+export const changeDateFormat = (format: string) => ({
+    type: TransactionEditActionTypes.changeDateFormat,
+    payload: { format },
 });
 
 export const changeSingleSelected = (uid: string, selected: boolean) => ({

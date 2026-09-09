@@ -1,23 +1,17 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import {
-    Box,
-    Button,
-    Dialog,
-    MenuItem,
-    Paper,
-    Select,
-    Typography,
-} from '@mui/material';
-import type { SelectChangeEvent } from '@mui/material';
+import { Box, Button, Dialog, Paper } from '@mui/material';
 
 import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../../constants/appConstants';
 import {
     TransactionEditContext,
-    defaultColumns,
+    changeDateFormat,
     setColumnMap,
 } from '../../../../contexts/transactionEditContext';
+
+import ColumnMenu from './components/ColumnMenu';
+import DateFormat from './components/DateFormat';
 
 /**
  * Allows the user to change the mapping between the uploaded CSV columns and the data columns used by the application.
@@ -30,25 +24,20 @@ const ColumnMapping = () => {
 
     const {
         dispatch,
-        state: { columnMap, headers },
+        state: { columnMap, dateFormat },
     } = useContext(TransactionEditContext);
 
     const [open, setOpen] = useState(false);
     const [localColumnMap, setLocalColumnMap] = useState<
         Record<string, string>
     >({});
+    const [localDateFormat, setLocalDateFormat] = useState<string>('');
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setLocalColumnMap(columnMap);
-    }, [columnMap]);
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setLocalColumnMap({
-            ...localColumnMap,
-            [event.target.name]: event.target.value,
-        });
-    };
+        setLocalDateFormat(dateFormat);
+    }, [columnMap, dateFormat]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -56,21 +45,28 @@ const ColumnMapping = () => {
 
     const handleClickCancel = useCallback(() => {
         setLocalColumnMap(columnMap);
+        setLocalDateFormat(dateFormat);
         setOpen(false);
-    }, [columnMap]);
+    }, [columnMap, dateFormat]);
 
     const handleClickSave = useCallback(() => {
         dispatch(setColumnMap(localColumnMap));
+        dispatch(changeDateFormat(localDateFormat));
         setOpen(false);
         localStorage.setItem(
             PERSONAL_FINANCE_CSV_MAPPING,
             JSON.stringify(localColumnMap),
         );
-    }, [dispatch, localColumnMap]);
+    }, [dispatch, localColumnMap, localDateFormat]);
 
     return (
         <Fragment>
-            <Dialog open={open} onClose={handleClickCancel}>
+            <Dialog
+                fullWidth
+                maxWidth='md'
+                open={open}
+                onClose={handleClickCancel}
+            >
                 <Paper
                     sx={{
                         padding: '24px 48px',
@@ -81,47 +77,14 @@ const ColumnMapping = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography
-                        sx={{ gridColumn: '1 / span 2', marginBottom: '24px' }}
-                        variant='h4'
-                    >
-                        {t('Transaction.mapCSVHeadersTitle')}
-                    </Typography>
-                    <Typography
-                        sx={{
-                            gridColumn: '1 / span 2',
-                            marginBottom: '24px',
-                        }}
-                        variant='subtitle1'
-                    >
-                        {t('Transaction.mapCSVHeadersDesc')}
-                    </Typography>
-                    {defaultColumns.map((column) => (
-                        <Fragment key={column.accessorKey}>
-                            <Typography
-                                component='label'
-                                htmlFor={`col-${column.header}`}
-                            >
-                                {column.header}
-                            </Typography>
-                            <Select
-                                defaultValue=''
-                                id={`col-${column.header}`}
-                                name={column.accessorKey}
-                                onChange={handleChange}
-                                value={localColumnMap[column.accessorKey] || ''}
-                            >
-                                <MenuItem value={''}>
-                                    - {t('literals.Unset')} -
-                                </MenuItem>
-                                {[...headers].map((header, idx) => (
-                                    <MenuItem key={idx} value={header}>
-                                        {header}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </Fragment>
-                    ))}
+                    <DateFormat
+                        localDateFormat={localDateFormat}
+                        setLocalDateFormat={setLocalDateFormat}
+                    />
+                    <ColumnMenu
+                        localColumnMap={localColumnMap}
+                        setLocalColumnMap={setLocalColumnMap}
+                    />
                     <Box
                         sx={{
                             gridColumn: '1 / span 2',

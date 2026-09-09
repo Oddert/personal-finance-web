@@ -57,8 +57,10 @@
         "Edit": "Edit",
         "Enabled": "Enabled",
         "Error": "Error",
+        "Example": "Example",
         "example": "example",
         "Expected": "Expected",
+        "Format": "Format",
         "from": "from",
         "High": "High",
         "In": "In",
@@ -358,6 +360,7 @@
         "bulkEditTransactions": "Bulk edit transactions",
         "bulkUploadTransactions": "Upload transactions",
         "cardSlashAccount": "Card / Account",
+        "changeDateFormat": "Change the date format used",
         "clickToAddMatcher": "Click to add a new Category auto-matcher",
         "clickToEditDescription": "Click to make the description field editable",
         "clickToSaveDescription": "Click to save the edited description",
@@ -373,6 +376,7 @@
         "showingCountOfRows": "Showing {{count}} of {{transactions}}",
         "transactionDescriptionEditCancel": "Click to cancel the description edit",
         "transactionDescriptionLabel": "Transaction description",
-        "transactionRangeLabel": "Transaction range"
+        "transactionRangeLabel": "Transaction range",
+        "viewDateReference": "View the character reference here"
     }
 }
