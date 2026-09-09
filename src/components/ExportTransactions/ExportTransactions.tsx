@@ -3,14 +3,19 @@ import { useTranslation } from 'react-i18next';
 
 import { CloudDownload as IconDownload } from '@mui/icons-material';
 import {
+    Autocomplete,
     Box,
     Button,
+    Checkbox,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
+    Divider,
+    FormControlLabel,
     MenuItem,
     Select,
+    TextField,
     Typography,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -24,10 +29,7 @@ import type { ICard } from '../../types/Card.types';
 import type { ICategory } from '../../types/Category';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/ReduxHookWrappers';
-import {
-    getActiveCardId,
-    getCardResponse,
-} from '../../redux/selectors/cardSelectors';
+import { getCardResponse } from '../../redux/selectors/cardSelectors';
 import { getCategoryOrderedDataById } from '../../redux/selectors/categorySelectors';
 import { intakeError } from '../../redux/thunks/errorThunks';
 import APIService from '../../services/APIService';
@@ -51,8 +53,10 @@ dayjs.extend(localizedFormat);
  * @subcategory Export Transactions
  */
 const ExportTransactions: FC<IProps> = ({
+    defaultCards,
     defaultEndDate,
     defaultStartDate,
+    defaultUseAllCards,
 }) => {
     const { t } = useTranslation();
 
@@ -69,34 +73,45 @@ const ExportTransactions: FC<IProps> = ({
         defaultEndDate ? dayjs(defaultEndDate) : toEndMonthDayjs(new Date()),
     );
     const [dlFormat, setDlFormat] = useState('csv');
+    const [allCards, setAllCards] = useState(false);
+    const [activeCards, setActiveCards] = useState<ICard[]>([]);
 
-    const activeCardId = useAppSelector(getActiveCardId);
     const cards = useAppSelector(getCardResponse);
     const categoriesById = useAppSelector(getCategoryOrderedDataById);
 
     useEffect(() => {
-        if (activeCardId) {
-            const getCount = async () => {
-                try {
-                    const res = await APIService.getTransactionCount(
-                        startDate.valueOf(),
-                        endDate.valueOf(),
-                        activeCardId,
-                    );
-
-                    if (
-                        res?.payload?.count &&
-                        typeof res.payload.count === 'number'
-                    ) {
-                        setPreviewCount(res.payload.count);
-                    }
-                } catch (error) {
-                    dispatch(intakeError(error));
-                }
-            };
-            getCount();
+        if (defaultUseAllCards !== undefined) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setAllCards(defaultUseAllCards);
         }
-    }, [activeCardId, dispatch, endDate, startDate]);
+        if (defaultCards !== undefined) {
+            setActiveCards(defaultCards);
+        }
+    }, [cards, defaultCards, defaultUseAllCards]);
+
+    useEffect(() => {
+        const getCount = async () => {
+            try {
+                const res = await APIService.getTransactionCount(
+                    startDate.valueOf(),
+                    endDate.valueOf(),
+                    activeCards.length
+                        ? activeCards.map((card) => card.id).join(',')
+                        : null,
+                );
+
+                if (
+                    res?.payload?.count &&
+                    typeof res.payload.count === 'number'
+                ) {
+                    setPreviewCount(res.payload.count);
+                }
+            } catch (error) {
+                dispatch(intakeError(error));
+            }
+        };
+        getCount();
+    }, [activeCards, dispatch, endDate, startDate]);
 
     const handleClickExport = () => {
         interface IDownloadRow {
@@ -121,7 +136,9 @@ const ExportTransactions: FC<IProps> = ({
                 const res = await APIService.getAllTransactionsWithinRange(
                     startDate.valueOf(),
                     endDate.valueOf(),
-                    activeCardId,
+                    activeCards.length
+                        ? activeCards.map((card) => card.id).join(',')
+                        : null,
                 );
                 const withMixins: IDownloadRow[] = (
                     res.payload?.transactions ?? []
@@ -206,6 +223,9 @@ const ExportTransactions: FC<IProps> = ({
             >
                 <DialogTitle>Export Transactions</DialogTitle>
                 <DialogContent>
+                    <Typography sx={{ fontSize: '18px' }} variant='h3'>
+                        Dates
+                    </Typography>
                     <Box sx={{ my: 2, display: 'flex', gridGap: '24px' }}>
                         <DatePicker
                             label={t('Start date')}
@@ -259,8 +279,57 @@ const ExportTransactions: FC<IProps> = ({
                             views={['year', 'month', 'day']}
                         />
                     </Box>
-                    <Typography>
-                        {t('Transaction.countInView', { count: previewCount })}
+                    <Divider />
+                    <Typography sx={{ fontSize: '18px', mt: 2 }} variant='h3'>
+                        Cards
+                    </Typography>
+                    <Box sx={{ my: 2, display: 'flex', gridGap: '24px' }}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={allCards}
+                                    onChange={(_, checked) => {
+                                        setAllCards(checked);
+                                    }}
+                                />
+                            }
+                            label='All cards'
+                            labelPlacement='top'
+                            sx={{
+                                mx: 0,
+                            }}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Autocomplete
+                                    disabled={allCards}
+                                    fullWidth
+                                    getOptionKey={(opt) => opt.id}
+                                    getOptionLabel={(opt) => opt.cardName}
+                                    multiple
+                                    onChange={(_, value) => {
+                                        setActiveCards(value);
+                                    }}
+                                    options={cards}
+                                    renderInput={(props) => (
+                                        <TextField {...props} />
+                                    )}
+                                    value={activeCards}
+                                />
+                            }
+                            label={t('literals.Card')}
+                            labelPlacement='top'
+                            sx={(theme) => ({
+                                alignItems: 'flex-start',
+                                color: theme.palette.common.white,
+                                mx: 0,
+                                flex: 1,
+                            })}
+                        />
+                    </Box>
+                    <Divider />
+                    <Typography sx={{ fontSize: '18px', mt: 2 }} variant='h3'>
+                        Format
                     </Typography>
                     <Select
                         onChange={(event) => {
@@ -274,17 +343,23 @@ const ExportTransactions: FC<IProps> = ({
                         <MenuItem value='json'>JSON</MenuItem>
                     </Select>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClickReset} size='large'>
-                        {t('buttons.Cancel')}
-                    </Button>
-                    <Button
-                        onClick={handleClickExport}
-                        size='large'
-                        variant='contained'
-                    >
-                        {t('buttons.Export')}
-                    </Button>
+                <DialogActions sx={{ justifyContent: 'space-between', pl: 3 }}>
+                    <Typography>
+                        {t('Transaction.countInView', { count: previewCount })}
+                    </Typography>
+                    <Box>
+                        <Button onClick={handleClickReset} size='large'>
+                            {t('buttons.Cancel')}
+                        </Button>
+                        <Button
+                            onClick={handleClickExport}
+                            size='large'
+                            sx={{ ml: 2 }}
+                            variant='contained'
+                        >
+                            {t('buttons.Export')}
+                        </Button>
+                    </Box>
                 </DialogActions>
             </Dialog>
         </Fragment>

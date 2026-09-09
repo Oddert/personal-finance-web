@@ -66,13 +66,21 @@ const RequestControls = () => {
     }, [allCards, dispatch, end, start]);
 
     useEffect(() => {
-        const date = dayjs(startDate);
-        setStart(date);
+        if (startDate) {
+            const date = dayjs(startDate);
+            setStart(date);
+        } else {
+            setStart(dayjs().startOf('month'));
+        }
     }, [startDate]);
 
     useEffect(() => {
-        const date = dayjs(endDate);
-        setEnd(date);
+        if (endDate) {
+            const date = dayjs(endDate);
+            setEnd(date);
+        } else {
+            setEnd(dayjs().endOf('month'));
+        }
     }, [endDate]);
 
     return (
@@ -88,6 +96,7 @@ const RequestControls = () => {
                 <FormControlLabel
                     control={
                         <DatePicker
+                            format='DD/MM/YYYY'
                             label=''
                             name='startDate'
                             onChange={handleChangeStart}
@@ -115,6 +124,7 @@ const RequestControls = () => {
                 <FormControlLabel
                     control={
                         <DatePicker
+                            format='DD/MM/YYYY'
                             label=''
                             name='endDate'
                             onChange={handleChangeEnd}
@@ -176,6 +186,7 @@ const RequestControls = () => {
                         alignItems: 'flex-start',
                         color: theme.palette.common.white,
                         mx: 0,
+                        minWidth: '250px',
                     })}
                 />
                 <Button
@@ -189,8 +200,10 @@ const RequestControls = () => {
             </Box>
             <Box sx={{ my: 2 }}>
                 <ExportTransactions
+                    defaultCards={activeCards}
                     defaultEndDate={endDate}
                     defaultStartDate={startDate}
+                    defaultUseAllCards={allCards}
                 />
             </Box>
         </Box>
