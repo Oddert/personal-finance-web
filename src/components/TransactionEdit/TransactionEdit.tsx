@@ -68,7 +68,6 @@ const TransactionEdit: FC<IProps> = ({
                 ) : (
                     <Fragment>
                         {showMapping ? <ColumnMapping /> : null}
-                        {/* <Submit onClose={onClose} /> */}
                         <Table />
                         <Submit onClose={onClose} />
                         <CloseModal onClose={onClose} />

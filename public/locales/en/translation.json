@@ -146,7 +146,6 @@
         "createNewScenario": "Create new scenario",
         "Delete": "Delete",
         "deleteAll": "Delete all",
-        "unDeleteAll": "Un-delete all",
         "deleteBudget": "Delete budget",
         "deleteCard": "Delete card",
         "deleteCategory": "Delete Category",
@@ -169,6 +168,7 @@
         "Submit": "Submit",
         "toggleAllCategories": "Toggle all categories",
         "uncheckAll": "Uncheck all",
+        "unDeleteAll": "Un-delete all",
         "viewAndEdit": "View and edit",
         "viewBudgetBreakdown": "View budget breakdown",
         "viewBudgetOverview": "View budget overview"
@@ -357,6 +357,7 @@
         "templateScenarioLabel": "Template scenario"
     },
     "Transaction": {
+        "bulkActions": "Bulk Actions",
         "bulkEditTransactions": "Bulk edit transactions",
         "bulkUploadTransactions": "Upload transactions",
         "cardSlashAccount": "Card / Account",
@@ -364,6 +365,8 @@
         "clickToAddMatcher": "Click to add a new Category auto-matcher",
         "clickToEditDescription": "Click to make the description field editable",
         "clickToSaveDescription": "Click to save the edited description",
+        "changeCurrencyAll": "Change the currency of all transactions",
+        "changeCurrencyLabel": "Change currency",
         "countInView": "{{count}} Transactions in selected date range",
         "editInRange": "Edit transactions in range",
         "enterTransactionsManually": "Enter transactions manually",
@@ -377,6 +380,7 @@
         "transactionDescriptionEditCancel": "Click to cancel the description edit",
         "transactionDescriptionLabel": "Transaction description",
         "transactionRangeLabel": "Transaction range",
+        "updateTransactions": "Update transactions",
         "viewDateReference": "View the character reference here"
     }
 }

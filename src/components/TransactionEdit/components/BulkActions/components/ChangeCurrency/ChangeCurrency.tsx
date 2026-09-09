@@ -85,12 +85,12 @@ export const ChangeCurrency: FC<IProps> = ({ onClose }) => {
                 <ListItemIcon>
                     <IconCurrency fontSize='small' />
                 </ListItemIcon>
-                <ListItemText>Change currency</ListItemText>
+                <ListItemText>
+                    {t('Transaction.changeCurrencyLabel')}
+                </ListItemText>
             </MenuItem>
             <Dialog onClose={handleClickClose} open={open}>
-                <DialogTitle>
-                    Change the currency of all transactions
-                </DialogTitle>
+                <DialogTitle>{t('Transaction.changeCurrencyAll')}</DialogTitle>
                 <DialogContent>
                     <Autocomplete
                         getOptionLabel={(option) =>
@@ -111,13 +111,15 @@ export const ChangeCurrency: FC<IProps> = ({ onClose }) => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClickClose}>Cancel</Button>
+                    <Button onClick={handleClickClose}>
+                        {t('buttons.Cancel')}
+                    </Button>
                     <Button
                         disabled={!currency}
                         onClick={handleClickSubmit}
                         variant='contained'
                     >
-                        Update transactions
+                        {t('Transaction.updateTransactions')}
                     </Button>
                 </DialogActions>
             </Dialog>

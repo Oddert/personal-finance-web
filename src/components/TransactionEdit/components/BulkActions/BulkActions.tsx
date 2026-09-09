@@ -5,6 +5,7 @@ import {
     useContext,
     useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
     ArrowDropDown as IconDropDown,
@@ -35,6 +36,8 @@ import ChangeCard from './components/ChangeCard';
 import ChangeCurrency from './components/ChangeCurrency';
 
 const BulkActions: FC<IProps> = () => {
+    const { t } = useTranslation();
+
     const { dispatch } = useContext(TransactionEditContext);
 
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -77,7 +80,7 @@ const BulkActions: FC<IProps> = () => {
                 onClick={handleClick}
                 variant='outlined'
             >
-                Bulk Actions
+                {t('Transaction.bulkActions')}
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -92,25 +95,25 @@ const BulkActions: FC<IProps> = () => {
                     <ListItemIcon>
                         <IconCheckAll fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText>Check all</ListItemText>
+                    <ListItemText>{t('buttons.checkAll')}</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClickUnCheckAll}>
                     <ListItemIcon>
                         <IconUnCheckAll fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText>Un-check all</ListItemText>
+                    <ListItemText>{t('buttons.uncheckAll')}</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClickDeleteAll}>
                     <ListItemIcon>
                         <IconDeleteAll fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText>Delete all</ListItemText>
+                    <ListItemText>{t('buttons.deleteAll')}</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClickUnDeleteAll}>
                     <ListItemIcon>
                         <IconUnDeleteAll fontSize='small' />
                     </ListItemIcon>
-                    <ListItemText>Un-delete all</ListItemText>
+                    <ListItemText>{t('buttons.unDeleteAll')}</ListItemText>
                 </MenuItem>
             </Menu>
         </Fragment>
