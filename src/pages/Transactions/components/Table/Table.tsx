@@ -40,7 +40,6 @@ const Table = () => {
     >([]);
 
     const { transactions } = useTransactions();
-    console.log({ transactions });
 
     const transactionsLoading = useAppSelector(getTransactionsLoading);
     const language = useAppSelector(getActiveLanguageCode);
@@ -89,6 +88,7 @@ const Table = () => {
                     const categoryId: string | unknown = cell.renderValue();
                     if (typeof categoryId === 'string') {
                         const foundCategory = categories[categoryId];
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         if (foundCategory) {
                             return foundCategory.label;
                         }
@@ -114,7 +114,7 @@ const Table = () => {
                 },
             },
         ],
-        [language, t],
+        [cards, categories, language, t],
     );
 
     useEffect(() => {
