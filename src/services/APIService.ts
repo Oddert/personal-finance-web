@@ -252,7 +252,7 @@ const APIService = Object.freeze({
     getTransactionCount: async (
         startDate: number,
         endDate: number,
-        activeCardId: string,
+        activeCardId?: string | null,
     ) => {
         let starDateParsed = '';
         let endDateParsed = '';
@@ -265,7 +265,7 @@ const APIService = Object.freeze({
         }
         const from = `?from=${starDateParsed}`;
         const to = `&to=${endDateParsed}`;
-        const activeCard = `&cardId=${activeCardId}`;
+        const activeCard = activeCardId ? `&cardId=${activeCardId}` : '';
         const response: IStandardResponse<{ count: number }> =
             await request.get(`/transaction/count${from}${to}${activeCard}`);
         return response;
