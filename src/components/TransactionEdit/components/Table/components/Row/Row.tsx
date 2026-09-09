@@ -1,6 +1,6 @@
 import { type FC, useContext } from 'react';
 
-import { TableCell, TableRow } from '@mui/material';
+import { TableCell, TableRow, Tooltip } from '@mui/material';
 
 import dayjs from 'dayjs';
 
@@ -81,11 +81,17 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
                 return <CardSelector key={key} transaction={transaction} />;
             case 'date':
                 return (
-                    <TableCell key={key}>
-                        {dayjs
-                            .utc(transaction[columnMap.date], dateFormat, true)
-                            .toISOString()}
-                    </TableCell>
+                    <Tooltip title={transaction[columnMap.date]}>
+                        <TableCell key={key}>
+                            {dayjs
+                                .utc(
+                                    transaction[columnMap.date],
+                                    dateFormat,
+                                    true,
+                                )
+                                .toISOString()}
+                        </TableCell>
+                    </Tooltip>
                 );
             default:
                 return (

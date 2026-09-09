@@ -11,6 +11,7 @@ import {
     CheckBoxOutlineBlank as IconUnCheckAll,
     Delete as IconDeleteAll,
     RestoreFromTrash as IconUnDeleteAll,
+    ArrowDropDown as IconDropDown,
 } from '@mui/icons-material';
 import {
     Button,
@@ -71,8 +72,10 @@ const BulkActions: FC<IProps> = () => {
                 aria-controls={open ? 'bulk-actions-menu' : undefined}
                 aria-expanded={open}
                 aria-haspopup='true'
+                endIcon={<IconDropDown />}
                 id='bulk-actions-button'
                 onClick={handleClick}
+                variant='outlined'
             >
                 Bulk Actions
             </Button>
