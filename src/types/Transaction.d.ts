@@ -6,10 +6,12 @@ import type { ICategory } from './Category.d';
  * @subcategory Transaction
  */
 export interface ITransaction {
+    /** The joined category associated. Only supplied on certain endpoints as requested. */
+    assignedCategory?: ICategory;
     /** The ballance at after the current transaction. */
     ballance: number;
     /** Card / account the transaction belongs to. */
-    cardId: string | null;
+    cardId: string;
     /** Category the transaction is assigned to. */
     categoryId: string | null;
     /** ISO timestamp of the date/time the record was first created. */
@@ -19,7 +21,7 @@ export interface ITransaction {
     /** The ISO currency code. */
     currency: string | null;
     /** ISO timestamp when this transaction occurred. */
-    date: number;
+    date: string;
     /** Cash flow out of the account with this transaction. */
     debit: number;
     /** Short description or seller code. */
@@ -30,8 +32,8 @@ export interface ITransaction {
     transactionType: string;
     /** ISO timestamp of most recent save. */
     updatedOn: string;
-    /** The joined category associated. Only supplied on certain endpoints as requested. */
-    assignedCategory?: ICategory;
+    /** ID of the user who owns his transaction. */
+    userId: string;
 }
 
 export type TTransactionKeys = keyof ITransaction;

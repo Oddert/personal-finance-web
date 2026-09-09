@@ -78,9 +78,10 @@ const Submit: FC<IProps> = ({ onClose }) => {
                     (transaction.ballance as number) ??
                     0,
                 cardId:
-                    (transaction[columnMap.cardId] as string | null) ??
-                    (transaction.cardId as string | null) ??
-                    activeCardId,
+                    (transaction[columnMap.cardId] as string | undefined) ??
+                    (transaction.cardId as string | undefined) ??
+                    activeCardId ??
+                    '',
                 categoryId:
                     (transaction[columnMap.categoryId] as string | null) ??
                     (transaction.categoryId as string | null) ??
@@ -92,9 +93,9 @@ const Submit: FC<IProps> = ({ onClose }) => {
                         ? userCurrencies[0]
                         : null,
                 date:
-                    (transaction[columnMap.date] as number) ??
-                    (transaction.date as number) ??
-                    0,
+                    (transaction[columnMap.date] as string) ??
+                    (transaction.date as string) ??
+                    '',
                 description:
                     (transaction[columnMap.description] as string) ??
                     (transaction.description as string) ??

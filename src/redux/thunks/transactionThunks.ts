@@ -62,7 +62,11 @@ export const conditionallyRefreshTransactions =
     };
 
 export const refreshTransactions =
-    (cardIds: string[], startDate?: number|string|Dayjs|Date, endDate?: number|string|Dayjs|Date) =>
+    (
+        cardIds: string[],
+        startDate?: number | string | Dayjs | Date,
+        endDate?: number | string | Dayjs | Date,
+    ) =>
     async (dispatch: AppDispatch, getState: () => RootState) => {
         try {
             const state = getState();
