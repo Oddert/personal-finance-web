@@ -305,7 +305,7 @@ export const createTECReducer = (uploadMode = false) => {
                                     ) {
                                         return {
                                             ...transaction,
-                                            deleted: String(
+                                            deleted: Number(
                                                 !transaction.deleted,
                                             ),
                                         };
