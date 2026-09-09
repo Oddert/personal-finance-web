@@ -171,6 +171,8 @@ const Submit: FC<IProps> = ({ onClose }) => {
     return (
         <Box
             sx={{
+                position: 'sticky',
+                bottom: 0,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-end',
