@@ -1,1 +1,1 @@
-export { default } from './ChangeCard'
+export { default } from './ChangeCard';

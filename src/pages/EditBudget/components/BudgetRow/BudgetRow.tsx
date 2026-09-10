@@ -249,7 +249,7 @@ const BudgetRow: FC<IProps> = ({ budgetRows, budgetRow, setBudgetRows }) => {
                 {budgetRow.deleted ? (
                     <Button
                         onClick={handleClickUndelete}
-                        title={t('Budget.rowDeletedCLickToRestore')}
+                        title={t('Budget.rowDeletedClickToRestore')}
                     >
                         <IconUnDelete />
                     </Button>
