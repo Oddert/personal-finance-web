@@ -9,8 +9,9 @@ import { Dayjs } from 'dayjs';
 export const createStandardTransactionDlName = (
     startDate: Dayjs,
     endDate: Dayjs,
+    extra?: string,
 ) => {
-    return `pf-transaction-data-${startDate.toISOString()}-to-${endDate.toISOString()}`;
+    return `pf-transaction-data${extra ? `-${extra}` : ''}-${startDate.toISOString()}-to-${endDate.toISOString()}`;
 };
 
 /**
