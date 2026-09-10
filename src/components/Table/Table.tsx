@@ -20,11 +20,12 @@ import {
 import type { ColumnDef, PaginationState } from '@tanstack/react-table';
 
 interface ReactTableProps<TData> {
-    data: TData[];
     columns: ColumnDef<TData>[];
-    compact?: boolean;
     columnVisibility?: Record<string, boolean>;
+    compact?: boolean;
+    data: TData[];
     enablePagination?: boolean;
+    size?: 'small' | 'medium';
 }
 
 /**
@@ -44,6 +45,7 @@ const Table = <TData extends object>({
     compact,
     columnVisibility,
     enablePagination = true,
+    size = 'medium',
 }: ReactTableProps<TData>) => {
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
@@ -93,7 +95,7 @@ const Table = <TData extends object>({
     return (
         <Box>
             {paginationComponent}
-            <MuiTable>
+            <MuiTable size={size}>
                 <TableHead>
                     {getHeaderGroups().map((headerGroup, headerGroupIdx) => (
                         <TableRow key={headerGroupIdx}>

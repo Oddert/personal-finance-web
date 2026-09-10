@@ -12,8 +12,9 @@ import {
 import type { IProps } from './QuickAddTools.types';
 
 import MonthAverages from './components/MonthAverages';
+import PastData from './components/PastData';
 
-const QuickAddTools: FC<IProps> = () => {
+const QuickAddTools: FC<IProps> = ({ setTransactors }) => {
     const { t } = useTranslation();
     return (
         <Box sx={{ flex: 1 }}>
@@ -30,7 +31,7 @@ const QuickAddTools: FC<IProps> = () => {
                     {t('Scenario.pastTransactions')}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <MonthAverages />
+                    <PastData setTransactors={setTransactors} />
                 </AccordionDetails>
             </Accordion>
         </Box>

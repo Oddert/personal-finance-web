@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router';
 
@@ -209,104 +209,119 @@ const EditScenario: FC<IProps> = () => {
     }
 
     return (
-        <ResponsiveContainer>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gridGap: '16px',
-                    padding: '0 0 64px 0',
-                }}
-            >
-                <Button
-                    href={ROUTES.MANAGE_SCENARIOS}
-                    sx={{ alignSelf: 'flex-start', mt: '32px' }}
-                    variant='text'
+        <Fragment>
+            <ResponsiveContainer>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gridGap: '16px',
+                        padding: '0 0 64px 0',
+                    }}
                 >
-                    <IconArrowLeft /> {t('Scenario.returnToAllScenarios')}
-                </Button>
-                <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
-                    {isEdit ? t('literals.Edit') : t('literals.Create')}{' '}
-                    {t('literals.Scenario')}
-                </Typography>
-                <TextField
-                    label={t('literals.Title')}
-                    onChange={(event) => {
-                        setScenario({ ...scenario, title: event.target.value });
-                    }}
-                    value={scenario.title}
-                />
-                <TextField
-                    label={t('Scenario.description')}
-                    onChange={(event) => {
-                        setScenario({
-                            ...scenario,
-                            description: event.target.value,
-                        });
-                    }}
-                    value={scenario.description}
-                />
-                <Typography component='label' htmlFor='preview-control'>
-                    {t('Scenario.previewMode')}
-                </Typography>
-                <ToggleButtonGroup
-                    exclusive
-                    id='preview-control'
-                    onChange={(_, value) => {
-                        setPreviewMode(value as TPreviewMode);
-                    }}
-                    size='small'
-                    value={previewMode}
-                >
-                    <ToggleButton key='category' value='category'>
-                        <IconPreviewCategory />{' '}
-                        {t('Scenario.valueByCategoryLabel')}
-                    </ToggleButton>
-                    <ToggleButton key='total' value='total'>
-                        <IconPreviewTotal /> {t('Scenario.totalValueLabel')}
-                    </ToggleButton>
-                    <ToggleButton key='off' value='off'>
-                        <IconPreviewOff /> {t('literals.off')}
-                    </ToggleButton>
-                </ToggleButtonGroup>
-                {previewMode === 'off' ? null : (
-                    <ProjectionChart previewMode={previewMode} />
-                )}
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={helperToolsEnabled}
-                            onChange={(_, checked) => {
-                                setHelperToolsEnabled(checked);
-                            }}
+                    <Button
+                        href={ROUTES.MANAGE_SCENARIOS}
+                        sx={{ alignSelf: 'flex-start', mt: '32px' }}
+                        variant='text'
+                    >
+                        <IconArrowLeft /> {t('Scenario.returnToAllScenarios')}
+                    </Button>
+                    <Typography variant='h2' sx={{ margin: '8px 0 32px' }}>
+                        {isEdit ? t('literals.Edit') : t('literals.Create')}{' '}
+                        {t('literals.Scenario')}
+                    </Typography>
+                    <TextField
+                        label={t('literals.Title')}
+                        onChange={(event) => {
+                            setScenario({
+                                ...scenario,
+                                title: event.target.value,
+                            });
+                        }}
+                        value={scenario.title}
+                    />
+                    <TextField
+                        label={t('Scenario.description')}
+                        onChange={(event) => {
+                            setScenario({
+                                ...scenario,
+                                description: event.target.value,
+                            });
+                        }}
+                        value={scenario.description}
+                    />
+                    <Typography component='label' htmlFor='preview-control'>
+                        {t('Scenario.previewMode')}
+                    </Typography>
+                    <ToggleButtonGroup
+                        exclusive
+                        id='preview-control'
+                        onChange={(_, value) => {
+                            setPreviewMode(value as TPreviewMode);
+                        }}
+                        size='small'
+                        value={previewMode}
+                    >
+                        <ToggleButton key='category' value='category'>
+                            <IconPreviewCategory />{' '}
+                            {t('Scenario.valueByCategoryLabel')}
+                        </ToggleButton>
+                        <ToggleButton key='total' value='total'>
+                            <IconPreviewTotal /> {t('Scenario.totalValueLabel')}
+                        </ToggleButton>
+                        <ToggleButton key='off' value='off'>
+                            <IconPreviewOff /> {t('literals.off')}
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                    {previewMode === 'off' ? null : (
+                        <ProjectionChart previewMode={previewMode} />
+                    )}
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={helperToolsEnabled}
+                                onChange={(_, checked) => {
+                                    setHelperToolsEnabled(checked);
+                                }}
+                            />
+                        }
+                        label={t('Scenario.userHelperToolsLabel')}
+                    />
+                    {helperToolsEnabled ? null : (
+                        <TransactorTable
+                            setTransactors={setTransactors}
+                            transactors={transactors}
                         />
-                    }
-                    label={t('Scenario.userHelperToolsLabel')}
-                />
-                <Box sx={{ display: 'flex', gridGap: '24px' }}>
-                    {helperToolsEnabled && <QuickAddTools />}
+                    )}
+                    <Button
+                        onClick={handleClickSave}
+                        startIcon={<IconSave />}
+                        sx={{
+                            position: 'fixed',
+                            right: '16px',
+                            bottom: '16px',
+                        }}
+                        variant='contained'
+                    >
+                        {isEdit
+                            ? t('buttons.saveChanges')
+                            : t('buttons.createNewScenario')}
+                    </Button>
+                    {isEdit && <DeleteScenario scenario={scenario} />}
+                </Box>
+            </ResponsiveContainer>
+            {helperToolsEnabled && (
+                <Box
+                    sx={{ display: 'flex', flexWrap: 'wrap', gridGap: '24px' }}
+                >
+                    <QuickAddTools setTransactors={setTransactors} />
                     <TransactorTable
                         setTransactors={setTransactors}
                         transactors={transactors}
                     />
                 </Box>
-                <Button
-                    onClick={handleClickSave}
-                    startIcon={<IconSave />}
-                    sx={{
-                        position: 'fixed',
-                        right: '16px',
-                        bottom: '16px',
-                    }}
-                    variant='contained'
-                >
-                    {isEdit
-                        ? t('buttons.saveChanges')
-                        : t('buttons.createNewScenario')}
-                </Button>
-                {isEdit && <DeleteScenario scenario={scenario} />}
-            </Box>
-        </ResponsiveContainer>
+            )}
+        </Fragment>
     );
 };
 

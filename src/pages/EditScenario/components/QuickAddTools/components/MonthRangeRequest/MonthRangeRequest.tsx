@@ -58,7 +58,7 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
                     borderRadius: '4px',
                 }}
                 value={startDate}
-                views={['year', 'month', 'day']}
+                views={['year', 'month']}
             />
             <DatePicker
                 format='DD/MM/YYYY'
@@ -87,7 +87,7 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
                     borderRadius: '4px',
                 }}
                 value={endDate}
-                views={['year', 'month', 'day']}
+                views={['year', 'month']}
             />
             <Button
                 disabled={loading}
