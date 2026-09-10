@@ -1,4 +1,11 @@
-import { type ChangeEvent, type FC, Fragment, useState } from 'react';
+import {
+    type ChangeEvent,
+    type FC,
+    Fragment,
+    type SyntheticEvent,
+    useMemo,
+    useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -9,6 +16,7 @@ import {
     ExpandMore as IconExpandOpen,
 } from '@mui/icons-material';
 import {
+    Autocomplete,
     Button,
     Collapse,
     IconButton,
@@ -28,9 +36,12 @@ import {
 import { v4 as uuid } from 'uuid';
 
 import type { IProps } from './TransactorRow.types';
+import type { ICategory } from '../../../../types/Category';
 import type { IScheduler } from '../../../../types/Scenario.types';
 import type { ITransactorRowEditable } from '../../EditScenario.types';
 
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
 import SchedulerRow from '../SchedulerRow';
 
 /**
@@ -47,6 +58,8 @@ const TransactorRow: FC<IProps> = ({
     const [expanded, setExpanded] = useState(false);
 
     const { t } = useTranslation();
+
+    const allCategories = useAppSelector(getCategoryResponse);
 
     const handleChangeValue = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -187,9 +200,34 @@ const TransactorRow: FC<IProps> = ({
         setTransactors(filteredRows);
     };
 
+    const handleChangeCategory = (
+        _: SyntheticEvent,
+        value: ICategory | null,
+    ) => {
+        const filteredRows: ITransactorRowEditable[] = transactors.map(
+            (transactorRow) => {
+                if (transactorRow.id === transactor.id) {
+                    return {
+                        ...transactorRow,
+                        categoryId: value ? value.id : null,
+                    };
+                }
+                return transactorRow;
+            },
+        );
+        setTransactors(filteredRows);
+    };
+
     const toggleExpanded = () => {
         setExpanded(!expanded);
     };
+
+    const category = useMemo(() => {
+        return (
+            allCategories.find((cat) => cat.id === transactor.categoryId) ??
+            null
+        );
+    }, [allCategories, transactor.categoryId]);
 
     return (
         <Fragment>
@@ -207,15 +245,42 @@ const TransactorRow: FC<IProps> = ({
                     </IconButton>
                 </TableCell>
                 <TableCell>
-                    <Typography>
-                        {transactor.schedulers?.length
-                            ? transactor.schedulers.length > 1
-                                ? t('Scenario.numSchedules', {
-                                      num: transactor.schedulers.length,
-                                  })
-                                : t('Scenario.numScheduleSingle')
-                            : t('Scenario.scheduleThisEvent')}
-                    </Typography>
+                    {transactor.schedulers?.length ? (
+                        transactor.schedulers.length > 1 ? (
+                            <Typography>
+                                {t('Scenario.numSchedules', {
+                                    num: transactor.schedulers.length,
+                                })}
+                            </Typography>
+                        ) : (
+                            <Typography>
+                                {t('Scenario.numScheduleSingle')}
+                            </Typography>
+                        )
+                    ) : (
+                        <Tooltip title={t('Scenario.scheduleExplanation')}>
+                            <Typography>
+                                {t('Scenario.scheduleThisEvent')}
+                            </Typography>
+                        </Tooltip>
+                    )}
+                </TableCell>
+                <TableCell>
+                    <Autocomplete
+                        getOptionKey={(opt) => opt.id}
+                        getOptionLabel={(opt) => opt.label}
+                        onChange={handleChangeCategory}
+                        options={allCategories}
+                        renderInput={(props) => (
+                            <TextField
+                                placeholder='- no category -'
+                                sx={{ minWidth: '150px' }}
+                                {...props}
+                                size='small'
+                            />
+                        )}
+                        value={category}
+                    />
                 </TableCell>
                 <TableCell>
                     <TextField
@@ -262,7 +327,7 @@ const TransactorRow: FC<IProps> = ({
                 </TableCell>
                 <TableCell>
                     {transactor.deleted ? (
-                        <Tooltip title={t('Budget.rowDeletedCLickToRestore')}>
+                        <Tooltip title={t('Budget.rowDeletedClickToRestore')}>
                             <Button onClick={handleClickUndelete}>
                                 <IconUnDelete />
                             </Button>

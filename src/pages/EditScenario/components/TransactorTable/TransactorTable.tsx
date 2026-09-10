@@ -1,7 +1,9 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Add as IconPlus } from '@mui/icons-material';
 import {
+    Button,
     Paper,
     Table as MuiTable,
     TableBody,
@@ -12,13 +14,14 @@ import {
 
 import type { IProps } from './TransactorTable.types';
 
+import { ffBlankTransactorRowEditable } from '../../../../utils/factoryFunctions';
 import TransactorRow from '../TransactorRow';
 
 const TransactorTable: FC<IProps> = ({ setTransactors, transactors }) => {
     const { t } = useTranslation();
     return (
-        <Paper>
-            <MuiTable>
+        <Paper sx={{ flex: 1 }}>
+            <MuiTable size='small'>
                 <TableHead>
                     <TableRow>
                         <TableCell
@@ -27,10 +30,11 @@ const TransactorTable: FC<IProps> = ({ setTransactors, transactors }) => {
                         <TableCell
                             aria-label={t('literals.numberOfSchedulers')}
                         ></TableCell>
+                        <TableCell>{t('literals.Category')}</TableCell>
                         <TableCell>{t('literals.Description')}</TableCell>
                         <TableCell>{t('literals.Amount')}</TableCell>
                         <TableCell>{t('buttons.addOrSubtract')}</TableCell>
-                        <TableCell>{t('literals.Delete')}</TableCell>
+                        <TableCell>{t('buttons.Delete')}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -44,6 +48,17 @@ const TransactorTable: FC<IProps> = ({ setTransactors, transactors }) => {
                     ))}
                 </TableBody>
             </MuiTable>
+            <Button
+                onClick={() => {
+                    setTransactors([
+                        ...transactors,
+                        ffBlankTransactorRowEditable(),
+                    ]);
+                }}
+                sx={{ my: 2 }}
+            >
+                <IconPlus /> {t('buttons.addBudgetRow')}
+            </Button>
         </Paper>
     );
 };

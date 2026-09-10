@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, useSearchParams } from 'react-router';
 
 import {
-    Add as IconPlus,
     ArrowBack as IconArrowLeft,
     Save as IconSave,
     ShowChart as IconPreviewTotal,
@@ -14,6 +13,8 @@ import {
     Box,
     Button,
     CircularProgress,
+    FormControlLabel,
+    Switch,
     TextField,
     ToggleButton,
     ToggleButtonGroup,
@@ -44,10 +45,10 @@ import {
     writeErrorBoundary,
 } from '../../redux/thunks/errorThunks';
 import APIService from '../../services/APIService';
-import { ffBlankTransactorRowEditable } from '../../utils/factoryFunctions';
 
 import DeleteScenario from './components/DeleteScenario';
 import ProjectionChart from './components/ProjectionChart';
+import QuickAddTools from './components/QuickAddTools';
 import TransactorTable from './components/TransactorTable/TransactorTable';
 
 const emptyScenario = () => ({
@@ -79,6 +80,7 @@ const EditScenario: FC<IProps> = () => {
     const [scenarioLoading, setScenarioLoading] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [previewMode, setPreviewMode] = useState<TPreviewMode>('category');
+    const [helperToolsEnabled, setHelperToolsEnabled] = useState(true);
 
     const cardId = useAppSelector(getActiveCardId);
 
@@ -245,7 +247,7 @@ const EditScenario: FC<IProps> = () => {
                     value={scenario.description}
                 />
                 <Typography component='label' htmlFor='preview-control'>
-                    Preview mode
+                    {t('Scenario.previewMode')}
                 </Typography>
                 <ToggleButtonGroup
                     exclusive
@@ -257,32 +259,37 @@ const EditScenario: FC<IProps> = () => {
                     value={previewMode}
                 >
                     <ToggleButton key='category' value='category'>
-                        <IconPreviewCategory /> value by category
+                        <IconPreviewCategory />{' '}
+                        {t('Scenario.valueByCategoryLabel')}
                     </ToggleButton>
                     <ToggleButton key='total' value='total'>
-                        <IconPreviewTotal /> total value
+                        <IconPreviewTotal /> {t('Scenario.totalValueLabel')}
                     </ToggleButton>
                     <ToggleButton key='off' value='off'>
-                        <IconPreviewOff /> off
+                        <IconPreviewOff /> {t('literals.off')}
                     </ToggleButton>
                 </ToggleButtonGroup>
                 {previewMode === 'off' ? null : (
                     <ProjectionChart previewMode={previewMode} />
                 )}
-                <TransactorTable
-                    setTransactors={setTransactors}
-                    transactors={transactors}
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={helperToolsEnabled}
+                            onChange={(_, checked) => {
+                                setHelperToolsEnabled(checked);
+                            }}
+                        />
+                    }
+                    label={t('Scenario.userHelperToolsLabel')}
                 />
-                <Button
-                    onClick={() => {
-                        setTransactors([
-                            ...transactors,
-                            ffBlankTransactorRowEditable(),
-                        ]);
-                    }}
-                >
-                    <IconPlus /> {t('buttons.addBudgetRow')}
-                </Button>
+                <Box sx={{ display: 'flex', gridGap: '24px' }}>
+                    {helperToolsEnabled && <QuickAddTools />}
+                    <TransactorTable
+                        setTransactors={setTransactors}
+                        transactors={transactors}
+                    />
+                </Box>
                 <Button
                     onClick={handleClickSave}
                     startIcon={<IconSave />}
