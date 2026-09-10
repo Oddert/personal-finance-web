@@ -15,6 +15,7 @@ import {
     FormControlLabel,
     MenuItem,
     Select,
+    Switch,
     TextField,
     Typography,
 } from '@mui/material';
@@ -75,6 +76,8 @@ const ExportTransactions: FC<IProps> = ({
     const [dlFormat, setDlFormat] = useState('csv');
     const [allCards, setAllCards] = useState(false);
     const [activeCards, setActiveCards] = useState<ICard[]>([]);
+    const [separateCardsOnDownload, setSeparateCardsOnDownload] =
+        useState(false);
 
     const cards = useAppSelector(getCardResponse);
     const categoriesById = useAppSelector(getCategoryOrderedDataById);
@@ -179,19 +182,50 @@ const ExportTransactions: FC<IProps> = ({
                     return row;
                 });
 
-                const dlName = createStandardTransactionDlName(
-                    startDate,
-                    endDate,
-                );
+                if (separateCardsOnDownload) {
+                    const perCard = withMixins.reduce(
+                        (acc: Record<string, IDownloadRow[]>, each) => {
+                            if (!(each.cardId in acc)) {
+                                acc[each.cardId] = [];
+                            }
+                            acc[each.cardId].push(each);
+                            return acc;
+                        },
+                        {},
+                    );
 
-                if (dlFormat === 'csv') {
-                    const converted = json2csv(withMixins);
-                    downloadCsv(converted, dlName);
-                } else if (dlFormat === 'txt') {
-                    const converted = json2csv(withMixins);
-                    downloadCsvNoSuffix(converted, `${dlName}.txt`);
+                    Object.entries(perCard).forEach(([cardId, cards]) => {
+                        const dlName = createStandardTransactionDlName(
+                            startDate,
+                            endDate,
+                            cardId,
+                        );
+
+                        if (dlFormat === 'csv') {
+                            const converted = json2csv(cards);
+                            downloadCsv(converted, dlName);
+                        } else if (dlFormat === 'txt') {
+                            const converted = json2csv(cards);
+                            downloadCsvNoSuffix(converted, `${dlName}.txt`);
+                        } else {
+                            downloadJson(cards, dlName);
+                        }
+                    });
                 } else {
-                    downloadJson(withMixins, dlName);
+                    const dlName = createStandardTransactionDlName(
+                        startDate,
+                        endDate,
+                    );
+
+                    if (dlFormat === 'csv') {
+                        const converted = json2csv(withMixins);
+                        downloadCsv(converted, dlName);
+                    } else if (dlFormat === 'txt') {
+                        const converted = json2csv(withMixins);
+                        downloadCsvNoSuffix(converted, `${dlName}.txt`);
+                    } else {
+                        downloadJson(withMixins, dlName);
+                    }
                 }
             } catch (error) {
                 dispatch(intakeError(error));
@@ -331,17 +365,39 @@ const ExportTransactions: FC<IProps> = ({
                     <Typography sx={{ fontSize: '18px', mt: 2 }} variant='h3'>
                         Format
                     </Typography>
-                    <Select
-                        onChange={(event) => {
-                            setDlFormat(event.target.value);
-                        }}
-                        sx={{ mt: 2 }}
-                        value={dlFormat}
-                    >
-                        <MenuItem value='csv'>CSV (Excel compatible)</MenuItem>
-                        <MenuItem value='txt'>CSV as a .txt file</MenuItem>
-                        <MenuItem value='json'>JSON</MenuItem>
-                    </Select>
+                    <FormControlLabel
+                        control={
+                            <Select
+                                onChange={(event) => {
+                                    setDlFormat(event.target.value);
+                                }}
+                                sx={{ mt: 2 }}
+                                value={dlFormat}
+                            >
+                                <MenuItem value='csv'>
+                                    CSV (Excel compatible)
+                                </MenuItem>
+                                <MenuItem value='txt'>
+                                    CSV as a .txt file
+                                </MenuItem>
+                                <MenuItem value='json'>JSON</MenuItem>
+                            </Select>
+                        }
+                        label='File type'
+                        labelPlacement='top'
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={separateCardsOnDownload}
+                                onChange={(_, checked) => {
+                                    setSeparateCardsOnDownload(checked);
+                                }}
+                            />
+                        }
+                        label='Separate files per card'
+                        labelPlacement='top'
+                    />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-between', pl: 3 }}>
                     <Typography>
