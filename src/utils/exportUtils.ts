@@ -2,8 +2,11 @@ import { Dayjs } from 'dayjs';
 
 /**
  * Provides a standardised file format name for exported transaction data.
+ *
+ * Format as follows: `pf-transaction-data{-EXTRA}-{FROM DATE}-{TO DATE}`.
  * @param startDate The file range start date
  * @param endDate The file range end date
+ * @param extra Optional additional prefix to be injected into the download name.
  * @returns The file name.
  */
 export const createStandardTransactionDlName = (
