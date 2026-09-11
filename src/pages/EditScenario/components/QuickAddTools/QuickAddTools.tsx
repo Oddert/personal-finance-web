@@ -26,7 +26,7 @@ const QuickAddTools: FC<IProps> = ({ setTransactors }) => {
                     <MonthAverages />
                 </AccordionDetails>
             </Accordion>
-            <Accordion>
+            <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<IconExpand />}>
                     {t('Scenario.pastTransactions')}
                 </AccordionSummary>

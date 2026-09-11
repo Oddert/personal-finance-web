@@ -151,6 +151,7 @@ const PastData: FC<IProps> = ({ setTransactors }) => {
                     const id = String(cell.renderValue());
                     return (
                         <IconButton
+                            color='primary'
                             onClick={() => {
                                 handleClickAdd(id);
                             }}

@@ -94,7 +94,11 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
                 onClick={handleClick}
                 variant='contained'
             >
-                {loading ? <CircularProgress /> : t('literals.Search')}
+                {loading ? (
+                    <CircularProgress size='1rem' />
+                ) : (
+                    t('literals.Search')
+                )}
             </Button>
         </Box>
     );
