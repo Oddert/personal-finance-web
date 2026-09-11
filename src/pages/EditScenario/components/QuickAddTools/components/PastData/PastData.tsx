@@ -35,14 +35,18 @@ const PastData: FC<IProps> = ({ setTransactors }) => {
     const cards = useAppSelector(getCardResponse);
     const categories = useAppSelector(getCategoryOrderedDataById);
 
-    const handleClickLoad = (startDate: Dayjs, endDate: Dayjs) => {
+    const handleClickLoad = (
+        startDate: Dayjs,
+        endDate: Dayjs,
+        cardIds: string | null,
+    ) => {
         const request = async () => {
             try {
                 setLoading(true);
                 const response = await APIService.getAllTransactionsWithinRange(
                     startDate.valueOf(),
                     endDate.valueOf(),
-                    null,
+                    cardIds,
                 );
                 if (response.payload?.transactions) {
                     setTransactions(response.payload.transactions);

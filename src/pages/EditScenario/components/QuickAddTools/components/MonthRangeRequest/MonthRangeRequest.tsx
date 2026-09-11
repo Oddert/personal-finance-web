@@ -1,29 +1,55 @@
 import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, CircularProgress } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Button,
+    Chip,
+    CircularProgress,
+    TextField,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import dayjs from 'dayjs';
 import LF from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './MonthRangeRequest.types';
+import type { ICard } from '../../../../../../types/Card.types';
 
+import { useAppSelector } from '../../../../../../hooks/ReduxHookWrappers';
+import { getCardResponse } from '../../../../../../redux/selectors/cardSelectors';
 import {
     toBeginningMonthDayjs,
     toEndMonthDayjs,
 } from '../../../../../../utils/budgetUtils';
+import { ffBlankCard } from '../../../../../../utils/factoryFunctions';
 
 dayjs.extend(LF);
+
+const ENUM_ALL_CARDS = 'ENUM_ALL_CARDS';
+
+const optionAllCards = ffBlankCard({
+    cardName: '- All Cards -',
+    id: ENUM_ALL_CARDS,
+});
 
 const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
     const { t } = useTranslation();
 
     const [endDate, setEndDate] = useState(dayjs());
     const [startDate, setStartDate] = useState(dayjs());
+    const [cards, setCards] = useState<ICard[]>([optionAllCards]);
+
+    const allCards = useAppSelector(getCardResponse);
 
     const handleClick = () => {
-        onClickLoad(startDate, endDate);
+        const allCards = cards.find((card) => card.id === ENUM_ALL_CARDS);
+        onClickLoad(
+            startDate,
+            endDate,
+            allCards || !cards.length ? null : cards.map((c) => c.id).join(','),
+        );
     };
 
     useEffect(() => {
@@ -34,7 +60,13 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
     }, []);
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+            }}
+        >
             <DatePicker
                 format='DD/MM/YYYY'
                 label={t('Start date')}
@@ -88,6 +120,28 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
                 }}
                 value={endDate}
                 views={['year', 'month']}
+            />
+            <Autocomplete
+                getOptionKey={(opt) => opt.id}
+                getOptionLabel={(opt) => opt.cardName}
+                multiple
+                onChange={(_, value) => {
+                    setCards(value);
+                }}
+                options={[optionAllCards, ...allCards]}
+                renderInput={(props) => (
+                    <TextField
+                        {...props}
+                        label={t('literals.Card')}
+                        size='small'
+                    />
+                )}
+                renderOption={(props) => (
+                    // @ts-expect-error assume errant report
+                    <Chip {...props} size='small' />
+                )}
+                sx={{ '& .MuiChip-root': { m: 0 } }}
+                value={cards}
             />
             <Button
                 disabled={loading}

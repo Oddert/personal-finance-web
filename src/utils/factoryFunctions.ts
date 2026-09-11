@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
 import type { ITransactorRowEditable } from '../pages/EditScenario/EditScenario.types';
+import type { ICard } from '../types/Card.types';
 import type { IMatcher } from '../types/Matcher';
 
 export const ffBlankTransactorRowEditable = (
@@ -28,5 +29,22 @@ export const ffBlankMatcher = (matcher?: Partial<IMatcher>): IMatcher => ({
     createdOn: '',
     updatedOn: '',
     userId: '',
+    ...matcher,
+});
+
+export const ffBlankCard = (matcher?: Partial<ICard>): ICard => ({
+    bankName: '',
+    cardName: '',
+    cardNumber: 0,
+    cardType: 'DEBIT',
+    coverImage: '',
+    createdOn: '',
+    description: '',
+    expires: '',
+    icon: '',
+    id: '',
+    isDefault: false,
+    sortCode: 0,
+    updatedOn: '',
     ...matcher,
 });
