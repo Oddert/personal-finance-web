@@ -78,8 +78,8 @@ const Submit: FC<IProps> = ({ onClose }) => {
                     (transaction.ballance as number) ??
                     0,
                 cardId:
-                    (transaction[columnMap.cardId] as string | undefined) ??
-                    (transaction.cardId as string | undefined) ??
+                    (transaction[columnMap.card] as string | undefined) ??
+                    (transaction.card as string | undefined) ??
                     activeCardId ??
                     '',
                 categoryId:
