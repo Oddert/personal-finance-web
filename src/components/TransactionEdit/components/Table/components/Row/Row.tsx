@@ -80,16 +80,16 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
             case 'card':
                 return <CardSelector key={key} transaction={transaction} />;
             case 'date':
+                // eslint-disable-next-line no-case-declarations
+                const date = dayjs.utc(
+                    transaction[columnMap.date],
+                    dateFormat,
+                    true,
+                );
                 return (
                     <Tooltip title={transaction[columnMap.date]}>
                         <TableCell key={key}>
-                            {dayjs
-                                .utc(
-                                    transaction[columnMap.date],
-                                    dateFormat,
-                                    true,
-                                )
-                                .toISOString()}
+                            {(date.isValid() ? date : dayjs()).toISOString()}
                         </TableCell>
                     </Tooltip>
                 );
