@@ -1,12 +1,10 @@
-import { type FC, useContext } from 'react';
+import { type FC, } from 'react';
 
-import { TableCell, TableRow, Tooltip } from '@mui/material';
+import { TableCell, TableRow,  } from '@mui/material';
 
-import dayjs from 'dayjs';
 
 import type { IProps } from './Row.types';
 
-import { TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
 import CardSelector from '../CardSelector';
 import CategorySelector from '../CategorySelector';
 import CurrencySelector from '../CurrencySelector';
@@ -14,6 +12,7 @@ import DeleteOption from '../DeleteOption/DeleteOption';
 import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
 import TransactionDescription from '../TransactionDescription';
+import TransactionDate from '../TransactionDate';
 
 /**
  * Displays a single table row.
@@ -25,10 +24,6 @@ import TransactionDescription from '../TransactionDescription';
  * @param props.transaction The row transaction.
  */
 const Row: FC<IProps> = ({ columns, idx, transaction }) => {
-    const {
-        state: { columnMap, dateFormat },
-    } = useContext(TransactionEditContext);
-
     const switchComponents = (
         column: {
             accessorKey: string;
@@ -80,18 +75,8 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
             case 'card':
                 return <CardSelector key={key} transaction={transaction} />;
             case 'date':
-                // eslint-disable-next-line no-case-declarations
-                const date = dayjs.utc(
-                    transaction[columnMap.date],
-                    dateFormat,
-                    true,
-                );
                 return (
-                    <Tooltip title={transaction[columnMap.date]}>
-                        <TableCell key={key}>
-                            {(date.isValid() ? date : dayjs()).toISOString()}
-                        </TableCell>
-                    </Tooltip>
+                    <TransactionDate key={key} transaction={transaction} />
                 );
             default:
                 return (

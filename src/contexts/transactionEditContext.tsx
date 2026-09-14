@@ -31,6 +31,7 @@ const TransactionEditActionTypes = {
     changeCardAll: 'changeCardAll',
     changeCurrencyAll: 'changeCurrencyAll',
     changeDateFormat: 'changeDateFormat',
+    changeDateValue: 'changeDateValue',
     changeSelected: 'changeSelected',
     checkAll: 'checkAll',
     deleteAll: 'deleteAll',
@@ -467,6 +468,23 @@ export const createTECReducer = (uploadMode = false) => {
                         },
                         true,
                     ];
+                case TransactionEditActionTypes.changeDateValue:
+                    return [
+                        {
+                            ...state,
+                            transactions: state.transactions.map(
+                                (transaction) =>
+                                    transaction.tecTempId === action.payload.uid
+                                        ? {
+                                              ...transaction,
+                                              [state.columnMap.date]:
+                                                  action.payload.date,
+                                          }
+                                        : transaction,
+                            ),
+                        },
+                        true,
+                    ];
                 default:
                     return [state, false];
             }
@@ -503,6 +521,11 @@ export const changeCurrencyAll = (currency: string) => ({
 export const changeDateFormat = (format: string) => ({
     type: TransactionEditActionTypes.changeDateFormat,
     payload: { format },
+});
+
+export const changeDateValue = (uid: string, date: string) => ({
+    type: TransactionEditActionTypes.changeDateValue,
+    payload: { uid, date },
 });
 
 export const changeSingleSelected = (uid: string, selected: boolean) => ({
