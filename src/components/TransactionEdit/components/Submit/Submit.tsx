@@ -55,14 +55,14 @@ const Submit: FC<IProps> = ({ onClose }) => {
 
     const handleClick = () => {
         // Filter only for items which are checked.
-        const filterSeleted = transactions.filter(
+        const filterSelected = transactions.filter(
             (transaction) => transaction.selected,
         );
 
         const filterDeleted =
             mode === 'upload'
-                ? filterSeleted.filter((transaction) => !transaction.deleted)
-                : filterSeleted;
+                ? filterSelected.filter((transaction) => !transaction.deleted)
+                : filterSelected;
 
         // Convert the keys from the user's proprietary CSV format to our transaction format.
         const stagedTemp = filterDeleted.map((transaction) => {
