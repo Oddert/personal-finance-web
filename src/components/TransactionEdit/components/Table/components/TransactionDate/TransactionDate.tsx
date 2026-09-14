@@ -1,14 +1,26 @@
-import { useContext, useEffect, useState, type FC } from 'react';
-
-import type { IProps } from './TransactionDate.types';
+import { type FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { changeDateValue, TransactionEditContext } from '../../../../../../contexts/transactionEditContext';
-import { Box, Button, TableCell, TextField, Tooltip, Typography } from '@mui/material';
 
 import { Edit as IconEdit } from '@mui/icons-material';
+import {
+    Box,
+    Button,
+    TableCell,
+    TextField,
+    Tooltip,
+    Typography,
+} from '@mui/material';
+
 import dayjs from 'dayjs';
 
-const TransactionDate: FC<IProps> = ({transaction}) => {
+import type { IProps } from './TransactionDate.types';
+
+import {
+    TransactionEditContext,
+    changeDateValue,
+} from '../../../../../../contexts/transactionEditContext';
+
+const TransactionDate: FC<IProps> = ({ transaction }) => {
     const { t } = useTranslation();
 
     const {
@@ -24,13 +36,9 @@ const TransactionDate: FC<IProps> = ({transaction}) => {
         setInternalValue(transaction[columnMap.date] as string);
     }, [columnMap, transaction]);
 
-    const date = dayjs.utc(
-        transaction[columnMap.date],
-        dateFormat,
-        true,
-    );
+    const date = dayjs.utc(transaction[columnMap.date], dateFormat, true);
 
-    const existingDateStr = String(transaction[columnMap.date] ?? '')
+    const existingDateStr = String(transaction[columnMap.date] ?? '');
 
     return (
         <TableCell
@@ -45,9 +53,12 @@ const TransactionDate: FC<IProps> = ({transaction}) => {
             }}
         >
             {editOpen ? (
-                <Box sx={{
-                display: 'flex',
-                alignItems: 'center',}}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                >
                     <TextField
                         label={t('Transaction.transactionDescriptionLabel')}
                         name='description'
@@ -83,14 +94,17 @@ const TransactionDate: FC<IProps> = ({transaction}) => {
                     </Button>
                 </Box>
             ) : (
-                <Box sx={{
-                display: 'flex',
-                alignItems: 'center',}}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                >
                     <Tooltip title={transaction[columnMap.date]}>
-                                            <Typography>
-                                                {(date.isValid() ? date : dayjs()).toISOString()}
-                                            </Typography>
-                                        </Tooltip>
+                        <Typography>
+                            {(date.isValid() ? date : dayjs()).toISOString()}
+                        </Typography>
+                    </Tooltip>
                     <Button
                         className='transaction_description_edit'
                         onClick={() => {
