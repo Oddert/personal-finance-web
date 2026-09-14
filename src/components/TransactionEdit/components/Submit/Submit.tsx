@@ -105,6 +105,7 @@ const Submit: FC<IProps> = ({ onClose }) => {
                     (transaction.transactionType as string) ??
                     'DEB',
                 deleted: Number(transaction.deleted) ?? 0,
+                id: String(transaction.id ?? ''),
             };
 
             // Handle number values separately as they are expected to be string (though not limited to).
