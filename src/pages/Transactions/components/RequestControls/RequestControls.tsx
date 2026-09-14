@@ -61,9 +61,17 @@ const RequestControls = () => {
 
     const handleSubmit = useCallback(() => {
         if (start && end) {
-            dispatch(refreshTransactions(allCards ? [] : [], start, end));
+            dispatch(
+                refreshTransactions(
+                    allCards || !activeCards.length
+                        ? []
+                        : activeCards.map((c) => c.id),
+                    start,
+                    end,
+                ),
+            );
         }
-    }, [allCards, dispatch, end, start]);
+    }, [allCards, activeCards, dispatch, end, start]);
 
     useEffect(() => {
         if (startDate) {
