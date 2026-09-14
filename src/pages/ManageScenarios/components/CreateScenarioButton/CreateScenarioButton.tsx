@@ -6,6 +6,9 @@ import { Button } from '@mui/material';
 
 import type { IProps } from './CreateScenarioButton.types';
 
+import router, { ROUTES } from '../../../../constants/routerConstants';
+import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import { getScenarioCount } from '../../../../redux/selectors/scenarioSelectors';
 import CreateBudgetMenu from '../CreateScenarioMenu';
 
 /**
@@ -19,8 +22,15 @@ const CreateScenarioButton: FC<IProps> = () => {
 
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
+    const scenarioCount = useAppSelector(getScenarioCount);
+
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+        if (scenarioCount > 0) {
+            setAnchorEl(event.currentTarget);
+        } else {
+            router.navigate(ROUTES.CREATE_SCENARIO);
+            handleClose();
+        }
     };
 
     const handleClose = () => {
