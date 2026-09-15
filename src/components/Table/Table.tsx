@@ -24,6 +24,7 @@ interface ReactTableProps<TData> {
     columnVisibility?: Record<string, boolean>;
     compact?: boolean;
     data: TData[];
+    disableRenderOnNoData?: boolean;
     enablePagination?: boolean;
     size?: 'small' | 'medium';
 }
@@ -40,10 +41,11 @@ interface ReactTableProps<TData> {
  * @param props.enablePagination If true, pagination controls are displayed.
  */
 const Table = <TData extends object>({
-    data,
     columns,
     compact,
     columnVisibility,
+    data,
+    disableRenderOnNoData,
     enablePagination = true,
     size = 'medium',
 }: ReactTableProps<TData>) => {
@@ -91,6 +93,10 @@ const Table = <TData extends object>({
             rowsPerPageOptions={[10, 30, 50, 100, 150, 200, 500]}
         />
     ) : null;
+
+    if (disableRenderOnNoData && !data.length) {
+        return null;
+    }
 
     return (
         <Box>

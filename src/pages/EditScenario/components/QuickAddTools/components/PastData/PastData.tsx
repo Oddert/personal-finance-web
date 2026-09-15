@@ -180,6 +180,7 @@ const PastData: FC<IProps> = ({ setTransactors }) => {
                     columns={columns}
                     compact
                     data={transactions}
+                    disableRenderOnNoData
                     size='small'
                 />
             </Box>
