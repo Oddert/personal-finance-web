@@ -1,3 +1,7 @@
 - delete matcher from quick edit does not remove
 - create category from dropdown modal
+- Alphebitise Month category avg cards
+- check return value on all transactions
+- bug editing transactions
+- column sorting on all transactions
 - 
