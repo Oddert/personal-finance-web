@@ -236,7 +236,7 @@ const ProjectionLineChart: FC<IProps> = ({ compact = false }) => {
             .slice(-3)
             .reduce((acc, monthSet) => [...acc, ...monthSet], []);
         const sampledDataObj = sampledData.reduce(
-            (acc: Record<number, { x: number; y: number }>, datum) => {
+            (acc: Record<string, { x: string; y: number }>, datum) => {
                 acc[datum.date] = {
                     x: datum.date,
                     y: datum.ballance,
