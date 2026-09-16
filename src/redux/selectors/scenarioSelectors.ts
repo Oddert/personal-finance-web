@@ -38,3 +38,13 @@ export const getScenariosLoaded = createSelector(
     getScenarioState,
     (scenarioState) => scenarioState.loaded,
 );
+
+/**
+ * Returns the count of Scenarios loaded in the system.
+ * @category Redux
+ * @subcategory Selectors
+ */
+export const getScenarioCount = createSelector(
+    getScenarios,
+    (scenarios) => scenarios.length,
+);
