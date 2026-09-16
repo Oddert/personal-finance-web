@@ -3,7 +3,8 @@ import type { ThemeOptions } from '@mui/material';
 const palette: Partial<ThemeOptions['palette']> = {
     mode: 'dark',
     primary: {
-        main: '#842fdc',
+        main: '#ab66ff',
+        // main: '#842fdc',
         light: '#c799f6',
         dark: '#53099F',
         contrastText: '#ecf0f1',
