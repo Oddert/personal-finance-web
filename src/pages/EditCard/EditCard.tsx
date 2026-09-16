@@ -169,7 +169,8 @@ const EditBudget: FC<IProps> = () => {
             console.error(error);
             dispatch(intakeError(error));
         }
-    }, [card.id, dispatch, location.pathname, params, search, t]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [card.id, t]);
 
     if (loading) {
         return (
