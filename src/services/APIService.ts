@@ -17,6 +17,19 @@ import request from '../common/request';
 
 dayjs.extend(LocalizedFormat);
 
+const buildUrl = (
+    path: string,
+    params: Record<string, string | number | boolean | undefined | null>,
+): string => {
+    const filtered = Object.entries(params)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .filter(([_, v]) => v !== undefined && v !== null && v !== '')
+        .reduce((acc, [k, v]) => ({ ...acc, [k]: String(v) }), {});
+
+    const queryString = new URLSearchParams(filtered).toString();
+    return queryString ? `${path}?${queryString}` : path;
+};
+
 /**
  * Primary interface for interacting with the API.
  *
@@ -203,24 +216,26 @@ const APIService = Object.freeze({
      * @returns Transactions within the date range.
      */
     getAllTransactionsAggregated: async (
-        cardId: string,
+        cardId: string | null,
         options?: {
             pivotOnCategory?: boolean;
-            startDate?: number;
-            endDate?: number;
+            startDate?: number | string;
+            endDate?: number | string;
         },
     ) => {
-        const from = options?.startDate
-            ? `&from=${new Date(options.startDate).toISOString()}`
-            : '';
-        const to = options?.endDate
-            ? `&to=${new Date(options.endDate).toISOString()}`
-            : '';
+        const url = buildUrl('/transaction/aggregated', {
+            pivot: options?.pivotOnCategory ? 'category' : 'time',
+            cardId,
+            from: options?.startDate
+                ? new Date(options.startDate).toISOString()
+                : undefined,
+            to: options?.endDate
+                ? new Date(options.endDate).toISOString()
+                : undefined,
+        });
         const response: IStandardResponse<{
             cards: TAggregateDataResponse;
-        }> = await request.get(
-            `/transaction/aggregated?cardId=${cardId}&pivot=${options?.pivotOnCategory ? 'category' : 'time'}${from}${to}`,
-        );
+        }> = await request.get(url);
         return response;
     },
     /**
