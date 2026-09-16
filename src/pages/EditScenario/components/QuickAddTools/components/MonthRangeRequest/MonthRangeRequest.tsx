@@ -65,6 +65,7 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-end',
+                gridGap: '4px',
             }}
         >
             <DatePicker
@@ -140,7 +141,7 @@ const MonthRangeRequest: FC<IProps> = ({ loading, onClickLoad }) => {
                     // @ts-expect-error assume errant report
                     <Chip {...props} size='small' />
                 )}
-                sx={{ '& .MuiChip-root': { m: 0 } }}
+                // sx={{ '& .MuiChip-root': { m: 0 } }}
                 value={cards}
             />
             <Button

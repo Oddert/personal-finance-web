@@ -23,7 +23,7 @@ const QuickAddTools: FC<IProps> = ({ setTransactors }) => {
                     {t('Scenario.monthlyCategoryAvg')}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <MonthAverages />
+                    <MonthAverages setTransactors={setTransactors} />
                 </AccordionDetails>
             </Accordion>
             <Accordion defaultExpanded>
