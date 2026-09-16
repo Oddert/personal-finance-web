@@ -24,6 +24,7 @@ import {
     createTECReducer,
     restoreState,
     setColumnMap,
+    setLoading,
     setMode,
     tecWriteTransactions,
     transactionEditInitialState,
@@ -60,6 +61,8 @@ const Edit: FC<IProps> = () => {
         transactionEditInitialState,
     );
 
+    console.log(state);
+
     const { transactions } = useTransactions(
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         rangeValues[value[0]]?.bottom,
@@ -80,6 +83,7 @@ const Edit: FC<IProps> = () => {
             debit: transaction.debit === 0 ? '-' : transaction.debit,
             categoryId: transaction.categoryId ?? 0,
             assignedCategory: transaction.categoryId ?? 0,
+            card: transaction.cardId,
             selected: 1,
             deleted: 0,
             tecTempId: uuid(),
@@ -95,10 +99,12 @@ const Edit: FC<IProps> = () => {
                 ballance: 'ballance',
                 currency: 'currency',
                 id: 'id',
+                card: 'card',
             }),
         );
         dispatch(tecWriteTransactions(filteredTransactions));
         dispatch(setMode('edit'));
+        dispatch(setLoading(false));
     }, [currencies, language, rangeValues, transactions, value]);
 
     useEffect(() => {
@@ -109,6 +115,7 @@ const Edit: FC<IProps> = () => {
                 // @ts-expect-error unknown localstore response
                 JSON.parse(recovery);
             dispatch(restoreState(nextState));
+            dispatch(setLoading(false));
         }
     }, []);
 
