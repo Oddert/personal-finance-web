@@ -1,7 +1,6 @@
-import { type FC, } from 'react';
+import { type FC } from 'react';
 
-import { TableCell, TableRow,  } from '@mui/material';
-
+import { TableCell, TableRow } from '@mui/material';
 
 import type { IProps } from './Row.types';
 
@@ -11,8 +10,8 @@ import CurrencySelector from '../CurrencySelector';
 import DeleteOption from '../DeleteOption/DeleteOption';
 import EditableNumber from '../EditableNumber';
 import SelectOption from '../SelectOption';
-import TransactionDescription from '../TransactionDescription';
 import TransactionDate from '../TransactionDate';
+import TransactionDescription from '../TransactionDescription';
 
 /**
  * Displays a single table row.
@@ -75,9 +74,7 @@ const Row: FC<IProps> = ({ columns, idx, transaction }) => {
             case 'card':
                 return <CardSelector key={key} transaction={transaction} />;
             case 'date':
-                return (
-                    <TransactionDate key={key} transaction={transaction} />
-                );
+                return <TransactionDate key={key} transaction={transaction} />;
             default:
                 return (
                     <TableCell key={key}>
