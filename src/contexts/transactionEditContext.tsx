@@ -282,7 +282,7 @@ export const createTECReducer = (uploadMode = false) => {
                     return [
                         {
                             ...state,
-                            loading: action?.payload?.loading,
+                            loading: Boolean(action?.payload.loading),
                         },
                         false,
                     ];
