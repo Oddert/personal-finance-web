@@ -78,13 +78,15 @@ export const orderTransactions = (transactions: ITransaction[]) => {
  * @returns A container with the formatted text.
  */
 export const addCurrencySymbol = (cell: CellContext<ITransaction, unknown>) => {
-    const rawValue = createReadableNumber(cell.renderValue(), 0);
-    const value = Number(rawValue);
+    const cellNumberRaw = Number(cell.renderValue() ?? 0);
+    // const rawValue = createReadableNumber(cellNumberRaw, 0);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { currencyLocaliser } = useLocalisedNumber();
     return (
         <Box sx={{ textAlign: 'right' }}>
-            {isNaN(value) || value === 0 ? '-' : currencyLocaliser(value)}
+            {isNaN(cellNumberRaw) || cellNumberRaw === 0
+                ? '-'
+                : currencyLocaliser(cellNumberRaw)}
         </Box>
     );
 };
