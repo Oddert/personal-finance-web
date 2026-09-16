@@ -61,8 +61,6 @@ const Edit: FC<IProps> = () => {
         transactionEditInitialState,
     );
 
-    console.log(state);
-
     const { transactions } = useTransactions(
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         rangeValues[value[0]]?.bottom,
