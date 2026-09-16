@@ -38,6 +38,11 @@ export interface ITransaction {
 
 export type TTransactionKeys = keyof ITransaction;
 
+/**
+ * Represents an individual aggregated record.
+ *
+ * In 'category' mode this is a month's values. In 'time' mode this represents a category's value.
+ */
 export interface IAggregateDatapoint {
     categoryId: string;
     month: Date;
@@ -46,16 +51,24 @@ export interface IAggregateDatapoint {
     categoryName: string;
 }
 
-export type TAggregateDatapoints = Record<
-    string,
-    {
-        data: IAggregateDatapoint[];
-        totalCredit: number;
-        totalDebit: number;
-        finalBalance?: number;
-    }
->;
+/**
+ * Collects a series of category or month aggregations (depending on mode) and appends some totals values.
+ */
+export interface IAggregateDatapointRecord {
+    data: IAggregateDatapoint[];
+    totalCredit: number;
+    totalDebit: number;
+    finalBalance?: number;
+}
 
+/**
+ * Key is either a category ID (in 'category' mode) or a time period code (in 'time' mode) in the format YYYY-MM, e.g. 2026-04.
+ */
+export type TAggregateDatapoints = Record<string, IAggregateDatapointRecord>;
+
+/**
+ * The entire aggregation for a single card.
+ */
 export type TAggregateDataResponse = {
     cardId: string;
     transactions: TAggregateDatapoints;
