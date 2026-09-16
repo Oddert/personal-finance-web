@@ -31,7 +31,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
     const [pastDataLoading, setPastDataLoading] = useState(false);
     const [showNegatives, setShowNegatives] = useState(true);
     const [startDate, setStartDate] = useState(
-        toBeginningMonthDayjs(dayjs().subtract(24, 'months')),
+        toBeginningMonthDayjs(dayjs().subtract(3, 'months')),
     );
     const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
     const [selectedCards, setSelectedCards] = useState<ICard[]>([]);
