@@ -31,11 +31,15 @@ export const createRegexFromMatcher = (matcher: IMatcher) => {
  * Attempts to match categories to a list of partially-formatted matchers.
  * @param transactions List of read in CSV rows to be made into Transactions.
  * @param categories List of categories to attempt to match to.
+ * @param columnMap The column mapping entity to attempt to reconcile non-standard columns.
+ * @param resetUnmatched If true, any transaction which cannot be auto-mapped will be reset to have no category, wiping any manual user-selection.
  * @returns The list of transactions with categories matched (if matches are found).
  */
 export const autoMatchCategories = (
     transactions: TransactionEditState['transactions'],
     categories: ICategory[],
+    columnMap: Record<string, string>,
+    resetUnmatched = false,
 ) => {
     // Reduces the list of categories down to key-value pairs and a raw list of all `match` attributes.
     const regexList = categories.reduce(
@@ -61,8 +65,9 @@ export const autoMatchCategories = (
 
     const returnValue = transactions.map((transaction) => {
         const description: string =
-            'Transaction Description' in transaction
-                ? (transaction['Transaction Description'] as string)
+            columnMap.description in transaction &&
+            typeof transaction[columnMap.description] === 'string'
+                ? (transaction[columnMap.description] as string)
                 : (transaction.description as string);
 
         superMatcher.lastIndex = 0;
@@ -85,7 +90,9 @@ export const autoMatchCategories = (
                 };
             }
         }
-        return transaction;
+        return resetUnmatched
+            ? { ...transaction, assignedCategory: '' }
+            : transaction;
     });
 
     return returnValue;

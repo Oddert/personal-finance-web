@@ -80,6 +80,7 @@ const Upload = () => {
                             const withCategories = autoMatchCategories(
                                 transactions,
                                 categories,
+                                state.columnMap,
                             );
                             const withPresets = withCategories.map((datum) => ({
                                 ...datum,

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -6,11 +6,13 @@ import { Box, Drawer, Typography } from '@mui/material';
 
 import {
     TransactionEditContext,
+    tecWriteTransactions,
     toggleSideBar,
 } from '../../../../contexts/transactionEditContext';
 import { useAppDispatch } from '../../../../hooks/ReduxHookWrappers';
 import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
 import { checkAuth } from '../../../../redux/thunks/authThunks';
+import { autoMatchCategories } from '../../../../utils/uploadUtils';
 
 import AddCategory from './components/AddCategory';
 import Option from './components/Option';
@@ -26,16 +28,35 @@ const CategoryQuickEdit = () => {
 
     const {
         dispatch,
-        state: { sideBarOpen },
+        state: { columnMap, sideBarOpen, transactions },
     } = useContext(TransactionEditContext);
 
     const { t } = useTranslation();
 
     const categories = useSelector(getCategoryResponse);
+    const transactionsRef = useRef(transactions);
+
+    // eslint-disable-next-line react-hooks/refs
+    transactionsRef.current = transactions;
 
     useEffect(() => {
         reduxDispatch(checkAuth());
     }, [reduxDispatch]);
+
+    useEffect(() => {
+        if (categories.length) {
+            dispatch(
+                tecWriteTransactions(
+                    autoMatchCategories(
+                        transactionsRef.current,
+                        categories,
+                        columnMap,
+                        false,
+                    ),
+                ),
+            );
+        }
+    }, [categories, columnMap, dispatch]);
 
     const toggleDrawer = (toOpen?: boolean) => {
         const callback = (event: React.KeyboardEvent | React.MouseEvent) => {

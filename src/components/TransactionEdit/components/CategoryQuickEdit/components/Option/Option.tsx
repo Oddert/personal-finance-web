@@ -26,7 +26,7 @@ import ColourBase from '../../../../../ColourBase';
 const Option: FC<IProps> = ({ category }) => {
     const {
         dispatch,
-        state: { match, transactions },
+        state: { columnMap, match, transactions },
     } = useContext(TransactionEditContext);
 
     const [open, setOpen] = useState(false);
@@ -40,17 +40,21 @@ const Option: FC<IProps> = ({ category }) => {
             });
             dispatch(
                 tecWriteTransactions(
-                    autoMatchCategories(transactions, [
-                        {
-                            ...category,
-                            matchers: [matcher],
-                        },
-                    ]),
+                    autoMatchCategories(
+                        transactions,
+                        [
+                            {
+                                ...category,
+                                matchers: [matcher],
+                            },
+                        ],
+                        columnMap,
+                    ),
                 ),
             );
             dispatch(toggleSideBar(false));
         },
-        [category, dispatch, transactions],
+        [category, columnMap, dispatch, transactions],
     );
 
     if (open) {

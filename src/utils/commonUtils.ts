@@ -57,7 +57,7 @@ export const readCsv = (file: unknown) => {
                 const rowSplit = row.split(',');
                 const rowConverted = headers.reduce(
                     (acc: Record<string, string>, header, idx) => {
-                        acc[header] = rowSplit[idx];
+                        acc[header] = normaliseUppercaseMonth(rowSplit[idx]);
                         return acc;
                     },
                     {},
@@ -69,6 +69,27 @@ export const readCsv = (file: unknown) => {
             returnValue.valueLength = converted.length;
             return returnValue;
         }
+    }
+};
+
+const normaliseUppercaseMonth = (value: string) => {
+    try {
+        return value.replace(
+            /^(\d{1,2})(\s+)(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)(\s+)(\d{4})(\r?)$/,
+            (
+                _,
+                day,
+                firstWhitespace,
+                month,
+                secondWhitespace,
+                year,
+                lineEnding,
+            ) =>
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+                `${day}${firstWhitespace}${month[0]}${month.slice(1).toLowerCase()}${secondWhitespace}${year}${lineEnding}`,
+        );
+    } catch {
+        return value;
     }
 };
 
