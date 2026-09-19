@@ -1,7 +1,16 @@
 import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, FormControlLabel, Paper, Switch, useTheme } from '@mui/material';
+import {
+    Autocomplete,
+    Box,
+    Checkbox,
+    FormControlLabel,
+    Paper,
+    Switch,
+    TextField,
+    useTheme,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import dayjs from 'dayjs';
@@ -35,6 +44,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
     );
     const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
     const [selectedCards, setSelectedCards] = useState<ICard[]>([]);
+    const [allCardsActive, setAllCardsActive] = useState(true);
 
     const cards = useAppSelector(getCardResponse);
 
@@ -61,8 +71,8 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
                     await APIService.getAllTransactionsAggregated(
                         selectedCards.map((card) => card.id).join(','),
                         {
-                            startDate: startDate.valueOf(),
-                            endDate: endDate.valueOf(),
+                            startDate: startDate.toISOString(),
+                            endDate: endDate.toISOString(),
                         },
                     );
                 if (!pastDataResponse.payload) {
@@ -86,7 +96,6 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
     return (
         <Paper
             sx={{
-                color: theme.palette.common.black,
                 margin: '20px 0 0',
                 padding: '20px',
             }}
@@ -159,13 +168,41 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
                     value={endDate}
                     views={['month', 'year']}
                 />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={allCardsActive}
+                            onChange={(_, checked) => {
+                                setAllCardsActive(checked);
+                            }}
+                        />
+                    }
+                    label='All cards'
+                    labelPlacement='end'
+                />
+                <Autocomplete
+                    disabled={allCardsActive}
+                    getOptionKey={(opt) => opt.id}
+                    getOptionLabel={(opt) => opt.cardName}
+                    multiple
+                    onChange={(_, value) => {
+                        setSelectedCards(value);
+                    }}
+                    options={cards}
+                    renderInput={(props) => (
+                        <TextField {...props} size='small' />
+                    )}
+                    value={selectedCards}
+                />
             </Box>
-            <Display
-                disableCategoryBreakdown={previewMode === 'total'}
-                loading={pastDataLoading}
-                pastData={pastData}
-                showNegatives={showNegatives}
-            />
+            <Box sx={{ color: theme.palette.common.black }}>
+                <Display
+                    disableCategoryBreakdown={previewMode === 'total'}
+                    loading={pastDataLoading}
+                    pastData={pastData}
+                    showNegatives={showNegatives}
+                />
+            </Box>
         </Paper>
     );
 };
