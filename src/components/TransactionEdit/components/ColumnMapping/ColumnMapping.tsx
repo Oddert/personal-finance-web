@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 
 import { Box, Button, Dialog, Paper } from '@mui/material';
 
-import { PERSONAL_FINANCE_CSV_MAPPING } from '../../../../constants/appConstants';
+import {
+    PERSONAL_FINANCE_CSV_MAPPING,
+    PERSONAL_FINANCE_DATE_FORMAT,
+} from '../../../../constants/appConstants';
 import {
     TransactionEditContext,
     changeDateFormat,
@@ -56,6 +59,10 @@ const ColumnMapping = () => {
         localStorage.setItem(
             PERSONAL_FINANCE_CSV_MAPPING,
             JSON.stringify(localColumnMap),
+        );
+        localStorage.setItem(
+            PERSONAL_FINANCE_DATE_FORMAT,
+            JSON.stringify(localDateFormat),
         );
     }, [dispatch, localColumnMap, localDateFormat]);
 
