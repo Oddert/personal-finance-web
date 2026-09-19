@@ -6,9 +6,13 @@ import { Button } from '@mui/material';
 
 import { v4 as uuid } from 'uuid';
 
-import { PERSONAL_FINANCE_CSV_MAPPING } from '../../constants/appConstants';
+import {
+    PERSONAL_FINANCE_CSV_MAPPING,
+    PERSONAL_FINANCE_DATE_FORMAT,
+} from '../../constants/appConstants';
 import {
     TransactionEditContext,
+    changeDateFormat,
     createTECReducer,
     setColumnMap,
     setLoading,
@@ -96,11 +100,12 @@ const Upload = () => {
                 setModalOpen(true);
             }
         },
-        [cards, categories, currencies, reduxDispatch],
+        [cards, categories, currencies, reduxDispatch, state.columnMap],
     );
 
     useEffect(() => {
         const mapping = localStorage.getItem(PERSONAL_FINANCE_CSV_MAPPING);
+        const dateFormat = localStorage.getItem(PERSONAL_FINANCE_DATE_FORMAT);
         if (mapping) {
             dispatch(
                 setColumnMap(JSON.parse(mapping) as Record<string, string>),
@@ -109,6 +114,14 @@ const Upload = () => {
             localStorage.setItem(
                 PERSONAL_FINANCE_CSV_MAPPING,
                 JSON.stringify(transactionEditInitialState.columnMap),
+            );
+        }
+        if (dateFormat) {
+            dispatch(changeDateFormat(JSON.parse(dateFormat) as string));
+        } else {
+            localStorage.setItem(
+                PERSONAL_FINANCE_DATE_FORMAT,
+                JSON.stringify(transactionEditInitialState.dateFormat),
             );
         }
     }, []);
