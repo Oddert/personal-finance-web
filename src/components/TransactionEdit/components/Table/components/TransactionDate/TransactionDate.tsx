@@ -100,7 +100,13 @@ const TransactionDate: FC<IProps> = ({ transaction }) => {
                         alignItems: 'center',
                     }}
                 >
-                    <Tooltip title={transaction[columnMap.date]}>
+                    <Tooltip
+                        title={
+                            date.isValid()
+                                ? date.format(dateFormat)
+                                : existingDateStr
+                        }
+                    >
                         <Typography>
                             {(date.isValid() ? date : dayjs()).toISOString()}
                         </Typography>
