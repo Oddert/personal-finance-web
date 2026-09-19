@@ -90,7 +90,7 @@ const TransactionDate: FC<IProps> = ({ transaction }) => {
                         }}
                         title={t('Transaction.clickToSaveDescription')}
                     >
-                        Save
+                        {t('buttons.Save')}
                     </Button>
                 </Box>
             ) : (
