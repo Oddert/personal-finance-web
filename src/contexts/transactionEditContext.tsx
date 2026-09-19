@@ -449,7 +449,7 @@ export const createTECReducer = (uploadMode = false) => {
                             transactions: state.transactions.map(
                                 (transaction) => ({
                                     ...transaction,
-                                    cardId: String(action.payload.cardId),
+                                    card: String(action.payload.card),
                                 }),
                             ),
                         },
@@ -508,9 +508,9 @@ export const changeCard = (uid: string, cardId: string) => ({
     payload: { cardId, uid },
 });
 
-export const changeCardAll = (cardId: string) => ({
+export const changeCardAll = (card: string) => ({
     type: TransactionEditActionTypes.changeCardAll,
-    payload: { cardId },
+    payload: { card },
 });
 
 export const changeCurrencyAll = (currency: string) => ({
