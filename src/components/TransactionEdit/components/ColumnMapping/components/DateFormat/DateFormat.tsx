@@ -1,8 +1,14 @@
-import { type FC, useState } from 'react';
+import { type FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { OpenInNew as IconExternalLink } from '@mui/icons-material';
-import { Box, FormControlLabel, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    FormControlLabel,
+    TextField,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import dayjs from 'dayjs';
@@ -10,13 +16,32 @@ import LF from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './DateFormat.type';
 
+import {
+    type ITECTransaction,
+    TransactionEditContext,
+} from '../../../../../../contexts/transactionEditContext';
+
 dayjs.extend(LF);
+
+const prevT = (
+    transactions: ITECTransaction[],
+    columnMap: Record<string, string>,
+) => {
+    return transactions
+        .slice(0, 2)
+        .map((transaction) => transaction[columnMap.date])
+        .join(', ');
+};
 
 export const DateFormat: FC<IProps> = ({
     localDateFormat,
     setLocalDateFormat,
 }) => {
     const { t } = useTranslation();
+
+    const {
+        state: { columnMap, transactions },
+    } = useContext(TransactionEditContext);
 
     const [date, setDate] = useState(dayjs());
     const [formatError, setFormatError] = useState<string>('');
@@ -129,6 +154,17 @@ export const DateFormat: FC<IProps> = ({
                         </Typography>
                     </Box>
                 </Box>
+            </Box>
+            <Box>
+                <Tooltip title={prevT(transactions.slice(0, 20), columnMap)}>
+                    <Typography>
+                        {transactions.length
+                            ? transactions.length > 3
+                                ? `${prevT(transactions.slice(0, 3), columnMap)} ... ${prevT(transactions.slice(transactions.length - 3, transactions.length - 1), columnMap)}`
+                                : prevT(transactions, columnMap)
+                            : 'No data'}
+                    </Typography>
+                </Tooltip>
             </Box>
         </Box>
     );
