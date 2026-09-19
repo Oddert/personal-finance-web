@@ -1,5 +1,6 @@
 import { type FC, useMemo } from 'react';
 
+import { Box } from '@mui/material';
 import {
     BarPlot,
     ChartsAxis,
@@ -18,9 +19,11 @@ import { ChartsOverlay } from '@mui/x-charts/ChartsOverlay';
 
 import type { IProps } from './Display.types';
 
-const clipPathId = 'editscenario-preview-clippath';
+const clipPathPartial = 'editscenario-preview-clippath';
 
 const Display: FC<IProps> = ({
+    clipPrefix,
+    compact,
     disableCategoryBreakdown,
     pastData,
     showNegatives,
@@ -134,31 +137,35 @@ const Display: FC<IProps> = ({
         };
     }, [disableCategoryBreakdown, pastData, showNegatives]);
 
+    const clipPathId = clipPathPartial + clipPrefix;
+
     return (
-        <ChartsDataProvider
-            dataset={dataset}
-            height={600}
-            // loading={loading}
-            series={series}
-            xAxis={[{ dataKey: 'month', scaleType: 'band' }]}
-        >
-            <ChartsWrapper>
-                <ChartsLegend />
-                <ChartsSurface>
-                    <ChartsGrid />
-                    <g clipPath={`url(#${clipPathId})`}>
-                        <BarPlot />
-                        <LinePlot />
-                        <ChartsOverlay />
-                        <ChartsAxisHighlight />
-                        <FocusedBar />
-                    </g>
-                    <ChartsAxis />
-                    <ChartsClipPath id={clipPathId} />
-                </ChartsSurface>
-                <ChartsTooltip />
-            </ChartsWrapper>
-        </ChartsDataProvider>
+        <Box sx={{ color: 'common.black' }}>
+            <ChartsDataProvider
+                dataset={dataset}
+                height={compact ? 300 : 600}
+                // loading={loading}
+                series={series}
+                xAxis={[{ dataKey: 'month', scaleType: 'band' }]}
+            >
+                <ChartsWrapper>
+                    <ChartsLegend />
+                    <ChartsSurface>
+                        <ChartsGrid />
+                        <g clipPath={`url(#${clipPathId})`}>
+                            <BarPlot />
+                            <LinePlot />
+                            <ChartsOverlay />
+                            <ChartsAxisHighlight />
+                            <FocusedBar />
+                        </g>
+                        <ChartsAxis />
+                        <ChartsClipPath id={clipPathId} />
+                    </ChartsSurface>
+                    <ChartsTooltip />
+                </ChartsWrapper>
+            </ChartsDataProvider>
+        </Box>
     );
 };
 

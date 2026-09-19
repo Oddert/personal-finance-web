@@ -333,6 +333,8 @@
     },
     "Scenario": {
         "addSchedule": "Add schedule",
+        "combineCards": "Combine cards",
+        "chartMode": "Chart mode",
         "createANewScenario": "Create a new scenario",
         "createFromTemplate": "Create from template",
         "description": "Scenario description",
@@ -360,6 +362,7 @@
             "numberOfSchedulers": "number of schedulers",
             "schedulerType": "Scheduler type"
         },
+        "separateCards": "Separate cards",
         "templateScenarioLabel": "Template scenario",
         "totalValueLabel": "total value",
         "userHelperToolsLabel": "Use helper tools",

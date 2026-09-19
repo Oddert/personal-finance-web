@@ -6,7 +6,9 @@ import {
     ArrowBack as IconArrowLeft,
     Save as IconSave,
     ShowChart as IconPreviewTotal,
+    Splitscreen as IconSeparate,
     SsidChart as IconPreviewCategory,
+    VideoLabel as IconCombined,
     WebAssetOff as IconPreviewOff,
 } from '@mui/icons-material';
 import {
@@ -26,6 +28,7 @@ import { v4 as uuid } from 'uuid';
 import type {
     IProps,
     ITransactorRowEditable,
+    TChartCardMode,
     TPreviewMode,
 } from './EditScenario.types';
 import type { IScenario } from '../../types/Scenario.types';
@@ -81,6 +84,8 @@ const EditScenario: FC<IProps> = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [previewMode, setPreviewMode] = useState<TPreviewMode>('category');
     const [helperToolsEnabled, setHelperToolsEnabled] = useState(true);
+    const [chartCardMode, setChartCardMode] =
+        useState<TChartCardMode>('combined');
 
     const cardId = useAppSelector(getActiveCardId);
 
@@ -250,31 +255,85 @@ const EditScenario: FC<IProps> = () => {
                         }}
                         value={scenario.description}
                     />
-                    <Typography component='label' htmlFor='preview-control'>
-                        {t('Scenario.previewMode')}
-                    </Typography>
-                    <ToggleButtonGroup
-                        exclusive
-                        id='preview-control'
-                        onChange={(_, value) => {
-                            setPreviewMode(value as TPreviewMode);
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
                         }}
-                        size='small'
-                        value={previewMode}
                     >
-                        <ToggleButton key='category' value='category'>
-                            <IconPreviewCategory />{' '}
-                            {t('Scenario.valueByCategoryLabel')}
-                        </ToggleButton>
-                        <ToggleButton key='total' value='total'>
-                            <IconPreviewTotal /> {t('Scenario.totalValueLabel')}
-                        </ToggleButton>
-                        <ToggleButton key='off' value='off'>
-                            <IconPreviewOff /> {t('literals.off')}
-                        </ToggleButton>
-                    </ToggleButtonGroup>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItem: 'flex-start',
+                                gridGap: '8px',
+                            }}
+                        >
+                            <Typography
+                                component='label'
+                                htmlFor='preview-control'
+                            >
+                                {t('Scenario.previewMode')}
+                            </Typography>
+                            <ToggleButtonGroup
+                                exclusive
+                                id='preview-control'
+                                onChange={(_, value) => {
+                                    setPreviewMode(value as TPreviewMode);
+                                }}
+                                size='small'
+                                value={previewMode}
+                            >
+                                <ToggleButton key='category' value='category'>
+                                    <IconPreviewCategory sx={{ mr: 1 }} />
+                                    {t('Scenario.valueByCategoryLabel')}
+                                </ToggleButton>
+                                <ToggleButton key='total' value='total'>
+                                    <IconPreviewTotal sx={{ mr: 1 }} />
+                                    {t('Scenario.totalValueLabel')}
+                                </ToggleButton>
+                                <ToggleButton key='off' value='off'>
+                                    <IconPreviewOff sx={{ mr: 1 }} />
+                                    {t('literals.off')}
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItem: 'flex-start',
+                                gridGap: '8px',
+                            }}
+                        >
+                            <Typography component='label' htmlFor='card-mode'>
+                                {t('Scenario.chartMode')}
+                            </Typography>
+                            <ToggleButtonGroup
+                                exclusive
+                                id='card-mode'
+                                onChange={(_, value) => {
+                                    setChartCardMode(value as TChartCardMode);
+                                }}
+                                size='small'
+                                value={chartCardMode}
+                            >
+                                <ToggleButton key='combined' value='combined'>
+                                    <IconCombined sx={{ mr: 1 }} />
+                                    {t('Scenario.combineCards')}
+                                </ToggleButton>
+                                <ToggleButton key='separate' value='separate'>
+                                    <IconSeparate sx={{ mr: 1 }} />
+                                    {t('Scenario.separateCards')}
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </Box>
+                    </Box>
                     {previewMode === 'off' ? null : (
-                        <ProjectionChart previewMode={previewMode} />
+                        <ProjectionChart
+                            previewMode={previewMode}
+                            splitOnCards={chartCardMode === 'separate'}
+                        />
                     )}
                     <FormControlLabel
                         control={

@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -9,7 +9,7 @@ import {
     Paper,
     Switch,
     TextField,
-    useTheme,
+    Typography,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -35,7 +35,11 @@ import {
 import Display from './components/Display/Display';
 
 dayjs.extend(localizedFormat);
-const ProjectionChart: FC<IProps> = ({ previewMode }) => {
+
+/**
+ * Displays a preview of aggregated historical data to provide context to the user while they model a new Scenario.
+ */
+const ProjectionChart: FC<IProps> = ({ previewMode, splitOnCards }) => {
     const [pastData, setPastData] = useState<TAggregateDataResponse>([]);
     const [pastDataLoading, setPastDataLoading] = useState(false);
     const [showNegatives, setShowNegatives] = useState(true);
@@ -50,7 +54,6 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
 
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    const theme = useTheme();
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -195,13 +198,39 @@ const ProjectionChart: FC<IProps> = ({ previewMode }) => {
                     value={selectedCards}
                 />
             </Box>
-            <Box sx={{ color: theme.palette.common.black }}>
-                <Display
-                    disableCategoryBreakdown={previewMode === 'total'}
-                    loading={pastDataLoading}
-                    pastData={pastData}
-                    showNegatives={showNegatives}
-                />
+            <Box>
+                {splitOnCards ? (
+                    pastData.map((card) => {
+                        const foundCard = cards.find(
+                            (c) => c.id === card.cardId,
+                        );
+                        return (
+                            <Fragment key={card.cardId}>
+                                <Typography sx={{ mt: 2, mb: 2 }} variant='h3'>
+                                    {foundCard?.cardName ?? card.cardId}
+                                </Typography>
+                                <Display
+                                    clipPrefix={card.cardId}
+                                    compact
+                                    disableCategoryBreakdown={
+                                        previewMode === 'total'
+                                    }
+                                    loading={pastDataLoading}
+                                    pastData={[card]}
+                                    showNegatives={showNegatives}
+                                />
+                            </Fragment>
+                        );
+                    })
+                ) : (
+                    <Display
+                        clipPrefix='all-cards'
+                        disableCategoryBreakdown={previewMode === 'total'}
+                        loading={pastDataLoading}
+                        pastData={pastData}
+                        showNegatives={showNegatives}
+                    />
+                )}
             </Box>
         </Paper>
     );

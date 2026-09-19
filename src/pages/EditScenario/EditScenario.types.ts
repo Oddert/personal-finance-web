@@ -8,3 +8,4 @@ export type ITransactorRowEditable = ITransactor & {
 };
 
 export type TPreviewMode = 'off' | 'total' | 'category';
+export type TChartCardMode = 'combined' | 'separate';
