@@ -1,4 +1,4 @@
-import { type FC, Fragment, useEffect, useState } from 'react';
+import { type FC, Fragment, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -6,6 +6,7 @@ import {
     Box,
     Checkbox,
     FormControlLabel,
+    Input,
     Paper,
     Switch,
     TextField,
@@ -18,6 +19,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import type { IProps } from './ProjectionChart.types';
 import type { ICard } from '../../../../types/Card.types';
+import type { IScheduler } from '../../../../types/Scenario.types';
 import type { TAggregateDataResponse } from '../../../../types/Transaction.d';
 
 import {
@@ -31,6 +33,12 @@ import {
     toBeginningMonthDayjs,
     toEndMonthDayjs,
 } from '../../../../utils/budgetUtils';
+import {
+    ScheduleByDayOfWeek,
+    ScheduleByEvent,
+    ScheduleByScalarTime,
+    ScheduleBySpecificDay,
+} from '../../../../utils/schedulerUtils';
 
 import Display from './components/Display/Display';
 
@@ -39,7 +47,12 @@ dayjs.extend(localizedFormat);
 /**
  * Displays a preview of aggregated historical data to provide context to the user while they model a new Scenario.
  */
-const ProjectionChart: FC<IProps> = ({ previewMode, splitOnCards }) => {
+const ProjectionChart: FC<IProps> = ({
+    previewMode,
+    scenario,
+    splitOnCards,
+    transactors,
+}) => {
     const [pastData, setPastData] = useState<TAggregateDataResponse>([]);
     const [pastDataLoading, setPastDataLoading] = useState(false);
     const [showNegatives, setShowNegatives] = useState(true);
@@ -49,11 +62,94 @@ const ProjectionChart: FC<IProps> = ({ previewMode, splitOnCards }) => {
     const [endDate, setEndDate] = useState(toEndMonthDayjs(new Date()));
     const [selectedCards, setSelectedCards] = useState<ICard[]>([]);
     const [allCardsActive, setAllCardsActive] = useState(true);
+    const [projectionMonths, setProjectionMonths] = useState(3);
 
     const cards = useAppSelector(getCardResponse);
 
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
+
+    const projectionData = useMemo<TAggregateDataResponse>(() => {
+        if (!pastData.length || projectionMonths < 1) {
+            return [];
+        }
+
+        const projectionStart = endDate.add(1, 'month').startOf('month');
+        const schedules = (scheduler: IScheduler) => {
+            switch (scheduler.schedulerCode) {
+                case 'DAY':
+                    return new ScheduleBySpecificDay(scheduler.day ?? 1);
+                case 'DAY_OF_WEEK':
+                    return new ScheduleByDayOfWeek(
+                        scheduler.day ?? 0,
+                        scheduler.nthDay ?? undefined,
+                    );
+                case 'EVENT':
+                    return new ScheduleByEvent(
+                        scheduler.startDate ?? projectionStart.toDate(),
+                    );
+                case 'SCALAR':
+                default:
+                    return new ScheduleByScalarTime(
+                        scheduler.step ?? 1,
+                        scheduler.startDate ?? projectionStart.toDate(),
+                    );
+            }
+        };
+
+        return pastData.map((card) => {
+            let balance =
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                card.transactions[endDate.format('YYYY-MM')]?.finalBalance;
+            if (balance === undefined) {
+                const monthRecords = Object.values(card.transactions);
+                balance =
+                    monthRecords[monthRecords.length - 1]?.finalBalance ??
+                    scenario.startBallance;
+            }
+            let projectedBalance = balance;
+            const transactions = Object.fromEntries(
+                Array.from({ length: projectionMonths }, (_, index) => {
+                    const month = projectionStart.add(index, 'month');
+                    const monthKey = month.format('YYYY-MM');
+                    const monthEnd = month.endOf('month');
+                    for (const transactor of transactors) {
+                        for (const scheduler of transactor.schedulers ?? []) {
+                            for (const date of schedules(scheduler).getRange(
+                                projectionStart.toDate(),
+                                monthEnd.toDate(),
+                            )) {
+                                if (
+                                    date >= month.startOf('month').valueOf() &&
+                                    date <= monthEnd.valueOf()
+                                ) {
+                                    projectedBalance += transactor.isAddition
+                                        ? transactor.value
+                                        : -transactor.value;
+                                }
+                            }
+                        }
+                    }
+                    return [
+                        monthKey,
+                        {
+                            data: [],
+                            totalCredit: 0,
+                            totalDebit: 0,
+                            finalBalance: projectedBalance,
+                        },
+                    ];
+                }),
+            );
+            return { cardId: card.cardId, transactions };
+        });
+    }, [
+        endDate,
+        pastData,
+        projectionMonths,
+        scenario.startBallance,
+        transactors,
+    ]);
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -197,6 +293,26 @@ const ProjectionChart: FC<IProps> = ({ previewMode, splitOnCards }) => {
                     )}
                     value={selectedCards}
                 />
+                <FormControlLabel
+                    control={
+                        <Input
+                            inputProps={{ min: 1, max: 24 }}
+                            onChange={(event) => {
+                                const value = Number(event.target.value);
+                                if (Number.isFinite(value)) {
+                                    setProjectionMonths(
+                                        Math.min(24, Math.max(1, value)),
+                                    );
+                                }
+                            }}
+                            size='small'
+                            type='number'
+                            value={projectionMonths}
+                        />
+                    }
+                    label='Projection months'
+                    labelPlacement='top'
+                />
             </Box>
             <Box>
                 {splitOnCards ? (
@@ -217,6 +333,11 @@ const ProjectionChart: FC<IProps> = ({ previewMode, splitOnCards }) => {
                                     }
                                     loading={pastDataLoading}
                                     pastData={[card]}
+                                    projectedData={projectionData.filter(
+                                        (projectedCard) =>
+                                            projectedCard.cardId ===
+                                            card.cardId,
+                                    )}
                                     showNegatives={showNegatives}
                                 />
                             </Fragment>
@@ -228,6 +349,7 @@ const ProjectionChart: FC<IProps> = ({ previewMode, splitOnCards }) => {
                         disableCategoryBreakdown={previewMode === 'total'}
                         loading={pastDataLoading}
                         pastData={pastData}
+                        projectedData={projectionData}
                         showNegatives={showNegatives}
                     />
                 )}

@@ -54,14 +54,14 @@ import ProjectionChart from './components/ProjectionChart';
 import QuickAddTools from './components/QuickAddTools';
 import TransactorTable from './components/TransactorTable/TransactorTable';
 
-const emptyScenario = () => ({
+const emptyScenario = (): IScenario => ({
     id: uuid(),
     userId: '',
     cardId: '',
-    startDate: '',
-    endDate: '',
-    createdOn: '',
-    updatedOn: '',
+    startDate: null,
+    endDate: null,
+    createdOn: new Date().toISOString(),
+    updatedOn: new Date().toISOString(),
     title: '',
     description: '',
     startBallance: 0,
@@ -332,7 +332,9 @@ const EditScenario: FC<IProps> = () => {
                     {previewMode === 'off' ? null : (
                         <ProjectionChart
                             previewMode={previewMode}
+                            scenario={{ ...scenario, transactors }}
                             splitOnCards={chartCardMode === 'separate'}
+                            transactors={transactors}
                         />
                     )}
                     <FormControlLabel

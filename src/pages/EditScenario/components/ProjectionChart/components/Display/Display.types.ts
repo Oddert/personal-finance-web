@@ -6,5 +6,6 @@ export interface IProps {
     disableCategoryBreakdown?: boolean;
     loading?: boolean;
     pastData: TAggregateDataResponse;
+    projectedData?: TAggregateDataResponse;
     showNegatives?: boolean;
 }

@@ -26,6 +26,7 @@ const Display: FC<IProps> = ({
     compact,
     disableCategoryBreakdown,
     pastData,
+    projectedData = [],
     showNegatives,
 }) => {
     const { dataset, series } = useMemo(() => {
@@ -131,11 +132,29 @@ const Display: FC<IProps> = ({
             { _dataset: {}, _series: {} },
         );
 
+        projectedData.forEach((cardDataSet) => {
+            const balanceKey = `projected_total_${cardDataSet.cardId}`;
+            Object.entries(cardDataSet.transactions).forEach(
+                ([monthKey, categoryList]) => {
+                    datasetObj[monthKey] = {
+                        ...datasetObj[monthKey],
+                        month: monthKey,
+                        [balanceKey]: categoryList.finalBalance ?? 0,
+                    };
+                },
+            );
+            seriesObj[balanceKey] = {
+                dataKey: balanceKey,
+                label: `Projected balance ${cardDataSet.cardId}`,
+                type: 'line',
+            };
+        });
+
         return {
             dataset: Object.values(datasetObj),
             series: Object.values(seriesObj),
         };
-    }, [disableCategoryBreakdown, pastData, showNegatives]);
+    }, [disableCategoryBreakdown, pastData, projectedData, showNegatives]);
 
     const clipPathId = clipPathPartial + clipPrefix;
 
