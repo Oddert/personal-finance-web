@@ -12,6 +12,7 @@ export interface IProps {
 
 export interface IAggregateDatapointExtended extends IAggregateDatapoint {
     cardName: string;
+    cardId: string;
     enabled: boolean;
     period: string;
 }

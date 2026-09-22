@@ -87,8 +87,8 @@ describe('convertAggDataResponse', () => {
             {
                 categoryName: 'Groceries',
                 categoryId: 'catA',
-                average: 150,
-                standardDeviation: 67.1,
+                average: 300,
+                standardDeviation: 120,
                 totalCumulative: 600,
             },
         );
@@ -149,6 +149,60 @@ describe('convertAggDataResponse', () => {
             totalCumulative: 120,
             average: 120,
             standardDeviation: 0,
+        });
+    });
+
+    it('averages totals aggregated across cards within each month', () => {
+        const adaptedData = [
+            {
+                categoryId: 'catA',
+                categoryColour: '#ff0000',
+                categoryName: 'Groceries',
+                data: [
+                    {
+                        categoryId: 'catA',
+                        categoryName: 'Groceries',
+                        month: new Date('2026-07-01'),
+                        totalCredit: 0,
+                        totalDebit: 23,
+                        cardName: 'Primary',
+                        enabled: true,
+                        period: '2026-6',
+                    },
+                    {
+                        categoryId: 'catA',
+                        categoryName: 'Groceries',
+                        month: new Date('2026-07-01'),
+                        totalCredit: 0,
+                        totalDebit: 76,
+                        cardName: 'Secondary',
+                        enabled: true,
+                        period: '2026-6',
+                    },
+                    {
+                        categoryId: 'catA',
+                        categoryName: 'Groceries',
+                        month: new Date('2026-08-01'),
+                        totalCredit: 0,
+                        totalDebit: 53,
+                        cardName: 'Primary',
+                        enabled: true,
+                        period: '2026-7',
+                    },
+                ],
+                totalCredit: 0,
+                totalDebit: 0,
+                totalCumulative: 0,
+                average: 0,
+                standardDeviation: 0,
+            },
+        ];
+
+        expect(calculateAggDataTotals(adaptedData)[0]).toMatchObject({
+            totalDebit: 152,
+            totalCumulative: 152,
+            average: 76,
+            standardDeviation: 23,
         });
     });
 });

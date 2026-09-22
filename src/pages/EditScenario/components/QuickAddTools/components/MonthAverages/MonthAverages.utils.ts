@@ -44,7 +44,8 @@ export const convertAggDataResponse = (
                             categoryId,
                             categoryName: existing.categoryName,
                             enabled: true,
-                            period: `${String(date.getFullYear())}-${String(date.getMonth())}`,
+                            period: `${String(date.getFullYear())}-${String(date.getMonth() + 1)}`,
+                            cardId: foundCard?.id ?? '',
                         };
                         return dp;
                     }),
@@ -75,7 +76,25 @@ export const calculateAggDataTotals = (
 ): IAggregateDatapointRecordExtended[] =>
     dataRecords.map((entry) => {
         const enabledData = entry.data.filter((datapoint) => datapoint.enabled);
-        const values = enabledData.map((d) => d.totalDebit || d.totalCredit);
+        const monthlyTotals = new Map<
+            string,
+            { totalCredit: number; totalDebit: number }
+        >();
+
+        enabledData.forEach((datapoint) => {
+            const monthlyTotal = monthlyTotals.get(datapoint.period) ?? {
+                totalCredit: 0,
+                totalDebit: 0,
+            };
+            monthlyTotal.totalCredit += datapoint.totalCredit;
+            monthlyTotal.totalDebit += datapoint.totalDebit;
+            monthlyTotals.set(datapoint.period, monthlyTotal);
+        });
+
+        const values = Array.from(monthlyTotals.values()).map(
+            (monthlyTotal) =>
+                monthlyTotal.totalDebit || monthlyTotal.totalCredit,
+        );
 
         const totalCredit = enabledData.reduce(
             (total, datapoint) => total + datapoint.totalCredit,
