@@ -21,6 +21,8 @@ import {
 import type { IProps } from './AverageDataCard.types';
 import type { IAggregateDatapointExtended } from '../../MonthAverages.types';
 
+import { useAppSelector } from '../../../../../../../../hooks/ReduxHookWrappers';
+import { getActiveCardId } from '../../../../../../../../redux/selectors/cardSelectors';
 import { ffBlankTransactorRowEditable } from '../../../../../../../../utils/factoryFunctions';
 import AvgDataPointRow from '../AvgDataPointRow';
 
@@ -30,6 +32,8 @@ const AverageDataCard: FC<IProps> = ({
     setTransactors,
 }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+    const activeCardId = useAppSelector(getActiveCardId);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -44,13 +48,14 @@ const AverageDataCard: FC<IProps> = ({
             ...transactors,
             ffBlankTransactorRowEditable({
                 categoryId: dataPoint.categoryId,
-                // cardId: foundTransaction.cardId,
+                cardId: activeCardId,
                 description: dataPoint.categoryName,
                 isAddition: dataPoint.average >= 0,
                 value: Math.abs(dataPoint.average),
             }),
         ]);
     }, [
+        activeCardId,
         dataPoint.average,
         dataPoint.categoryId,
         dataPoint.categoryName,
@@ -64,7 +69,7 @@ const AverageDataCard: FC<IProps> = ({
                 ...transactors,
                 ffBlankTransactorRowEditable({
                     categoryId: row.categoryId,
-                    // cardId: foundTransaction.cardId,
+                    cardId: row.cardId,
                     description: row.categoryName,
                     isAddition: value >= 0,
                     value: Math.abs(value),
