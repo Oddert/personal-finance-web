@@ -128,6 +128,7 @@
     },
     "buttons": {
         "addOrSubtract": "Add / Subtract",
+        "Action": "Action",
         "Activate": "Activate",
         "addBudgetRow": "Add budget row",
         "addCategory": "Add Category",
@@ -343,13 +344,10 @@
         "pleaseSelectAScenario": "Please select a scenario.",
         "monthlyCategoryAvg": "Monthly category averages",
         "newBlankScenario": "New blank scenario",
-        "numSchedules": "{{num}} schedules",
-        "numScheduleSingle": "1 schedule",
         "pastTransactions": "Past transaction search",
         "previewMode": "Preview mode",
         "returnToAllScenarios": "Return to all scenarios",
         "scheduleExplanation": "Schedulers define when and how this action should be taken. You can cause them to repeat on various cycles or be a one-off event representing something like a big purchase.",
-        "scheduleThisEvent": "Expand to add schedules",
         "Scheduler": {
             "deleteSchedule": "Delete Schedule",
             "descriptionDay": "Repeat a day of the month",
@@ -359,7 +357,7 @@
             "labelDay": "Day",
             "labelNthDay": "Every nth day (optional)",
             "labelStep": "Step",
-            "numberOfSchedulers": "number of schedulers",
+            "numberOfSchedulers": "Schedulers",
             "schedulerType": "Scheduler type"
         },
         "separateCards": "Separate cards",
