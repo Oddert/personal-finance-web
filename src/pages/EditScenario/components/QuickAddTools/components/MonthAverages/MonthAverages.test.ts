@@ -1,3 +1,5 @@
+import type { IAggregateDatapointRecordExtended } from './MonthAverages.types';
+
 import {
     calculateAggDataTotals,
     convertAggDataResponse,
@@ -107,7 +109,7 @@ describe('convertAggDataResponse', () => {
     });
 
     it('recalculates derived totals using enabled datapoints only', () => {
-        const adaptedData = [
+        const adaptedData: IAggregateDatapointRecordExtended[] = [
             {
                 categoryId: 'catA',
                 categoryColour: '#ff0000',
@@ -122,6 +124,7 @@ describe('convertAggDataResponse', () => {
                         cardName: 'Checking',
                         enabled: true,
                         period: '2024-0',
+                        cardId: '',
                     },
                     {
                         categoryId: 'catA',
@@ -132,6 +135,7 @@ describe('convertAggDataResponse', () => {
                         cardName: 'Checking',
                         enabled: false,
                         period: '2024-1',
+                        cardId: '',
                     },
                 ],
                 totalCredit: 0,
@@ -153,7 +157,7 @@ describe('convertAggDataResponse', () => {
     });
 
     it('averages totals aggregated across cards within each month', () => {
-        const adaptedData = [
+        const adaptedData: IAggregateDatapointRecordExtended[] = [
             {
                 categoryId: 'catA',
                 categoryColour: '#ff0000',
@@ -168,6 +172,7 @@ describe('convertAggDataResponse', () => {
                         cardName: 'Primary',
                         enabled: true,
                         period: '2026-6',
+                        cardId: '',
                     },
                     {
                         categoryId: 'catA',
@@ -178,6 +183,7 @@ describe('convertAggDataResponse', () => {
                         cardName: 'Secondary',
                         enabled: true,
                         period: '2026-6',
+                        cardId: '',
                     },
                     {
                         categoryId: 'catA',
@@ -188,6 +194,7 @@ describe('convertAggDataResponse', () => {
                         cardName: 'Primary',
                         enabled: true,
                         period: '2026-7',
+                        cardId: '',
                     },
                 ],
                 totalCredit: 0,
