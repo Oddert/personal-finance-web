@@ -72,6 +72,8 @@ export interface IScenarioCardBridge {
 export interface ITransactor {
     /** The ID of the Category this action represents. */
     categoryId: string | null;
+    /** The ID of the Card to action this transaction on. */
+    cardId: string | null;
     /** ISO timestamp of the date/time the record was first created. */
     createdOn: string;
     /** The user-defined description of this action. */
