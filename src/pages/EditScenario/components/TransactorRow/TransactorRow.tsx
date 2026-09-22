@@ -18,6 +18,7 @@ import {
 import {
     Autocomplete,
     Button,
+    Chip,
     Collapse,
     IconButton,
     MenuItem,
@@ -30,17 +31,18 @@ import {
     TableRow,
     TextField,
     Tooltip,
-    Typography,
 } from '@mui/material';
 
 import { v4 as uuid } from 'uuid';
 
 import type { IProps } from './TransactorRow.types';
+import type { ICard } from '../../../../types/Card.types';
 import type { ICategory } from '../../../../types/Category';
 import type { IScheduler } from '../../../../types/Scenario.types';
 import type { ITransactorRowEditable } from '../../EditScenario.types';
 
 import { useAppSelector } from '../../../../hooks/ReduxHookWrappers';
+import { getCardResponse } from '../../../../redux/selectors/cardSelectors';
 import { getCategoryResponse } from '../../../../redux/selectors/categorySelectors';
 import SchedulerRow from '../SchedulerRow';
 
@@ -60,6 +62,7 @@ const TransactorRow: FC<IProps> = ({
     const { t } = useTranslation();
 
     const allCategories = useAppSelector(getCategoryResponse);
+    const allCards = useAppSelector(getCardResponse);
 
     const handleChangeValue = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -218,6 +221,21 @@ const TransactorRow: FC<IProps> = ({
         setTransactors(filteredRows);
     };
 
+    const handleChangeCard = (_: SyntheticEvent, value: ICard | null) => {
+        const filteredRows: ITransactorRowEditable[] = transactors.map(
+            (transactorRow) => {
+                if (transactorRow.id === transactor.id) {
+                    return {
+                        ...transactorRow,
+                        cardId: value ? value.id : null,
+                    };
+                }
+                return transactorRow;
+            },
+        );
+        setTransactors(filteredRows);
+    };
+
     const toggleExpanded = () => {
         setExpanded(!expanded);
     };
@@ -229,10 +247,20 @@ const TransactorRow: FC<IProps> = ({
         );
     }, [allCategories, transactor.categoryId]);
 
+    const card = useMemo(() => {
+        return allCards.find((_card) => _card.id === transactor.cardId) ?? null;
+    }, [allCards, transactor.cardId]);
+
     return (
         <Fragment>
-            <TableRow>
-                <TableCell>
+            <TableRow
+                sx={{
+                    borderLeft: category
+                        ? `5px solid ${category.colour}`
+                        : '5px solid transparent',
+                }}
+            >
+                <TableCell size='small' sx={{ px: '4px' }}>
                     <IconButton
                         onClick={toggleExpanded}
                         title={
@@ -244,28 +272,26 @@ const TransactorRow: FC<IProps> = ({
                         {expanded ? <IconExpandOpen /> : <IconExpandClosed />}
                     </IconButton>
                 </TableCell>
-                <TableCell>
-                    {transactor.schedulers?.length ? (
-                        transactor.schedulers.length > 1 ? (
-                            <Typography>
-                                {t('Scenario.numSchedules', {
-                                    num: transactor.schedulers.length,
-                                })}
-                            </Typography>
-                        ) : (
-                            <Typography>
-                                {t('Scenario.numScheduleSingle')}
-                            </Typography>
-                        )
-                    ) : (
-                        <Tooltip title={t('Scenario.scheduleExplanation')}>
-                            <Typography>
-                                {t('Scenario.scheduleThisEvent')}
-                            </Typography>
-                        </Tooltip>
-                    )}
+                <TableCell size='small' sx={{ px: '4px' }}>
+                    <Chip label={transactor.schedulers?.length ?? 0} />
                 </TableCell>
-                <TableCell>
+                <TableCell size='small' sx={{ px: '4px' }}>
+                    <Autocomplete
+                        getOptionKey={(opt) => opt.id}
+                        getOptionLabel={(opt) => opt.cardName}
+                        onChange={handleChangeCard}
+                        options={allCards}
+                        renderInput={(props) => (
+                            <TextField
+                                sx={{ minWidth: '150px' }}
+                                {...props}
+                                size='small'
+                            />
+                        )}
+                        value={card}
+                    />
+                </TableCell>
+                <TableCell size='small' sx={{ px: '4px' }}>
                     <Autocomplete
                         getOptionKey={(opt) => opt.id}
                         getOptionLabel={(opt) => opt.label}
@@ -282,7 +308,7 @@ const TransactorRow: FC<IProps> = ({
                         value={category}
                     />
                 </TableCell>
-                <TableCell>
+                <TableCell size='small' sx={{ px: '4px' }}>
                     <TextField
                         disabled={transactor.deleted}
                         label={t('literals.Description')}
@@ -298,7 +324,7 @@ const TransactorRow: FC<IProps> = ({
                         value={transactor.description}
                     />
                 </TableCell>
-                <TableCell>
+                <TableCell size='small' sx={{ px: '4px' }}>
                     <TextField
                         disabled={transactor.deleted}
                         label={t('literals.Amount')}
@@ -315,7 +341,7 @@ const TransactorRow: FC<IProps> = ({
                         value={transactor.value}
                     />
                 </TableCell>
-                <TableCell>
+                <TableCell size='small' sx={{ px: '4px' }}>
                     <Select
                         onChange={handleChangeIsAddition}
                         size='small'
@@ -325,7 +351,7 @@ const TransactorRow: FC<IProps> = ({
                         <MenuItem value='n'>{t('literals.Subtract')}</MenuItem>
                     </Select>
                 </TableCell>
-                <TableCell>
+                <TableCell size='small' sx={{ px: '4px' }}>
                     {transactor.deleted ? (
                         <Tooltip title={t('Budget.rowDeletedClickToRestore')}>
                             <Button onClick={handleClickUndelete}>
@@ -350,13 +376,15 @@ const TransactorRow: FC<IProps> = ({
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>
+                                    <TableCell size='small' sx={{ px: '4px' }}>
                                         {t('Scenario.Scheduler.schedulerType')}
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell size='small' sx={{ px: '4px' }}>
                                         {t('literals.Options')}
                                     </TableCell>
-                                    <TableCell>{t('buttons.Delete')}</TableCell>
+                                    <TableCell size='small' sx={{ px: '4px' }}>
+                                        {t('buttons.Delete')}
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

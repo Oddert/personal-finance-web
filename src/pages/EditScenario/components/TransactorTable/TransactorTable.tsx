@@ -26,15 +26,27 @@ const TransactorTable: FC<IProps> = ({ setTransactors, transactors }) => {
                     <TableRow>
                         <TableCell
                             aria-label={t('literals.expand')}
+                            size='small'
                         ></TableCell>
-                        <TableCell
-                            aria-label={t('literals.numberOfSchedulers')}
-                        ></TableCell>
-                        <TableCell>{t('literals.Category')}</TableCell>
-                        <TableCell>{t('literals.Description')}</TableCell>
-                        <TableCell>{t('literals.Amount')}</TableCell>
-                        <TableCell>{t('buttons.addOrSubtract')}</TableCell>
-                        <TableCell>{t('buttons.Delete')}</TableCell>
+                        <TableCell size='small'>
+                            {t('Scenario.Scheduler.numberOfSchedulers')}
+                        </TableCell>
+                        <TableCell size='small'>{t('literals.Card')}</TableCell>
+                        <TableCell size='small'>
+                            {t('literals.Category')}
+                        </TableCell>
+                        <TableCell size='small'>
+                            {t('literals.Description')}
+                        </TableCell>
+                        <TableCell size='small'>
+                            {t('literals.Amount')}
+                        </TableCell>
+                        <TableCell size='small'>
+                            {t('buttons.Action')}
+                        </TableCell>
+                        <TableCell size='small'>
+                            {t('buttons.Delete')}
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
